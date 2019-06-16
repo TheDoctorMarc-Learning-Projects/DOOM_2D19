@@ -7,18 +7,15 @@
     <Filter Include="Code\Help">
       <UniqueIdentifier>{d8cab336-0695-44e7-9893-2a86c197c28f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Core">
+      <UniqueIdentifier>{3b6142a2-32bb-46aa-a275-c2f988f80dba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="j1App.cpp">
-      <Filter>Code</Filter>
-    </ClCompile>
     <ClCompile Include="j1Audio.cpp">
       <Filter>Code</Filter>
     </ClCompile>
     <ClCompile Include="j1Fonts.cpp">
-      <Filter>Code</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Main.cpp">
       <Filter>Code</Filter>
     </ClCompile>
     <ClCompile Include="j1Map.cpp">
@@ -57,11 +54,14 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp">
       <Filter>Code\Help</Filter>
     </ClCompile>
+    <ClCompile Include="j1App.cpp">
+      <Filter>Code\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Main.cpp">
+      <Filter>Code\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="j1App.h">
-      <Filter>Code</Filter>
-    </ClInclude>
     <ClInclude Include="j1Audio.h">
       <Filter>Code</Filter>
     </ClInclude>
@@ -69,9 +69,6 @@
       <Filter>Code</Filter>
     </ClInclude>
     <ClInclude Include="j1Map.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Module.h">
       <Filter>Code</Filter>
     </ClInclude>
     <ClInclude Include="j1ParticlesClassic.h">
@@ -124,6 +121,12 @@
     </ClInclude>
     <ClInclude Include="PugiXml\src\pugixml.hpp">
       <Filter>Code\Help</Filter>
+    </ClInclude>
+    <ClInclude Include="j1App.h">
+      <Filter>Code\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Module.h">
+      <Filter>Code\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

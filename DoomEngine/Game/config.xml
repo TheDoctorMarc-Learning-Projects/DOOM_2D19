@@ -1,0 +1,25 @@
+<!-- Config file for the game -->
+
+<config>
+ <app cap_frames="false" framerate_cap="60">
+    <title>Final Fantasy: Dawn of Ivalice</title>
+    <organization>Pink King Games</organization>
+  </app>
+
+  <renderer>
+    <vsync value="false"/>
+  </renderer>
+
+  <window>
+    <resolution width="1280" height="720" scale="2"/>
+    <fullscreen value="false"/>
+    <borderless value="false"/>
+    <resizable value="false"/>
+    <fullscreen_window value="false"/>
+  </window>
+
+  <file_system>
+    <path>data.zip</path>
+  </file_system>
+
+</config>

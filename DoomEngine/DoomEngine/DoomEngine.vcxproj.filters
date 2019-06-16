@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Code">
+      <UniqueIdentifier>{6e25f8f8-75f6-401c-b662-d56bce38a19d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Help">
+      <UniqueIdentifier>{d8cab336-0695-44e7-9893-2a86c197c28f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="j1App.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Audio.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Fonts.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Main.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Map.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="j1ParticlesClassic.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="j1PathFinding.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="j1PerfTimer.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Render.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Scene.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Textures.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Window.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="p2Log.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Input.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Timer.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="PugiXml\src\pugixml.cpp">
+      <Filter>Code\Help</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="j1App.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Audio.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Fonts.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Map.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Module.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="j1ParticlesClassic.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="j1PathFinding.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Render.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Scene.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Textures.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Window.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Animation.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Defs.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="p2DynArray.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Log.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Point.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="p2PQueue.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Input.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="j1PerfTimer.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Timer.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugiconfig.hpp">
+      <Filter>Code\Help</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugixml.hpp">
+      <Filter>Code\Help</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

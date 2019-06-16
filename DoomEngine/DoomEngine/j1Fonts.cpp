@@ -31,12 +31,12 @@ bool j1Fonts::Awake(pugi::xml_node& conf)
 	}
 	else
 	{
-		const char* path = conf.child("default_font").attribute("file").as_string(DEFAULT_FONT);
+	/*	const char* path = conf.child("default_font").attribute("file").as_string(DEFAULT_FONT);
 		int size = conf.child("default_font").attribute("size").as_int(DEFAULT_FONT_SIZE);
-		defaultFont = Load(path, size);
+		defaultFont = Load(path, size);*/
 	}
 
-	openSansBold12 = Load("fonts/open_sans/OpenSans-Bold.ttf", 12);
+	/*openSansBold12 = Load("fonts/open_sans/OpenSans-Bold.ttf", 12);
 	openSansBold18 = Load("fonts/open_sans/OpenSans-Bold.ttf", 18);
 	openSansBold36 = Load("fonts/open_sans/OpenSans-Bold.ttf", 36);
 	openSansSemiBold24 = Load("fonts/open_sans/OpenSans-Semibold.ttf", 24);
@@ -55,7 +55,7 @@ bool j1Fonts::Awake(pugi::xml_node& conf)
 	knightsQuest24 = Load("fonts/knights-quest.regular/knights-quest.regular.ttf", 24);
 
 	weekSRB18 = Load("fonts/week-srb-regular/week-srb-regular.ttf", 18);
-	weekSRB24 = Load("fonts/week-srb-regular/week-srb-regular.ttf", 24);
+	weekSRB24 = Load("fonts/week-srb-regular/week-srb-regular.ttf", 24);*/
 
 	return ret;
 }

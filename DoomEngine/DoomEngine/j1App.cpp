@@ -245,10 +245,17 @@ void j1App::FinishUpdate()
 	uint32 last_frame_ms = frame_time.Read();
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
 
-	static char title[256];
+    static char title[256];
 	sprintf_s(title, 256, "FPS: %i, Av.FPS: %.2f Last Frame Ms: %02u / Time since startup: %.3f Frame Count: %lu / Frame Cap: ",
 		frames_on_last_update, avg_fps, last_frame_ms, seconds_since_startup, frame_count/*, framerate_cap*/);
-	App->win->AddStringToTitle(title);
+
+	
+	//	App->win->AddStringToTitle(title);
+
+	App->win->SetTitle(title);
+
+
+
 
 	
 	/*static char title[256];

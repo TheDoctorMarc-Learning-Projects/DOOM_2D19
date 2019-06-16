@@ -2,8 +2,8 @@
 
 <config>
  <app cap_frames="false" framerate_cap="60">
-    <title>Final Fantasy: Dawn of Ivalice</title>
-    <organization>Pink King Games</organization>
+    <title>DOOM 2D19</title>
+    <organization>Doctor Corp</organization>
   </app>
 
   <renderer>

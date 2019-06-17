@@ -86,7 +86,7 @@ void j1Map::Draw()
 
 						}
 					}
-		        }
+		       }
 			}
 		}
 
@@ -195,7 +195,7 @@ iPoint j1Map::WorldToMap(int x, int y) const
 		ret.x = x / data.tile_width;
 		ret.y = y / data.tile_height;
 	}
-	else if(data.type == MAPTYPE_ISOMETRIC)
+	/*else if(data.type == MAPTYPE_ISOMETRIC)
 	{
 		
 		float half_width = data.tile_width * 0.5f;
@@ -207,7 +207,7 @@ iPoint j1Map::WorldToMap(int x, int y) const
 	{
 		//LOG("Unknown map type");
 		ret.x = x; ret.y = y;
-	}
+	}*/
 
 	return ret;
 }
@@ -338,14 +338,21 @@ bool j1Map::CleanUp()
 
 	while(layer_item != data.layers.end())
 	{
-		data.layers.remove(*layer_item);
+		// testing 
+
+		RELEASE((*layer_item)->data); 
+
+
+
+	//	data.layers.remove(*layer_item)
+
 		delete *layer_item;
 		*layer_item = nullptr;
 		++layer_item;
 	}
 	data.layers.clear();
 
-	std::list<std::string>::iterator lvl_item;
+	/*std::list<std::string>::iterator lvl_item;
 	lvl_item = data.levels.begin();
 
 	while (lvl_item != data.levels.end())
@@ -354,7 +361,7 @@ bool j1Map::CleanUp()
 		*lvl_item = nullptr;
 		++lvl_item;
 	}
-	data.levels.clear();
+	data.levels.clear();*/
 
 
 	App->tex->UnLoad(texture);
@@ -381,8 +388,8 @@ bool j1Map::Load(const char* file_name)
 	// Load general info ----------------------------------------------
 	if (ret == true)
 	{
-		// stores the current level string name
-		data.loadedLevel.assign(file_name);
+		/*// stores the current level string name
+		data.loadedLevel.assign(file_name);*/
 		// ------------------------------------
 		ret = LoadMap();
 	}
@@ -765,11 +772,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		int i = 0;
 		for (pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
 		{
-			
-			
-			//TEST
 			layer->data[i++] = tile.attribute("gid").as_int(0);
-			
 		}
 	}
 

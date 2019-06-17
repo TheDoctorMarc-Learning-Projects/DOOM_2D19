@@ -68,7 +68,9 @@ struct MapLayer
 
 	~MapLayer()
 	{
-		//RELEASE(data);   // TODO: check this crash
+
+
+//		RELEASE(data);   // TODO: check this crash
 	}
 
 	inline uint Get(int x, int y) const
@@ -116,8 +118,8 @@ struct MapData
 	std::list<TileSet*>		tilesets;
 	std::list<MapLayer*>	layers;
 	std::list<MapObjects>	mapObjects;
-	std::list<std::string>	levels;
-	std::string				loadedLevel;
+	/*std::list<std::string>	levels;
+	std::string				loadedLevel;*/
 	Properties				properties;
 };
 

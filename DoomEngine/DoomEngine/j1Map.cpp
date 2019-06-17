@@ -5,7 +5,7 @@
 #include "j1Textures.h"
 #include "j1Map.h"
 #include "j1Window.h"
-
+#include"j1Input.h"
 
 #include "Brofiler/Brofiler.h"
 
@@ -63,13 +63,18 @@ void j1Map::Draw()
 	
 	
 	
+
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+		mapDebug = !mapDebug; 
+
 	// --------------------------------------------------------------------->>>    This is only for the first layer!
 
 	std::list<MapLayer*>::iterator layer = data.layers.begin();
 
-		for (int i = 0; i < data.height; ++i)
+	
+		for (int i = 0; i < (*layer)->height; ++i)
 		{
-			for (int j = 0; j < data.width; ++j)
+			for (int j = 0; j < (*layer)->width; ++j)
 			{
 				if (App->render->IsOnCamera(MapToWorld(i , j).x, MapToWorld(i, j).y, data.tile_width * j, data.tile_height * i))
 				{
@@ -82,14 +87,25 @@ void j1Map::Draw()
 							SDL_Rect r = tileset->GetTileRect(tile_id);
 							iPoint pos = MapToWorld(i, j);
 
-							App->render->Blit(tileset->texture, pos.x - data.tile_width, pos.y - data.tile_height, &r, (*layer)->properties.parallaxSpeed);
-
+							App->render->Blit(tileset->texture, pos.x + App->render->camera.x - data.tile_width, pos.y + App->render->camera.y - data.tile_height, &r, (*layer)->properties.parallaxSpeed);
 						}
 					}
-		       }
+		        }
 			}
+
+			// debug the section 
+			if(mapDebug)
+				if (i == data.height - 1)
+				{
+					const SDL_Rect debugSection = { App->render->camera.x, App->render->camera.y, i * data.tile_width, i* data.tile_height };
+					App->render->DrawQuad(debugSection, 255, 255, 255, 150, true); 
+
+				}
+		
+
 		}
 
+	
 		
 
 	

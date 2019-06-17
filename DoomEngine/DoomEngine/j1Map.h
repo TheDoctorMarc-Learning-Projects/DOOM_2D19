@@ -75,7 +75,7 @@ struct MapLayer
 
 	inline uint Get(int x, int y) const
 	{
-		return data[(y*width) + x];
+		return data[(y*width) + x]; 
 	}
 };
 
@@ -175,6 +175,8 @@ public:
 	MapData data;
 	bool				map_loaded;
 	bool				showNavLayer = false;
+
+	bool mapDebug = false; 
 	//iPoint pixelTileOffset; // mesures the height between the end of y sprite texture to start of the paint(draw) itself (displacement)
 private:
 

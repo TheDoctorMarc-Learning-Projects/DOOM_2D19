@@ -17,7 +17,7 @@
 j1Scene::j1Scene() : j1Module()
 {
 	name.assign("scene");
-	state = SceneState::STARTMENU;
+	state = SceneState::LEVEL1;
 }
 
 // Destructor
@@ -44,8 +44,7 @@ bool j1Scene::Start()
 	if (state == SceneState::LEVEL1)
 	{
 		//App->audio->PlayMusic("audio/music/FFDI_Theme_14.ogg", -1);   // change with new music
-
-
+		LoadNewMap("maps/level 1.tmx");
 	}
 
 	if (state == SceneState::LEVEL2)

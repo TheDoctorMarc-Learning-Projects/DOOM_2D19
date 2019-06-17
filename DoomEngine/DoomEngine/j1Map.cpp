@@ -43,7 +43,9 @@ void j1Map::Draw()
 
 	if (map_loaded == false)
 		return;
-	std::list<MapLayer*>::iterator layer = data.layers.begin();
+
+	/*std::list<MapLayer*>::iterator layer = data.layers.begin();
+
 	for (; layer != data.layers.end(); ++layer)
 	{
 		if ((*layer)->name == "navigationLayer" && showNavLayer == false) {
@@ -56,9 +58,12 @@ void j1Map::Draw()
 	{
 		BROFILER_CATEGORY("Map Tiles Debug", Profiler::Color::DarkSlateGray);
 		DebugDraw();
-	}
+	}*/
 
-	/*	for (int i = 0; i < data.height; ++i)
+
+	std::list<MapLayer*>::iterator layer = data.layers.begin();
+
+		for (int i = 0; i < data.height; ++i)
 		{
 			for (int j = 0; j < data.width; ++j)
 			{
@@ -73,13 +78,50 @@ void j1Map::Draw()
 							SDL_Rect r = tileset->GetTileRect(tile_id);
 							iPoint pos = MapToWorld(i, j);
 
-							App->render->Blit(tileset->texture, pos.x + pixelTileOffset.x, pos.y + pixelTileOffset.y, &r, (*layer)->properties.parallaxSpeed);
+							App->render->Blit(tileset->texture, pos.x /*+ pixelTileOffset.x*/, pos.y /*+ pixelTileOffset.y*/, &r, (*layer)->properties.parallaxSpeed);
 
 						}
 					}
 				}
 			}
+		}
+
+		
+
+	
+
+		/*std::list<TileSet*>::iterator item_tile = data.tilesets.end(); 
+
+		std::list<MapLayer*>::iterator layers_lay = data.layers.begin();
+
+		/*p2List_item<TileSet*>* item_tile = data.tilesets.end;//Painters rule application.
+		p2List_item<MapLayer*>* layers_lay = data.layers.start;*/
+
+
+		/*while (item_tile != NULL) {
+
+			layers_lay = data.layers.start;
+
+			while (layers_lay != NULL) {
+
+				for (uint x = 0; x < (*layers_lay)->data->width; x++) {
+
+					for (uint y = 0; y < (*layers_lay)->data->height; y++) {
+
+						SDL_Rect rect = (*item_tile)->data->GetTileRect(layers_lay->data->Get(x, y));
+						iPoint world_coords = MapToWorld(x, y);
+						App->render->Blit(item_tile->data->texture, world_coords.x, world_coords.y, &rect, layers_lay->data->Parallaxspeed);
+
+
+					
+					}
+
+				}
+				layers_lay = layers_lay->next;
+			}
+			item_tile = item_tile->prev;
 		}*/
+
 }
 
 int Properties::Get(const char* value, int default_value) const
@@ -658,7 +700,10 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	}
 	else
 	{
-		set->texture = App->tex->Load(PATH(folder.data(), image.attribute("source").as_string()));
+		const char* pathPrefix = "maps"; 
+		const char* pathDataComplete = PATH(pathPrefix, image.attribute("source").as_string()); 
+
+		set->texture = App->tex->Load(pathDataComplete);
 		int w, h;
 		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
 		set->tex_width = image.attribute("width").as_int();
@@ -815,8 +860,8 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	{
 		MapLayer* layer = *item;
 
-		if(layer->properties.Get("Navigation", 0) == 0)
-			continue;
+		/*if(layer->properties.Get("Navigation", 0) == 0)
+			continue;*/
 
 		uchar* map = DBG_NEW uchar[layer->width*layer->height];
 		memset(map, 1, layer->width*layer->height);

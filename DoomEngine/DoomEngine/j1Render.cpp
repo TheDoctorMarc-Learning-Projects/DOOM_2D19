@@ -43,6 +43,14 @@ bool j1Render::Awake(pugi::xml_node& config)
 		LOG("Could not create the renderer! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
+	else
+	{
+		camera.w = App->win->screen_surface->w;
+		camera.h = App->win->screen_surface->h;
+		camera.x = 0;
+		camera.y = 0;
+	}
+
 
 
 	return ret;
@@ -135,8 +143,8 @@ iPoint j1Render::ScreenToWorld(int x, int y) const
 	iPoint ret;
 	int scale = App->win->GetScale();
 	
-	ret.x = (x - camera->x / scale);
-	ret.y = (y - camera->y / scale);
+	ret.x = (x - camera.x / scale);
+	ret.y = (y - camera.y / scale);
 
 	return ret;
 }
@@ -144,10 +152,10 @@ iPoint j1Render::ScreenToWorld(int x, int y) const
 iPoint j1Render::WorldToScreen(int x, int y, bool descriptions) const
 {
 
-	if (!descriptions)
-		return iPoint(x * App->win->GetScale() + camera->x, y * App->win->GetScale() + camera->y);
-	else
-		return iPoint(x * App->win->GetScale(), y * App->win->GetScale());
+	
+		return iPoint(x * App->win->GetScale() + camera.x, y * App->win->GetScale() + camera.y);
+	
+		//return iPoint(x * App->win->GetScale(), y * App->win->GetScale());
 }
 
 bool j1Render::IsOnCamera(const int & x, const int & y, const int & w, const int & h) const
@@ -155,7 +163,7 @@ bool j1Render::IsOnCamera(const int & x, const int & y, const int & w, const int
 	int scale = App->win->GetScale();
 
 	SDL_Rect r = { x*scale,y*scale,w*scale,h*scale };
-	SDL_Rect cam = { -camera->x,-camera->y,camera->w,camera->h};
+	SDL_Rect cam = { -camera.x,-camera.y,camera.w,camera.h};
 
 	return SDL_HasIntersection(&r, &cam);
 }
@@ -167,13 +175,13 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	SDL_Rect rect;
 	if (useWindowScale)
 	{
-		rect.x = (int)(camera->x * speed) + x * scale;
-		rect.y = (int)(camera->y * speed) + y * scale;
+		rect.x = (int)(camera.x * speed) + x * scale;
+		rect.y = (int)(camera.y * speed) + y * scale;
 	}
 	else
 	{
-		rect.x = (int)(camera->x * speed) + x;
-		rect.y = (int)(camera->y * speed) + y;
+		rect.x = (int)(camera.x * speed) + x;
+		rect.y = (int)(camera.y * speed) + y;
 	}
 
 
@@ -215,8 +223,8 @@ bool j1Render::BlitGui(SDL_Texture * texture, int x, int y, const SDL_Rect * sec
 	bool ret = true;
 
 	SDL_Rect rect;
-	rect.x = (int)(camera->x * speed) + x;
-	rect.y = (int)(camera->y * speed) + y;
+	rect.x = (int)(camera.x * speed) + x;
+	rect.y = (int)(camera.y * speed) + y;
 
 	if (section != NULL)
 	{
@@ -270,8 +278,8 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 	SDL_Rect rec(rect);
 	if(use_camera)
 	{
-		rec.x = (int)(camera->x + rect.x * scale);
-		rec.y = (int)(camera->y + rect.y * scale);
+		rec.x = (int)(camera.x + rect.x * scale);
+		rec.y = (int)(camera.y + rect.y * scale);
 		rec.w *= scale;
 		rec.h *= scale;
 	}
@@ -328,7 +336,7 @@ bool j1Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 
 	int result = -1;
 
 	if(use_camera)
-		result = SDL_RenderDrawLine(renderer, camera->x + x1 * scale, camera->y + y1 * scale, camera->x + x2 * scale, camera->y + y2 * scale);
+		result = SDL_RenderDrawLine(renderer, camera.x + x1 * scale, camera.y + y1 * scale, camera.x + x2 * scale, camera.y + y2 * scale);
 	else
 		result = SDL_RenderDrawLine(renderer, x1 * scale, y1 * scale, x2 * scale, y2 * scale);
 
@@ -363,8 +371,8 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 		}
 		else
 		{
-			points[i].x = (int)((x + camera->x) + radius * cos(i * factor));
-			points[i].y = (int)((y + camera->y) + radius * sin(i * factor));
+			points[i].x = (int)((x + camera.x) + radius * cos(i * factor));
+			points[i].y = (int)((y + camera.y) + radius * sin(i * factor));
 		}
 	}
 

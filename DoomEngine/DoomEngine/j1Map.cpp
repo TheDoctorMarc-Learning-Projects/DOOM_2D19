@@ -60,6 +60,10 @@ void j1Map::Draw()
 		DebugDraw();
 	}*/
 
+	
+	
+	
+	// --------------------------------------------------------------------->>>    This is only for the first layer!
 
 	std::list<MapLayer*>::iterator layer = data.layers.begin();
 
@@ -67,7 +71,7 @@ void j1Map::Draw()
 		{
 			for (int j = 0; j < data.width; ++j)
 			{
-				if (App->render->IsOnCamera(MapToWorld(i + MARGIN_TILE, j + MARGIN_TILE).x , MapToWorld(i + MARGIN_TILE, j - MARGIN_TILE).y, data.tile_width*(MARGIN_TILE + 1), data.tile_height*(MARGIN_TILE + 1)))
+				if (App->render->IsOnCamera(MapToWorld(i /*+ MARGIN_TILE*/, j /*+ MARGIN_TILE*/).x , MapToWorld(i /*+ MARGIN_TILE*/, j /*- MARGIN_TILE*/).y, data.tile_width*(j  /*MARGIN_TILE + 1*/), data.tile_height*(i  /*MARGIN_TILE + 1*/)))
 				{
 					int tile_id = (*layer)->Get(i, j);
 					if (tile_id > 0)
@@ -78,11 +82,11 @@ void j1Map::Draw()
 							SDL_Rect r = tileset->GetTileRect(tile_id);
 							iPoint pos = MapToWorld(i, j);
 
-							App->render->Blit(tileset->texture, pos.x /*+ pixelTileOffset.x*/, pos.y /*+ pixelTileOffset.y*/, &r, (*layer)->properties.parallaxSpeed);
+							App->render->Blit(tileset->texture, pos.x - data.tile_width, pos.y - data.tile_height, &r, (*layer)->properties.parallaxSpeed);
 
 						}
 					}
-				}
+		        }
 			}
 		}
 
@@ -163,14 +167,12 @@ iPoint j1Map::MapToWorld(int x, int y) const
 {
 	iPoint ret;
 
-	x -= 1; // TODO displacement
-
 	if(data.type == MAPTYPE_ORTHOGONAL)
 	{
 		ret.x = x * data.tile_width;
 		ret.y = y * data.tile_height;
 	}
-	else if(data.type == MAPTYPE_ISOMETRIC)
+	/*else if(data.type == MAPTYPE_ISOMETRIC)
 	{
 		ret.x = (x - y) * (data.tile_width * 0.5f);
 		ret.y = (x + y) * (data.tile_height * 0.5f);
@@ -179,7 +181,7 @@ iPoint j1Map::MapToWorld(int x, int y) const
 	{
 		//LOG("Unknown map type");
 		ret.x = x; ret.y = y;
-	}
+	}*/
 
 	return ret;
 }

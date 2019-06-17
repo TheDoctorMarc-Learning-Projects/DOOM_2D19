@@ -68,7 +68,7 @@ struct MapLayer
 
 	~MapLayer()
 	{
-		RELEASE(data);
+		RELEASE(data);   // TODO: check this crash
 	}
 
 	inline uint Get(int x, int y) const

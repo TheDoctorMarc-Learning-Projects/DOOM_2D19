@@ -4,6 +4,7 @@
 #include "j1Window.h"
 #include "j1Render.h"
 #include "j1Map.h"
+#include "j1Input.h"
 
 j1Render::j1Render() : j1Module()
 {
@@ -74,6 +75,27 @@ bool j1Render::PreUpdate()
 
 bool j1Render::Update(float dt)
 {
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		camera.x += 10;
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		camera.x -= 10; 
+
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		camera.y -= 10;
+
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		camera.y += 10;
+
+
+
+
+	LOG("Camera x = %i and y = %i", camera.x, camera.y); 
+
+
+
 	return true;
 }
 

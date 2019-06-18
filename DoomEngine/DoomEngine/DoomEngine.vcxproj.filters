@@ -10,123 +10,147 @@
     <Filter Include="Code\Core">
       <UniqueIdentifier>{3b6142a2-32bb-46aa-a275-c2f988f80dba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\In-Screen">
+      <UniqueIdentifier>{003c2b20-e5c7-4632-ba70-989a10061bf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Help\p2">
+      <UniqueIdentifier>{101a3c11-5514-40ea-9faf-ac06b54231f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Help\pugi">
+      <UniqueIdentifier>{0e15323d-4866-469c-abd5-8392e62ddfad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Help\timers">
+      <UniqueIdentifier>{fd948136-2576-4fed-a6e8-bb2775282be4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Core\Semi-Core">
+      <UniqueIdentifier>{dfd12e3b-c627-43f7-995d-56e49cad8068}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\In-Game">
+      <UniqueIdentifier>{b4415cfb-8c86-456c-b957-26f61427dc2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="j1Audio.cpp">
-      <Filter>Code</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Fonts.cpp">
-      <Filter>Code</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Map.cpp">
-      <Filter>Code</Filter>
-    </ClCompile>
-    <ClCompile Include="j1ParticlesClassic.cpp">
-      <Filter>Code</Filter>
-    </ClCompile>
-    <ClCompile Include="j1PathFinding.cpp">
-      <Filter>Code</Filter>
-    </ClCompile>
-    <ClCompile Include="j1PerfTimer.cpp">
-      <Filter>Code</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Render.cpp">
-      <Filter>Code</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Scene.cpp">
-      <Filter>Code</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Textures.cpp">
-      <Filter>Code</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Window.cpp">
-      <Filter>Code</Filter>
-    </ClCompile>
-    <ClCompile Include="p2Log.cpp">
-      <Filter>Code</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Input.cpp">
-      <Filter>Code</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Timer.cpp">
-      <Filter>Code</Filter>
-    </ClCompile>
-    <ClCompile Include="PugiXml\src\pugixml.cpp">
-      <Filter>Code\Help</Filter>
-    </ClCompile>
     <ClCompile Include="j1App.cpp">
       <Filter>Code\Core</Filter>
     </ClCompile>
     <ClCompile Include="j1Main.cpp">
       <Filter>Code\Core</Filter>
     </ClCompile>
+    <ClCompile Include="j1Map.cpp">
+      <Filter>Code\In-Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Scene.cpp">
+      <Filter>Code\In-Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Render.cpp">
+      <Filter>Code\In-Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Window.cpp">
+      <Filter>Code\In-Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Textures.cpp">
+      <Filter>Code\In-Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="p2Log.cpp">
+      <Filter>Code\Help\p2</Filter>
+    </ClCompile>
+    <ClCompile Include="PugiXml\src\pugixml.cpp">
+      <Filter>Code\Help\pugi</Filter>
+    </ClCompile>
+    <ClCompile Include="j1PerfTimer.cpp">
+      <Filter>Code\Help\timers</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Timer.cpp">
+      <Filter>Code\Help\timers</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Audio.cpp">
+      <Filter>Code\Core\Semi-Core</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Fonts.cpp">
+      <Filter>Code\Core\Semi-Core</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Input.cpp">
+      <Filter>Code\Core\Semi-Core</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Collision.cpp">
+      <Filter>Code\In-Game</Filter>
+    </ClCompile>
+    <ClCompile Include="j1ParticlesClassic.cpp">
+      <Filter>Code\In-Game</Filter>
+    </ClCompile>
+    <ClCompile Include="j1PathFinding.cpp">
+      <Filter>Code\In-Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="j1Audio.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Fonts.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Map.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="j1ParticlesClassic.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="j1PathFinding.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Render.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Scene.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Textures.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Window.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Animation.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Defs.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="p2DynArray.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Log.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Point.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="p2PQueue.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Input.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="j1PerfTimer.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Timer.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="PugiXml\src\pugiconfig.hpp">
-      <Filter>Code\Help</Filter>
-    </ClInclude>
-    <ClInclude Include="PugiXml\src\pugixml.hpp">
-      <Filter>Code\Help</Filter>
-    </ClInclude>
     <ClInclude Include="j1App.h">
       <Filter>Code\Core</Filter>
     </ClInclude>
     <ClInclude Include="j1Module.h">
       <Filter>Code\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Map.h">
+      <Filter>Code\In-Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Scene.h">
+      <Filter>Code\In-Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Render.h">
+      <Filter>Code\In-Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Window.h">
+      <Filter>Code\In-Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Textures.h">
+      <Filter>Code\In-Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Point.h">
+      <Filter>Code\Help\p2</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Animation.h">
+      <Filter>Code\Help\p2</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Defs.h">
+      <Filter>Code\Help\p2</Filter>
+    </ClInclude>
+    <ClInclude Include="p2DynArray.h">
+      <Filter>Code\Help\p2</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Log.h">
+      <Filter>Code\Help\p2</Filter>
+    </ClInclude>
+    <ClInclude Include="p2PQueue.h">
+      <Filter>Code\Help\p2</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugiconfig.hpp">
+      <Filter>Code\Help\pugi</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugixml.hpp">
+      <Filter>Code\Help\pugi</Filter>
+    </ClInclude>
+    <ClInclude Include="j1PerfTimer.h">
+      <Filter>Code\Help\timers</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Timer.h">
+      <Filter>Code\Help\timers</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Input.h">
+      <Filter>Code\Core\Semi-Core</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Audio.h">
+      <Filter>Code\Core\Semi-Core</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Fonts.h">
+      <Filter>Code\Core\Semi-Core</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Collision.h">
+      <Filter>Code\In-Game</Filter>
+    </ClInclude>
+    <ClInclude Include="j1ParticlesClassic.h">
+      <Filter>Code\In-Game</Filter>
+    </ClInclude>
+    <ClInclude Include="j1PathFinding.h">
+      <Filter>Code\In-Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

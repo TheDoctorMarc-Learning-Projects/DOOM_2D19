@@ -9,6 +9,8 @@
 #include <string>
 #include "PugiXml\src\pugixml.hpp"
 
+struct Collider;
+
 class j1App;
 
 class j1Module
@@ -72,6 +74,12 @@ public:
 	{
 		return true;
 	}
+
+
+
+	// Callbacks ---
+	virtual void OnCollision(Collider*, Collider*) {}
+
 
 
 	// Module activation ---

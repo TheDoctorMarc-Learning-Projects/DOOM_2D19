@@ -10,10 +10,11 @@
 #include "j1Scene.h"
 #include "j1PathFinding.h"
 #include "j1Fonts.h"
-
-#include "Brofiler/Brofiler.h"
-#include "SDL_mixer/include/SDL_mixer.h"
 #include "j1ParticlesClassic.h"
+#include "j1Collision.h"                                 
+                                                     // TODO: later on, check if any library is not neede here 
+#include "Brofiler/Brofiler.h"
+
 j1Scene::j1Scene() : j1Module()
 {
 	name.assign("scene");
@@ -38,8 +39,13 @@ bool j1Scene::Start()
 {
 	// TODO: call load new map in each case --> do not do it in load / unload, or do not do it here if it is already being done there the previous frame
 
-	/*if (debug_tex == nullptr)
-		debug_tex = App->tex->Load("maps/path2.png");*/   // change this, or add this, in Game Folder
+
+
+
+	// Ground test 
+
+	App->collision->AddCollider({ 0, 0, 300, 300 }, COLLIDER_TYPE::COLLIDER_WALL, this); 
+
 
 	if (state == SceneState::LEVEL1)
 	{
@@ -80,42 +86,6 @@ bool j1Scene::PreUpdate()
 bool j1Scene::Update(float dt)
 {
 	BROFILER_CATEGORY("Update Scene", Profiler::Color::LawnGreen);
-	// how to get joysticks for correct UI navigation/whatever needed situation examples --------
-	if (App->input->GetJoystickPulsation(JOY_STICK_LEFT, JOYSTICK_DIR_UP) == KEY_DOWN)
-	{
-		//LOG("LEFT JOYSTICK, UP PRESS");
-	}
-	if (App->input->GetJoystickPulsation(JOY_STICK_LEFT, JOYSTICK_DIR_RIGHT) == KEY_DOWN)
-	{
-		//LOG("LEFT JOYSTICK, RIGHT PRESS");
-	}
-	if (App->input->GetJoystickPulsation(JOY_STICK_LEFT, JOYSTICK_DIR_RIGHT) == KEY_UP)
-	{
-		//LOG("LEFT JOYSTICK, RIGHT UNPRESS");
-	}
-	if (App->input->GetJoystickPulsation(JOY_STICK_RIGHT, JOYSTICK_DIR_LEFT) == KEY_DOWN)
-	{
-		//LOG("RIGHT JOYSTICK, LEFT PRESS");
-	}
-	if (App->input->GetJoystickPulsation(JOY_STICK_RIGHT, JOYSTICK_DIR_UP) == KEY_DOWN)
-	{
-		//LOG("RIGHT JOYSTICK, UP PRESS");
-	}
-	if (App->input->GetJoystickPulsation(JOY_STICK_RIGHT, JOYSTICK_DIR_DOWN) == KEY_REPEAT)
-	{
-		//LOG("RIGHT JOYSTICK, DOWN REPEAT");
-	}
-	// etc
-	// -------------------------------------------------------------------------------------------
-
-	int mx, my;
-
-	App->input->GetMousePosition(mx, my);
-	//iPoint mousePos = App->render->ScreenToWorld(mx, my);
-	//LOG("mousePos: %i,%i", mousePos.x, mousePos.y);
-//	mousePos = App->map->WorldToMap(mousePos.x, mousePos.y);
-	//LOG("mousePosMap: %i,%i", mousePos.x, mousePos.y);
-	
 	
 	if (App->map->active)
 		App->map->Draw();
@@ -128,17 +98,6 @@ bool j1Scene::PostUpdate()
 {
 	BROFILER_CATEGORY("PostUpdate Scene", Profiler::Color::MediumOrchid);
 	bool ret = true;
-
-
-	// TODO: redo this to ESC the game: 
-
-	/*if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
-
-	if (exitGame)  
-		return false;*/
-
-	
 
 	return ret;
 }
@@ -212,7 +171,7 @@ void j1Scene::LoadScene(SceneState sceneState)
 		break;
 
 	case SceneState::LEVEL1:
-		                                                // TODO: if I add new modules, enable them if needed -> DON'T DO IT HERE, its disgusting, do it in start :)) 
+		                                                // TODO: if I add new modules, enable them if needed  
 		state = SceneState::LEVEL1;
 	                                               
 		App->pathfinding->Enable();

@@ -13,7 +13,7 @@
 #include "j1Scene.h"
 #include "j1Map.h"
 #include "j1App.h"
-
+#include "j1Collision.h"
 #include "j1PathFinding.h"
 #include "j1Fonts.h"
 #include "j1ParticlesClassic.h"
@@ -47,6 +47,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	font = DBG_NEW j1Fonts();
 	particles = DBG_NEW j1ParticlesClassic();
 
+
+	collision = DBG_NEW j1Collision();
+
 	// Ordered for awake / Start / Update
 
 
@@ -64,7 +67,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	AddModule(pathfinding); 
 	AddModule(font);
-
+	AddModule(collision); 
 
 	// render last to swap buffer
 	AddModule(render);
@@ -179,7 +182,7 @@ bool j1App::Update()
 	bool ret = true;
 	PrepareUpdate();
 
-	if(input->GetWindowEvent(WE_QUIT) == true)
+	if(input->GetWindowEvent(WE_QUIT) == true || (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN))
 		ret = false;
 
 	if(ret == true)

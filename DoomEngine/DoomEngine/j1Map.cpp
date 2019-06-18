@@ -761,7 +761,6 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 		}
 
 		set->num_tiles_width = set->tex_width / set->tile_width;
-
 		set->num_tiles_height = set->tex_height / set->tile_height;
 	}
 

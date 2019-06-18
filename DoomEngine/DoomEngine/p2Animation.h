@@ -59,6 +59,7 @@ public:
 		return frames[(int)current_frame];
 	}
 
+
 	SDL_Rect& Rewind()
 	{
 		if(current_frame <= 0.0f)

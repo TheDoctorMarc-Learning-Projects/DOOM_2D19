@@ -7,7 +7,7 @@
 #include "j1PerfTimer.h"
 #include "j1Module.h"
 #include "j1Textures.h"
-
+#include "j1Collision.h"
 
 #include "SDL_image/include/SDL_image.h"
 
@@ -16,13 +16,19 @@
 
 
 enum ENTITY_TYPE  // todo, pass to class
-	{
+{
 		NO_TYPE,
 		ENTITY_STATIC,
 		ENTITY_DYNAMIC,
 		PLAYER,
 		MAX_TYPE
-	};
+};
+
+enum POINTING_DIR
+{
+	RIGHT,
+	LEFT
+};
 
 
 class Collider; 
@@ -56,36 +62,35 @@ public:
 	//virtual void OnCollision(Collider* collider);
 
 //	iPoint GetTilePos() const;
-	fPoint GetPosition();
+	iPoint GetPosition();
 //	bool ChangedTile() const; 
-
+	POINTING_DIR GetDirection(); 
 	//virtual void LoadEntitydata(pugi::xml_node&);
 
-	
+
+	void AdjustColliderToAnimFrame(); 
 
 public:
 	SDL_Rect atlasRect;
 	bool					to_delete = false;
 	bool					to_die = false; 
 	std::string				name = "\0";
-	fPoint					position;
+	iPoint					position;
+	iPoint                  previousPosition; 
 	iPoint					size;
 	ENTITY_TYPE				type;
 	SDL_RendererFlip		flip = SDL_FLIP_NONE;
+	POINTING_DIR            pointingDir = POINTING_DIR::LEFT; 
 
-	float					life = 100.f;
-	float					maxLife = 100.f;
-	float					defence = 0.f;
-	pugi::xml_document		file;
-	pugi::xml_parse_result	result;
+	float					life = (float)LONG_MAX;
+	float					maxLife = (float)LONG_MAX;
+	float					speed = (float)LONG_MAX;
 
-	bool					isInRange = false;
-	bool					isParalize = false;
 
-	Collider* collider = nullptr;
+	Collider*               collider = nullptr;
 	Animation				idle; 
 	Animation*				currentAnimation = nullptr;
-	SDL_Texture*			entityTex = nullptr;
+	SDL_Texture*			entityTex = nullptr;            // specific entity texture
 
 
 protected:

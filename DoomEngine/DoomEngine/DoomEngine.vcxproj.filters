@@ -93,6 +93,9 @@
     <ClCompile Include="Color.cpp">
       <Filter>Code\Help</Filter>
     </ClCompile>
+    <ClCompile Include="j1EntityPlayer.cpp">
+      <Filter>Code\Core\In-Game\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h">
@@ -172,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>Code\Help</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityPlayer.h">
+      <Filter>Code\Core\In-Game\Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

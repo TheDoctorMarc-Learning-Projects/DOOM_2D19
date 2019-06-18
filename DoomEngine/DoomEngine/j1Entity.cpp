@@ -7,10 +7,13 @@
 #include "Brofiler\Brofiler.h"
 #include "j1PathFinding.h"
 #include "j1Map.h"
+#include "j1Collision.h"
 
 j1Entity::j1Entity(ENTITY_TYPE type, float positionX, float positionY,std::string name) : type(type), position(positionX,positionY), name(name)
-{}
+{
+}
 
+// TODO, not here, but in each individual entity, do a size.create with the collider dimensions, it will be used in the entity factory PostUpdate Draw() calls
 
 
 j1Entity::~j1Entity()
@@ -29,6 +32,12 @@ bool j1Entity::PreUpdate()
 
 bool j1Entity::Update(float dt)
 {
+	
+
+	if (!to_delete)
+		collider->SetPos(position.x, position.y); 
+
+
 	return true;
 }
 bool j1Entity::PostUpdate()
@@ -40,35 +49,67 @@ bool j1Entity::PostUpdate()
 bool j1Entity::CleanUp()
 {
 
+	if (entityTex != nullptr)
+		App->tex->UnLoad(entityTex); 
+
 	return true;
 }
 
 void j1Entity::Draw()
 {
-	//App->render->DrawCircle((position.x + pivot.x), (position.y + pivot.y), 3, 255, 0, 0, 255, false);
 	
+	if (GetDirection() == POINTING_DIR::LEFT)
+		flip = SDL_FLIP_NONE;
+	else
+		flip = SDL_FLIP_HORIZONTAL; 
 
-	if (entityTex != nullptr) // if we have any specific linked texture
-	{
-		App->render->Blit(entityTex, position.x, position.y, &atlasRect);
-	}
-	else // if not, use atlas
-	{
-		if (currentAnimation != nullptr) // if we have defined animation
-			App->render->Blit(App->entityFactory->atlasTexture, position.x, position.y, &currentAnimation->GetCurrentFrame());
-		else
-			App->render->Blit(App->entityFactory->atlasTexture, position.x, position.y, &atlasRect);
-	}
+
+	//AdjustColliderToAnimFrame(); 
+
+	if (entityTex != nullptr) 
+		App->render->Blit(entityTex, position.x, position.y, &currentAnimation->GetCurrentFrame(), 1.f, flip);
+	else 
+		App->render->Blit(App->entityFactory->atlasTexture, position.x, position.y, &currentAnimation->GetCurrentFrame(), 1.f, flip);
+
+		
 
 }
 
-fPoint j1Entity::GetPosition()
+iPoint j1Entity::GetPosition()
 {
 	return position;
+}
+
+POINTING_DIR j1Entity::GetDirection()
+{
+
+	// TODO: only do this with player and enemies
+
+
+
+
+
+
+	if (speed < 0)
+		return pointingDir = POINTING_DIR::LEFT; 
+	else if(speed > 0)
+		return pointingDir = POINTING_DIR::RIGHT;
+
+	return pointingDir;    // no change in speed results in same pointing dir
 }
 
 bool j1Entity::Move(float dt)
 {
 	return true;
+}
+
+
+void j1Entity::AdjustColliderToAnimFrame()
+{
+
+	// TODO: do this only if animation changes
+
+	App->collision->AdaptCollider(*collider, currentAnimation->GetCurrentFrame()); 
+	
 }
 

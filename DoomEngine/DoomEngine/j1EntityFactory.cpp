@@ -10,7 +10,7 @@
 
 #include <ctime>
 #include <algorithm>
-
+#include "j1EntityPlayer.h"
 
 
 #include <assert.h>
@@ -45,6 +45,8 @@ bool j1EntityFactory::Start()
 
 	
 	
+	// for the moment, create player here 
+	CreateEntity(PLAYER, 0, 0, "player"); 
 
 
 
@@ -114,6 +116,15 @@ bool j1EntityFactory::PostUpdate()
 	// TODO: draw all in-camera entities: call each entity's Draw() 
 
 
+	for (auto entity : entities)
+		if (!entity->to_delete)
+			if (App->render->IsOnCamera(entity->position.x, entity->position.y, entity->size.x, entity->size.y))
+				entity->Draw(); 
+				
+
+
+
+
 	return true;
 }
 
@@ -149,12 +160,16 @@ j1Entity* j1EntityFactory::CreateEntity(ENTITY_TYPE type, int positionX, int pos
 
 	switch (type)
 	{
-	case NO_TYPE:
+	case PLAYER:
+		ret = DBG_NEW j1EntityPlayer(positionX, positionY); 
 		break;
 
 	default:
 		break;
 	}
+
+	if (ret)
+		entities.push_back(ret); 
 
 	return ret;
 }

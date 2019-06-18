@@ -71,10 +71,12 @@ void j1Map::Draw()
 
 	std::list<MapLayer*>::iterator layer = data.layers.begin();
 
+	uint width, height; 
+	width = height = 666; 
 	
-		for (int i = 0; i < (*layer)->height; ++i)
+		for (int i = 0; i < width; ++i)
 		{
-			for (int j = 0; j < (*layer)->width; ++j)
+			for (int j = 0; j < height; ++j)
 			{
 				if (App->render->IsOnCamera(MapToWorld(i , j).x, MapToWorld(i, j).y, data.tile_width * j, data.tile_height * i))
 				{
@@ -84,24 +86,35 @@ void j1Map::Draw()
 						TileSet* tileset = GetTilesetFromTileId(tile_id);
 						if (tileset != nullptr)
 						{
+							width = tileset->num_tiles_width; 
+							height = tileset->num_tiles_height; 
+
 							SDL_Rect r = tileset->GetTileRect(tile_id);
 							iPoint pos = MapToWorld(i, j);
 
-							App->render->Blit(tileset->texture, pos.x + App->render->camera.x - data.tile_width, pos.y + App->render->camera.y - data.tile_height, &r, (*layer)->properties.parallaxSpeed);
+							App->render->Blit(tileset->texture, pos.x /*+ App->render->camera.x*/ - data.tile_width, pos.y /*+ App->render->camera.y*/ - data.tile_height, &r, (*layer)->properties.parallaxSpeed);
 						}
+
+
+
+
+						// debug the camera pos with the layer section 
+						if (mapDebug)
+							if (i == data.height - 1)
+							{
+								const SDL_Rect debugSection = { App->render->camera.x, App->render->camera.y, tileset->num_tiles_width * data.tile_width, tileset->num_tiles_height * data.tile_height };
+								App->render->DrawQuad(debugSection, 255, 255, 255, 150, true);
+
+							}
+
+
 					}
 		        }
+
+
+
 			}
 
-			// debug the section 
-			if(mapDebug)
-				if (i == data.height - 1)
-				{
-					const SDL_Rect debugSection = { App->render->camera.x, App->render->camera.y, i * data.tile_width, i* data.tile_height };
-					App->render->DrawQuad(debugSection, 255, 255, 255, 150, true); 
-
-				}
-		
 
 		}
 
@@ -178,6 +191,21 @@ TileSet* j1Map::GetTilesetFromTileId(int id) const
 
 	return set;
 }
+
+SDL_Rect TileSet::GetTileRect(int id) const
+{
+	int relative_id = id - firstgid;
+	SDL_Rect rect;
+	rect.w = tile_width;
+	rect.h = tile_height;
+	if (num_tiles_width != 0)
+	{
+		rect.x = margin + ((rect.w + spacing) * (relative_id % num_tiles_width));
+		rect.y = margin + ((rect.h + spacing) * (relative_id / num_tiles_width));
+	}
+	return rect;
+}
+
 
 iPoint j1Map::MapToWorld(int x, int y) const
 {
@@ -311,20 +339,7 @@ iPoint j1Map::WorldToSubtileMap(int x, int y) const
 	return ret;
 }
 
-SDL_Rect TileSet::GetTileRect(int id) const
-{
-	int relative_id = id - firstgid;
-	SDL_Rect rect;
-	rect.w = tile_width;
-	rect.h = tile_height;
-	if (num_tiles_width != 0)
-	{
-		
-		rect.x = margin + ((rect.w + spacing) * (relative_id % num_tiles_width));
-		rect.y = margin + ((rect.h + spacing) * (relative_id / num_tiles_width));
-	}
-	return rect;
-}
+
 
 // Called before quitting
 bool j1Map::CleanUp()
@@ -746,6 +761,7 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 		}
 
 		set->num_tiles_width = set->tex_width / set->tile_width;
+
 		set->num_tiles_height = set->tex_height / set->tile_height;
 	}
 

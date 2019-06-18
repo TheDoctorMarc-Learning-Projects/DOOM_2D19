@@ -67,9 +67,9 @@ void j1Entity::Draw()
 	//AdjustColliderToAnimFrame(); 
 
 	if (entityTex != nullptr) 
-		App->render->Blit(entityTex, position.x, position.y, &currentAnimation->GetCurrentFrame(), 1.f, flip);
+		App->render->Blit(entityTex, position.x, position.y, &currentAnimation->GetCurrentFrame(), 1.f, flip, spriteScale);
 	else 
-		App->render->Blit(App->entityFactory->atlasTexture, position.x, position.y, &currentAnimation->GetCurrentFrame(), 1.f, flip);
+		App->render->Blit(App->entityFactory->atlasTexture, position.x, position.y, &currentAnimation->GetCurrentFrame(), 1.f, flip, spriteScale);
 
 		
 

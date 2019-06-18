@@ -78,6 +78,7 @@ public:
 	iPoint					position;
 	iPoint                  previousPosition; 
 	iPoint					size;
+	float                   spriteScale = 1.f; 
 	ENTITY_TYPE				type;
 	SDL_RendererFlip		flip = SDL_FLIP_NONE;
 	POINTING_DIR            pointingDir = POINTING_DIR::LEFT; 

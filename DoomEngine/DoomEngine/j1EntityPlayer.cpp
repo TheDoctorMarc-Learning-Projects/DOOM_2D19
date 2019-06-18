@@ -17,12 +17,15 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY) : j1Entity(PLAYER, posX , pos
 	position = previousPosition = iPoint(posX, posY); 
 	currentAnimation = &idle; 
 	size.create(34, 53);
+
+
 	idle.PushBack({18, 421, size.x, size.y}); 
 
 
 
-	collider = App->collision->AddCollider({position.x, position.y, size.x, size.y}, COLLIDER_TYPE::COLLIDER_PLAYER, (j1Module*)this);
+	collider = App->collision->AddCollider({position.x, position.y, (int)((float)size.x * spriteScale),(int)((float)size.y * spriteScale) }, COLLIDER_TYPE::COLLIDER_PLAYER, (j1Module*)this);
 
+	pointingDir = RIGHT; 
 }
 
 j1EntityPlayer::~j1EntityPlayer()

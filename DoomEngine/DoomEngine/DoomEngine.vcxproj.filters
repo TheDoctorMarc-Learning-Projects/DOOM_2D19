@@ -10,9 +10,6 @@
     <Filter Include="Code\Core">
       <UniqueIdentifier>{3b6142a2-32bb-46aa-a275-c2f988f80dba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Code\In-Screen">
-      <UniqueIdentifier>{003c2b20-e5c7-4632-ba70-989a10061bf0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Code\Help\p2">
       <UniqueIdentifier>{101a3c11-5514-40ea-9faf-ac06b54231f4}</UniqueIdentifier>
     </Filter>
@@ -25,8 +22,14 @@
     <Filter Include="Code\Core\Semi-Core">
       <UniqueIdentifier>{dfd12e3b-c627-43f7-995d-56e49cad8068}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Code\In-Game">
+    <Filter Include="Code\Core\In-Game">
       <UniqueIdentifier>{b4415cfb-8c86-456c-b957-26f61427dc2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Core\In-Game\Entities">
+      <UniqueIdentifier>{6d3ca3e0-66a3-41ff-9eb8-f71bdb7e434c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Core\In-Screen">
+      <UniqueIdentifier>{003c2b20-e5c7-4632-ba70-989a10061bf0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -37,19 +40,19 @@
       <Filter>Code\Core</Filter>
     </ClCompile>
     <ClCompile Include="j1Map.cpp">
-      <Filter>Code\In-Screen</Filter>
+      <Filter>Code\Core\In-Screen</Filter>
     </ClCompile>
     <ClCompile Include="j1Scene.cpp">
-      <Filter>Code\In-Screen</Filter>
+      <Filter>Code\Core\In-Screen</Filter>
     </ClCompile>
     <ClCompile Include="j1Render.cpp">
-      <Filter>Code\In-Screen</Filter>
+      <Filter>Code\Core\In-Screen</Filter>
     </ClCompile>
     <ClCompile Include="j1Window.cpp">
-      <Filter>Code\In-Screen</Filter>
+      <Filter>Code\Core\In-Screen</Filter>
     </ClCompile>
     <ClCompile Include="j1Textures.cpp">
-      <Filter>Code\In-Screen</Filter>
+      <Filter>Code\Core\In-Screen</Filter>
     </ClCompile>
     <ClCompile Include="p2Log.cpp">
       <Filter>Code\Help\p2</Filter>
@@ -73,13 +76,22 @@
       <Filter>Code\Core\Semi-Core</Filter>
     </ClCompile>
     <ClCompile Include="j1Collision.cpp">
-      <Filter>Code\In-Game</Filter>
+      <Filter>Code\Core\In-Game</Filter>
     </ClCompile>
     <ClCompile Include="j1ParticlesClassic.cpp">
-      <Filter>Code\In-Game</Filter>
+      <Filter>Code\Core\In-Game</Filter>
     </ClCompile>
     <ClCompile Include="j1PathFinding.cpp">
-      <Filter>Code\In-Game</Filter>
+      <Filter>Code\Core\In-Game</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Entity.cpp">
+      <Filter>Code\Core\In-Game\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EntityFactory.cpp">
+      <Filter>Code\Core\In-Game\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>Code\Help</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -90,19 +102,19 @@
       <Filter>Code\Core</Filter>
     </ClInclude>
     <ClInclude Include="j1Map.h">
-      <Filter>Code\In-Screen</Filter>
+      <Filter>Code\Core\In-Screen</Filter>
     </ClInclude>
     <ClInclude Include="j1Scene.h">
-      <Filter>Code\In-Screen</Filter>
+      <Filter>Code\Core\In-Screen</Filter>
     </ClInclude>
     <ClInclude Include="j1Render.h">
-      <Filter>Code\In-Screen</Filter>
+      <Filter>Code\Core\In-Screen</Filter>
     </ClInclude>
     <ClInclude Include="j1Window.h">
-      <Filter>Code\In-Screen</Filter>
+      <Filter>Code\Core\In-Screen</Filter>
     </ClInclude>
     <ClInclude Include="j1Textures.h">
-      <Filter>Code\In-Screen</Filter>
+      <Filter>Code\Core\In-Screen</Filter>
     </ClInclude>
     <ClInclude Include="p2Point.h">
       <Filter>Code\Help\p2</Filter>
@@ -144,13 +156,22 @@
       <Filter>Code\Core\Semi-Core</Filter>
     </ClInclude>
     <ClInclude Include="j1Collision.h">
-      <Filter>Code\In-Game</Filter>
+      <Filter>Code\Core\In-Game</Filter>
     </ClInclude>
     <ClInclude Include="j1ParticlesClassic.h">
-      <Filter>Code\In-Game</Filter>
+      <Filter>Code\Core\In-Game</Filter>
     </ClInclude>
     <ClInclude Include="j1PathFinding.h">
-      <Filter>Code\In-Game</Filter>
+      <Filter>Code\Core\In-Game</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Entity.h">
+      <Filter>Code\Core\In-Game\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityFactory.h">
+      <Filter>Code\Core\In-Game\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Code\Help</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

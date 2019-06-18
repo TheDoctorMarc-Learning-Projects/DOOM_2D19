@@ -17,6 +17,7 @@
 #include "j1PathFinding.h"
 #include "j1Fonts.h"
 #include "j1ParticlesClassic.h"
+#include "j1EntityFactory.h"
 
 #include "Brofiler/Brofiler.h"
 
@@ -42,13 +43,11 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	audio = DBG_NEW j1Audio();
 	scene = DBG_NEW j1Scene();
 	map = DBG_NEW j1Map();
-
 	pathfinding = DBG_NEW j1PathFinding();
 	font = DBG_NEW j1Fonts();
 	particles = DBG_NEW j1ParticlesClassic();
-
-
 	collision = DBG_NEW j1Collision();
+	entityFactory = DBG_NEW j1EntityFactory();
 
 	// Ordered for awake / Start / Update
 
@@ -61,22 +60,16 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	//modules.push_back(map);   // this can make sense later 
 	AddModule(map); 
 	AddModule(scene);
-
 	AddModule(particles);
 	//modules.push_back(pathfinding);  // this can make sense later 
-
 	AddModule(pathfinding); 
 	AddModule(font);
 	AddModule(collision); 
+	AddModule(entityFactory); 
 
 	// render last to swap buffer
 	AddModule(render);
 
-	// TODO: search why this breaks the game
-	// entityfactory doesnt need to start on MAIN MENU
-	// wtf
-	// disable modules doesnt want to start at init
-	//entityFactory->active = false;
 
 
 	PERF_PEEK(ptimer);

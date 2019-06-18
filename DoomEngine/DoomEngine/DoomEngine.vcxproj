@@ -132,9 +132,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Color.cpp" />
     <ClCompile Include="j1App.cpp" />
     <ClCompile Include="j1Audio.cpp" />
     <ClCompile Include="j1Collision.cpp" />
+    <ClCompile Include="j1Entity.cpp" />
+    <ClCompile Include="j1EntityFactory.cpp" />
     <ClCompile Include="j1Fonts.cpp" />
     <ClCompile Include="j1Input.cpp" />
     <ClCompile Include="j1Main.cpp" />
@@ -151,9 +154,12 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Color.h" />
     <ClInclude Include="j1App.h" />
     <ClInclude Include="j1Audio.h" />
     <ClInclude Include="j1Collision.h" />
+    <ClInclude Include="j1Entity.h" />
+    <ClInclude Include="j1EntityFactory.h" />
     <ClInclude Include="j1Fonts.h" />
     <ClInclude Include="j1Input.h" />
     <ClInclude Include="j1Map.h" />

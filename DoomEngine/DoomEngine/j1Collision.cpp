@@ -4,7 +4,7 @@
 #include "j1Collision.h"
 #include "p2Log.h"
 #include "Brofiler/Brofiler.h"
-
+#include "Color.h"
 
 j1Collision::j1Collision()
 {
@@ -167,13 +167,13 @@ void j1Collision::DebugDraw()
 			App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
 			break;
 		case COLLIDER_WALL: // red
-			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, alpha);
+			App->render->DrawQuad(colliders[i]->rect, 0, 0, 255, alpha);
 			break;
 		case COLLIDER_PLAYER: // green
 			App->render->DrawQuad(colliders[i]->rect, 0, 255, 0, alpha);
 			break;
 		case COLLIDER_DEATH: // blue
-			App->render->DrawQuad(colliders[i]->rect, 0, 0, 255, alpha);
+			App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
 			break;
 		case COLLIDER_GOD: // violet
 			App->render->DrawQuad(colliders[i]->rect, 255, 0, 255, alpha);

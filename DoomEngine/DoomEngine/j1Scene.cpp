@@ -42,9 +42,12 @@ bool j1Scene::Start()
 
 
 
-	// Ground test 
+	// Fake ground test 
+	uint w, h; 
+	w = h = 0; 
+	App->win->GetWindowSize(w, h); 
 
-	App->collision->AddCollider({ 0, 0, 300, 300 }, COLLIDER_TYPE::COLLIDER_WALL, this); 
+	App->collision->AddCollider({ 0, 250, 700, 10 }, COLLIDER_TYPE::COLLIDER_WALL, this); 
 
 
 	if (state == SceneState::LEVEL1)

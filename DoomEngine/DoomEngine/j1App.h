@@ -23,6 +23,7 @@ class j1PathFinding;
 class j1Fonts;
 class j1ParticlesClassic;
 class j1Collision;
+class j1EntityFactory; 
 
 class j1App
 {
@@ -109,6 +110,7 @@ public:
 	j1PathFinding*		pathfinding = nullptr; 
 	j1Fonts*			font = nullptr;
 	j1Collision*  		collision = nullptr; 
+	j1EntityFactory*    entityFactory = nullptr; 
 
 	bool				vsync = false;
 	bool				pause = false;

@@ -75,13 +75,6 @@ public:
 		return true;
 	}
 
-
-
-	// Callbacks ---
-	virtual void OnCollision(Collider*, Collider*) {}
-
-
-
 	// Module activation ---
 	bool IsEnabled() const { return active; }
 

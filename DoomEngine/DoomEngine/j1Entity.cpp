@@ -34,8 +34,8 @@ bool j1Entity::Update(float dt)
 {
 	
 
-	if (!to_delete)
-		collider->SetPos(position.x, position.y); 
+	/*if (!to_delete)
+		collider->SetPos(position.x, position.y); */
 
 
 	return true;
@@ -49,8 +49,8 @@ bool j1Entity::PostUpdate()
 bool j1Entity::CleanUp()
 {
 
-	if (entityTex != nullptr)
-		App->tex->UnLoad(entityTex); 
+	/*if (entityTex != nullptr)
+		App->tex->UnLoad(entityTex); */
 
 	return true;
 }
@@ -83,7 +83,7 @@ iPoint j1Entity::GetPosition()
 POINTING_DIR j1Entity::GetDirection()
 {
 
-	// TODO: only do this with player and enemies
+	// TODO: only do this with player and enemies  AND REWORK IT 
 
 
 

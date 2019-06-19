@@ -46,7 +46,7 @@ bool j1EntityFactory::Start()
 	
 	
 	// for the moment, create player here 
-	CreateEntity(PLAYER, 0, 0, "player"); 
+	player = (j1EntityPlayer*)CreateEntity(PLAYER, 0, 100, "player"); 
 
 
 

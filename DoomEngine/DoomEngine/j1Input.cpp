@@ -121,18 +121,6 @@ bool j1Input::PreUpdate()
 
 	}
 
-	// joystick axis pulsation -----------------------------------------------
-	/* Original order of sdl_gamecontrolleraxis enum
-	SDL_CONTROLLER_AXIS_INVALID = -1,
-
-	SDL_CONTROLLER_AXIS_LEFTX,
-	SDL_CONTROLLER_AXIS_LEFTY,
-	SDL_CONTROLLER_AXIS_RIGHTX,
-	SDL_CONTROLLER_AXIS_RIGHTY,
-
-	SDL_CONTROLLER_AXIS_TRIGGERLEFT,
-	SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
-	SDL_CONTROLLER_AXIS_MAX */
 
 	int axis_direction_counter = 0; // relative to joydir enum order, this is good because we only "track" pairs for each dir (+/-)
 	for (int i = SDL_CONTROLLER_AXIS_LEFTX; i < SDL_CONTROLLER_AXIS_TRIGGERLEFT; ++i)

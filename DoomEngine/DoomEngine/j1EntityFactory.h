@@ -8,7 +8,9 @@
 #include <list>
 #include "Color.h"
 #include "j1Map.h"
+#include "j1EntityPlayer.h"
 
+#define GLOBALSPACE_GRAVITY 1.5f 
 
 
 class j1EntityFactory : public j1Module
@@ -44,7 +46,7 @@ public:
 
 	//std::vector<GroupInfo> spawngroups;
 	std::list<j1Entity*>	entities;
-
+	j1EntityPlayer* player = nullptr; 
 
 	// TODO: Player as a separate entity, have it here, etc
 	

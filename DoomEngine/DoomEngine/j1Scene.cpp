@@ -11,7 +11,8 @@
 #include "j1PathFinding.h"
 #include "j1Fonts.h"
 #include "j1ParticlesClassic.h"
-#include "j1Collision.h"                                 
+#include "j1Collision.h"        
+#include "j1EntityFactory.h"
                                                      // TODO: later on, check if any library is not neede here 
 #include "Brofiler/Brofiler.h"
 
@@ -47,7 +48,7 @@ bool j1Scene::Start()
 	w = h = 0; 
 	App->win->GetWindowSize(w, h); 
 
-	App->collision->AddCollider({ 0, 250, 700, 10 }, COLLIDER_TYPE::COLLIDER_WALL, this); 
+	App->collision->AddCollider({ 0, 250, 700, 10 }, COLLIDER_TYPE::COLLIDER_WALL); 
 
 
 	if (state == SceneState::LEVEL1)

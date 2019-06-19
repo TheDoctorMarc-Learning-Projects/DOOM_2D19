@@ -59,7 +59,7 @@ public:
 
 	virtual bool Move(float dt);
 	virtual void Draw();
-	//virtual void OnCollision(Collider* collider);
+	virtual void OnCollision(Collider* c1, Collider* c2) {};
 
 //	iPoint GetTilePos() const;
 	iPoint GetPosition();
@@ -74,6 +74,7 @@ public:
 	SDL_Rect atlasRect;
 	bool					to_delete = false;
 	bool					to_die = false; 
+	bool                    onPlatform = false; 
 	std::string				name = "\0";
 	iPoint					position;
 	iPoint                  previousPosition; 

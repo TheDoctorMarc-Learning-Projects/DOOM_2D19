@@ -2,7 +2,9 @@
 #define __j1COLLISION_H__
 
 #include "j1Module.h"
+#include "j1Entity.h"
 #include "p2Point.h"
+
 
 #define MAX_COLLIDERS 200
 
@@ -20,16 +22,17 @@ enum COLLIDER_TYPE
 };
 
 struct SDL_Rect; 
+class j1Entity; 
 
 struct Collider
 {
 	SDL_Rect rect;
 	bool to_delete = false;
 	COLLIDER_TYPE type;
-	j1Module* callback = nullptr;
+	j1Entity* callback = nullptr;
 	
 
-	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, j1Module* callback = nullptr) :
+	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, j1Entity* callback = nullptr) :
 		rect(rectangle),
 		type(type),
 		callback(callback)
@@ -55,7 +58,7 @@ public:
 	bool PreUpdate(); 
 	bool Update(float dt);
 	bool CleanUp(); 
-	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
+	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* callback = nullptr);
 	void AdaptCollider(Collider& col, SDL_Rect target); 
 	void DebugDraw();
 

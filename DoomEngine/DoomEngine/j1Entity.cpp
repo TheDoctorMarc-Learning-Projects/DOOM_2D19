@@ -75,7 +75,7 @@ void j1Entity::Draw()
 
 }
 
-iPoint j1Entity::GetPosition()
+fPoint j1Entity::GetPosition()
 {
 	return position;
 }

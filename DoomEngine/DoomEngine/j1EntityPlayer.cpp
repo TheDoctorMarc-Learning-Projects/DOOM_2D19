@@ -15,7 +15,7 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY) : j1Entity(PLAYER, posX , pos
 	
 	entityTex = App->tex->Load("textures/player/player.png");
 	type = PLAYER; 
-	position = previousPosition = iPoint(posX, posY); 
+	position = previousPosition = fPoint(posX, posY); 
 	currentAnimation = &idle; 
 	size.create(34, 53);
 	speed = .0045f; 
@@ -24,7 +24,7 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY) : j1Entity(PLAYER, posX , pos
 
 
 
-	collider = App->collision->AddCollider({position.x, position.y, (int)((float)size.x * spriteScale),(int)((float)size.y * spriteScale) }, COLLIDER_TYPE::COLLIDER_PLAYER, this);
+	collider = App->collision->AddCollider({(int)position.x, (int)position.y, (int)((float)size.x * spriteScale),(int)((float)size.y * spriteScale) }, COLLIDER_TYPE::COLLIDER_PLAYER, this);
 
 	pointingDir = RIGHT; 
 }
@@ -92,7 +92,8 @@ bool j1EntityPlayer::Move(float dt)
 
 	if (xAxis > 0 || xAxis < 0)
 	{
-		position.x += (xAxis * speed) * dt; 
+		float value = (xAxis * speed) * dt;
+		position.x += value; 
 		isMoving = true;
 	
 		state.movement.at(0) = (xAxis < 0) ? MovementState::INPUT_LEFT : state.movement.at(0); 
@@ -102,19 +103,17 @@ bool j1EntityPlayer::Move(float dt)
 	else
 		state.movement.at(0) = MovementState::IDLE;
 
-	for (int i = 0; i < 2; ++i)
+	/*for (int i = 0; i < 2; ++i)
 	{
 
-		if (!onPlatform)
-			position.y += GLOBALSPACE_GRAVITY; 
+	
 
 
 		  
-	}
+	}*/
 
-
-
-
+	if (!onPlatform)
+		position.y += GLOBALSPACE_GRAVITY * dt;
 
 	if (!to_delete)
 		collider->SetPos(position.x, position.y);

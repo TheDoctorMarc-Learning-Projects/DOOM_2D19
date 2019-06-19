@@ -10,7 +10,7 @@
 #include "j1Map.h"
 #include "j1EntityPlayer.h"
 
-#define GLOBALSPACE_GRAVITY 1.5f 
+#define GLOBALSPACE_GRAVITY 100.f 
 
 
 class j1EntityFactory : public j1Module

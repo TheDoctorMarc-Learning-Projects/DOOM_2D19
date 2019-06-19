@@ -62,7 +62,7 @@ public:
 	virtual void OnCollision(Collider* c1, Collider* c2) {};
 
 //	iPoint GetTilePos() const;
-	iPoint GetPosition();
+	fPoint GetPosition();
 //	bool ChangedTile() const; 
 	POINTING_DIR GetDirection(); 
 	//virtual void LoadEntitydata(pugi::xml_node&);
@@ -76,8 +76,8 @@ public:
 	bool					to_die = false; 
 	bool                    onPlatform = false; 
 	std::string				name = "\0";
-	iPoint					position;
-	iPoint                  previousPosition; 
+	fPoint					position;
+	fPoint                  previousPosition; 
 	iPoint					size;
 	float                   spriteScale = 1.f; 
 	ENTITY_TYPE				type;

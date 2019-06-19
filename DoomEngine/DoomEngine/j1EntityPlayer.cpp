@@ -19,7 +19,8 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY) : j1Entity(PLAYER, posX , pos
 	currentAnimation = &idle; 
 	size.create(34, 53);
 	speed = .0045f; 
-
+	mass = 1.f; 
+	gravityFactor = DEFAULT_GRAV * mass; 
 	idle.PushBack({18, 421, size.x, size.y}); 
 
 
@@ -113,7 +114,7 @@ bool j1EntityPlayer::Move(float dt)
 	}*/
 
 	if (!onPlatform)
-		position.y += GLOBALSPACE_GRAVITY * dt;
+		position.y += GravityCalc(gravityFactor, mass) * dt;
 
 	if (!to_delete)
 		collider->SetPos(position.x, position.y);
@@ -128,6 +129,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 	{
 	case COLLIDER_TYPE::COLLIDER_WALL:
 		onPlatform = true; 
+		ResetGravity();
 		break; 
 	}
 
@@ -141,6 +143,7 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 	{
 	case COLLIDER_TYPE::COLLIDER_WALL:
 		onPlatform = false;
+		ResetGravity(); 
 		break;
 	}
 

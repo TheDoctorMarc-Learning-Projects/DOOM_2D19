@@ -10,7 +10,15 @@
 #include "j1Map.h"
 #include "j1EntityPlayer.h"
 
-#define GLOBALSPACE_GRAVITY 100.f 
+#define DEFAULT_GRAV 100.f	
+#define MAX_GRAV 500.f
+
+inline float GravityCalc(float& g, float& m)  // grav and mass inline calc container
+{
+	 (g < MAX_GRAV * m) ? g *= 1.05f : g = MAX_GRAV * m; 
+
+	 return g; 
+}
 
 
 class j1EntityFactory : public j1Module

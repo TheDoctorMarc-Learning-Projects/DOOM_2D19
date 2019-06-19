@@ -68,6 +68,7 @@ public:
 	POINTING_DIR GetDirection(); 
 	//virtual void LoadEntitydata(pugi::xml_node&);
 
+	void ResetGravity(); 
 
 	void AdjustColliderToAnimFrame(); 
 
@@ -88,8 +89,8 @@ public:
 	float					life = (float)LONG_MAX;
 	float					maxLife = (float)LONG_MAX;
 	float					speed = (float)LONG_MAX;
-
-
+	float                   gravityFactor = (float)LONG_MAX; 
+	float                   mass = (float)LONG_MAX; 
 	Collider*               collider = nullptr;
 	Animation				idle; 
 	Animation*				currentAnimation = nullptr;

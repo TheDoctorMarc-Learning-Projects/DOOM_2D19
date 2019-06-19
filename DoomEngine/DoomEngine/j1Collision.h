@@ -4,7 +4,7 @@
 #include "j1Module.h"
 #include "j1Entity.h"
 #include "p2Point.h"
-#include <vector>
+#include <list>
 
 
 #define MAX_COLLIDERS 200

@@ -133,6 +133,20 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 }
 
+
+void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
+{
+
+	switch (c2->type)
+	{
+	case COLLIDER_TYPE::COLLIDER_WALL:
+		onPlatform = false;
+		break;
+	}
+
+}
+
+
 /*
 bool j1EntityPlayer::InputCombat()
 {

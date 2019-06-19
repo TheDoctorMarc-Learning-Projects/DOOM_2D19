@@ -53,7 +53,7 @@ public:
 	// functionality ------
 	bool Move(float dt) override;
 	void OnCollision(Collider* c1, Collider* c2) override;
-	
+	void OnCollisionExit(Collider* c1, Collider* c2) override;
 
 	bool IsAiming()
 	{
@@ -66,6 +66,8 @@ private:
 	myState state; 
 	bool inputReady = true;
 	
+	float momentumFactor = 10.f; 
+	float momentum(float speed) { return speed * momentumFactor; };
 
 	// TODO: not only here, but in enemy cpp, add more anims, apart from idle
 

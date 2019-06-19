@@ -61,6 +61,7 @@ public:
 	virtual void Draw();
 	virtual void OnCollision(Collider* c1, Collider* c2) {};
 
+	virtual void OnCollisionExit(Collider* c1, Collider* c2) {};
 //	iPoint GetTilePos() const;
 	fPoint GetPosition();
 //	bool ChangedTile() const; 

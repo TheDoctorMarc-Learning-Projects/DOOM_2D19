@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include "j1Entity.h"
 #include "p2Point.h"
+#include <vector>
 
 
 #define MAX_COLLIDERS 200
@@ -30,7 +31,6 @@ struct Collider
 	bool to_delete = false;
 	COLLIDER_TYPE type;
 	j1Entity* callback = nullptr;
-	
 
 	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, j1Entity* callback = nullptr) :
 		rect(rectangle),
@@ -43,6 +43,8 @@ struct Collider
 		rect.x = x;
 		rect.y = y;
 	}
+
+	std::list<Collider*> onCollisionWithMe; 
 
 
 	bool CheckCollision(const SDL_Rect& r) const;
@@ -59,8 +61,11 @@ public:
 	bool Update(float dt);
 	bool CleanUp(); 
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* callback = nullptr);
-	void AdaptCollider(Collider& col, SDL_Rect target); 
 	void DebugDraw();
+
+	void AdaptCollider(Collider& col, SDL_Rect target);
+	void doCollisionAssignment(bool c1First); 
+	void doCollisionDeAssignment(bool c1First); 
 
 private:
 

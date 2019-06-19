@@ -111,9 +111,118 @@ bool j1Collision::PreUpdate()
 			if (c1->CheckCollision(c2->rect) == true)
 			{
 				if (matrix[c1->type][c2->type] && c1->callback)
+				{
 					c1->callback->OnCollision(c1, c2);
+
+
+					if (!c1->onCollisionWithMe.empty())
+					{
+						bool assigned = false; 
+
+						std::list<Collider*>::iterator onCollisionCol = c1->onCollisionWithMe.begin();
+						for (; onCollisionCol != c1->onCollisionWithMe.end(); ++onCollisionCol)
+						{
+							if ((*onCollisionCol) == c2)
+							{
+								assigned = true; 
+							}
+
+						}
+
+						if(!assigned)
+							c1->onCollisionWithMe.push_back(c2);
+
+					
+					}
+					else
+					{
+						c1->onCollisionWithMe.push_back(c2);
+					}
+
+
+				
+				}
+					
 				if (matrix[c2->type][c1->type] && c2->callback)
+				{
 					c2->callback->OnCollision(c2, c1);
+				
+
+
+					if (!c2->onCollisionWithMe.empty())
+					{
+						bool assigned = false;
+
+						std::list<Collider*>::iterator onCollisionCol = c2->onCollisionWithMe.begin();
+						for (; onCollisionCol != c2->onCollisionWithMe.end(); ++onCollisionCol)
+						{
+							if ((*onCollisionCol) == c1)
+							{
+								assigned = true;
+							}
+
+						}
+
+						if (!assigned)
+							c2->onCollisionWithMe.push_back(c1);
+
+
+					}
+					else
+					{
+						c2->onCollisionWithMe.push_back(c1);
+					}
+
+
+			 	}
+					
+			}
+			else      // useful when colliders "exit" a collision
+			{
+				if (matrix[c1->type][c2->type] && c1->callback)
+				{
+
+					
+					if (!c1->onCollisionWithMe.empty())
+					{
+						std::list<Collider*>::iterator onCollisionCol = c1->onCollisionWithMe.begin();
+						for (; onCollisionCol != c1->onCollisionWithMe.end();)
+						{
+							if ((*onCollisionCol) == c2)
+							{
+								onCollisionCol = c1->onCollisionWithMe.erase(onCollisionCol);
+								c1->callback->OnCollisionExit(c1, c2); 
+							}
+
+							else
+								++onCollisionCol;
+
+						}
+
+					}
+				}
+
+				if (matrix[c2->type][c1->type] && c2->callback)
+				{
+
+					if (!c2->onCollisionWithMe.empty())
+					{
+						std::list<Collider*>::iterator onCollisionCol = c2->onCollisionWithMe.begin();
+						for (; onCollisionCol != c2->onCollisionWithMe.end();)
+						{
+							if ((*onCollisionCol) == c1)
+							{
+								onCollisionCol = c2->onCollisionWithMe.erase(onCollisionCol);
+								c2->callback->OnCollisionExit(c2, c1);
+							}
+
+							else
+								++onCollisionCol;
+
+						}
+					}
+				}
+
 
 			}
 		}
@@ -126,6 +235,15 @@ bool j1Collision::PreUpdate()
 
 }
 
+void j1Collision::doCollisionAssignment(bool c1First)
+{
+
+}
+
+void j1Collision::doCollisionDeAssignment(bool c1First)
+{
+
+}
 
 
 // Called before render is available

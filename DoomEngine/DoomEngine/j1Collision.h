@@ -64,8 +64,8 @@ public:
 	void DebugDraw();
 
 	void AdaptCollider(Collider& col, SDL_Rect target);
-	void doCollisionAssignment(bool c1First); 
-	void doCollisionDeAssignment(bool c1First); 
+	void doCollisionAssignment(Collider* c1, Collider* c2);
+	void doCollisionDeAssignment(Collider* c1, Collider* c2);
 
 private:
 

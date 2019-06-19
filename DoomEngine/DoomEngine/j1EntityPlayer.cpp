@@ -24,6 +24,9 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY) : j1Entity(PLAYER, posX , pos
 	speed = .0035f; 
 	mass = 1.f; 
 	gravityFactor = DEFAULT_GRAV * mass; 
+	state.combat = combatState::IDLE;
+	state.movement.at(0) = MovementState::IDLE; 
+	state.movement.at(1) = MovementState::FALL;
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - anims
 	currentAnimation = &idle;
@@ -104,8 +107,8 @@ bool j1EntityPlayer::Move(float dt)
 
 	if (xAxis > 0 || xAxis < 0)
 	{
-		lastDeltaMovement = (xAxis * speed) * dt;
-		position.x += lastDeltaMovement;
+		lastSpeed = (xAxis * speed) * dt;
+		position.x += lastSpeed;
 		isMoving = true;
 	
 		//if(state.movement.at(0) == MovementState::IDLE)
@@ -136,8 +139,33 @@ bool j1EntityPlayer::Move(float dt)
 		  
 	}*/
 
+	// jump in the direction of joystick: 
+
+
+	if(App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_A))
+		if (yAxis <= 0)
+			if (onPlatform)
+			{
+				state.movement.at(1) = MovementState::JUMP; 
+
+
+				onPlatform = false;
+				ResetGravity();
+
+			
+
+			}
+	
 	if (!onPlatform)
-		position.y += GravityCalc(gravityFactor, mass) * dt;
+		if(state.movement.at(1) == MovementState::FALL)
+			position.y += GravityCalc(gravityFactor, mass) * dt;
+		else if(state.movement.at(1) == MovementState::JUMP)
+			position.y += (-(jumpInfo.currenJumpPower *= jumpInfo.jumpIncrementFactor)) + GravityCalc(gravityFactor, mass) * dt;
+	
+
+	if (position.y > previousPosition.y && state.movement.at(1) == MovementState::JUMP)
+		state.movement.at(1) = MovementState::FALL;
+
 
 	if (!to_delete)
 		collider->SetPos(position.x, position.y);
@@ -151,8 +179,14 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 	switch (c2->type)
 	{
 	case COLLIDER_TYPE::COLLIDER_WALL:
-		onPlatform = true; 
-		ResetGravity();
+		if (state.movement.at(1) != MovementState::JUMP)
+		{
+			onPlatform = true;
+			ResetGravity();
+
+			state.movement.at(1) = MovementState::NOT_ACTIVE;   // jump or fall not active
+		}
+	
 		break; 
 	}
 
@@ -165,8 +199,13 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 	switch (c2->type)
 	{
 	case COLLIDER_TYPE::COLLIDER_WALL:
-		onPlatform = false;
-		ResetGravity(); 
+		if (state.movement.at(1) != MovementState::JUMP)
+		{
+			onPlatform = false;
+			ResetGravity();
+
+			state.movement.at(1) = MovementState::FALL; 
+		}
 		break;
 	}
 
@@ -175,9 +214,9 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 POINTING_DIR j1EntityPlayer::GetDirection()
 {
 
-	if (lastDeltaMovement < 0)
+	if (lastSpeed < 0)
 		return pointingDir = POINTING_DIR::LEFT;
-	else if (lastDeltaMovement > 0)
+	else if (lastSpeed > 0)
 		return pointingDir = POINTING_DIR::RIGHT;
 	
 	return pointingDir;    

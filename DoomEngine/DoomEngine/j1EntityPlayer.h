@@ -7,7 +7,7 @@
 #include "j1Render.h"
 #include <array>
 
-
+//#define jumpPower 20.f
 
 enum class combatState
 {
@@ -20,10 +20,11 @@ enum class MovementState
 {
 	IDLE, 
 	RUN,
-	INPUT_RIGHT = 1,
-	INPUT_LEFT = -1,
+	INPUT_RIGHT,
+	INPUT_LEFT,
 	JUMP,
-	FALL
+	FALL,
+	NOT_ACTIVE
 };
 
 struct myState
@@ -31,6 +32,13 @@ struct myState
 	combatState combat; 
 	std::array<MovementState, 2> movement; // 0 for idle, right. left, 1 for jump or fall
 
+};
+
+struct jumpData
+{
+	float jumpPower = 16.f; 
+	float currenJumpPower = jumpPower; 
+	float jumpIncrementFactor = .88f; 
 };
 
 
@@ -67,16 +75,15 @@ private:
 	Animation run; 
 	bool aiming = false;
 	myState state; 
-	bool inputReady = true;
-	float lastDeltaMovement = 0; 
-
+	float lastSpeed = 0; 
+	jumpData jumpInfo; 
 	float momentumFactor = 10.f; 
 	float momentum(float speed) { return speed * momentumFactor; };
 
 	// TODO: not only here, but in enemy cpp, add more anims, apart from idle
 
 
-
+	friend class j1Entity; 
 
 
 };

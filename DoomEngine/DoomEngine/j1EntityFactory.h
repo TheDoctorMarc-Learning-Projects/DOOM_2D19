@@ -10,14 +10,14 @@
 #include "j1Map.h"
 #include "j1EntityPlayer.h"
 
-#define DEFAULT_GRAV 100.f	
-#define MAX_GRAV 500.f
+#define DEFAULT_GRAV 50.f	
+#define MAX_GRAV 300.f
 
-inline float GravityCalc(float& g, float& m)  // grav and mass inline calc container
+inline float GravityCalc(float& gm, float& m)  // g  and mass inline calc container
 {
-	 (g < MAX_GRAV * m) ? g *= 1.05f : g = MAX_GRAV * m; 
+	 (gm < MAX_GRAV / m) ? gm *= 1.03f : gm = MAX_GRAV * m;
 
-	 return g; 
+	 return gm;
 }
 
 

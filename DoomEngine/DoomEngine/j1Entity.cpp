@@ -8,6 +8,7 @@
 #include "j1PathFinding.h"
 #include "j1Map.h"
 #include "j1Collision.h"
+#include "j1EntityPlayer.h"
 
 j1Entity::j1Entity(ENTITY_TYPE type, float positionX, float positionY,std::string name) : type(type), position(positionX,positionY), name(name)
 {
@@ -108,6 +109,9 @@ void j1Entity::ResetGravity()
 {
 
 	gravityFactor = DEFAULT_GRAV * mass;
+
+	if (type == ENTITY_TYPE::PLAYER)
+		dynamic_cast<j1EntityPlayer*>(this)->jumpInfo.currenJumpPower = dynamic_cast<j1EntityPlayer*>(this)->jumpInfo.jumpPower;
 }
 
 void j1Entity::AdjustColliderToAnimFrame()

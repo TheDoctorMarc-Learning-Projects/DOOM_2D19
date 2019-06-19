@@ -12,22 +12,33 @@
 
 j1EntityPlayer::j1EntityPlayer(int posX, int posY) : j1Entity(PLAYER, posX , posY, "player")
 {
-	
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - texture
 	entityTex = App->tex->Load("textures/player/player.png");
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = PLAYER; 
 	position = previousPosition = fPoint(posX, posY); 
-	currentAnimation = &idle; 
+	pointingDir = RIGHT;
 	size.create(34, 53);
-	speed = .0045f; 
+	speed = .0035f; 
 	mass = 1.f; 
 	gravityFactor = DEFAULT_GRAV * mass; 
-	idle.PushBack({18, 421, size.x, size.y}); 
 
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - anims
+	currentAnimation = &idle;
+	idle.PushBack({1, 421, size.x + 17, size.y}); 
+	run.PushBack({ 8, 33, size.x + 8, size.y });
+	run.PushBack({ 4, 130, size.x + 3, size.y + 2 });
+	run.PushBack({ 7, 227, size.x + 4, size.y + 1});
+	run.PushBack({ 7, 324, size.x, size.y + 1 });
+	run.loop = true; 
+	run.speed = 4.f; 
 
-
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - collider
 	collider = App->collision->AddCollider({(int)position.x, (int)position.y, (int)((float)size.x * spriteScale),(int)((float)size.y * spriteScale) }, COLLIDER_TYPE::COLLIDER_PLAYER, this);
 
-	pointingDir = RIGHT; 
+
 }
 
 j1EntityPlayer::~j1EntityPlayer()
@@ -93,16 +104,28 @@ bool j1EntityPlayer::Move(float dt)
 
 	if (xAxis > 0 || xAxis < 0)
 	{
-		float value = (xAxis * speed) * dt;
-		position.x += value; 
+		lastDeltaMovement = (xAxis * speed) * dt;
+		position.x += lastDeltaMovement;
 		isMoving = true;
 	
+		//if(state.movement.at(0) == MovementState::IDLE)
+			currentAnimation = &run;
+
 		state.movement.at(0) = (xAxis < 0) ? MovementState::INPUT_LEFT : state.movement.at(0); 
 		state.movement.at(0) = (xAxis > 0) ? MovementState::INPUT_RIGHT : state.movement.at(0);
-	
+		 
 	}
 	else
-		state.movement.at(0) = MovementState::IDLE;
+	{
+		if (state.movement.at(0) != MovementState::IDLE)
+		{
+			state.movement.at(0) = MovementState::IDLE;
+			//currentAnimation = &idle;
+		}
+	 
+		currentAnimation = &idle;
+	}
+		
 
 	/*for (int i = 0; i < 2; ++i)
 	{
@@ -148,6 +171,18 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 	}
 
 }
+
+POINTING_DIR j1EntityPlayer::GetDirection()
+{
+
+	if (lastDeltaMovement < 0)
+		return pointingDir = POINTING_DIR::LEFT;
+	else if (lastDeltaMovement > 0)
+		return pointingDir = POINTING_DIR::RIGHT;
+	
+	return pointingDir;    
+}
+
 
 
 /*

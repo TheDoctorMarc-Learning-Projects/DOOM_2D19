@@ -65,7 +65,7 @@ public:
 //	iPoint GetTilePos() const;
 	fPoint GetPosition();
 //	bool ChangedTile() const; 
-	POINTING_DIR GetDirection(); 
+	virtual POINTING_DIR GetDirection(); 
 	//virtual void LoadEntitydata(pugi::xml_node&);
 
 	void ResetGravity(); 

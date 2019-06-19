@@ -19,7 +19,7 @@ enum class combatState
 enum class MovementState
 {
 	IDLE, 
-	WALK,
+	RUN,
 	INPUT_RIGHT = 1,
 	INPUT_LEFT = -1,
 	JUMP,
@@ -55,6 +55,8 @@ public:
 	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
 
+	POINTING_DIR GetDirection() override; 
+
 	bool IsAiming()
 	{
 		return aiming;
@@ -62,10 +64,12 @@ public:
 
 private:
 
+	Animation run; 
 	bool aiming = false;
 	myState state; 
 	bool inputReady = true;
-	
+	float lastDeltaMovement = 0; 
+
 	float momentumFactor = 10.f; 
 	float momentum(float speed) { return speed * momentumFactor; };
 

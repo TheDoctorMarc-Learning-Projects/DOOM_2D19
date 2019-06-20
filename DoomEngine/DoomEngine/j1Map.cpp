@@ -71,89 +71,40 @@ void j1Map::Draw()
 
 	std::list<MapLayer*>::iterator layer = data.layers.begin();
 
-	uint width, height; 
-	width = height = 666; 
+
 	
-		for (int i = 0; i < width; ++i)
+	for (auto& layer : data.layers)
+	{
+		for (int i = 0; i < data.width; ++i)
 		{
-			for (int j = 0; j < height; ++j)
+			for (int j = 0; j < data.height; ++j)
 			{
-				if (App->render->IsOnCamera(MapToWorld(i , j).x, MapToWorld(i, j).y, data.tile_width * j, data.tile_height * i))
+				if (App->render->IsOnCamera(MapToWorld(i, j).x, MapToWorld(i, j).y, data.tile_width * j, data.tile_height * i))
 				{
-					int tile_id = (*layer)->Get(i, j);
+					int tile_id = layer->Get(i, j);
 					if (tile_id > 0)
 					{
 						TileSet* tileset = GetTilesetFromTileId(tile_id);
 						if (tileset != nullptr)
 						{
-							width = tileset->num_tiles_width; 
-							height = tileset->num_tiles_height; 
 
 							SDL_Rect r = tileset->GetTileRect(tile_id);
 							iPoint pos = MapToWorld(i, j);
 
-							App->render->Blit(tileset->texture, pos.x - data.tile_width, pos.y - data.tile_height, &r, (*layer)->properties.parallaxSpeed);
+							App->render->Blit(tileset->texture, pos.x - data.tile_width, pos.y - data.tile_height, &r, layer->properties.parallaxSpeed);
 						}
 
-
-
-
-						// debug the camera pos with the layer section 
-						if (mapDebug)
-							if (i == data.height - 1)
-							{
-								const SDL_Rect debugSection = { App->render->camera.x, App->render->camera.y, tileset->num_tiles_width * data.tile_width, tileset->num_tiles_height * data.tile_height };
-								App->render->DrawQuad(debugSection, 255, 255, 255, 150, true);
-
-							}
-
-
 					}
-		        }
-
-
+			
+				}
 
 			}
-
 
 		}
 
-	
+	}
 		
 
-	
-
-		/*std::list<TileSet*>::iterator item_tile = data.tilesets.end(); 
-
-		std::list<MapLayer*>::iterator layers_lay = data.layers.begin();
-
-		/*p2List_item<TileSet*>* item_tile = data.tilesets.end;//Painters rule application.
-		p2List_item<MapLayer*>* layers_lay = data.layers.start;*/
-
-
-		/*while (item_tile != NULL) {
-
-			layers_lay = data.layers.start;
-
-			while (layers_lay != NULL) {
-
-				for (uint x = 0; x < (*layers_lay)->data->width; x++) {
-
-					for (uint y = 0; y < (*layers_lay)->data->height; y++) {
-
-						SDL_Rect rect = (*item_tile)->data->GetTileRect(layers_lay->data->Get(x, y));
-						iPoint world_coords = MapToWorld(x, y);
-						App->render->Blit(item_tile->data->texture, world_coords.x, world_coords.y, &rect, layers_lay->data->Parallaxspeed);
-
-
-					
-					}
-
-				}
-				layers_lay = layers_lay->next;
-			}
-			item_tile = item_tile->prev;
-		}*/
 
 }
 
@@ -257,90 +208,6 @@ iPoint j1Map::WorldToMap(int x, int y) const
 }
 
 
-iPoint j1Map::IsoToWorld(int x, int y) const // TODO: check for importing from tiled assets, and rework the actual workaround for walls
-{
-	iPoint ret(0, 0);
-
-	ret.x = (x - y) * 0.5f;
-	ret.y = (x + y) * 0.5f;
-
-	return ret;
-}
-
-// -------------------------------------------------------
-// for util world point (but from map space) to cartesian
-iPoint j1Map::IsoTo2D(int x, int y) const
-{
-	iPoint ret(0, 0);
-
-	ret.x = (2 * y + x) * 0.5f;
-	ret.y = (2 * y - x) * 0.5f;
-
-	return ret;
-}
-fPoint j1Map::TwoDToIso(int x, int y) const
-{
-	fPoint ret(0, 0);
-
-	ret.x = x - y;
-	ret.y = (x + y) * 0.5f;
-	return ret;
-}
-// -------------------------------------------------------
-
-iPoint j1Map::WorldToIso(int x, int y) const
-{
-	iPoint ret(0, 0);
-
-	ret.x = int(x - y);// - 1// this is caused because the sprite doesnt fit to 0,0 on real world
-	ret.y = int((y + x ) * 0.5f);	   // and needs this offset to match ( 1 tile displacement )
-
-	return ret;
-}
-
-iPoint j1Map::SubTileMapToWorld(int x, int y) const
-{
-	iPoint ret;
-
-	x += 1; // TODO: displacement
-
-	if (data.type == MAPTYPE_ISOMETRIC)
-	{
-		ret.x = (x - y) * (data.tile_width * SUBTILE_RESOLUTION) * 0.5f;
-		ret.y = (x + y) * (data.tile_height * SUBTILE_RESOLUTION) * 0.5f;
-	}
-	else
-	{
-		//LOG("Unknown map type");
-		ret.x = x; ret.y = y;
-	}
-
-	return ret;
-}
-
-iPoint j1Map::WorldToSubtileMap(int x, int y) const
-{
-	iPoint ret(0, 0);
-
-	if (data.type == MAPTYPE_ISOMETRIC)
-	{
-
-	float half_width = (data.tile_width * SUBTILE_RESOLUTION) * 0.5f;
-	float half_height = (data.tile_height * SUBTILE_RESOLUTION) * 0.5f;
-	ret.x = int((x / half_width + y / half_height) * 0.5f) - 1 * SUBTILE_MULTIPLIER; //TODO: search subtilemap draw displacement
-	ret.y = int((y / half_height - (x / half_width)) * 0.5f);
-	}
-	else
-	{
-		//LOG("Unknown map type");
-		ret.x = x; ret.y = y;
-	}
-
-	return ret;
-}
-
-
-
 // Called before quitting
 bool j1Map::CleanUp()
 {
@@ -383,16 +250,6 @@ bool j1Map::CleanUp()
 	}
 	data.layers.clear();
 
-	/*std::list<std::string>::iterator lvl_item;
-	lvl_item = data.levels.begin();
-
-	while (lvl_item != data.levels.end())
-	{
-		data.levels.remove(*lvl_item);
-		*lvl_item = nullptr;
-		++lvl_item;
-	}
-	data.levels.clear();*/
 
 
 	App->tex->UnLoad(texture);
@@ -419,9 +276,6 @@ bool j1Map::Load(const char* file_name)
 	// Load general info ----------------------------------------------
 	if (ret == true)
 	{
-		/*// stores the current level string name
-		data.loadedLevel.assign(file_name);*/
-		// ------------------------------------
 		ret = LoadMap();
 	}
 
@@ -760,8 +614,8 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 			set->tex_height = h;
 		}
 
-		set->num_tiles_width = set->tex_width / set->tile_width;
-		set->num_tiles_height = set->tex_height / set->tile_height;
+			set->num_tiles_width = set->tex_width / set->tile_width;
+			set->num_tiles_height = set->tex_height / set->tile_height; 	
 	}
 
 	return ret;
@@ -803,7 +657,8 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		int i = 0;
 		for (pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
 		{
-			layer->data[i++] = tile.attribute("gid").as_int(0);
+			int value = tile.attribute("gid").as_int();
+			layer->data[i++] = value;
 		}
 	}
 

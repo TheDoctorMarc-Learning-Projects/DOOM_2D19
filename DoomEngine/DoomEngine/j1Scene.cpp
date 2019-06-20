@@ -45,9 +45,9 @@ bool j1Scene::Start()
 
 	// Fake ground test 
 
-	App->collision->AddCollider({ 0, 200, 700, 10 }, COLLIDER_TYPE::COLLIDER_WALL); 
-	App->collision->AddCollider({ 300, 400, 700, 10 }, COLLIDER_TYPE::COLLIDER_WALL);
-
+	App->collision->AddCollider({ 0, 200, 700, 10 }, COLLIDER_TYPE::COLLIDER_FLOOR); 
+	App->collision->AddCollider({ 300, 400, 700, 10 }, COLLIDER_TYPE::COLLIDER_FLOOR);
+	App->collision->AddCollider({ 600, 370, 20, 60 }, COLLIDER_TYPE::COLLIDER_WALL);
 
 	if (state == SceneState::LEVEL1)
 	{

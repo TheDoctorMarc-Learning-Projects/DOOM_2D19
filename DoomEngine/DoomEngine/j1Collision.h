@@ -9,10 +9,18 @@
 
 #define MAX_COLLIDERS 200
 
+enum CollisionType
+{
+	TOP,
+	BOTTOM,
+	LATERAL
+};
+
 enum COLLIDER_TYPE
 {
 	COLLIDER_NONE = -1,
 	COLLIDER_WALL,
+	COLLIDER_FLOOR,
 	COLLIDER_PLAYER, 
 	COLLIDER_DEATH,
 	COLLIDER_GOD,
@@ -55,7 +63,9 @@ struct Collider
 			rect.y = y; 
 	}
 
-	bool CheckCollision(const SDL_Rect& r) const;
+	CollisionType currentCollisionType; 
+
+	bool CheckCollision(const SDL_Rect& r);
 };
 
 class j1Collision : public j1Module
@@ -70,10 +80,11 @@ public:
 	bool CleanUp(); 
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* callback = nullptr);
 	void DebugDraw();
-
+	
 	
 	void doCollisionAssignment(Collider* c1, Collider* c2);
 	void doCollisionDeAssignment(Collider* c1, Collider* c2);
+
 
 private:
 

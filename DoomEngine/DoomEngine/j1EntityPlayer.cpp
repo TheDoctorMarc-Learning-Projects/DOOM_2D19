@@ -97,7 +97,6 @@ bool j1EntityPlayer::Save(pugi::xml_node &) const
 
 bool j1EntityPlayer::Move(float dt)
 {
-	bool isMoving = false;
 
 	previousPosition = position;
 
@@ -107,16 +106,21 @@ bool j1EntityPlayer::Move(float dt)
 
 	if (xAxis > 0 || xAxis < 0)
 	{
-		lastSpeed = (xAxis * speed) * dt;
-		position.x += lastSpeed;
-		isMoving = true;
-	
-		//if(state.movement.at(0) == MovementState::IDLE)
-			currentAnimation = &run;
 
-		state.movement.at(0) = (xAxis < 0) ? MovementState::INPUT_LEFT : state.movement.at(0); 
-		state.movement.at(0) = (xAxis > 0) ? MovementState::INPUT_RIGHT : state.movement.at(0);
-		 
+
+		currentAnimation = &run;
+
+		
+			lastSpeed = (xAxis * speed) * dt;
+
+			position.x += lastSpeed;
+
+			//if(state.movement.at(0) == MovementState::IDLE)
+
+
+			state.movement.at(0) = (xAxis < 0) ? MovementState::INPUT_LEFT : state.movement.at(0);
+			state.movement.at(0) = (xAxis > 0) ? MovementState::INPUT_RIGHT : state.movement.at(0);
+	
 	}
 	else
 	{
@@ -124,6 +128,7 @@ bool j1EntityPlayer::Move(float dt)
 		{
 			state.movement.at(0) = MovementState::IDLE;
 			//currentAnimation = &idle;
+
 		}
 	 
 		currentAnimation = &idle;
@@ -181,17 +186,32 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 	switch (c2->type)
 	{
-	case COLLIDER_TYPE::COLLIDER_WALL:
+	case COLLIDER_TYPE::COLLIDER_FLOOR:
 		if (state.movement.at(1) != MovementState::JUMP)
 		{
 			onPlatform = true;
 			ResetGravity();
 
 			state.movement.at(1) = MovementState::NOT_ACTIVE;   // jump or fall not active
+
 		}
-	
 		break; 
+	/*case COLLIDER_TYPE::COLLIDER_WALL:
+		if (state.movement.at(1) != MovementState::JUMP)
+		{
+			 	onPlatform = true;
+				ResetGravity();
+
+				state.movement.at(1) = MovementState::NOT_ACTIVE; 
+			
+		}
+
+
+
+		break;*/
 	}
+
+
 
 }
 
@@ -201,13 +221,24 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 
 	switch (c2->type)
 	{
-	case COLLIDER_TYPE::COLLIDER_WALL:
+	case COLLIDER_TYPE::COLLIDER_FLOOR:
 		if (state.movement.at(1) != MovementState::JUMP)
 		{
 			onPlatform = false;
 			ResetGravity();
 
 			state.movement.at(1) = MovementState::FALL; 
+		}
+		break;
+
+
+	case COLLIDER_TYPE::COLLIDER_WIN:
+		if (state.movement.at(1) != MovementState::JUMP)
+		{
+			onPlatform = false;
+			ResetGravity();
+
+			state.movement.at(1) = MovementState::FALL;
 		}
 		break;
 	}
@@ -222,7 +253,7 @@ POINTING_DIR j1EntityPlayer::GetDirection()
 	else if (lastSpeed > 0)
 		return pointingDir = POINTING_DIR::RIGHT;
 	
-	return pointingDir;    
+	return pointingDir;     // no speed results in no dir change
 }
 
 

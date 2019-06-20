@@ -121,6 +121,7 @@ struct MapData
 	/*std::list<std::string>	levels;
 	std::string				loadedLevel;*/
 	Properties				properties;
+	iPoint maxTileSize; 
 };
 
 // ----------------------------------------------------
@@ -149,13 +150,7 @@ public:
 
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
-	iPoint SubTileMapToWorld(int x, int y) const;
-	iPoint WorldToSubtileMap(int x, int y) const;
-	iPoint IsoToWorld(int x, int y) const;
-	iPoint WorldToIso(int x, int y) const;
 
-	iPoint IsoTo2D(int x, int y) const;
-	fPoint TwoDToIso(int x, int y) const;
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
 
 	TileSet* GetTilesetFromTileId(int id) const;

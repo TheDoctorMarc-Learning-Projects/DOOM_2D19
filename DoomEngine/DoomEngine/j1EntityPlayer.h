@@ -9,6 +9,8 @@
 
 //#define jumpPower 20.f
 
+#define jumpColliderThreshold 20
+
 enum class combatState
 {
 	IDLE,
@@ -30,7 +32,7 @@ enum class MovementState
 struct myState
 {
 	combatState combat; 
-	std::array<MovementState, 2> movement; // 0 for idle, right. left, 1 for jump or fall
+	std::array<MovementState, 2> movement; // 0 for idle, run, 1 for jump or fall
 
 };
 
@@ -41,6 +43,13 @@ struct jumpData
 	float jumpIncrementFactor = .88f; 
 };
 
+struct SpeedBlocked
+{
+	bool RX = false; 
+	bool LX = false;
+	bool RY = false; 
+	bool LY = false; 
+};
 
 class j1EntityPlayer : public j1Entity
 {
@@ -76,6 +85,7 @@ private:
 	bool aiming = false;
 	myState state; 
 	float lastSpeed = 0; 
+	SpeedBlocked speedBlocked; 
 	jumpData jumpInfo; 
 	float momentumFactor = 10.f; 
 	float momentum(float speed) { return speed * momentumFactor; };

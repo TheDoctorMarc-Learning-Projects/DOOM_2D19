@@ -46,6 +46,14 @@ struct Collider
 
 	std::list<Collider*> onCollisionWithMe; 
 
+	void AdaptCollider(int w, int h, int x = NULL, int y = NULL) {
+		rect.w = w; 
+		rect.h = h; 
+		if (x)
+			rect.x = x; 
+		if (y)
+			rect.y = y; 
+	}
 
 	bool CheckCollision(const SDL_Rect& r) const;
 };
@@ -63,7 +71,7 @@ public:
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* callback = nullptr);
 	void DebugDraw();
 
-	void AdaptCollider(Collider& col, SDL_Rect target);
+	
 	void doCollisionAssignment(Collider* c1, Collider* c2);
 	void doCollisionDeAssignment(Collider* c1, Collider* c2);
 

@@ -114,12 +114,3 @@ void j1Entity::ResetGravity()
 		dynamic_cast<j1EntityPlayer*>(this)->jumpInfo.currenJumpPower = dynamic_cast<j1EntityPlayer*>(this)->jumpInfo.jumpPower;
 }
 
-void j1Entity::AdjustColliderToAnimFrame()
-{
-
-	// TODO: do this only if animation changes
-
-	App->collision->AdaptCollider(*collider, currentAnimation->GetCurrentFrame()); 
-	
-}
-

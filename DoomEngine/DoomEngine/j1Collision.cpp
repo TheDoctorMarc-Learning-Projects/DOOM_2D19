@@ -296,10 +296,6 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* 
 	return ret;
 }
 
-void j1Collision::AdaptCollider(Collider& col, SDL_Rect target)   // useful to prevent fake colliders depending on current entity anim
-{
-	col.rect = target; 
-}
 
 // -----------------------------------------------------
 

@@ -36,7 +36,7 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY) : j1Entity(PLAYER, posX , pos
 	run.PushBack({ 7, 227, size.x + 4, size.y + 1});
 	run.PushBack({ 7, 324, size.x, size.y + 1 });
 	run.loop = true; 
-	run.speed = 4.f; 
+	run.speed = 2.f; 
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - collider
 	collider = App->collision->AddCollider({(int)position.x, (int)position.y, (int)((float)size.x * spriteScale),(int)((float)size.y * spriteScale) }, COLLIDER_TYPE::COLLIDER_PLAYER, this);
@@ -168,8 +168,11 @@ bool j1EntityPlayer::Move(float dt)
 
 
 	if (!to_delete)
+	{
 		collider->SetPos(position.x, position.y);
-
+		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h); 
+	}
+		
 	return true;
 }
 

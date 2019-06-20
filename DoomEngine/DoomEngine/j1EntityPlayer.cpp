@@ -101,6 +101,15 @@ bool j1EntityPlayer::Move(float dt)
 {
 
 	previousPosition = position;
+
+	if (onPlatform)
+		lastGroundPos = position;
+	else
+		lastAirPos = position;
+
+
+		
+
 	lastPosCollider = collider->rect; 
 
 	Sint16 xAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
@@ -115,7 +124,11 @@ bool j1EntityPlayer::Move(float dt)
 
 		if (state.movement.at(1) != MovementState::NOT_ACTIVE)
 		{
-			lastSpeed.x = (xAxis * speed) * jumpInfo.speedXIncrement * dt;
+			if(state.movement.at(1) == MovementState::JUMP)
+				lastSpeed.x = (xAxis * speed) * jumpInfo.speedXIncrementJump* dt;
+			else if(state.movement.at(1) == MovementState::FALL)
+				lastSpeed.x = (xAxis * speed) * jumpInfo.speedXIncrementFall* dt;
+			
 		}
 		else
 			lastSpeed.x = (xAxis * speed) * dt;
@@ -143,16 +156,6 @@ bool j1EntityPlayer::Move(float dt)
 		currentAnimation = &idle;
 		lastSpeed.x = 0; 
 	}
-		
-
-	/*for (int i = 0; i < 2; ++i)
-	{
-
-	
-
-
-		  
-	}*/
  
 
 	// - - - - - - - - - - - - - - - - - - vertical movement
@@ -222,26 +225,84 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 		if (state.movement.at(1) != MovementState::JUMP)
 		{
 			if (!onPlatform)
-			{                                             // Y - top to bottom
-				
-				if (collider->rect.y + collider->rect.h > c2->rect.y)
+			{                                           
+				if (c2->callback)    // platforms
 				{
-					if (lastSpeed.y > 0)
+					if (collider->rect.y + collider->rect.h > c2->rect.y)
 					{
-						float offset = collider->rect.y + collider->rect.h - c2->rect.y;  // to put back player if it goes off a bit
-						position.y -= offset;
+						if (lastSpeed.y > 0)
+						{
+							if ((lastAirPos.x + lastPosCollider.w < c2->rect.x && lastSpeed.x > 0)
+								|| (lastAirPos.x > c2->rect.x + c2->rect.w) && lastSpeed.x < 0)    // when last ground was to the left and you go right or it was in the right and you go left 
+							{
+								float offset = 0.f;
+								if (lastSpeed.x > 0)
+								{
+									offset = collider->rect.x + collider->rect.w - c2->rect.x;
+									position.x -= offset;
+								}
+								else if (lastSpeed.x < 0)
+								{
 
-						onPlatform = true;
-						ResetGravity();
+									offset = c2->rect.x + c2->rect.w - collider->rect.x;
+									position.x += offset;
+								}
 
-						state.movement.at(0) = MovementState::IDLE;
-						state.movement.at(1) = MovementState::NOT_ACTIVE;   // jump or fall not active
+								onPlatform = false;
+								ResetGravity();
 
-						collider->SetPos(position.x, position.y);
+								state.movement.at(1) = MovementState::FALL;
+
+								collider->SetPos(position.x, position.y);
+
+
+							}
+							else
+							{
+								if (collider->rect.y + collider->rect.h > c2->rect.y)
+								{
+									if (lastSpeed.y > 0)
+									{
+										float offset = collider->rect.y + collider->rect.h - c2->rect.y;  // to put back player if it goes off a bit
+										position.y -= offset;
+
+										onPlatform = true;
+										ResetGravity();
+
+										state.movement.at(0) = MovementState::IDLE;
+										state.movement.at(1) = MovementState::NOT_ACTIVE;   // jump or fall not active
+
+										collider->SetPos(position.x, position.y);
+									}
+								}
+							}
+
+						}
+
+
 					}
+
+				}
+				else  // just for the base floor 
+				{
+					if (collider->rect.y + collider->rect.h > c2->rect.y)
+					{
+						if (lastSpeed.y > 0)
+						{
+							float offset = collider->rect.y + collider->rect.h - c2->rect.y;  // to put back player if it goes off a bit
+							position.y -= offset;
+
+							onPlatform = true;
+							ResetGravity();
+
+							state.movement.at(0) = MovementState::IDLE;
+							state.movement.at(1) = MovementState::NOT_ACTIVE;   // jump or fall not active
+
+							collider->SetPos(position.x, position.y);
+						}
+					}
+				}
 				
-				}                                                
-			
 
 			}
 
@@ -253,15 +314,44 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 			{
 				if (lastSpeed.y < 0)
 				{
-					float offset = c2->rect.y + c2->rect.h - collider->rect.y;   // to put back player if it goes off a bit
-					position.y += offset;
+					if ((lastGroundPos.x + lastPosCollider.w < c2->rect.x && lastSpeed.x > 0)
+						|| (lastGroundPos.x > c2->rect.x + c2->rect.w) && lastSpeed.x < 0)    // when last ground was to the left and you go right or it was in the right and you go left 
+					{
+						float offset = 0.f; 
+						if (lastSpeed.x > 0)
+						{
+							offset = collider->rect.x + collider->rect.w - c2->rect.x; 
+							position.x -= offset;
+						}
+						else if (lastSpeed.x < 0)
+						{
 
-					onPlatform = false;
-					ResetGravity();
+							offset = c2->rect.x + c2->rect.w - collider->rect.x;
+							position.x += offset;
+						}
+						
+						onPlatform = false;
+						ResetGravity();
 
-					state.movement.at(1) = MovementState::FALL;
+						state.movement.at(1) = MovementState::FALL;
 
-					collider->SetPos(position.x, position.y);
+						collider->SetPos(position.x, position.y);
+						
+					}
+					else
+					{
+
+						float offset = c2->rect.y + c2->rect.h - collider->rect.y;   // to put back player if it goes off a bit
+						position.y += offset;
+
+						onPlatform = false;
+						ResetGravity();
+
+						state.movement.at(1) = MovementState::FALL;
+
+						collider->SetPos(position.x, position.y);
+
+					}
 				}
 
 			
@@ -291,6 +381,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 
 
+
+	
 }
 
 
@@ -331,6 +423,15 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 		}
 		break;*/
 	}
+
+
+
+	previousPosition = position;
+
+	if (onPlatform)
+		lastGroundPos = position;
+	else
+		lastAirPos = position;
 	
 }
 

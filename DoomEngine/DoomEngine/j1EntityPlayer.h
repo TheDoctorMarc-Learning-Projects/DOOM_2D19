@@ -41,7 +41,8 @@ struct jumpData
 	float jumpPower = 17.f; 
 	float currenJumpPower = jumpPower; 
 	float jumpIncrementFactor = .9f;
-	float speedXIncrement = 1.7f; 
+	float speedXIncrementJump = 1.7f; 
+	float speedXIncrementFall = 1.3f;
 	float verticalIncrementFactor = 1.005f;    // jumpincrement reduces jump power in time, but vertical increment counteracts it a bit 
 };
 
@@ -87,6 +88,8 @@ private:
 	bool aiming = false;
 	myState state; 
 	fPoint lastSpeed = fPoint(0,0);
+	fPoint lastGroundPos = fPoint(0, 0);
+	fPoint lastAirPos = fPoint(0, 0); 
 	SpeedBlocked speedBlocked; 
 	jumpData jumpInfo; 
 	float momentumFactor = 10.f; 
@@ -94,6 +97,7 @@ private:
 	SDL_Rect lastPosCollider; 
 
 	// TODO: not only here, but in enemy cpp, add more anims, apart from idle
+
 
 
 	friend class j1Entity; 

@@ -43,11 +43,8 @@ bool j1Scene::Start()
 
 
 
-	// Fake ground test 
+	
 
-	App->collision->AddCollider({ 0, 200, 700, 10 }, COLLIDER_TYPE::COLLIDER_FLOOR); 
-	App->collision->AddCollider({ 300, 400, 700, 10 }, COLLIDER_TYPE::COLLIDER_FLOOR);
-	App->collision->AddCollider({ 600, 370, 20, 60 }, COLLIDER_TYPE::COLLIDER_WALL);
 
 	if (state == SceneState::LEVEL1)
 	{
@@ -148,7 +145,9 @@ void j1Scene::LoadNewMap(const char* mapName)
 
 void j1Scene::UnLoadScene()
 {
-	                               // TODO: if I add new modules, disable them here if needed 
+	// TODO: Clean floor collider, clean all objects colliders 
+	
+	// TODO: if I add new modules, disable them here if needed 
 	if (App->map->IsEnabled())
 		App->map->Disable();
 

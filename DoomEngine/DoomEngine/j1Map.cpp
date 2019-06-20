@@ -6,6 +6,7 @@
 #include "j1Map.h"
 #include "j1Window.h"
 #include"j1Input.h"
+#include "j1EntityFactory.h"
 
 #include "Brofiler/Brofiler.h"
 
@@ -310,7 +311,7 @@ bool j1Map::Load(const char* file_name)
 			data.layers.push_back(lay);
 	}
 
-	pugi::xml_node objectlayer;
+/*	pugi::xml_node objectlayer;
 	for (objectlayer = map_file.child("map").child("objectgroup"); objectlayer && ret; objectlayer = objectlayer.next_sibling("objectgroup"))
 	{
 		std::string tmp(objectlayer.attribute("name").as_string());
@@ -318,19 +319,16 @@ bool j1Map::Load(const char* file_name)
 		{
 			//LoadSpawns(objectlayer);
 		}
-	}
+	}*/
 
 	// Load objects/scene colliders -----------------------------------------
 	pugi::xml_node objectGroup;
-	for (objectGroup = map_file.child("map").child("group"); objectGroup && ret; objectGroup = objectGroup.next_sibling("group"))
+	for (objectGroup = map_file.child("map").child("objectgroup"); objectGroup && ret; objectGroup = objectGroup.next_sibling("objectgroup"))
 	{
 		std::string tmp(objectGroup.attribute("name").as_string());
 		
-		if (tmp == "Assets") // if we found a assets folder
-		{
-			//LoadMapAssets(objectGroup);
-		}
-	 
+		LoadMapObjects(objectGroup); 
+	
 	}
 
 	if (ret == true)
@@ -366,118 +364,6 @@ bool j1Map::Load(const char* file_name)
 	return ret;
 }
 
-/*bool j1Map::LoadMapAssets(pugi::xml_node& node)
-{
-	bool ret = true;
-
-	for (pugi::xml_node assetsGroup = node.child("group"); assetsGroup && ret; assetsGroup = assetsGroup.next_sibling("group"))
-	{
-		std::string assetGroupName = assetsGroup.attribute("name").as_string();
-		if (assetGroupName == "walls")
-		{
-			LOG("Walls group");
-			// iterate all possible object group layers for walls
-			for (pugi::xml_node wallsGroup = assetsGroup.child("objectgroup"); wallsGroup && ret; wallsGroup = wallsGroup.next_sibling("objectgroup"))
-			{
-				std::string wallObjectGroupTypeName = wallsGroup.attribute("name").as_string();
-
-				if (wallObjectGroupTypeName == "walls")
-				{
-					// load all objects on this object group walls
-					for (pugi::xml_node walls = wallsGroup.child("object"); walls && ret; walls = walls.next_sibling("object"))
-					{
-						std::string wallTypeName = walls.attribute("name").as_string();
-						
-						// load walls as entities
-						iPoint positionOnWorld; // x and y are on iso coords, needs conversion
-						positionOnWorld.x = walls.attribute("x").as_int(0);
-						positionOnWorld.y = walls.attribute("y").as_int(0);
-						positionOnWorld = IsoToWorld(positionOnWorld.x, (positionOnWorld.y));
-						positionOnWorld.x = positionOnWorld.x * 2;
-						positionOnWorld.x -= walls.attribute("width").as_int(0);
-						positionOnWorld.y -= walls.attribute("height").as_int(0);
-						
-						SDL_Rect destRect = { 0 }; 
-					
-						bool containsLoot = true;
-		
-					
-
-					}
-
-				}
-				else if (wallObjectGroupTypeName == "walls2") // different groups for different layers, just in case but not necessary
-				{											  // we can load several types of wall in one layer just changing the object name on tiled
-					// load all objects on this object group walls
-				}
-				// etc
-			}
-		}
-		
-	}
-
-	return ret;
-}
-
-bool j1Map::LoadSpawns(pugi::xml_node & node)
-{
-	bool ret = true;
-	std::vector<EnemyType> typesVec;
-	for (pugi::xml_node object = node.child("object"); object; object = object.next_sibling("object"))
-	{
-		SDL_Rect spawnRect = { 0, 0, 0, 0 };
-		std::string objectName(object.attribute("name").as_string());
-		if (objectName == "spawnZone")
-		{
-			int minEnemies = 0;
-			int maxEnemies = 0;
-			uint level = 0; 
-			spawnRect.x = object.attribute("x").as_int();
-			spawnRect.y = object.attribute("y").as_int();
-			spawnRect.w = object.attribute("width").as_int();
-			spawnRect.h = object.attribute("height").as_int();
-
-			for (pugi::xml_node properties = object.child("properties").child("property"); properties; properties = properties.next_sibling("property"))
-			{
-				if (std::strcmp(properties.attribute("type").as_string(), "bool") == 0 && properties.attribute("value").as_bool() == false)
-					continue;
-
-				std::string attributeName = properties.attribute("name").as_string();
-				if (attributeName == "bomb")
-				{
-					typesVec.push_back(EnemyType::BOMB);
-				}
-				else if (attributeName == "test")
-				{
-					typesVec.push_back(EnemyType::TEST);
-				}
-				else if (attributeName == "golem")
-				{
-					typesVec.push_back(EnemyType::ARCHER);
-				}
-				else if (attributeName == "minEnemies")
-				{
-					minEnemies = properties.attribute("value").as_int();
-				}
-				else if (attributeName == "maxEnemies")
-				{
-					maxEnemies = properties.attribute("value").as_int();
-				}
-				else if (attributeName == "level")
-				{
-					level = properties.attribute("value").as_int(); 
-				}
-			}
-
-			GroupInfo ret(typesVec, spawnRect, minEnemies, maxEnemies, level); 
-			App->entityFactory->spawngroups.push_back(ret);
-			typesVec.clear();
-		}
-
-	}
-
-	return ret;
-}*/
 
 
 // Load map general properties
@@ -665,7 +551,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	return ret;
 }
 
-bool j1Map::LoadMapColliders(pugi::xml_node& node)//, MapObjects* obj)
+/*bool j1Map::LoadMapColliders(pugi::xml_node& node)//, MapObjects* obj)
 {
 	bool ret = true;
 
@@ -682,29 +568,17 @@ bool j1Map::LoadMapColliders(pugi::xml_node& node)//, MapObjects* obj)
 		// Load custom properties
 		LoadProperties(objectGroup, newObject->properties);
 
-		//bool counted = false;
-
-		// iterate all objects
-		int i = 0; // to allocate i colliders at once on new MapObject pointer for map reference?, not implemented yet
-
+	
+		int i = 0; 
 		for (pugi::xml_node object = objectGroup.child("object"); object; object = object.next_sibling("object"))
 		{
-			// count the num of objects
-			/*if (!counted)
-			{
-			for (pugi::xml_node objectCounter = objectGroup.child("object"); object; object = object.next_sibling("object"))
-			{
-			++i;
-			}
-			counted = true;
-			}*/
+			
 
 			colliderRect.x = object.attribute("x").as_int(0);
 			colliderRect.y = object.attribute("y").as_int(0);
 			colliderRect.h = object.attribute("height").as_int(0);
 			colliderRect.w = object.attribute("width").as_int(0);
-			// create collider type of
-			// increments counter
+		
 			++i;
 		}
 
@@ -713,6 +587,56 @@ bool j1Map::LoadMapColliders(pugi::xml_node& node)//, MapObjects* obj)
 	}
 
 	return ret;
+}*/
+
+
+
+bool j1Map::LoadMapObjects(pugi::xml_node& node)
+{
+	bool ret = true;
+
+	for (auto object = node.child("object"); object && ret; object = object.next_sibling("object"))
+	{
+
+		std::string ObjectName = object.attribute("name").as_string();
+		if (ObjectName == "floor")
+		{
+			
+			// TODO: just add a collider
+
+			SDL_Rect worldPos;
+			worldPos.x = object.attribute("x").as_int() - data.tile_width;
+			worldPos.y = object.attribute("y").as_int() - data.tile_height;
+			worldPos.w = object.attribute("width").as_int();
+			worldPos.h = object.attribute("height").as_int();
+
+			App->collision->AddCollider(worldPos, COLLIDER_TYPE::COLLIDER_FLOOR); 
+		}
+
+		else if (ObjectName == "staticPlatform")
+		{
+			// TODO: Create an static entity, no need for texture, map already prints it there      
+
+			SDL_Rect worldPos; 
+			worldPos.x = object.attribute("x").as_int();
+			worldPos.y = object.attribute("y").as_int();
+			worldPos.w = object.attribute("width").as_int();
+			worldPos.h = object.attribute("height").as_int();
+
+			uint heightLevel = object.attribute("heightLevel").as_int();
+
+			App->entityFactory->CreatePlatform(ENTITY_TYPE::ENTITY_STATIC, worldPos, heightLevel, "platform");
+		}
+
+		else if (ObjectName == "dynamicPlatform")
+		{
+			// TODO: Make a movable entity, but whats up with the texture? hahah, we will see       
+		}
+
+	}
+
+	return ret; 
+	
 }
 
 // Load a group of properties from a node and fill a list with it
@@ -785,26 +709,3 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	return ret;
 }
 
-void j1Map::ToggleDebugDraw()
-{
-	debugDraw = !debugDraw;
-}
-
-void j1Map::DebugDraw()
-{
-	// isometric debug grids
-	// parallel to x
-	for (int x = 0; x < data.height + 1; ++x)
-	{
-		iPoint startPoint = MapToWorld(1, x);
-		iPoint finalPoint = MapToWorld(data.height + 1, x);
-		App->render->DrawLine(startPoint.x, startPoint.y, finalPoint.x, finalPoint.y, 0, 255, 0);
-	}
-	// parallel to y
-	for (int j = 1; j < data.width + 2; ++j)
-	{
-		iPoint startPoint = MapToWorld(j, 0);
-		iPoint finalPoint = MapToWorld(j, data.width);
-		App->render->DrawLine(startPoint.x, startPoint.y, finalPoint.x, finalPoint.y, 0, 255, 0);
-	}
-}

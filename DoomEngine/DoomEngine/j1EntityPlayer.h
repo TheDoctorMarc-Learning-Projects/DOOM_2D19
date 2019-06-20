@@ -84,11 +84,12 @@ private:
 	Animation run; 
 	bool aiming = false;
 	myState state; 
-	float lastSpeed = 0; 
+	fPoint lastSpeed = fPoint(0,0);
 	SpeedBlocked speedBlocked; 
 	jumpData jumpInfo; 
 	float momentumFactor = 10.f; 
 	float momentum(float speed) { return speed * momentumFactor; };
+	SDL_Rect lastPosCollider; 
 
 	// TODO: not only here, but in enemy cpp, add more anims, apart from idle
 

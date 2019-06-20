@@ -10,7 +10,9 @@
 
 #include <ctime>
 #include <algorithm>
+
 #include "j1EntityPlayer.h"
+#include "j1EntityPlatform.h"
 
 
 #include <assert.h>
@@ -164,6 +166,7 @@ j1Entity* j1EntityFactory::CreateEntity(ENTITY_TYPE type, int positionX, int pos
 		ret = DBG_NEW j1EntityPlayer(positionX, positionY); 
 		break;
 
+
 	default:
 		break;
 	}
@@ -173,6 +176,29 @@ j1Entity* j1EntityFactory::CreateEntity(ENTITY_TYPE type, int positionX, int pos
 
 	return ret;
 }
+
+j1Entity* j1EntityFactory::CreatePlatform(ENTITY_TYPE type, SDL_Rect placing, int heightLevel, std::string name)
+{
+
+	j1Entity* ret = nullptr;
+
+	switch (type)
+	{
+
+	case ENTITY_STATIC:
+		ret = DBG_NEW j1EntityPlatform(placing, heightLevel);
+		break;
+
+	default:
+		break;
+	}
+
+	if (ret)
+		entities.push_back(ret);
+
+	return ret;
+}
+
 
 /*Enemy * j1EntityFactory::CreateEnemy(EnemyType etype,iPoint pos, bool dummy)
 {

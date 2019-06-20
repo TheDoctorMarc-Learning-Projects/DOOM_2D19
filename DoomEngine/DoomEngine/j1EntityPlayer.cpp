@@ -75,6 +75,8 @@ bool j1EntityPlayer::PostUpdate()
 
 bool j1EntityPlayer::CleanUp()
 {
+
+	collider->to_delete = true; 
 	
 	if (entityTex != nullptr)
 		App->tex->UnLoad(entityTex);
@@ -99,11 +101,12 @@ bool j1EntityPlayer::Move(float dt)
 {
 
 	previousPosition = position;
-
+	lastPosCollider = collider->rect; 
 
 	Sint16 xAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
 	Sint16 yAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY);
 
+	// - - - - - - - - - - - - - - - - - - horizontal movement
 	if (xAxis > 0 || xAxis < 0)
 	{
 
@@ -111,9 +114,9 @@ bool j1EntityPlayer::Move(float dt)
 		currentAnimation = &run;
 
 		
-			lastSpeed = (xAxis * speed) * dt;
+			lastSpeed.x = (xAxis * speed) * dt;
 
-			position.x += lastSpeed;
+			position.x += lastSpeed.x;
 
 			//if(state.movement.at(0) == MovementState::IDLE)
 
@@ -132,6 +135,7 @@ bool j1EntityPlayer::Move(float dt)
 		}
 	 
 		currentAnimation = &idle;
+		lastSpeed.x = 0; 
 	}
 		
 
@@ -143,9 +147,9 @@ bool j1EntityPlayer::Move(float dt)
 
 		  
 	}*/
+ 
 
-	// jump in the direction of joystick: 
-
+	// - - - - - - - - - - - - - - - - - - vertical movement
 
 	if(App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_A))
 		if (yAxis <= 0)
@@ -162,10 +166,23 @@ bool j1EntityPlayer::Move(float dt)
 			}
 	
 	if (!onPlatform)
-		if(state.movement.at(1) == MovementState::FALL)
-			position.y += GravityCalc(gravityFactor, mass) * dt;
-		else if(state.movement.at(1) == MovementState::JUMP)
-			position.y += (-(jumpInfo.currenJumpPower *= jumpInfo.jumpIncrementFactor)) + GravityCalc(gravityFactor, mass) * dt;
+	{
+		if (state.movement.at(1) == MovementState::FALL)
+		{
+			lastSpeed.y = GravityCalc(gravityFactor, mass) * dt;
+			position.y += lastSpeed.y;
+		}
+
+		else if (state.movement.at(1) == MovementState::JUMP)
+		{
+			lastSpeed.y = (-(jumpInfo.currenJumpPower *= jumpInfo.jumpIncrementFactor)) + GravityCalc(gravityFactor, mass) * dt;
+			position.y += lastSpeed.y;
+		}
+
+	}
+	else
+		lastSpeed.y = 0; 
+		
 	
 
 	if (position.y > previousPosition.y && state.movement.at(1) == MovementState::JUMP)
@@ -189,10 +206,22 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
 		if (state.movement.at(1) != MovementState::JUMP)
 		{
-			onPlatform = true;
-			ResetGravity();
+			if (!onPlatform)
+			{
+				if (collider->rect.y + collider->rect.h > c2->rect.y && lastSpeed.y > 0)
+				{
+					float offset = collider->rect.y + collider->rect.h - c2->rect.y;
+					position.y -= offset; 
 
-			state.movement.at(1) = MovementState::NOT_ACTIVE;   // jump or fall not active
+					onPlatform = true;
+					ResetGravity();
+
+					state.movement.at(0) = MovementState::IDLE; 
+					state.movement.at(1) = MovementState::NOT_ACTIVE;   // jump or fall not active
+				}
+
+			}
+		
 
 		}
 		break; 
@@ -222,12 +251,20 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 	switch (c2->type)
 	{
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
-		if (state.movement.at(1) != MovementState::JUMP)
+		if (state.movement.at(1) != MovementState::JUMP && state.movement.at(0) != MovementState::IDLE)
 		{
-			onPlatform = false;
-			ResetGravity();
+			if (onPlatform)
+			{
+				if (lastSpeed.y > 0); 
+				{
+					onPlatform = false;
+					ResetGravity();
 
-			state.movement.at(1) = MovementState::FALL; 
+					state.movement.at(1) = MovementState::FALL;
+				}
+				
+			}
+			 
 		}
 		break;
 
@@ -235,10 +272,13 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 	case COLLIDER_TYPE::COLLIDER_WIN:
 		if (state.movement.at(1) != MovementState::JUMP)
 		{
-			onPlatform = false;
-			ResetGravity();
+			if (onPlatform)
+			{
+				onPlatform = false;
+				ResetGravity();
 
-			state.movement.at(1) = MovementState::FALL;
+				state.movement.at(1) = MovementState::FALL;
+			}
 		}
 		break;
 	}
@@ -248,9 +288,9 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 POINTING_DIR j1EntityPlayer::GetDirection()
 {
 
-	if (lastSpeed < 0)
+	if (lastSpeed.x < 0)
 		return pointingDir = POINTING_DIR::LEFT;
-	else if (lastSpeed > 0)
+	else if (lastSpeed.x > 0)
 		return pointingDir = POINTING_DIR::RIGHT;
 	
 	return pointingDir;     // no speed results in no dir change

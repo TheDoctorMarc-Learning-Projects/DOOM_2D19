@@ -5,6 +5,7 @@
 #include "p2Log.h"
 #include "Brofiler/Brofiler.h"
 #include "Color.h"
+#include "j1Entity.h"
 
 j1Collision::j1Collision()
 {
@@ -128,29 +129,30 @@ bool j1Collision::PreUpdate()
 
 			c2 = colliders[k];
 
-			if (c1->CheckCollision(c2->rect) == true)
+			if (c1->CheckCollision(c2->rect) == false)
 			{
-				if (matrix[c1->type][c2->type] && c1->callback)
-				{
-					c1->callback->OnCollision(c1, c2);
-					doCollisionAssignment(c1, c2); 
-				}
-					
-				if (matrix[c2->type][c1->type] && c2->callback)
-				{
-					c2->callback->OnCollision(c2, c1);
-					doCollisionAssignment(c2, c1); 
-			 	}
-					
-			}
-			else      // useful when colliders "exit" a collision
-			{
+				// useful when colliders "exit" a collision
 				if (matrix[c1->type][c2->type] && c1->callback)
 					doCollisionDeAssignment(c1, c2);
 
 				if (matrix[c2->type][c1->type] && c2->callback)
 					doCollisionDeAssignment(c2, c1);
-		
+
+			}
+			else     
+			{
+				if (matrix[c1->type][c2->type] && c1->callback)
+				{
+					c1->callback->OnCollision(c1, c2);
+					doCollisionAssignment(c1, c2);
+				}
+
+				if (matrix[c2->type][c1->type] && c2->callback)
+				{
+					c2->callback->OnCollision(c2, c1);
+					doCollisionAssignment(c2, c1);
+				}
+
 			}
 		}
 	}
@@ -330,13 +332,19 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* 
 bool Collider::CheckCollision(const SDL_Rect& r) 
 {
 	BROFILER_CATEGORY("Collision CheckCollision", Profiler::Color::DeepSkyBlue);
-	bool ret = false;
-
+	/*bool ret = false;
 
 	if (r.x + r.w > rect.x && r.x < rect.x + rect.w && r.y + r.h > rect.y && r.y < rect.h + rect.y)
 		ret = true;
 
+	return ret;*/
 
+	bool ret = true;
+
+	if (r.x + r.w < rect.x) ret = false;
+	else if (r.x > rect.x + rect.w) ret = false;
+	else if (r.y + r.h < rect.y)ret = false;
+	else if (r.y > rect.h + rect.y)ret = false;
 
 	return ret;
 }

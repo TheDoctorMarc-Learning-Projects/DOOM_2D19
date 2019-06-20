@@ -2,7 +2,6 @@
 #define __j1COLLISION_H__
 
 #include "j1Module.h"
-#include "j1Entity.h"
 #include "p2Point.h"
 #include <list>
 

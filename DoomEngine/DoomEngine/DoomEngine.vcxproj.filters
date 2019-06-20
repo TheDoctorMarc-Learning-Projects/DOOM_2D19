@@ -96,6 +96,9 @@
     <ClCompile Include="j1EntityPlayer.cpp">
       <Filter>Code\Core\In-Game\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="j1EntityPlatform.cpp">
+      <Filter>Code\Core\In-Game\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h">
@@ -177,6 +180,9 @@
       <Filter>Code\Help</Filter>
     </ClInclude>
     <ClInclude Include="j1EntityPlayer.h">
+      <Filter>Code\Core\In-Game\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityPlatform.h">
       <Filter>Code\Core\In-Game\Entities</Filter>
     </ClInclude>
   </ItemGroup>

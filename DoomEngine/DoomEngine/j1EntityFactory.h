@@ -40,6 +40,8 @@ public:
 
 	// entities constructors -------
 	j1Entity* CreateEntity(ENTITY_TYPE type, int positionX, int positionY, std::string name);
+	j1Entity* CreatePlatform(ENTITY_TYPE type, SDL_Rect placing, int heightLevel, std::string name);
+
 	/*Enemy* CreateEnemy(EnemyType etype, iPoint pos, bool dummy = false);                            // TODO: rework this when enemies available
 	std::vector<j1Entity*> CreateEnemiesGroup(std::vector<EnemyType> enemyTypes, SDL_Rect zone, uint minNum, uint maxNum, uint groupLevel = 0);*/
 	//void LoadSpawnGroups();
@@ -56,7 +58,6 @@ public:
 	std::list<j1Entity*>	entities;
 	j1EntityPlayer* player = nullptr; 
 
-	// TODO: Player as a separate entity, have it here, etc
 	
 
 };

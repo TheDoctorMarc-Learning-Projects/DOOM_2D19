@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="278" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="1">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="278" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="11">
  <tileset firstgid="1" name="qzNJ1V6_3x (1)" tilewidth="32" tileheight="32" tilecount="2520" columns="140">
   <image source="textures/background_level1.png" width="4488" height="600"/>
  </tileset>
@@ -5014,6 +5014,29 @@
    <tile gid="2518"/>
   </data>
  </layer>
+ <objectgroup id="6" name="Objects">
+  <object id="1" name="staticPlatform" x="160" y="320" width="192" height="32">
+   <properties>
+    <property name="heightLevel" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="7" name="staticPlatform" x="448" y="224" width="192" height="32">
+   <properties>
+    <property name="heightLevel" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="8" name="staticPlatform" x="448" y="416" width="224" height="32">
+   <properties>
+    <property name="heightLevel" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="9" name="staticPlatform" x="896" y="224" width="192" height="32">
+   <properties>
+    <property name="heightLevel" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="10" name="floor" x="0" y="544" width="8896" height="32"/>
+ </objectgroup>
  <layer id="5" name="Floor" width="278" height="18">
   <data>
    <tile/>
@@ -6976,6 +6999,12 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
    <tile/>
    <tile/>
    <tile/>
@@ -6984,6 +7013,12 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
    <tile/>
    <tile/>
    <tile/>
@@ -7789,6 +7824,12 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8626,31 +8667,13 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
+   <tile gid="2524"/>
    <tile/>
    <tile/>
    <tile/>

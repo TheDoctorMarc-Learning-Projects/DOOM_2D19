@@ -10,7 +10,13 @@
 #include "j1Collision.h"
 #include "j1EntityPlayer.h"
 
+
 j1Entity::j1Entity(ENTITY_TYPE type, float positionX, float positionY,std::string name) : type(type), position(positionX,positionY), name(name)
+{
+}
+
+
+j1Entity::j1Entity(ENTITY_TYPE type, std::string name) : type(type), name(name)
 {
 }
 

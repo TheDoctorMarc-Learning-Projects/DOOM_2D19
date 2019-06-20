@@ -5,11 +5,8 @@
 #include <list>
 #include "p2Point.h"
 #include "j1Module.h"
-//#include "TileQuadtree.h"    // TODO: Do not use a quadtree, BUT render only in-screen elements, check previous dev game
 
-#define MARGIN_TILE 1
-#define SUBTILE_RESOLUTION 0.5f
-#define SUBTILE_MULTIPLIER 2
+
 
 struct Properties
 {
@@ -118,10 +115,7 @@ struct MapData
 	std::list<TileSet*>		tilesets;
 	std::list<MapLayer*>	layers;
 	std::list<MapObjects>	mapObjects;
-	/*std::list<std::string>	levels;
-	std::string				loadedLevel;*/
 	Properties				properties;
-	iPoint maxTileSize; 
 };
 
 // ----------------------------------------------------
@@ -139,8 +133,6 @@ public:
 
 	// Called each loop iteration
 	void Draw();
-	void DebugDraw();
-	void ToggleDebugDraw();
 
 	// Called before quitting
 	bool CleanUp();
@@ -161,9 +153,9 @@ private:
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
-	bool LoadMapColliders(pugi::xml_node& node);
-/*	bool LoadMapAssets(pugi::xml_node& node);
-	bool LoadSpawns(pugi::xml_node& node); */
+	bool AssignColliderToObject(pugi::xml_node& node);
+    bool LoadMapObjects(pugi::xml_node& node);
+	/*bool LoadSpawns(pugi::xml_node& node); */
 
 
 public:

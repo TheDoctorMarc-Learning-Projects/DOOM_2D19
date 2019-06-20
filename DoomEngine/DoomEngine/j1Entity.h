@@ -43,6 +43,7 @@ class j1Entity
 {
 public:
 	j1Entity(ENTITY_TYPE type, float positionX, float positionY, std::string name);
+	j1Entity(ENTITY_TYPE type, std::string name);
 	j1Entity() {};
 
 

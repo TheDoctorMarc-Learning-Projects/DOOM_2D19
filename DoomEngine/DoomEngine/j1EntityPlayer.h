@@ -9,7 +9,7 @@
 
 //#define jumpPower 20.f
 
-#define jumpColliderThreshold 20
+#define jumpComfortCornerThreshold 20
 
 enum class combatState
 {
@@ -41,7 +41,7 @@ struct jumpData
 	float jumpPower = 17.f; 
 	float currenJumpPower = jumpPower; 
 	float jumpIncrementFactor = .9f;
-	float speedXIncrementJump = 1.7f; 
+	float speedXIncrementJump = 1.8f; 
 	float speedXIncrementFall = 1.3f;
 	float verticalIncrementFactor = 1.005f;    // jumpincrement reduces jump power in time, but vertical increment counteracts it a bit 
 };

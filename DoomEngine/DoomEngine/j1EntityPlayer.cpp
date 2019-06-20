@@ -232,8 +232,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 					{
 						if (lastSpeed.y > 0)
 						{
-							if ((lastAirPos.x + lastPosCollider.w < c2->rect.x && lastSpeed.x > 0)
-								|| (lastAirPos.x > c2->rect.x + c2->rect.w) && lastSpeed.x < 0)    // when last ground was to the left and you go right or it was in the right and you go left 
+							if (lastAirPos.y + lastPosCollider.h - jumpComfortCornerThreshold > c2->rect.y)    //prevent the case when falling, and colliding laterally  
 							{
 								float offset = 0.f;
 								if (lastSpeed.x > 0)

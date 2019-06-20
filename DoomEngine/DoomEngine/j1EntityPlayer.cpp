@@ -113,8 +113,14 @@ bool j1EntityPlayer::Move(float dt)
 
 		currentAnimation = &run;
 
-		
+		if (state.movement.at(1) != MovementState::NOT_ACTIVE)
+		{
+			lastSpeed.x = (xAxis * speed) * jumpInfo.speedXIncrement * dt;
+		}
+		else
 			lastSpeed.x = (xAxis * speed) * dt;
+			
+			
 
 			position.x += lastSpeed.x;
 
@@ -175,7 +181,12 @@ bool j1EntityPlayer::Move(float dt)
 
 		else if (state.movement.at(1) == MovementState::JUMP)
 		{
-			lastSpeed.y = (-(jumpInfo.currenJumpPower *= jumpInfo.jumpIncrementFactor)) + GravityCalc(gravityFactor, mass) * dt;
+			if(lastSpeed.x == 0)
+				lastSpeed.y = (-(jumpInfo.currenJumpPower *= jumpInfo.jumpIncrementFactor * jumpInfo.verticalIncrementFactor)) + GravityCalc(gravityFactor, mass) * dt;
+
+			else 
+				lastSpeed.y = (-(jumpInfo.currenJumpPower *= jumpInfo.jumpIncrementFactor)) + GravityCalc(gravityFactor, mass) * dt;
+
 			position.y += lastSpeed.y;
 
 			if (lastSpeed.y > 0)

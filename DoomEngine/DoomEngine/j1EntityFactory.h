@@ -11,7 +11,7 @@
 #include "j1EntityPlayer.h"
 
 #define DEFAULT_GRAV 50.f	
-#define MAX_GRAV 300.f
+#define MAX_GRAV 550.f
 
 inline float GravityCalc(float& gm, float& m)  // g  and mass inline calc container
 {

@@ -5015,22 +5015,22 @@
   </data>
  </layer>
  <objectgroup id="6" name="Objects">
-  <object id="1" name="staticPlatform" x="160" y="320" width="192" height="32">
+  <object id="1" name="staticPlatform" x="160" y="384" width="192" height="32">
    <properties>
     <property name="heightLevel" type="int" value="2"/>
    </properties>
   </object>
-  <object id="7" name="staticPlatform" x="448" y="224" width="192" height="32">
+  <object id="7" name="staticPlatform" x="480" y="320" width="192" height="32">
    <properties>
     <property name="heightLevel" type="int" value="3"/>
    </properties>
   </object>
-  <object id="8" name="staticPlatform" x="448" y="416" width="224" height="32">
+  <object id="8" name="staticPlatform" x="448" y="448" width="224" height="32">
    <properties>
     <property name="heightLevel" type="int" value="1"/>
    </properties>
   </object>
-  <object id="9" name="staticPlatform" x="896" y="224" width="192" height="32">
+  <object id="9" name="staticPlatform" x="896" y="288" width="192" height="32">
    <properties>
     <property name="heightLevel" type="int" value="3"/>
    </properties>
@@ -6999,12 +6999,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
    <tile/>
    <tile/>
    <tile/>
@@ -7013,12 +7007,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
    <tile/>
    <tile/>
    <tile/>
@@ -7581,6 +7569,12 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
    <tile/>
    <tile/>
    <tile/>
@@ -7824,12 +7818,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
    <tile/>
    <tile/>
    <tile/>
@@ -7846,6 +7834,12 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8386,6 +8380,12 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8667,13 +8667,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
-   <tile gid="2524"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8952,6 +8945,13 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
    <tile/>
    <tile/>
    <tile/>

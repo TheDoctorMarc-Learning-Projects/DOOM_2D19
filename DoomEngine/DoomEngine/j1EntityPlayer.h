@@ -38,9 +38,11 @@ struct myState
 
 struct jumpData
 {
-	float jumpPower = 16.f; 
+	float jumpPower = 17.f; 
 	float currenJumpPower = jumpPower; 
-	float jumpIncrementFactor = .88f; 
+	float jumpIncrementFactor = .9f;
+	float speedXIncrement = 1.7f; 
+	float verticalIncrementFactor = 1.005f;    // jumpincrement reduces jump power in time, but vertical increment counteracts it a bit 
 };
 
 struct SpeedBlocked

@@ -151,7 +151,7 @@ bool j1EntityPlayer::Move(float dt)
 
 	// - - - - - - - - - - - - - - - - - - vertical movement
 
-	if(App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_A))
+	if(App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
 		if (yAxis <= 0)
 			if (onPlatform)
 			{
@@ -177,6 +177,10 @@ bool j1EntityPlayer::Move(float dt)
 		{
 			lastSpeed.y = (-(jumpInfo.currenJumpPower *= jumpInfo.jumpIncrementFactor)) + GravityCalc(gravityFactor, mass) * dt;
 			position.y += lastSpeed.y;
+
+			if (lastSpeed.y > 0)
+				state.movement.at(1) == MovementState::FALL;
+
 		}
 
 	}
@@ -207,23 +211,57 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 		if (state.movement.at(1) != MovementState::JUMP)
 		{
 			if (!onPlatform)
-			{
-				if (collider->rect.y + collider->rect.h > c2->rect.y && lastSpeed.y > 0)
+			{                                             // Y - top to bottom
+				
+				if (collider->rect.y + collider->rect.h > c2->rect.y)
 				{
-					float offset = collider->rect.y + collider->rect.h - c2->rect.y;
-					position.y -= offset; 
+					if (lastSpeed.y > 0)
+					{
+						float offset = collider->rect.y + collider->rect.h - c2->rect.y;  // to put back player if it goes off a bit
+						position.y -= offset;
 
-					onPlatform = true;
-					ResetGravity();
+						onPlatform = true;
+						ResetGravity();
 
-					state.movement.at(0) = MovementState::IDLE; 
-					state.movement.at(1) = MovementState::NOT_ACTIVE;   // jump or fall not active
-				}
+						state.movement.at(0) = MovementState::IDLE;
+						state.movement.at(1) = MovementState::NOT_ACTIVE;   // jump or fall not active
+
+						collider->SetPos(position.x, position.y);
+					}
+				
+				}                                                
+			
 
 			}
-		
 
 		}
+		else if (state.movement.at(1) == MovementState::JUMP)
+		{
+			// Y - bottom to top                                   
+			if (collider->rect.y < c2->rect.y + c2->rect.h)
+			{
+				if (lastSpeed.y < 0)
+				{
+					float offset = c2->rect.y + c2->rect.h - collider->rect.y;   // to put back player if it goes off a bit
+					position.y += offset;
+
+					onPlatform = false;
+					ResetGravity();
+
+					state.movement.at(1) = MovementState::FALL;
+
+					collider->SetPos(position.x, position.y);
+				}
+
+			
+
+			}
+			
+
+		}
+
+
+
 		break; 
 	/*case COLLIDER_TYPE::COLLIDER_WALL:
 		if (state.movement.at(1) != MovementState::JUMP)
@@ -269,7 +307,7 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 		break;
 
 
-	case COLLIDER_TYPE::COLLIDER_WIN:
+/*	case COLLIDER_TYPE::COLLIDER_WALL:
 		if (state.movement.at(1) != MovementState::JUMP)
 		{
 			if (onPlatform)
@@ -280,9 +318,9 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 				state.movement.at(1) = MovementState::FALL;
 			}
 		}
-		break;
+		break;*/
 	}
-
+	
 }
 
 POINTING_DIR j1EntityPlayer::GetDirection()

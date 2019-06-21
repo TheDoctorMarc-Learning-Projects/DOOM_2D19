@@ -92,7 +92,7 @@ bool j1Render::Update(float dt)
 
 
 
-	LOG("Camera x = %i and y = %i", camera.x, camera.y); 
+	//LOG("Camera x = %i and y = %i", camera.x, camera.y); 
 
 
 

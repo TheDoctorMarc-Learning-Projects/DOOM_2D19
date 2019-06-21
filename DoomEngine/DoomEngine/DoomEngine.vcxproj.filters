@@ -31,6 +31,15 @@
     <Filter Include="Code\Core\In-Screen">
       <UniqueIdentifier>{003c2b20-e5c7-4632-ba70-989a10061bf0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Core\In-Game\Entities\core">
+      <UniqueIdentifier>{2d864d1f-a3e8-4bcd-940c-b954c242de83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Core\In-Game\Entities\animated">
+      <UniqueIdentifier>{83906c81-5f58-4cf9-9718-0155e843330d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Core\In-Game\Entities\inanimated">
+      <UniqueIdentifier>{ea99eab3-0146-43a1-ae8f-51326ed0a0f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="j1App.cpp">
@@ -84,20 +93,23 @@
     <ClCompile Include="j1PathFinding.cpp">
       <Filter>Code\Core\In-Game</Filter>
     </ClCompile>
-    <ClCompile Include="j1Entity.cpp">
-      <Filter>Code\Core\In-Game\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="j1EntityFactory.cpp">
-      <Filter>Code\Core\In-Game\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Color.cpp">
       <Filter>Code\Help</Filter>
     </ClCompile>
-    <ClCompile Include="j1EntityPlayer.cpp">
-      <Filter>Code\Core\In-Game\Entities</Filter>
+    <ClCompile Include="j1Entity.cpp">
+      <Filter>Code\Core\In-Game\Entities\core</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EntityFactory.cpp">
+      <Filter>Code\Core\In-Game\Entities\core</Filter>
     </ClCompile>
     <ClCompile Include="j1EntityPlatform.cpp">
-      <Filter>Code\Core\In-Game\Entities</Filter>
+      <Filter>Code\Core\In-Game\Entities\inanimated</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EntityPlayer.cpp">
+      <Filter>Code\Core\In-Game\Entities\animated</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EntityPlatformDynamic.cpp">
+      <Filter>Code\Core\In-Game\Entities\inanimated</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,20 +182,23 @@
     <ClInclude Include="j1PathFinding.h">
       <Filter>Code\Core\In-Game</Filter>
     </ClInclude>
-    <ClInclude Include="j1Entity.h">
-      <Filter>Code\Core\In-Game\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="j1EntityFactory.h">
-      <Filter>Code\Core\In-Game\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>Code\Help</Filter>
     </ClInclude>
-    <ClInclude Include="j1EntityPlayer.h">
-      <Filter>Code\Core\In-Game\Entities</Filter>
+    <ClInclude Include="j1Entity.h">
+      <Filter>Code\Core\In-Game\Entities\core</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityFactory.h">
+      <Filter>Code\Core\In-Game\Entities\core</Filter>
     </ClInclude>
     <ClInclude Include="j1EntityPlatform.h">
-      <Filter>Code\Core\In-Game\Entities</Filter>
+      <Filter>Code\Core\In-Game\Entities\inanimated</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityPlayer.h">
+      <Filter>Code\Core\In-Game\Entities\animated</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityPlatformDynamic.h">
+      <Filter>Code\Core\In-Game\Entities\inanimated</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

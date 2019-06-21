@@ -22,10 +22,12 @@ public:
 	bool CleanUp();
 
 
+	//void Draw() override; 
+
 	// todo, movable platforms load and save (Xd) 
 
 public:
 	int heightLevel = 0;
 }; 
 
-#endif _J1ENTITY_PLATFORM_H__
+#endif 

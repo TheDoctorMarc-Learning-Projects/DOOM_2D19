@@ -1,6 +1,5 @@
 #include "j1App.h"
 #include "j1Entity.h"
-#include "j1Render.h"
 #include "j1EntityFactory.h"
 #include "j1Window.h"
 #include "p2Log.h"
@@ -73,10 +72,24 @@ void j1Entity::Draw()
 
 	//AdjustColliderToAnimFrame(); 
 
-	if (entityTex != nullptr) 
-		App->render->Blit(entityTex, position.x, position.y, &currentAnimation->GetCurrentFrame(), 1.f, flip, spriteScale);
-	else 
-		App->render->Blit(App->entityFactory->atlasTexture, position.x, position.y, &currentAnimation->GetCurrentFrame(), 1.f, flip, spriteScale);
+	if (entityTex != nullptr)
+	{
+		if(section.w > 0 && section.h > 0)
+			App->render->Blit(entityTex, position.x, position.y, &section, 1.f, SDL_FLIP_NONE, spriteScale);
+		else if(currentAnimation)
+			App->render->Blit(entityTex, position.x, position.y, &currentAnimation->GetCurrentFrame(), 1.f, flip, spriteScale);
+		
+	}
+		
+	else
+	{
+		if (section.w > 0 && section.h > 0)
+			App->render->Blit(App->entityFactory->atlasTexture, position.x, position.y, &section, 1.f, SDL_FLIP_NONE, spriteScale);
+		else if(currentAnimation)
+			App->render->Blit(App->entityFactory->atlasTexture, position.x, position.y, &currentAnimation->GetCurrentFrame(), 1.f, flip, spriteScale);
+	
+	}
+		
 
 		
 

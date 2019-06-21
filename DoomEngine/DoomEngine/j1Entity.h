@@ -8,12 +8,11 @@
 #include "j1Module.h"
 #include "j1Textures.h"
 #include "j1Collision.h"
+#include "j1Render.h"
 
 #include "SDL_image/include/SDL_image.h"
 
 #include <math.h>
-
-
 
 enum ENTITY_TYPE  // todo, pass to class
 {
@@ -29,7 +28,6 @@ enum POINTING_DIR
 	RIGHT,
 	LEFT
 };
-
 
 class Collider; 
 
@@ -71,10 +69,10 @@ public:
 
 	void ResetGravity(); 
 
-	void AdjustColliderToAnimFrame(); 
 
 public:
 	SDL_Rect atlasRect;
+	SDL_Rect section = {0, 0, 0, 0};
 	bool					to_delete = false;
 	bool					to_die = false; 
 	bool                    onPlatform = false; 

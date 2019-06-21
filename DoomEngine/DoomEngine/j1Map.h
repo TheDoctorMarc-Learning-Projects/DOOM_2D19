@@ -5,8 +5,11 @@
 #include <list>
 #include "p2Point.h"
 #include "j1Module.h"
+#include "SDL/include/SDL.h"
 
-
+struct SDL_Rect; 
+struct SDL_Texture; 
+struct SDL_Color; 
 
 struct Properties
 {
@@ -153,7 +156,6 @@ private:
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
-	bool AssignColliderToObject(pugi::xml_node& node);
     bool LoadMapObjects(pugi::xml_node& node);
 	/*bool LoadSpawns(pugi::xml_node& node); */
 

@@ -21,7 +21,7 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY) : j1Entity(PLAYER, posX , pos
 	position = previousPosition = fPoint(posX, posY); 
 	pointingDir = RIGHT;
 	size.create(34, 53);
-	speed = .0035f; 
+	speed = .0055f; 
 	mass = 1.f; 
 	gravityFactor = DEFAULT_GRAV * mass; 
 	state.combat = combatState::IDLE;
@@ -63,7 +63,6 @@ bool j1EntityPlayer::PreUpdate()
 bool j1EntityPlayer::Update(float dt)
 {
 
-	Move(dt);
 	return true;
 }
 
@@ -108,7 +107,17 @@ bool j1EntityPlayer::Move(float dt)
 		lastAirPos = position;
 
 
-		
+	// dirty stuff just to debug for the mom 
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+		godMode = !godMode; 
+	
+	if (godMode)
+		jumpInfo.jumpPower = 40.f;
+	else
+		jumpInfo.jumpPower = 17.f; 
+
+
 
 	lastPosCollider = collider->rect; 
 

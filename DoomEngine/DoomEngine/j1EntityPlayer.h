@@ -3,9 +3,10 @@
 
 #include "p2Point.h"
 #include "p2Animation.h"
-#include "j1Entity.h"
 #include "j1Render.h"
 #include <array>
+
+#include "j1Entity.h"
 
 //#define jumpPower 20.f
 
@@ -38,12 +39,12 @@ struct myState
 
 struct jumpData
 {
-	float jumpPower = 17.f; 
+	float jumpPower = 24.f; 
 	float currenJumpPower = jumpPower; 
 	float jumpIncrementFactor = .9f;
-	float speedXIncrementJump = 1.8f; 
-	float speedXIncrementFall = 1.3f;
-	float verticalIncrementFactor = 1.005f;    // jumpincrement reduces jump power in time, but vertical increment counteracts it a bit 
+	float speedXIncrementJump = 2.4f; 
+	float speedXIncrementFall = 1.7f;
+	float verticalIncrementFactor = 1.02f;    // jumpincrement reduces jump power in time, but vertical increment counteracts it a bit 
 };
 
 struct SpeedBlocked
@@ -53,6 +54,7 @@ struct SpeedBlocked
 	bool RY = false; 
 	bool LY = false; 
 };
+class j1Entity; 
 
 class j1EntityPlayer : public j1Entity
 {
@@ -96,13 +98,14 @@ private:
 	float momentum(float speed) { return speed * momentumFactor; };
 	SDL_Rect lastPosCollider; 
 
-	// TODO: not only here, but in enemy cpp, add more anims, apart from idle
+	
+	bool godMode = false; 
 
-
+	
 
 	friend class j1Entity; 
 
 
 };
 
-#endif _J1ENTITY_PLAYER_H__
+#endif 

@@ -80,7 +80,7 @@ void j1Map::Draw()
 		{
 			for (int j = 0; j < data.height; ++j)
 			{
-				if (App->render->IsOnCamera(MapToWorld(i, j).x, MapToWorld(i, j).y, data.tile_width * j, data.tile_height * i))
+				if (App->render->IsOnCamera(MapToWorld(i - 1, j).x, MapToWorld(i, j).y, data.tile_width * i, data.tile_height * j))
 				{
 					int tile_id = layer->Get(i, j);
 					if (tile_id > 0)
@@ -98,7 +98,7 @@ void j1Map::Draw()
 					}
 			
 				}
-
+			
 			}
 
 		}
@@ -597,31 +597,23 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 
 	for (auto object = node.child("object"); object && ret; object = object.next_sibling("object"))
 	{
+		SDL_Rect worldPos;
+		worldPos.x = object.attribute("x").as_int() - data.tile_width;
+		worldPos.y = object.attribute("y").as_int() - data.tile_height;
+		worldPos.w = object.attribute("width").as_int();
+		worldPos.h = object.attribute("height").as_int();
 
 		std::string ObjectName = object.attribute("name").as_string();
 		if (ObjectName == "floor")
 		{
 			
 			// TODO: just add a collider
-
-			SDL_Rect worldPos;
-			worldPos.x = object.attribute("x").as_int() - data.tile_width;
-			worldPos.y = object.attribute("y").as_int() - data.tile_height;
-			worldPos.w = object.attribute("width").as_int();
-			worldPos.h = object.attribute("height").as_int();
-
 			App->collision->AddCollider(worldPos, COLLIDER_TYPE::COLLIDER_FLOOR); 
 		}
 
 		else if (ObjectName == "staticPlatform")
 		{
 			// TODO: Create an static entity, no need for texture, map already prints it there      
-
-			SDL_Rect worldPos; 
-			worldPos.x = object.attribute("x").as_int();
-			worldPos.y = object.attribute("y").as_int();
-			worldPos.w = object.attribute("width").as_int();
-			worldPos.h = object.attribute("height").as_int();
 
 			uint heightLevel = object.attribute("heightLevel").as_int();
 
@@ -630,7 +622,12 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 
 		else if (ObjectName == "dynamicPlatform")
 		{
-			// TODO: Make a movable entity, but whats up with the texture? hahah, we will see       
+			// TODO: Make a movable entity
+
+			uint heightLevel = object.attribute("heightLevel").as_int();
+
+			App->entityFactory->CreatePlatform(ENTITY_TYPE::ENTITY_DYNAMIC, worldPos, heightLevel, "platform",
+				0, SceneState::LEVEL1, AXIS_Movement::HORIZONTAL);
 		}
 
 	}

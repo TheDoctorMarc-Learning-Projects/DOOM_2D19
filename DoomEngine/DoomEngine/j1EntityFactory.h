@@ -2,20 +2,22 @@
 #define __J1ENTITYFACTORY_H__
 
 #include "j1Module.h"
-#include "j1Entity.h"
+//#include "j1Entity.h"
 
 #include <vector>
 #include <list>
 #include "Color.h"
 #include "j1Map.h"
 #include "j1EntityPlayer.h"
+#include "j1EntityPlatformDynamic.h"
+#include "j1Scene.h"
 
-#define DEFAULT_GRAV 50.f	
+#define DEFAULT_GRAV 100.f	
 #define MAX_GRAV 550.f
 
 inline float GravityCalc(float& gm, float& m)  // g  and mass inline calc container
 {
-	 (gm < MAX_GRAV / m) ? gm *= 1.02f : gm = MAX_GRAV * m;
+	 (gm < MAX_GRAV / m) ? gm *= 1.05f : gm = MAX_GRAV * m;
 
 	 return gm;
 }
@@ -40,7 +42,8 @@ public:
 
 	// entities constructors -------
 	j1Entity* CreateEntity(ENTITY_TYPE type, int positionX, int positionY, std::string name);
-	j1Entity* CreatePlatform(ENTITY_TYPE type, SDL_Rect placing, int heightLevel, std::string name);
+	j1Entity* CreatePlatform(ENTITY_TYPE type, SDL_Rect placing, int heightLevel, std::string name,
+		int heightDeltaMovement = 0, SceneState level = SceneState::LEVEL1, AXIS_Movement movementType = AXIS_Movement::HORIZONTAL);
 
 	/*Enemy* CreateEnemy(EnemyType etype, iPoint pos, bool dummy = false);                            // TODO: rework this when enemies available
 	std::vector<j1Entity*> CreateEnemiesGroup(std::vector<EnemyType> enemyTypes, SDL_Rect zone, uint minNum, uint maxNum, uint groupLevel = 0);*/
@@ -65,4 +68,4 @@ public:
 
 
 
-#endif
+#endif  

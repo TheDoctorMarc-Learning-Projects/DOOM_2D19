@@ -614,20 +614,50 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 		else if (ObjectName == "staticPlatform")
 		{
 			// TODO: Create an static entity, no need for texture, map already prints it there      
+			int heighLevel = 0; 
 
-			uint heightLevel = object.attribute("heightLevel").as_int();
+			for (auto property = object.child("properties").child("property"); property; property = property.next_sibling("property"))
+			{
+				std::string name = property.attribute("name").as_string();
+				if(name == "heightLevel")
+					heighLevel = property.attribute("value").as_int();
+				
 
-			App->entityFactory->CreatePlatform(ENTITY_TYPE::ENTITY_STATIC, worldPos, heightLevel, "platform");
+			}
+
+			App->entityFactory->CreatePlatform(ENTITY_TYPE::ENTITY_STATIC, worldPos, heighLevel, "platform");
 		}
 
 		else if (ObjectName == "dynamicPlatform")
 		{
-			// TODO: Make a movable entity
+			int heightLevel = 0; 
+			std::string Axis = ""; 
+			int deltaLevels = 0;
 
-			uint heightLevel = object.attribute("heightLevel").as_int();
+			for (auto property = object.child("properties").child("property"); property; property = property.next_sibling("property"))
+			{
+				std::string name = property.attribute("name").as_string(); 
+				if (name == "heightLevel")
+					heightLevel = property.attribute("value").as_int();
+				else if(name == "axis")
+					Axis = property.attribute("value").as_string();
+				else if (name == "deltaLevels")
+					deltaLevels = property.attribute("value").as_int();
+			}
+
+			AXIS_Movement axisMov; 
+			
+			if (Axis == "horizontal")
+				axisMov = AXIS_Movement::HORIZONTAL;
+			else if(Axis == "vertical")
+			{
+				axisMov = AXIS_Movement::VERTICAL;
+			}
+				
+
 
 			App->entityFactory->CreatePlatform(ENTITY_TYPE::ENTITY_DYNAMIC, worldPos, heightLevel, "platform",
-				0, SceneState::LEVEL1, AXIS_Movement::HORIZONTAL);
+				deltaLevels, SceneState::LEVEL1, axisMov);
 		}
 
 	}

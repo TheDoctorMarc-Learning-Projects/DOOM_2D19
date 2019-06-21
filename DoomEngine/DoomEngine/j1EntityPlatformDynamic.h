@@ -26,13 +26,14 @@ public:
 	bool CleanUp();
 	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
+	void CheckPlatformSameLevel(); 
 
 	// todo, movable platforms load and save (Xd) 
 
 public:
 	AXIS_Movement movementType; 
 	POINTING_DIR lastPointingDir; 
-	
+	uint heighLevelTravel = 0; 
 
 
 private: 

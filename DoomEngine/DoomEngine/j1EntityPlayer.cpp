@@ -260,7 +260,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 	{
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
 
-		if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
+		if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC && dynamic_cast<j1EntityPlatformDynamic*>(c2->callback)->movementType == AXIS_Movement::HORIZONTAL)
 		{
 			if(c2->callback->pointingDir == POINTING_DIR::RIGHT)
 				position.x += c2->callback->speed * App->GetDt();

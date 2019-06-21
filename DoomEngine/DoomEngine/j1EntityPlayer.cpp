@@ -142,16 +142,11 @@ bool j1EntityPlayer::Move(float dt)
 		else
 			lastSpeed.x = (xAxis * speed) * dt;
 			
-			
+		state.movement.at(0) = (xAxis < 0) ? MovementState::INPUT_LEFT : state.movement.at(0);
+		state.movement.at(0) = (xAxis > 0) ? MovementState::INPUT_RIGHT : state.movement.at(0); 
 
-			position.x += lastSpeed.x;
+		position.x += lastSpeed.x;
 
-			//if(state.movement.at(0) == MovementState::IDLE)
-
-
-			state.movement.at(0) = (xAxis < 0) ? MovementState::INPUT_LEFT : state.movement.at(0);
-			state.movement.at(0) = (xAxis > 0) ? MovementState::INPUT_RIGHT : state.movement.at(0);
-	
 	}
 	else
 	{
@@ -215,15 +210,38 @@ bool j1EntityPlayer::Move(float dt)
 	if (position.y > previousPosition.y && state.movement.at(1) == MovementState::JUMP)
 		state.movement.at(1) = MovementState::FALL;
 
+	if (position.x < 0)   // TODO: Add right map limit blocking
+		position.x = 0;
 
 	if (!to_delete)
 	{
 		collider->SetPos(position.x, position.y);
 		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h); 
 	}
+
+
+	// - - - - - - - - - - - - - - - - - - warn other modules about the pos if needed
+	WarnOtherModules(); 
+
 		
 	return true;
 }
+
+
+void j1EntityPlayer::WarnOtherModules()
+{
+	if (state.movement.at(0) == MovementState::INPUT_RIGHT && -(int)position.x < App->render->camera.x - App->render->camera.w + (int)App->render->screenDivisions.lateralValue)
+	{
+        
+		App->render->DoCameraScroll(cameraScrollType::GRADUAL, direction::RIGHT, this); 
+	}
+	else if (state.movement.at(0) == MovementState::INPUT_LEFT && -(int)position.x > App->render->camera.x - (int)App->render->screenDivisions.lateralValue && (int)previousPosition.x > (int)App->render->screenDivisions.lateralValue)
+	{
+		App->render->DoCameraScroll(cameraScrollType::GRADUAL, direction::RIGHT, this);
+	}
+}
+
+
 
 void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 {

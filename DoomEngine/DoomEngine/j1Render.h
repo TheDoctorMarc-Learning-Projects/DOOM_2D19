@@ -5,6 +5,28 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
+
+enum cameraScrollType
+{
+	FOCUSED,
+	GRADUAL
+};
+
+struct targetedScrollScreenLimits
+{
+	uint lateralValue = 300; 
+};
+
+enum class direction
+{
+	RIGHT,
+	LEFT
+};
+
+
+
+class j1Entity; 
+
 class j1Render : public j1Module
 {
 public:
@@ -40,12 +62,13 @@ public:
 
 	bool IsOnCamera(const int&x, const int&y, const int&w, const int& h) const;
 
+	void DoCameraScroll(cameraScrollType scrollType, direction dir, j1Entity* callback);
 
 	// Draw & Blit
 	/*bool Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float speed = 1.0f, SDL_RendererFlip flip = SDL_FLIP_NONE, float spriteScale = 1.f, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX) const;
 	bool BlitGui(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float speed = 1.0f, float scaleFactor = 1.0f, float flippingAngle = 0.0f, SDL_Rect wantedRect = { 0, 0, 0, 0 }) const;*/
 	bool Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float speed = 1.0f, SDL_RendererFlip flip = SDL_FLIP_NONE, float spriteScale = 1.f, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX, bool useWindowScale = true) const;
-	bool BlitGui(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float speed = 1.0f, float scaleFactor = 1.0f, float flippingAngle = 0.0f, SDL_Rect wantedRect = { 0, 0, 0, 0 }) const;
+	//bool BlitGui(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float speed = 1.0f, float scaleFactor = 1.0f, float flippingAngle = 0.0f, SDL_Rect wantedRect = { 0, 0, 0, 0 }) const;
 
 	bool DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool filled = true, bool use_camera = true) const;
 	bool DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool use_camera = true) const;
@@ -61,6 +84,12 @@ public:
 	SDL_Rect        camera;
 	SDL_Rect		viewport;
 	SDL_Color		background;
+
+	targetedScrollScreenLimits screenDivisions; 
+
+
+	bool doingScroll = false;
+
 };
 
 #endif // __j1RENDER_H__

@@ -76,6 +76,7 @@ public:
 	bool Move(float dt) override;
 	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
+	void WarnOtherModules(); 
 
 	POINTING_DIR GetDirection() override; 
 

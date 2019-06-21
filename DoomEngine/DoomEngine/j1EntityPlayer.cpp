@@ -260,12 +260,24 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 	{
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
 
-		if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC && dynamic_cast<j1EntityPlatformDynamic*>(c2->callback)->movementType == AXIS_Movement::HORIZONTAL)
+		if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
 		{
-			if(c2->callback->pointingDir == POINTING_DIR::RIGHT)
-				position.x += c2->callback->speed * App->GetDt();
-			else if(c2->callback->pointingDir == POINTING_DIR::LEFT)
-				position.x -= c2->callback->speed * App->GetDt();
+			if (dynamic_cast<j1EntityPlatformDynamic*>(c2->callback)->movementType == AXIS_Movement::HORIZONTAL)
+			{
+				if (c2->callback->pointingDir == POINTING_DIR::RIGHT)
+					position.x += c2->callback->speed * App->GetDt();
+				else if (c2->callback->pointingDir == POINTING_DIR::LEFT)
+					position.x -= c2->callback->speed * App->GetDt();
+			}
+			else if (dynamic_cast<j1EntityPlatformDynamic*>(c2->callback)->movementType == AXIS_Movement::VERTICAL)
+			{
+
+				if (c2->callback->pointingDir == POINTING_DIR::UP)
+					position.y -= c2->callback->speed * App->GetDt();
+				else if (c2->callback->pointingDir == POINTING_DIR::DOWN)
+					position.y += c2->callback->speed * App->GetDt();
+			}
+		
 			
 			collider->SetPos(position.x, position.y);
 		}
@@ -314,6 +326,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 								{
 									if (lastSpeed.y > 0)
 									{
+
 										float offset = collider->rect.y + collider->rect.h - c2->rect.y;  // to put back player if it goes off a bit
 										position.y -= offset;
 
@@ -415,19 +428,6 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 
 		break; 
-	/*case COLLIDER_TYPE::COLLIDER_WALL:
-		if (state.movement.at(1) != MovementState::JUMP)
-		{
-			 	onPlatform = true;
-				ResetGravity();
-
-				state.movement.at(1) = MovementState::NOT_ACTIVE; 
-			
-		}
-
-
-
-		break;*/
 	}
 
 

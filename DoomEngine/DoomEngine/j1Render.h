@@ -14,7 +14,7 @@ enum cameraScrollType
 
 struct targetedScrollScreenLimits
 {
-	uint lateralValue = 300; 
+	uint lateralValue = 400; 
 };
 
 enum class direction

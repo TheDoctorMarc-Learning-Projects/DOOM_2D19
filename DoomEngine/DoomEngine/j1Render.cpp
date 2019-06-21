@@ -385,21 +385,25 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 void j1Render::DoCameraScroll(cameraScrollType scrollType, direction dir, j1Entity* callback)
 {
 
-	uint targetPos = 0;
+	int targetPos = 0;
 
 
 	if (callback->type == ENTITY_TYPE::PLAYER)
 	{
-		int Displacement = callback->position.x - callback->previousPosition.x;
+		int Displacement = (int)callback->position.x - (int)callback->previousPosition.x;
 		if (dir == direction::RIGHT)
 		{ 
-			targetPos = camera.x -(callback->position.x - callback->previousPosition.x);
-
-			camera.x -= targetPos; 
+			targetPos = camera.x - Displacement;   // todo: add right limit prevention 
+			camera.x -= Displacement;
+		
 		}
 		else if (dir == direction::LEFT)
-		{
-			camera.x += callback->position.x - callback->previousPosition.x;
+		{                                              
+			targetPos = camera.x - Displacement;
+
+			if (targetPos < 0)
+				camera.x -= Displacement;
+			
 		}
 
 	}

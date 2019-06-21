@@ -237,7 +237,7 @@ void j1EntityPlayer::WarnOtherModules()
 	}
 	else if (state.movement.at(0) == MovementState::INPUT_LEFT && -(int)position.x > App->render->camera.x - (int)App->render->screenDivisions.lateralValue && (int)previousPosition.x > (int)App->render->screenDivisions.lateralValue)
 	{
-		App->render->DoCameraScroll(cameraScrollType::GRADUAL, direction::RIGHT, this);
+		App->render->DoCameraScroll(cameraScrollType::GRADUAL, direction::LEFT, this);
 	}
 }
 

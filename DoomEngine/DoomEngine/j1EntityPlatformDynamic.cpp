@@ -1,7 +1,8 @@
 #include "j1EntityPlatformDynamic.h"
 #include "j1Collision.h"
 #include "j1Map.h"
-#include <math.h>
+#include "j1EntityPlayer.h"
+
 
 
 j1EntityPlatformDynamic::j1EntityPlatformDynamic(SDL_Rect placing, int heightLevel, int heightDeltaMovement, SceneState level, AXIS_Movement movementType) : j1EntityPlatform(placing, heightLevel)
@@ -128,6 +129,7 @@ void j1EntityPlatformDynamic::OnCollisionExit(Collider* c1, Collider* c2)
 		
 		
 		break;
+
 	}
 
 

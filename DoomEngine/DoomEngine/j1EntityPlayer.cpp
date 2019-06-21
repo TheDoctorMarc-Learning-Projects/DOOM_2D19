@@ -418,36 +418,41 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 	switch (c2->type)
 	{
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
-		if (state.movement.at(1) != MovementState::JUMP && state.movement.at(0) != MovementState::IDLE)
+		if (c2->hasCallback && c2->callback->type != ENTITY_TYPE::ENTITY_DYNAMIC)
+		{
+			if (state.movement.at(1) != MovementState::JUMP && state.movement.at(0) != MovementState::IDLE)
+			{
+				if (onPlatform)
+				{
+
+					if (lastSpeed.y > 0);
+					{
+						onPlatform = false;
+						ResetGravity();
+
+						state.movement.at(1) = MovementState::FALL;
+					}
+
+				}
+
+			}
+		}
+		else if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
 		{
 			if (onPlatform)
 			{
-				if (lastSpeed.y > 0); 
-				{
+
 					onPlatform = false;
 					ResetGravity();
 
 					state.movement.at(1) = MovementState::FALL;
-				}
 				
 			}
-			 
+
 		}
+		
 		break;
 
-
-/*	case COLLIDER_TYPE::COLLIDER_WALL:
-		if (state.movement.at(1) != MovementState::JUMP)
-		{
-			if (onPlatform)
-			{
-				onPlatform = false;
-				ResetGravity();
-
-				state.movement.at(1) = MovementState::FALL;
-			}
-		}
-		break;*/
 	}
 
 

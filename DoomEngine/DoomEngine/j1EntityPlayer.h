@@ -39,12 +39,12 @@ struct myState
 
 struct jumpData
 {
-	float jumpPower = 27.f; 
+	float jumpPower = 17.f; 
 	float currenJumpPower = jumpPower; 
 	float jumpIncrementFactor = .9f;
 	float speedXIncrementJump = 2.4f; 
-	float speedXIncrementFall = 1.7f;
-	float verticalIncrementFactor = 1.05f;    // jumpincrement reduces jump power in time, but vertical increment counteracts it a bit 
+	float speedXIncrementFall = 1.2f;
+	float verticalIncrementFactor = 1.02f;    // jumpincrement reduces jump power in time, but vertical increment counteracts it a bit 
 };
 
 struct SpeedBlocked
@@ -89,7 +89,6 @@ private:
 
 	Animation run; 
 	bool aiming = false;
-	myState state; 
 	fPoint lastSpeed = fPoint(0,0);
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0); 
@@ -101,6 +100,8 @@ private:
 
 	
 	bool godMode = false; 
+public: 
+	myState state;
 
 	
 

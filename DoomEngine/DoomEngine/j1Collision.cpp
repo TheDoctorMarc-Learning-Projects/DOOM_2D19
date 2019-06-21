@@ -319,6 +319,10 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* 
 		if (colliders[i] == nullptr)
 		{
 			ret = colliders[i] = new Collider(rect, type, callback);
+
+			if (callback)
+				ret->hasCallback = true; 
+
 			break;
 		}
 	}

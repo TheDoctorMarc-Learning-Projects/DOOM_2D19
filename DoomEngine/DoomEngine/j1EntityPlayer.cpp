@@ -230,12 +230,22 @@ bool j1EntityPlayer::Move(float dt)
 
 void j1EntityPlayer::WarnOtherModules()
 {
-	if (state.movement.at(0) == MovementState::INPUT_RIGHT && -(int)position.x < App->render->camera.x - App->render->camera.w + (int)App->render->screenDivisions.lateralValue)
+	// check if player is being dragged by dinamyc platform 
+
+ 
+
+	if (!collider->onCollisionWithMe.empty())
+		for (auto& col : collider->onCollisionWithMe)
+			if (col->hasCallback && col->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
+				onDynamicplatform = true; 
+
+
+	if ((state.movement.at(0) == MovementState::INPUT_RIGHT || onDynamicplatform) && -(int)position.x < App->render->camera.x - App->render->camera.w + (int)App->render->screenDivisions.lateralValue)
 	{
         
 		App->render->DoCameraScroll(cameraScrollType::GRADUAL, direction::RIGHT, this); 
 	}
-	else if (state.movement.at(0) == MovementState::INPUT_LEFT && -(int)position.x > App->render->camera.x - (int)App->render->screenDivisions.lateralValue && (int)previousPosition.x > (int)App->render->screenDivisions.lateralValue)
+	else if ((state.movement.at(0) == MovementState::INPUT_LEFT || onDynamicplatform) && -(int)position.x > App->render->camera.x - (int)App->render->screenDivisions.lateralValue && (int)previousPosition.x > (int)App->render->screenDivisions.lateralValue)
 	{
 		App->render->DoCameraScroll(cameraScrollType::GRADUAL, direction::LEFT, this);
 	}
@@ -249,6 +259,21 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 	switch (c2->type)
 	{
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
+
+		if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
+		{
+			if(c2->callback->pointingDir == POINTING_DIR::RIGHT)
+				position.x += c2->callback->speed * App->GetDt();
+			else if(c2->callback->pointingDir == POINTING_DIR::LEFT)
+				position.x -= c2->callback->speed * App->GetDt();
+			
+			collider->SetPos(position.x, position.y);
+		}
+			
+
+
+
+
 		if (state.movement.at(1) != MovementState::JUMP)
 		{
 			if (!onPlatform)
@@ -443,6 +468,7 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 			{
 
 					onPlatform = false;
+					onDynamicplatform = false; 
 					ResetGravity();
 
 					state.movement.at(1) = MovementState::FALL;

@@ -49,7 +49,8 @@ bool j1EntityPlatformDynamic::PreUpdate()
 bool j1EntityPlatformDynamic::Update(float dt)
 {
 	lastPointingDir = pointingDir;
-	
+	previousPosition = position; 
+
 	switch (movementType)
 	{
 	case AXIS_Movement::HORIZONTAL:

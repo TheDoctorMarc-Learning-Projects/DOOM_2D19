@@ -39,10 +39,10 @@ struct myState
 
 struct jumpData
 {
-	float jumpPower = 17.f; 
+	float jumpPower = 22.f; 
 	float currenJumpPower = jumpPower; 
 	float jumpIncrementFactor = .9f;
-	float speedXIncrementJump = 2.4f; 
+	float speedXIncrementJump = 2.1f; 
 	float speedXIncrementFall = 1.2f;
 	float verticalIncrementFactor = 1.02f;    // jumpincrement reduces jump power in time, but vertical increment counteracts it a bit 
 };
@@ -102,7 +102,7 @@ private:
 	bool godMode = false; 
 public: 
 	myState state;
-
+	bool onDynamicplatform = false;
 	
 
 	friend class j1Entity; 

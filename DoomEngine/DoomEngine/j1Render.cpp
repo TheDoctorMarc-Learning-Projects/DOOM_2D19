@@ -7,6 +7,7 @@
 #include "j1Input.h"
 #include "j1Entity.h"
 #include "j1EntityPlayer.h"
+#include "j1EntityPlatformDynamic.h"
 
 j1Render::j1Render() : j1Module()
 {
@@ -390,20 +391,36 @@ void j1Render::DoCameraScroll(cameraScrollType scrollType, direction dir, j1Enti
 
 	if (callback->type == ENTITY_TYPE::PLAYER)
 	{
-		int Displacement = (int)callback->position.x - (int)callback->previousPosition.x;
+		int Displacement = 0;
+
+		if (dynamic_cast<j1EntityPlayer*>(callback)->onDynamicplatform)   // when dragged by platform outside camera
+		{
+
+			if (!callback->collider->onCollisionWithMe.empty())
+				for (auto& col : callback->collider->onCollisionWithMe)
+					if (col->hasCallback && col->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
+						Displacement = (int)col->callback->position.x - (int)col->callback->previousPosition.x;
+
+
+			
+		}
+		else
+			Displacement = (int)callback->position.x - (int)callback->previousPosition.x;
+	
+
 		if (dir == direction::RIGHT)
-		{ 
+		{
 			targetPos = camera.x - Displacement;   // todo: add right limit prevention 
 			camera.x -= Displacement;
-		
+
 		}
 		else if (dir == direction::LEFT)
-		{                                              
+		{
 			targetPos = camera.x - Displacement;
 
 			if (targetPos < 0)
 				camera.x -= Displacement;
-			
+
 		}
 
 	}

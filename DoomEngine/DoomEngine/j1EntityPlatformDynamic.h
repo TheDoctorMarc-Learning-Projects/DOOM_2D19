@@ -32,6 +32,8 @@ public:
 public:
 	AXIS_Movement movementType; 
 	POINTING_DIR lastPointingDir; 
+	
+
 
 private: 
 	bool endReached = false; 

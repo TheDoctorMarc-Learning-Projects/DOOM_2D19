@@ -8,7 +8,7 @@ enum AXIS_Movement
 {
 	VERTICAL,
 	HORIZONTAL,
-	DIAGONAL
+//	DIAGONAL  // we will see 
 };
 
 class j1EntityPlatformDynamic : public j1EntityPlatform
@@ -24,12 +24,17 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
-
+	void OnCollision(Collider* c1, Collider* c2) override;
+	void OnCollisionExit(Collider* c1, Collider* c2) override;
 
 	// todo, movable platforms load and save (Xd) 
 
 public:
 	AXIS_Movement movementType; 
+	POINTING_DIR lastPointingDir; 
+
+private: 
+	bool endReached = false; 
 };
 
 #endif 

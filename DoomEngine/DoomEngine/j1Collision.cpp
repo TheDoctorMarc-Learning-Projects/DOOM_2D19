@@ -22,7 +22,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_WALL][COLLIDER_FLOOR] = false;
 
 
-	matrix[COLLIDER_FLOOR][COLLIDER_FLOOR] = false;
+	matrix[COLLIDER_FLOOR][COLLIDER_FLOOR] = true;  // needed for dynamic platforms
 	matrix[COLLIDER_FLOOR][COLLIDER_WALL] = false; 
 	matrix[COLLIDER_FLOOR][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_FLOOR][COLLIDER_DEATH] = false;

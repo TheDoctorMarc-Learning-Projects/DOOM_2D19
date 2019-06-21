@@ -26,7 +26,9 @@ enum ENTITY_TYPE  // todo, pass to class
 enum POINTING_DIR
 {
 	RIGHT,
-	LEFT
+	LEFT,
+	UP,
+	DOWN   // for dyn platforms
 };
 
 class Collider; 

@@ -5030,7 +5030,7 @@
     <property name="heightLevel" type="int" value="1"/>
    </properties>
   </object>
-  <object id="9" name="staticPlatform" x="896" y="288" width="192" height="32">
+  <object id="9" name="staticPlatform" x="768" y="288" width="192" height="32">
    <properties>
     <property name="heightLevel" type="int" value="3"/>
    </properties>
@@ -5041,7 +5041,7 @@
     <property name="heightLevel" type="int" value="3"/>
    </properties>
   </object>
-  <object id="12" name="dynamicPlatform" x="1248" y="288" width="192" height="32">
+  <object id="12" name="dynamicPlatform" x="1152" y="288" width="192" height="32">
    <properties>
     <property name="heightLevel" type="int" value="3"/>
    </properties>
@@ -7575,16 +7575,16 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2521"/>
-   <tile gid="2521"/>
-   <tile gid="2521"/>
-   <tile gid="2521"/>
-   <tile gid="2521"/>
-   <tile gid="2521"/>
    <tile/>
    <tile/>
    <tile/>

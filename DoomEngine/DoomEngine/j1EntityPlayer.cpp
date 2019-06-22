@@ -118,6 +118,8 @@ bool j1EntityPlayer::Move(float dt)
 		jumpInfo.jumpPower = 17.f; 
 
 
+	if (!onPlatform)
+		onDynamicplatform = false; 
 
 	lastPosCollider = collider->rect; 
 
@@ -234,25 +236,22 @@ void j1EntityPlayer::WarnOtherModules()
 
  
 
-	if (!collider->onCollisionWithMe.empty())
+	/*if (!collider->onCollisionWithMe.empty())
 	{
 		for (auto& col : collider->onCollisionWithMe)
 		{
 			if (col->hasCallback && col->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
 			{
-				/*if (collider->CheckCollision(col->rect))
-				{*/
+				
 
 					onDynamicplatform = true;
-				/*}
-				else
-					onDynamicplatform = false;*/
+			
 
 			}
 
 		}
 
-	}
+	}*/
 			
 
 
@@ -498,7 +497,9 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 			{
 				
 					onPlatform = false;
-					onDynamicplatform = false;
+					if(onDynamicplatform)
+						onDynamicplatform = false;
+					
 					ResetGravity();
 
 					state.movement.at(1) = MovementState::FALL;

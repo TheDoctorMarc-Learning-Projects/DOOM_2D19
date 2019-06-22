@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Audio.h"
 
+
 #include "SDL/include/SDL.h"
 #include "SDL_mixer\include\SDL_mixer.h"
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
@@ -70,11 +71,12 @@ bool j1Audio::CleanUp()
 		Mix_FreeMusic(music);
 	}
 
-	std::list<Mix_Chunk*>::iterator item;
-	for(item = fx.begin(); item != fx.end(); ++item)
-		Mix_FreeChunk(*item);
 
-	fx.clear();
+	for (auto& fx : fxMap)
+		Mix_FreeChunk(fx.second); 
+
+	fxMap.clear(); 
+
 
 	Mix_CloseAudio();
 	Mix_Quit();
@@ -137,7 +139,7 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 }
 
 // Load WAV
-unsigned int j1Audio::LoadFx(const char* path)
+unsigned int j1Audio::LoadFx(const char* path, std::string wantedName)
 {
 	unsigned int ret = 0;
 
@@ -152,30 +154,40 @@ unsigned int j1Audio::LoadFx(const char* path)
 	}
 	else
 	{
-		fx.push_back(chunk);
-		ret = fx.size();
+		fxMap.insert(std::make_pair(wantedName, chunk));
+		ret = fxMap.size();
 	}
 
 	return ret;
 }
 
 // Play WAV
-bool j1Audio::PlayFx(unsigned int id, int repeat)
+bool j1Audio::PlayFx(std::string name, int repeat)
 {
 	bool ret = false;
 
 	if(!active)
 		return false;
 
-	if(id > 0 && id <= fx.size())
+/*	if(id > 0 && id <= fx.size())
 	{
 		std::list< Mix_Chunk*>::iterator item;
 			item = next(fx.begin(), id - 1);
 		Mix_PlayChannel(-1, (*item), repeat);
-	}
+	}*/
+	   
+	if(fxMap.at(name))
+		Mix_PlayChannel(-1, fxMap.at(name), repeat);
+
+
+
+
 
 	return ret;
 }
+
+
+
 
 void j1Audio::SetVolume(float volume)
 {
@@ -194,12 +206,16 @@ void j1Audio::SetFxVolume(float volume)
 	if (final_fx_volume < 0.0f || final_fx_volume > MIX_MAX_VOLUME)
 		final_fx_volume = (final_fx_volume < 0.0f) ? 0.0f : MIX_MAX_VOLUME;
 
+	for (auto& fx : fxMap)
+		Mix_VolumeChunk(fx.second, final_fx_volume);
 
-	for (std::list<Mix_Chunk*>::iterator item_fx = fx.begin();item_fx!=fx.end() ; ++item_fx)
+	
+
+	/*for (std::list<Mix_Chunk*>::iterator item_fx = fx.begin();item_fx!=fx.end() ; ++item_fx)
 	{
 		Mix_VolumeChunk((*item_fx), final_fx_volume);
 		
-	}
+	}*/
 }
 
 void j1Audio::UnLoadAudio()
@@ -211,12 +227,20 @@ void j1Audio::UnLoadAudio()
 		music = NULL;
 	}
 
-	std::list<Mix_Chunk*>::iterator item;
+	/*std::list<Mix_Chunk*>::iterator item;
 	for (item = fx.begin(); item != fx.end(); ++item)
 	{
 		Mix_FreeChunk(*item);
 		*item = nullptr;
 	}
-	fx.clear();
+	fx.clear();*/
+
+	for (auto& fx : fxMap)
+	{
+		Mix_FreeChunk(fx.second);
+	}
+		
+
+
 
 }

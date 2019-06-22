@@ -41,6 +41,8 @@ bool j1Scene::Start()
 	// TODO: call load new map in each case --> do not do it in load / unload, or do not do it here if it is already being done there the previous frame
 
 
+	App->audio->LoadFx("sound/fx/bigenemygrunt.wav", "bigenemygrunt"); 
+	
 
 
 	
@@ -88,6 +90,12 @@ bool j1Scene::Update(float dt)
 	
 	if (App->map->active)
 		App->map->Draw();
+
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+		App->audio->PlayFx("bigenemygrunt"); 
+
+	
 
 	return true;
 }

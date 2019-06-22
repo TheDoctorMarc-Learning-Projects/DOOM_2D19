@@ -124,12 +124,12 @@ bool j1ParticlesClassic::PostUpdate()//float dt)
 		else if (SDL_GetTicks() >= (*p)->born)
 		{
 			App->render->Blit((*p)->texture, (*p)->position.x, (*p)->position.y, &(*p)->anim.GetCurrentFrame(), (*p)->parallaxSpeed, (*p)->renderFlip, (*p)->scale, (*p)->angle, (*p)->pivot.x * App->win->GetScale(), (*p)->pivot.y * App->win->GetScale(), (*p)->useCameraScale);
-			if ((*p)->fx_played == false && (*p)->fx != 0)
+		/*	if ((*p)->fx_played == false && (*p)->fx != 0)
 			{
 				(*p)->fx_played = true;
 				// Play particle fx here
-				App->audio->PlayFx((*p)->fx, 0);
-			}
+				App->audio->PlayFx((*p)->fx, 0);     // TODO: Rework this with strings (simply store particle fx in string)
+			}*/
 			++p;
 		}
 		else

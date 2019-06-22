@@ -232,35 +232,11 @@ bool j1EntityPlayer::Move(float dt)
 
 void j1EntityPlayer::WarnOtherModules()
 {
-	// check if player is being dragged by dinamyc platform 
 
- 
-
-	/*if (!collider->onCollisionWithMe.empty())
-	{
-		for (auto& col : collider->onCollisionWithMe)
-		{
-			if (col->hasCallback && col->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
-			{
-				
-
-					onDynamicplatform = true;
-			
-
-			}
-
-		}
-
-	}*/
-			
-
-
-				 
-
+	// - - - - - - - - - - - - - - - - >> Render 
 
 	if ((state.movement.at(0) == MovementState::INPUT_RIGHT || onDynamicplatform) && -(int)position.x < App->render->camera.x - App->render->camera.w + (int)App->render->screenDivisions.lateralValue)
 	{
-        
 		App->render->DoCameraScroll(cameraScrollType::GRADUAL, direction::RIGHT, this); 
 	}
 	else if ((state.movement.at(0) == MovementState::INPUT_LEFT || onDynamicplatform) && -(int)position.x > App->render->camera.x - (int)App->render->screenDivisions.lateralValue && (int)previousPosition.x > (int)App->render->screenDivisions.lateralValue)
@@ -287,14 +263,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 				else if (c2->callback->pointingDir == POINTING_DIR::LEFT)
 					position.x -= c2->callback->speed * App->GetDt();
 			}
-			/*else if (dynamic_cast<j1EntityPlatformDynamic*>(c2->callback)->movementType == AXIS_Movement::VERTICAL)
-			{
-
-				if (c2->callback->pointingDir == POINTING_DIR::UP)
-					position.y -= c2->callback->speed * App->GetDt();
-				else if (c2->callback->pointingDir == POINTING_DIR::DOWN)
-					position.y += c2->callback->speed * App->GetDt();  // TODO: revise this, it is related with a bug, but above case works :/ 
-			}*/
+			
 		
 			
 			collider->SetPos(position.x, position.y);
@@ -344,11 +313,12 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 							{
 								if (collider->rect.y + collider->rect.h > c2->rect.y)
 								{
+
 									if (lastSpeed.y > 0)
 									{
 
 										float offset = collider->rect.y + collider->rect.h - c2->rect.y;  // to put back player if it goes off a bit
-										position.y -= offset;
+										position.y -= offset;   // TODO:  this is causing a bug when already in vertical platform 
 
 										onPlatform = true;
 										if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)

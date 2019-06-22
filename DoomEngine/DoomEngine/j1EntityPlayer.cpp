@@ -235,9 +235,28 @@ void j1EntityPlayer::WarnOtherModules()
  
 
 	if (!collider->onCollisionWithMe.empty())
+	{
 		for (auto& col : collider->onCollisionWithMe)
+		{
 			if (col->hasCallback && col->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
-				onDynamicplatform = true; 
+			{
+				/*if (collider->CheckCollision(col->rect))
+				{*/
+
+					onDynamicplatform = true;
+				/*}
+				else
+					onDynamicplatform = false;*/
+
+			}
+
+		}
+
+	}
+			
+
+
+				 
 
 
 	if ((state.movement.at(0) == MovementState::INPUT_RIGHT || onDynamicplatform) && -(int)position.x < App->render->camera.x - App->render->camera.w + (int)App->render->screenDivisions.lateralValue)
@@ -275,7 +294,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 				if (c2->callback->pointingDir == POINTING_DIR::UP)
 					position.y -= c2->callback->speed * App->GetDt();
 				else if (c2->callback->pointingDir == POINTING_DIR::DOWN)
-					position.y += c2->callback->speed * App->GetDt();
+					position.y += c2->callback->speed * App->GetDt();  // TODO: revise this, it is related with a bug, but above case works :/ 
 			}
 		
 			
@@ -312,6 +331,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 								}
 
 								onPlatform = false;
+								if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
+									onDynamicplatform = false;
 								ResetGravity();
 
 								state.movement.at(1) = MovementState::FALL;
@@ -331,6 +352,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 										position.y -= offset;
 
 										onPlatform = true;
+										if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
+											onDynamicplatform = true;
 										ResetGravity();
 
 										state.movement.at(0) = MovementState::IDLE;
@@ -357,6 +380,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 							position.y -= offset;
 
 							onPlatform = true;
+							if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
+								onDynamicplatform = true;
 							ResetGravity();
 
 							state.movement.at(0) = MovementState::IDLE;
@@ -395,6 +420,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 						}
 						
 						onPlatform = false;
+						if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
+							onDynamicplatform = false;
 						ResetGravity();
 
 						state.movement.at(1) = MovementState::FALL;
@@ -409,6 +436,9 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 						position.y += offset;
 
 						onPlatform = false;
+						if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
+							onDynamicplatform = false; 
+						
 						ResetGravity();
 
 						state.movement.at(1) = MovementState::FALL;

@@ -412,7 +412,7 @@ void j1Render::DoCameraScroll(cameraScrollType scrollType, direction dir, j1Enti
 		{
 			targetPos = camera.x - Displacement;   // todo: add right limit prevention 
 			camera.x -= Displacement;
-
+			int a = 0; 
 		}
 		else if (dir == direction::LEFT)
 		{

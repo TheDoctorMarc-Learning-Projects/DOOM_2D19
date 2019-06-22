@@ -288,14 +288,14 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 				else if (c2->callback->pointingDir == POINTING_DIR::LEFT)
 					position.x -= c2->callback->speed * App->GetDt();
 			}
-			else if (dynamic_cast<j1EntityPlatformDynamic*>(c2->callback)->movementType == AXIS_Movement::VERTICAL)
+			/*else if (dynamic_cast<j1EntityPlatformDynamic*>(c2->callback)->movementType == AXIS_Movement::VERTICAL)
 			{
 
 				if (c2->callback->pointingDir == POINTING_DIR::UP)
 					position.y -= c2->callback->speed * App->GetDt();
 				else if (c2->callback->pointingDir == POINTING_DIR::DOWN)
 					position.y += c2->callback->speed * App->GetDt();  // TODO: revise this, it is related with a bug, but above case works :/ 
-			}
+			}*/
 		
 			
 			collider->SetPos(position.x, position.y);
@@ -496,13 +496,14 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 		{
 			if (onPlatform)
 			{
-
+				
 					onPlatform = false;
-					onDynamicplatform = false; 
+					onDynamicplatform = false;
 					ResetGravity();
 
 					state.movement.at(1) = MovementState::FALL;
-				
+
+			
 			}
 
 		}

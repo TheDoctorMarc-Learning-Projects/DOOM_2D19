@@ -81,6 +81,11 @@ bool j1EntityPlatformDynamic::Update(float dt)
 		else if (pointingDir == POINTING_DIR::DOWN)
 			position.y += speed * dt;
 
+
+		if(!collider->onCollisionWithMe.empty())
+			UpdateEntitiesOnTopPositions();
+	
+
 		break;
 
 	}
@@ -88,6 +93,46 @@ bool j1EntityPlatformDynamic::Update(float dt)
 	collider->SetPos(position.x, position.y);
 
 	return true;
+}
+
+
+void j1EntityPlatformDynamic::UpdateEntitiesOnTopPositions(bool justOfsset, float offset)
+{
+	
+	for (auto& col : collider->onCollisionWithMe)
+	{
+		if (col->type == COLLIDER_PLAYER || col->type == COLLIDER_ENEMY)  // god also?? 
+		{
+			if (pointingDir == POINTING_DIR::UP)
+			{
+				if (!justOfsset)
+					col->callback->position.y -= speed * App->GetDt();
+				else
+					col->callback->position.y -= offset; 
+				
+			}
+				
+			else if (pointingDir == POINTING_DIR::DOWN)
+			{
+				if (!justOfsset)
+					col->callback->position.y += speed * App->GetDt();
+				else
+					col->callback->position.y += offset;
+			}
+				
+
+
+			col->SetPos(position.x, position.y);
+		}
+
+	
+	}
+		
+			
+			
+
+
+			
 }
 
 void j1EntityPlatformDynamic::CheckPlatformSameLevel()
@@ -110,7 +155,7 @@ void j1EntityPlatformDynamic::CheckPlatformSameLevel()
 							position.y += offset;
 							pointingDir = POINTING_DIR::DOWN;
 
-
+							UpdateEntitiesOnTopPositions(true, offset); 
 						}
 					}
 
@@ -126,7 +171,7 @@ void j1EntityPlatformDynamic::CheckPlatformSameLevel()
 							position.y -= offset;
 							pointingDir = POINTING_DIR::UP;
 
-
+							UpdateEntitiesOnTopPositions(true, offset); 
 						}
 					}
 
@@ -193,6 +238,8 @@ void j1EntityPlatformDynamic::OnCollision(Collider* c1, Collider* c2)
 						offset = collider->rect.y + collider->rect.h - c2->rect.y;
 						position.y -= offset;
 						pointingDir = POINTING_DIR::UP;
+
+						UpdateEntitiesOnTopPositions(true, offset);
 					}
 				}
 			

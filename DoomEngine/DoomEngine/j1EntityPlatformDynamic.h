@@ -27,7 +27,7 @@ public:
 	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
 	void CheckPlatformSameLevel(); 
-
+	void UpdateEntitiesOnTopPositions(bool justOffset = false, float offset = 0.f);
 	// todo, movable platforms load and save (Xd) 
 
 public:

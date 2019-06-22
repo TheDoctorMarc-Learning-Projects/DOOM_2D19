@@ -92,6 +92,7 @@ private:
 	fPoint lastSpeed = fPoint(0,0);
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0); 
+
 	SpeedBlocked speedBlocked; 
 	jumpData jumpInfo; 
 	float momentumFactor = 10.f; 

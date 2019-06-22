@@ -42,7 +42,10 @@ bool j1Scene::Start()
 
 
 	App->audio->LoadFx("sound/fx/bigenemygrunt.wav", "bigenemygrunt"); 
-	
+	App->audio->LoadFx("sound/fx/fall.wav", "fall");
+	App->audio->LoadFx("sound/fx/fall2.wav", "fall2");
+	App->audio->LoadFx("sound/fx/dash.wav", "dash");
+	App->audio->LoadFx("sound/fx/enemydash.wav", "enemydash");
 
 
 	
@@ -163,7 +166,11 @@ void j1Scene::UnLoadScene()
 		App->pathfinding->Disable();
 	
 
-	App->audio->UnLoadAudio();
+	App->audio->UnLoadAudio(); // scene already loads it in start 
+
+	// particles TODO 
+
+
 }
 
 void j1Scene::LoadScene(SceneState sceneState)
@@ -186,7 +193,7 @@ void j1Scene::LoadScene(SceneState sceneState)
 		App->pathfinding->Enable();
 		App->map->active = true;
 		//LoadNewMap("maps/Level1_Final_Borders_Faked.tmx");  // TODO: change map and sound
-		
+		// particles TODO 
 
 
 		break;
@@ -199,7 +206,8 @@ void j1Scene::LoadScene(SceneState sceneState)
 		App->map->active = true;
 		/*App->audio->PlayMusic("audio/music/BRPG_Hell_Spawn_FULL_Loop.ogg");
 		LoadNewMap("maps/Level2_rework.tmx");*/                                          // TODO: change map and sound
-		
+		// particles TODO 
+
 		break;
 	default:
 		break;

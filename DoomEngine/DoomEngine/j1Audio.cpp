@@ -180,9 +180,6 @@ bool j1Audio::PlayFx(std::string name, int repeat)
 		Mix_PlayChannel(-1, fxMap.at(name), repeat);
 
 
-
-
-
 	return ret;
 }
 

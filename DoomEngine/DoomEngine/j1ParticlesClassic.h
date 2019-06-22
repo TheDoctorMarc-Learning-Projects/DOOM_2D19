@@ -6,6 +6,7 @@
 #include "p2Log.h"
 #include "p2Point.h"
 #include <list>
+#include <string>
 //#include "j1Collision.h"
 
 #define MAX_ACTIVE_PARTICLES 500
@@ -23,7 +24,7 @@ struct Particle // only dumb visual class
 	iPoint pivot = { (int)INT_MAX, (int)INT_MAX };
 	Animation anim;
 	SDL_Texture* texture = nullptr;
-	uint fx = 0u;
+	std::string fx = ""; 
 	iPoint position;
 	//iPoint impactPosition = { NULL,NULL }; // TODO: to instantiate another particle on impact pos
 	//bool impactPositioning = false;
@@ -69,10 +70,9 @@ public:
 
 private:
 
-	SDL_Texture* particleAtlas2 = nullptr; 
+	SDL_Texture* texture = nullptr; 
 	
 	std::list<Particle*> active;
-	std::list<Particle*> activeOnScreen;
 	pugi::xml_node particleNode;
 
 public:

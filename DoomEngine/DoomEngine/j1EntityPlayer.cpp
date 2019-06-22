@@ -171,6 +171,7 @@ bool j1EntityPlayer::Move(float dt)
 			if (onPlatform)
 			{
 				state.movement.at(1) = MovementState::JUMP; 
+				App->audio->PlayFx("dash");
 
 
 				onPlatform = false;
@@ -249,6 +250,7 @@ void j1EntityPlayer::WarnOtherModules()
 
 void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 {
+	bool lastOnplatform = onPlatform; 
 
 	switch (c2->type)
 	{
@@ -430,7 +432,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 	}
 
 
-
+	if(!lastOnplatform && onPlatform)
+		App->audio->PlayFx("fall");
 
 	
 }

@@ -36,7 +36,7 @@ bool j1ParticlesClassic::Start()
 
 
 
-	//particleAtlas2 = App->tex->Load("textures/particles/BuffParticles2.png");   // TODO: change atlas path, add  new articles to it
+	//texture = App->tex->Load("textures/particles/BuffParticles2.png");   // TODO: change atlas path
 	
 	return true;
 }
@@ -48,10 +48,10 @@ bool j1ParticlesClassic::CleanUp()
 
 	//unloading graphics
 	
-/*	if (particleAtlas2 != nullptr)
+/*	if (texture != nullptr)
 	{
-		App->tex->UnLoad(particleAtlas2);    // TODO: change atlas path, add  new articles to it
-		particleAtlas2 = nullptr;
+		App->tex->UnLoad(texture);    // TODO: change atlas path
+		texture = nullptr;
 	}*/
 
 
@@ -74,26 +74,6 @@ bool j1ParticlesClassic::CleanUp()
 		active.clear();
 	}
 
-
-	if (!activeOnScreen.empty())
-	{
-		std::list<Particle*>::iterator particles = activeOnScreen.begin();
-
-		for (; particles != activeOnScreen.end();)
-		{
-			if ((*particles)->texture != nullptr)
-			{
-				App->tex->UnLoad((*particles)->texture);
-				(*particles)->texture = nullptr;
-			}
-			delete (*particles);
-			(*particles) = nullptr;
-			particles = activeOnScreen.erase(particles);
-		}
-		activeOnScreen.clear();
-	}
-	//removing particles FX audio
-	//App->audio->UnloadSFX();
 
 	return true;
 }
@@ -124,12 +104,12 @@ bool j1ParticlesClassic::PostUpdate()//float dt)
 		else if (SDL_GetTicks() >= (*p)->born)
 		{
 			App->render->Blit((*p)->texture, (*p)->position.x, (*p)->position.y, &(*p)->anim.GetCurrentFrame(), (*p)->parallaxSpeed, (*p)->renderFlip, (*p)->scale, (*p)->angle, (*p)->pivot.x * App->win->GetScale(), (*p)->pivot.y * App->win->GetScale(), (*p)->useCameraScale);
-		/*	if ((*p)->fx_played == false && (*p)->fx != 0)
+			if ((*p)->fx_played == false && (*p)->fx != "")
 			{
 				(*p)->fx_played = true;
 				// Play particle fx here
-				App->audio->PlayFx((*p)->fx, 0);     // TODO: Rework this with strings (simply store particle fx in string)
-			}*/
+				App->audio->PlayFx((*p)->fx, 0);    
+			}
 			++p;
 		}
 		else
@@ -164,10 +144,9 @@ void j1ParticlesClassic::AddParticle(const Particle& particle, int x, int y, iPo
 	p->useCameraScale = useCameraScale;
 	p->onScreen = onScreen; 
 
-	if (!p->onScreen)
-		active.push_back(p);
-	else
-		activeOnScreen.push_back(p);
+	
+	active.push_back(p);
+	
 }
 
 

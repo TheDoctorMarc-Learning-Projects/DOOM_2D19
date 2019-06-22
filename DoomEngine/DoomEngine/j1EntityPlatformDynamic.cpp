@@ -5,7 +5,7 @@
 #include "j1EntityFactory.h"
 
 
-j1EntityPlatformDynamic::j1EntityPlatformDynamic(SDL_Rect placing, int heightLevel, int heightDeltaMovement, SceneState level, AXIS_Movement movementType) : j1EntityPlatform(placing, heightLevel)
+j1EntityPlatformDynamic::j1EntityPlatformDynamic(SDL_Rect placing, int heightLevel, int levelsUp, int levelsDown, SceneState level, AXIS_Movement movementType) : j1EntityPlatform(placing, heightLevel)
 {
 
 
@@ -22,7 +22,8 @@ j1EntityPlatformDynamic::j1EntityPlatformDynamic(SDL_Rect placing, int heightLev
 	else if (this->movementType == AXIS_Movement::VERTICAL)
 	{
 		pointingDir = POINTING_DIR::UP;
-		heighLevelTravel = heightDeltaMovement;
+		this->levelsUp = levelsUp;
+		this->levelsDown = levelsDown; 
 	}
 	
 
@@ -148,30 +149,30 @@ void j1EntityPlatformDynamic::CheckPlatformSameLevel()
 				{
 					if (collider->rect.y <= platf->collider->rect.y)  // if has reached Y pos 
 					{
-						if (heightLevel + heighLevelTravel == dynamic_cast<j1EntityPlatform*>(platf)->heightLevel) // if that platf has desired height level
+						if (heightLevel + levelsUp == dynamic_cast<j1EntityPlatform*>(platf)->heightLevel) // if that platf has desired height level
 						{
 
-							offset = platf->collider->rect.y /*+ platf->collider->rect.h*/ - collider->rect.y;   // to put back player if it goes off a bit
-							position.y += offset;
+						//	offset = platf->collider->rect.y /*+ platf->collider->rect.h*/ - collider->rect.y;   // to put back player if it goes off a bit
+						//	position.y += offset;
 							pointingDir = POINTING_DIR::DOWN;
 
-							UpdateEntitiesOnTopPositions(true, offset); 
+						//	UpdateEntitiesOnTopPositions(true, offset); 
 						}
 					}
 
 				}
 				else if (pointingDir == DOWN && lastPointingDir != UP)
 				{
-					if (collider->rect.y + collider->rect.h > platf->collider->rect.y)
+					if (collider->rect.y >= platf->collider->rect.y)
 					{
-						if (heightLevel - heighLevelTravel == dynamic_cast<j1EntityPlatform*>(platf)->heightLevel) // if that platf has desired height level
+						if (heightLevel - levelsDown == dynamic_cast<j1EntityPlatform*>(platf)->heightLevel) // if that platf has desired height level
 						{
 
-							offset = collider->rect.y + collider->rect.h - platf->collider->rect.y;
-							position.y -= offset;
+						/*	offset = collider->rect.y + collider->rect.h - platf->collider->rect.y;
+							position.y -= offset;*/
 							pointingDir = POINTING_DIR::UP;
 
-							UpdateEntitiesOnTopPositions(true, offset); 
+						//	UpdateEntitiesOnTopPositions(true, offset); 
 						}
 					}
 

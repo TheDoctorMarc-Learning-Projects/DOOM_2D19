@@ -5047,11 +5047,12 @@
     <property name="heightLevel" type="int" value="3"/>
    </properties>
   </object>
-  <object id="13" name="dynamicPlatform" x="736" y="448" width="192" height="32">
+  <object id="13" name="dynamicPlatform" x="736" y="352" width="192" height="32">
    <properties>
     <property name="axis" value="vertical"/>
-    <property name="deltaLevels" type="int" value="2"/>
-    <property name="heightLevel" type="int" value="1"/>
+    <property name="heightLevel" type="int" value="2"/>
+    <property name="levelsDown" type="int" value="1"/>
+    <property name="levelsUp" type="int" value="2"/>
    </properties>
   </object>
   <object id="14" name="staticPlatform" x="2176" y="128" width="192" height="32">

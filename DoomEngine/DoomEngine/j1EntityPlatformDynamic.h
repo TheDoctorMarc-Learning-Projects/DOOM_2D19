@@ -14,7 +14,7 @@ enum AXIS_Movement
 class j1EntityPlatformDynamic : public j1EntityPlatform
 {
 public:
-	j1EntityPlatformDynamic(SDL_Rect placing, int heightLevel, int heightDeltaMovement, SceneState level, AXIS_Movement movementType);
+	j1EntityPlatformDynamic(SDL_Rect placing, int heightLevel, int LevelsUp, int LevelsDown, SceneState level, AXIS_Movement movementType);
 	~j1EntityPlatformDynamic();
 
 	//core loops ------
@@ -37,7 +37,9 @@ public:
 
 
 private: 
-	bool endReached = false; 
+	bool endReached = false;
+	int levelsUp; 
+	int levelsDown; 
 };
 
 #endif 

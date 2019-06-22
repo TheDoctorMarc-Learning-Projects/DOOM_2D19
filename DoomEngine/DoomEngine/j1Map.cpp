@@ -639,7 +639,8 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 		{
 			int heightLevel = 0; 
 			std::string Axis = ""; 
-			int deltaLevels = 0;
+			int levelsUp = 0;
+			int levelsDown = 0; 
 
 			for (auto property = object.child("properties").child("property"); property; property = property.next_sibling("property"))
 			{
@@ -648,8 +649,10 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 					heightLevel = property.attribute("value").as_int();
 				else if(name == "axis")
 					Axis = property.attribute("value").as_string();
-				else if (name == "deltaLevels")
-					deltaLevels = property.attribute("value").as_int();
+				else if (name == "levelsUp")
+					levelsUp = property.attribute("value").as_int();
+				else if (name == "levelsDown")
+					levelsDown = property.attribute("value").as_int();
 			}
 
 			AXIS_Movement axisMov; 
@@ -664,7 +667,7 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 
 
 			App->entityFactory->CreatePlatform(ENTITY_TYPE::ENTITY_DYNAMIC, worldPos, heightLevel, "platform",
-				deltaLevels, SceneState::LEVEL1, axisMov);
+				levelsUp, levelsDown, SceneState::LEVEL1, axisMov);
 		}
 
 	}

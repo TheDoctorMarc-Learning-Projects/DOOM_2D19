@@ -177,7 +177,7 @@ j1Entity* j1EntityFactory::CreateEntity(ENTITY_TYPE type, int positionX, int pos
 	return ret;
 }
 
-j1Entity* j1EntityFactory::CreatePlatform(ENTITY_TYPE type, SDL_Rect placing, int heightLevel, std::string name, int heightDeltaMovement, SceneState level, AXIS_Movement movementType)
+j1Entity* j1EntityFactory::CreatePlatform(ENTITY_TYPE type, SDL_Rect placing, int heightLevel, std::string name, int levelsUp, int LevelsDown, SceneState level, AXIS_Movement movementType)
 {
 
 	j1Entity* ret = nullptr;
@@ -189,7 +189,7 @@ j1Entity* j1EntityFactory::CreatePlatform(ENTITY_TYPE type, SDL_Rect placing, in
 		ret = DBG_NEW j1EntityPlatform(placing, heightLevel);
 		break;
 	case ENTITY_DYNAMIC:
-		ret = DBG_NEW j1EntityPlatformDynamic(placing, heightLevel, heightDeltaMovement, level, movementType);
+		ret = DBG_NEW j1EntityPlatformDynamic(placing, heightLevel, levelsUp, LevelsDown, level, movementType);
 		break;
 
 

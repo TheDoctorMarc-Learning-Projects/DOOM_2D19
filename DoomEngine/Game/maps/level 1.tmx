@@ -5030,7 +5030,7 @@
     <property name="heightLevel" type="int" value="1"/>
    </properties>
   </object>
-  <object id="9" name="staticPlatform" x="928" y="288" width="192" height="32">
+  <object id="9" name="staticPlatform" x="992" y="288" width="192" height="32">
    <properties>
     <property name="heightLevel" type="int" value="3"/>
    </properties>
@@ -5052,7 +5052,7 @@
     <property name="axis" value="vertical"/>
     <property name="heightLevel" type="int" value="2"/>
     <property name="levelsDown" type="int" value="1"/>
-    <property name="levelsUp" type="int" value="2"/>
+    <property name="levelsUp" type="int" value="1"/>
    </properties>
   </object>
   <object id="14" name="staticPlatform" x="2176" y="128" width="192" height="32">
@@ -7600,14 +7600,14 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2521"/>
-   <tile gid="2521"/>
-   <tile gid="2521"/>
-   <tile gid="2521"/>
-   <tile gid="2521"/>
-   <tile gid="2521"/>
    <tile/>
    <tile/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
+   <tile gid="2521"/>
    <tile/>
    <tile/>
    <tile/>

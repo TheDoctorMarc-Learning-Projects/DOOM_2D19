@@ -250,7 +250,7 @@ void j1EntityPlayer::WarnOtherModules()
 
 void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 {
-	bool lastOnplatform = onPlatform; 
+	bool lastOnplatform = onPlatform;
 
 	switch (c2->type)
 	{
@@ -265,12 +265,12 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 				else if (c2->callback->pointingDir == POINTING_DIR::LEFT)
 					position.x -= c2->callback->speed * App->GetDt();
 			}
-			
-		
-			
+
+
+
 			collider->SetPos(position.x, position.y);
 		}
-			
+
 
 
 
@@ -278,7 +278,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 		if (state.movement.at(1) != MovementState::JUMP)
 		{
 			if (!onPlatform)
-			{                                           
+			{
 				if (c2->callback)    // platforms
 				{
 					if (collider->rect.y + collider->rect.h > c2->rect.y)
@@ -362,7 +362,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 						}
 					}
 				}
-				
+
 
 			}
 
@@ -377,10 +377,10 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 					if ((lastGroundPos.x + lastPosCollider.w < c2->rect.x && lastSpeed.x > 0)
 						|| (lastGroundPos.x > c2->rect.x + c2->rect.w) && lastSpeed.x < 0)    // when last ground was to the left and you go right or it was in the right and you go left 
 					{
-						float offset = 0.f; 
+						float offset = 0.f;
 						if (lastSpeed.x > 0)
 						{
-							offset = collider->rect.x + collider->rect.w - c2->rect.x; 
+							offset = collider->rect.x + collider->rect.w - c2->rect.x;
 							position.x -= offset;
 						}
 						else if (lastSpeed.x < 0)
@@ -389,7 +389,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 							offset = c2->rect.x + c2->rect.w - collider->rect.x;
 							position.x += offset;
 						}
-						
+
 						onPlatform = false;
 						if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
 							onDynamicplatform = false;
@@ -398,7 +398,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 						state.movement.at(1) = MovementState::FALL;
 
 						collider->SetPos(position.x, position.y);
-						
+
 					}
 					else
 					{
@@ -408,8 +408,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 						onPlatform = false;
 						if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
-							onDynamicplatform = false; 
-						
+							onDynamicplatform = false;
+
 						ResetGravity();
 
 						state.movement.at(1) = MovementState::FALL;
@@ -419,25 +419,51 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 					}
 				}
 
-			
+
 
 			}
-			
+
 
 		}
 
+		break;
 
 
-		break; 
+	case COLLIDER_TYPE::COLLIDER_WALL:
+
+		float offset;
+
+		if (pointingDir == RIGHT && lastSpeed.x > 0)
+		{
+			if (collider->rect.x + collider->rect.w > c2->rect.x)
+			{
+
+				offset = collider->rect.x + collider->rect.w - c2->rect.x;
+				position.x -= offset;
+				collider->SetPos(position.x, position.y);
+			}
+			
+				
+		}
+	    else if (pointingDir == LEFT && lastSpeed.x < 0)
+		{
+			if (collider->rect.x < c2->rect.x + c2->rect.w)
+			{
+				offset = c2->rect.x + c2->rect.w - collider->rect.x;
+				position.x += offset;
+				collider->SetPos(position.x, position.y);
+			}
+		}
+
+	break;
+
+
 	}
 
 
-	if(!lastOnplatform && onPlatform)
+	if (!lastOnplatform && onPlatform)
 		App->audio->PlayFx("fall");
-
-	
 }
-
 
 void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 {

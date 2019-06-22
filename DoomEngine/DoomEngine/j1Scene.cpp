@@ -55,6 +55,7 @@ bool j1Scene::Start()
 	{
 		//App->audio->PlayMusic("audio/music/FFDI_Theme_14.ogg", -1);   // change with new music
 		LoadNewMap("maps/level 1.tmx");
+		App->audio->PlayMusic("sound/music/Rip & Tear.ogg", -1);
 	}
 
 	if (state == SceneState::LEVEL2)

@@ -611,6 +611,13 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 			App->collision->AddCollider(worldPos, COLLIDER_TYPE::COLLIDER_FLOOR); 
 		}
 
+		else if (ObjectName == "wall")
+		{
+
+			// TODO: just add a collider
+			App->collision->AddCollider(worldPos, COLLIDER_TYPE::COLLIDER_WALL);
+		}
+
 		else if (ObjectName == "staticPlatform")
 		{
 			// TODO: Create an static entity, no need for texture, map already prints it there      

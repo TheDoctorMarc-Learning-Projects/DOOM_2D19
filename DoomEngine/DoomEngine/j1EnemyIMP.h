@@ -21,7 +21,7 @@ public:
 	bool PostUpdate();
 
 	// functionality ------
-	//bool Move(float dt) override;  // call parent function, then if enemy does enaything extra, do it after call 
+	bool Move(float dt) override;  // call parent function, then if enemy does enaything extra, do it after call 
 
 
 };

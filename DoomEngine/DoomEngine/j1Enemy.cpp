@@ -92,47 +92,7 @@ bool j1Enemy::Move(float dt)
 
 	lastPosCollider = collider->rect;
 
-	FollowPlayer(); 
-
-	if (lastSpeed.x != 0)
-	{
-		currentAnimation = &run;
-
-		int multiplier = 5; 
-		if (lastSpeed.x > 0)
-			multiplier = !multiplier; 
-
-		if (state.movement.at(1) != eMovementState::NOT_ACTIVE)
-		{
-			if (state.movement.at(1) == eMovementState::JUMP)
-				lastSpeed.x = (multiplier * speed) * jumpInfo.speedXIncrementJump * dt;
-			else if (state.movement.at(1) == eMovementState::FALL)
-				lastSpeed.x = (multiplier * speed) * jumpInfo.speedXIncrementFall * dt;
-
-		}
-		else
-			lastSpeed.x = (multiplier * speed) * dt;
-
-		state.movement.at(0) = (lastSpeed.x < 0) ? eMovementState::INPUT_LEFT : state.movement.at(0);
-		state.movement.at(0) = (lastSpeed.x > 0) ? eMovementState::INPUT_RIGHT : state.movement.at(0);
-
-		position.x += lastSpeed.x;
-
-	}
-		
-	else
-	{
-		if (state.movement.at(0) != eMovementState::IDLE)
-		{
-			state.movement.at(0) = eMovementState::IDLE;
-			//currentAnimation = &idle;
-
-		}
-
-		currentAnimation = &idle;
-		lastSpeed.x = 0;
-	}
-
+	FollowPlayer(dt); 
 
 	// - - - - - - - - - - - - - - - - - - vertical movement
 
@@ -192,9 +152,91 @@ void j1Enemy::WarnOtherModules()
 
 }
 
-void j1Enemy::FollowPlayer()
+bool j1Enemy::FollowPlayer(float dt)
+{
+	
+	bool ret = false;
+
+
+	pathToFollow.clear();
+	iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
+	iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y) + iPoint(0, 1);
+
+	if (tilePos.DistanceManhattan(playerTilePos) > 1)       // The enemy doesnt collapse with the player
+	{
+		
+			if (App->pathfinding->CreatePathAStar(tilePos, playerTilePos) != 0)
+			{
+				pathToFollow = *App->pathfinding->GetLastPath();
+				if (pathToFollow.size() > 1)
+					pathToFollow.erase(pathToFollow.begin());		// Enemy doesnt go to the center of his initial tile
+
+				if (pathToFollow.size() > 1)
+					pathToFollow.pop_back();							// Enemy doesnt eat the player, stays at 1 tile
+
+				ret = (pathToFollow.size() > 0);
+			}
+			else LOG("Could not create path correctly");
+	
+		
+	}
+
+	if (ret)
+	{
+		if (pathToFollow.size() > 1)
+		{
+			targetPos.x = (float)(App->map->MapToWorld(pathToFollow.at(1).x, 0).x);
+			targetPos.y = (float)(App->map->MapToWorld(0, pathToFollow.at(1).y).y);
+
+			fPoint direction = targetPos - position;
+
+			SolveMove(direction, dt);
+		}
+	
+
+	}
+
+
+
+	return ret; 
+
+}
+
+void j1Enemy::SolveMove(fPoint Direction, float dt)
 {
 
+	Direction.Normalize(); 
+
+	/*if (Direction.x > 0)
+		Direction.x = 1;
+	else if (Direction.x < 0)
+		Direction.x = -1; */
+
+		if (state.movement.at(1) != eMovementState::NOT_ACTIVE)
+		{
+			if (state.movement.at(1) == eMovementState::JUMP)
+				lastSpeed.x = (Direction.x * speed) * jumpInfo.speedXIncrementJump * dt;
+			else if (state.movement.at(1) == eMovementState::FALL)
+				lastSpeed.x = (Direction.x * speed) * jumpInfo.speedXIncrementFall * dt;
+
+		}
+		else
+			lastSpeed.x = (Direction.x * speed) * dt;
+
+		state.movement.at(0) = (lastSpeed.x < 0) ? eMovementState::INPUT_LEFT : state.movement.at(0);
+		state.movement.at(0) = (lastSpeed.x > 0) ? eMovementState::INPUT_RIGHT : state.movement.at(0);
+		state.movement.at(0) = (lastSpeed.x == 0) ? eMovementState::IDLE : state.movement.at(0);
+
+
+		if (lastSpeed.x != 0)
+		{
+			//currentAnimation = &run;
+			position.x += lastSpeed.x;
+		}
+	
+	
+
+	
 }
 
 

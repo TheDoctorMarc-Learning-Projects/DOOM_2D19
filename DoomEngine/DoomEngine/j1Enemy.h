@@ -1,10 +1,8 @@
 #ifndef _J1ENEMY_H__
 #define _J1ENEMY_H__
 
-
-
 #include "j1Entity.h"
-
+#include <vector> 
 
 enum class eCombatState
 {
@@ -63,7 +61,8 @@ public:
 	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
 	void WarnOtherModules();
-	void FollowPlayer(); 
+	bool FollowPlayer(float dt); 
+	void SolveMove(fPoint direction, float dt); 
 
 	bool IsAiming()
 	{
@@ -74,14 +73,14 @@ private:
 
 	Animation run;
 	bool aiming = false;
-	fPoint lastSpeed = fPoint(0, 0);
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0);
+	fPoint targetPos = fPoint(0, 0);
 	float momentumFactor = 10.f;
 	float momentum(float speed) { return speed * momentumFactor; };
 	SDL_Rect lastPosCollider;
 	ejumpData jumpInfo;
-
+	std::vector<iPoint> pathToFollow; 
 public:
 	myEnemyState state;
 	bool onDynamicplatform = false;

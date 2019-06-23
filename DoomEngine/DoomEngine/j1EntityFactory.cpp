@@ -51,7 +51,7 @@ bool j1EntityFactory::Start()
 	player = (j1EntityPlayer*)CreateEntity(PLAYER, 0, 0, "player"); 
 
 	// and test enemies
-	CreateEntity(ENEMY_IMP, 100, 100, "imp"); 
+	CreateEntity(ENEMY_IMP, 150, 100, "imp"); 
 
 
 

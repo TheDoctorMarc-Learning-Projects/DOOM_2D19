@@ -78,7 +78,6 @@ private:
 
 	Animation run; 
 	bool aiming = false;
-	fPoint lastSpeed = fPoint(0,0);
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0); 
 

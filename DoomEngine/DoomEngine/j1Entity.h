@@ -102,7 +102,7 @@ public:
 	ENTITY_TYPE				type;
 	SDL_RendererFlip		flip = SDL_FLIP_NONE;
 	POINTING_DIR            pointingDir = POINTING_DIR::LEFT; 
-
+	fPoint                  lastSpeed = fPoint(0, 0);
 	float					life = (float)LONG_MAX;
 	float					maxLife = (float)LONG_MAX;
 	float					speed = (float)LONG_MAX;

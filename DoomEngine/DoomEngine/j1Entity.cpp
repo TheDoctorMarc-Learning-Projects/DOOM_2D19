@@ -111,9 +111,9 @@ POINTING_DIR j1Entity::GetDirection()
 	if (type != ENTITY_DYNAMIC)
 	{
 
-		if (speed < 0)
+		if (lastSpeed.x < 0)
 			return pointingDir = POINTING_DIR::LEFT;
-		else if (speed > 0)
+		else if (lastSpeed.x > 0)
 			return pointingDir = POINTING_DIR::RIGHT;
 
 		return pointingDir;    // no change in speed results in same pointing dir

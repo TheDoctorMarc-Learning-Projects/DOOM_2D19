@@ -8,10 +8,11 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY) : j1Enemy(posX, posY)
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = ENEMY_IMP;
 	size.create(36, 49);
-	speed = .0075f;
+	speed = 100.75f;
 	mass = 0.6f;
 	gravityFactor = DEFAULT_GRAV * mass;
 	
+	state.movement.at(1) = eMovementState::FALL;   // testing purposes 
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - anims
 	currentAnimation = &idle;
@@ -42,6 +43,13 @@ bool j1EnemyIMP::Update(float dt)
 {
 
 	return true;
+}
+
+bool j1EnemyIMP::Move(float dt)
+{
+	bool move = j1Enemy::Move(dt);
+
+	return move; 
 }
 
 bool j1EnemyIMP::PostUpdate()

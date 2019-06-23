@@ -61,6 +61,7 @@ public:
 	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
 	void WarnOtherModules();
+	void VerticalMovement(float dt); 
 	bool FollowPlayer(float dt); 
 	void SolveMove(fPoint direction, float dt); 
 
@@ -69,13 +70,16 @@ public:
 		return aiming;
 	}
 
-private:
+public:
 
 	Animation run;
 	bool aiming = false;
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0);
 	fPoint targetPos = fPoint(0, 0);
+	uint tileDetectionRange = 0; 
+
+private: 
 	float momentumFactor = 10.f;
 	float momentum(float speed) { return speed * momentumFactor; };
 	SDL_Rect lastPosCollider;

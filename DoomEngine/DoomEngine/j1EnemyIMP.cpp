@@ -11,6 +11,7 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY) : j1Enemy(posX, posY)
 	speed = 100.75f;
 	mass = 0.6f;
 	gravityFactor = DEFAULT_GRAV * mass;
+	tileDetectionRange = 10;
 	
 	state.movement.at(1) = eMovementState::FALL;   // testing purposes 
 
@@ -48,6 +49,7 @@ bool j1EnemyIMP::Update(float dt)
 bool j1EnemyIMP::Move(float dt)
 {
 	bool move = j1Enemy::Move(dt);
+	Jump(); 
 
 	return move; 
 }
@@ -56,4 +58,9 @@ bool j1EnemyIMP::PostUpdate()
 {
 
 	return true;
+}
+
+
+void j1EnemyIMP::Jump()
+{
 }

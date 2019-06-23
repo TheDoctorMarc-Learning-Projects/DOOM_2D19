@@ -19,6 +19,7 @@ public:
 	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
+	void Jump(); 
 
 	// functionality ------
 	bool Move(float dt) override;  // call parent function, then if enemy does enaything extra, do it after call 

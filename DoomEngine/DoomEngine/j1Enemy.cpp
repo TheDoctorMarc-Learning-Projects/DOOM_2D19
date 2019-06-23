@@ -92,7 +92,39 @@ bool j1Enemy::Move(float dt)
 
 	lastPosCollider = collider->rect;
 
-	FollowPlayer(dt); 
+
+	iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
+	iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y) + iPoint(0, 1);
+
+	uint Distance = (uint)(int)(float)abs(hypot(playerTilePos.x - tilePos.x, playerTilePos.y - tilePos.y)); 
+	if (Distance <= tileDetectionRange)
+		FollowPlayer(dt);
+
+
+
+
+	VerticalMovement(dt); 
+
+
+	if (position.x < 0)   // TODO: Add right map limit blocking
+		position.x = 0;
+
+	if (!to_delete)
+	{
+		collider->SetPos(position.x, position.y);
+		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+	}
+
+
+	// - - - - - - - - - - - - - - - - - - warn other modules about the pos if needed
+	WarnOtherModules();
+
+
+	return true;
+}
+
+void j1Enemy::VerticalMovement(float dt)
+{
 
 	// - - - - - - - - - - - - - - - - - - vertical movement
 
@@ -127,24 +159,7 @@ bool j1Enemy::Move(float dt)
 
 	if (position.y > previousPosition.y && state.movement.at(1) == eMovementState::JUMP)
 		state.movement.at(1) = eMovementState::FALL;
-
-	if (position.x < 0)   // TODO: Add right map limit blocking
-		position.x = 0;
-
-	if (!to_delete)
-	{
-		collider->SetPos(position.x, position.y);
-		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
-	}
-
-
-	// - - - - - - - - - - - - - - - - - - warn other modules about the pos if needed
-	WarnOtherModules();
-
-
-	return true;
 }
-
 
 void j1Enemy::WarnOtherModules()
 {
@@ -171,8 +186,8 @@ bool j1Enemy::FollowPlayer(float dt)
 				if (pathToFollow.size() > 1)
 					pathToFollow.erase(pathToFollow.begin());		// Enemy doesnt go to the center of his initial tile
 
-				if (pathToFollow.size() > 1)
-					pathToFollow.pop_back();							// Enemy doesnt eat the player, stays at 1 tile
+				/*if (pathToFollow.size() > 1)
+					pathToFollow.pop_back();	*/						// Enemy doesnt eat the player, stays at 1 tile
 
 				ret = (pathToFollow.size() > 0);
 			}
@@ -206,11 +221,6 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 {
 
 	Direction.Normalize(); 
-
-	/*if (Direction.x > 0)
-		Direction.x = 1;
-	else if (Direction.x < 0)
-		Direction.x = -1; */
 
 		if (state.movement.at(1) != eMovementState::NOT_ACTIVE)
 		{

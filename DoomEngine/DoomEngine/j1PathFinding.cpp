@@ -419,13 +419,13 @@ int j1PathFinding::CreatePathAStar(const iPoint& origin, const iPoint& destinati
 
 			ret = last_path.size();
 
-			if (ret != -1)
+		/*	if (ret != -1)
 			{
 				for (uint i = 0; i < ret; ++i)
 				{
 					LOG("x = %i, y = %i", last_path[i].x, last_path[i].y);
 				}
-			}
+			}*/
 
 			return ret;
 

@@ -200,7 +200,7 @@ bool j1EntityPlayer::Move(float dt)
 			position.y += lastSpeed.y;
 
 			if (lastSpeed.y > 0)
-				state.movement.at(1) == MovementState::FALL;
+				state.movement.at(1) = MovementState::FALL;
 
 		}
 
@@ -236,11 +236,11 @@ void j1EntityPlayer::WarnOtherModules()
 
 	// - - - - - - - - - - - - - - - - >> Render 
 
-	if ((state.movement.at(0) == MovementState::INPUT_RIGHT || onDynamicplatform) && -(int)position.x < App->render->camera.x - App->render->camera.w + (int)App->render->screenDivisions.lateralValue)
+	if ((lastSpeed.x > 0 || onDynamicplatform) && -(int)position.x < App->render->camera.x - App->render->camera.w + (int)App->render->screenDivisions.lateralValue)
 	{
 		App->render->DoCameraScroll(cameraScrollType::GRADUAL, direction::RIGHT, this); 
 	}
-	else if ((state.movement.at(0) == MovementState::INPUT_LEFT || onDynamicplatform) && -(int)position.x > App->render->camera.x - (int)App->render->screenDivisions.lateralValue && (int)previousPosition.x > (int)App->render->screenDivisions.lateralValue)
+	else if ((lastSpeed.x < 0|| onDynamicplatform) && -(int)position.x > App->render->camera.x - (int)App->render->screenDivisions.lateralValue && (int)previousPosition.x > (int)App->render->screenDivisions.lateralValue)
 	{
 		App->render->DoCameraScroll(cameraScrollType::GRADUAL, direction::LEFT, this);
 	}
@@ -494,16 +494,15 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 		{
 			if (onPlatform)
 			{
-				
+	
 					onPlatform = false;
-					if(onDynamicplatform)
+					if (onDynamicplatform)
 						onDynamicplatform = false;
-					
+
 					ResetGravity();
 
 					state.movement.at(1) = MovementState::FALL;
-
-			
+		
 			}
 
 		}

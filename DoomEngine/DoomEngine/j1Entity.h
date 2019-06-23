@@ -11,6 +11,7 @@
 #include "j1Render.h"
 #include "j1Audio.h"
 #include <array>
+#include <math.h>
 
 #include "SDL_image/include/SDL_image.h"
 

@@ -7,7 +7,7 @@
 #include "j1EntityFactory.h"
 #include "j1Window.h"
 #include "j1Scene.h"
-#include <math.h>
+
 
 
 j1Enemy::j1Enemy(int posX, int posY) : j1Entity(ENEMY_STATIC, posX, posY, "enemy")
@@ -78,6 +78,7 @@ bool j1Enemy::Save(pugi::xml_node &) const
 
 bool j1Enemy::Move(float dt)
 {
+	bool ret = false; 
 
 	previousPosition = position;
 
@@ -92,13 +93,18 @@ bool j1Enemy::Move(float dt)
 
 	lastPosCollider = collider->rect;
 
+	lastPointingDir = pointingDir; 
 
 	iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
 	iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y) + iPoint(0, 1);
 
 	uint Distance = (uint)(int)(float)abs(hypot(playerTilePos.x - tilePos.x, playerTilePos.y - tilePos.y)); 
 	if (Distance <= tileDetectionRange)
-		FollowPlayer(dt);
+	{
+		if (FollowPlayer(dt))
+			ret = true; 
+	}
+		
 
 
 
@@ -120,13 +126,25 @@ bool j1Enemy::Move(float dt)
 	WarnOtherModules();
 
 
-	return true;
+	return ret;
 }
 
 void j1Enemy::VerticalMovement(float dt)
 {
 
 	// - - - - - - - - - - - - - - - - - - vertical movement
+
+	if (doJump)
+	{
+		App->audio->PlayFx("dash");                   // TODO: CHANGE SOUND
+		state.movement.at(1) = eMovementState::JUMP;
+
+		onPlatform = false;
+		ResetGravity();
+
+
+		doJump = false; 
+	}
 
 	if (!onPlatform)
 	{
@@ -289,27 +307,33 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 						{
 							if (lastAirPos.y + lastPosCollider.h - jumpComfortCornerThreshold > c2->rect.y)    //prevent the case when falling, and colliding laterally  
 							{
-								float offset = 0.f;
-								if (lastSpeed.x > 0)
+
+								if ((lastGroundPos.x + lastPosCollider.w < c2->rect.x && lastSpeed.x > 0)
+									|| (lastGroundPos.x > c2->rect.x + c2->rect.w) && lastSpeed.x < 0)    // when last ground was to the left and you go right or it was in the right and you go left 
 								{
-									offset = collider->rect.x + collider->rect.w - c2->rect.x;
-									position.x -= offset;
+									float offset = 0.f;
+									if (lastSpeed.x > 0)
+									{
+										offset = collider->rect.x + collider->rect.w - c2->rect.x;
+										position.x -= offset;
+									}
+									else if (lastSpeed.x < 0)
+									{
+
+										offset = c2->rect.x + c2->rect.w - collider->rect.x;
+										position.x += offset;
+									}
+
+									onPlatform = false;
+									if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
+										onDynamicplatform = false;
+									ResetGravity();
+
+									state.movement.at(1) = eMovementState::FALL;
+
+									collider->SetPos(position.x, position.y);
+
 								}
-								else if (lastSpeed.x < 0)
-								{
-
-									offset = c2->rect.x + c2->rect.w - collider->rect.x;
-									position.x += offset;
-								}
-
-								onPlatform = false;
-								if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
-									onDynamicplatform = false;
-								ResetGravity();
-
-								state.movement.at(1) = eMovementState::FALL;
-
-								collider->SetPos(position.x, position.y);
 
 
 							}
@@ -404,19 +428,21 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 					}
 					else
 					{
+						if (lastSpeed.y < 0)
+						{
+							float offset = c2->rect.y + c2->rect.h - collider->rect.y;   // to put back player if it goes off a bit
+							position.y += offset;
 
-						float offset = c2->rect.y + c2->rect.h - collider->rect.y;   // to put back player if it goes off a bit
-						position.y += offset;
+							onPlatform = false;
+							if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
+								onDynamicplatform = false;
 
-						onPlatform = false;
-						if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
-							onDynamicplatform = false;
+							ResetGravity();
 
-						ResetGravity();
+							state.movement.at(1) = eMovementState::FALL;
 
-						state.movement.at(1) = eMovementState::FALL;
-
-						collider->SetPos(position.x, position.y);
+							collider->SetPos(position.x, position.y);
+						}
 
 					}
 				}

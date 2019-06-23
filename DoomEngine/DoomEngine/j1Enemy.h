@@ -31,12 +31,12 @@ struct myEnemyState
 
 struct ejumpData
 {
-	float jumpPower = 1.f;
+	float jumpPower = 20.5f;
 	float currenJumpPower = jumpPower;
-	float jumpIncrementFactor = 1.f;
-	float speedXIncrementJump = 1.f;
-	float speedXIncrementFall = 1.f;
-	float verticalIncrementFactor = 1.f;    // jumpincrement reduces jump power in time, but vertical increment counteracts it a bit 
+	float jumpIncrementFactor = .9f;
+	float speedXIncrementJump = 1.7f;
+	float speedXIncrementFall = 1.2f;
+	float verticalIncrementFactor = 1.02f;     // jumpincrement reduces jump power in time, but vertical increment counteracts it a bit 
 };
 class j1Entity;
 
@@ -78,13 +78,16 @@ public:
 	fPoint lastAirPos = fPoint(0, 0);
 	fPoint targetPos = fPoint(0, 0);
 	uint tileDetectionRange = 0; 
-
+	SDL_Rect lastPosCollider;
+	bool doJump = false;
+	POINTING_DIR lastPointingDir; 
+	ejumpData jumpInfo;
 private: 
 	float momentumFactor = 10.f;
 	float momentum(float speed) { return speed * momentumFactor; };
-	SDL_Rect lastPosCollider;
-	ejumpData jumpInfo;
+	
 	std::vector<iPoint> pathToFollow; 
+	 
 public:
 	myEnemyState state;
 	bool onDynamicplatform = false;

@@ -26,12 +26,17 @@ struct Properties
 
 		while(item != list.end())
 		{
-			list.remove(*item);
+			delete *item; 
+			*item = nullptr; 
 			++item;
 		}
 
 		list.clear();
 	}
+
+
+
+
 
 	float parallaxSpeed = 1.0f;
 
@@ -61,6 +66,7 @@ struct MapLayer
 	int			height;
 	uint*		data = nullptr;
 	Properties	properties;
+	int         Navigation = 0; 
 
 
 	MapLayer() : data(NULL)

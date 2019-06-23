@@ -10,10 +10,23 @@
 #include "j1Collision.h"
 #include "j1Render.h"
 #include "j1Audio.h"
+#include <array>
 
 #include "SDL_image/include/SDL_image.h"
 
 #include <math.h>
+
+
+#define DEFAULT_GRAV 50.f	
+#define MAX_GRAV 550.f
+
+inline float GravityCalc(float& gm, float& m)  // g  and mass inline calc container
+{
+	(gm < MAX_GRAV / m) ? gm *= 1.05f : gm = MAX_GRAV * m;
+
+	return gm;
+}
+
 
 enum ENTITY_TYPE  // todo, pass to class
 {
@@ -21,7 +34,9 @@ enum ENTITY_TYPE  // todo, pass to class
 		ENTITY_STATIC,
 		ENTITY_DYNAMIC,
 		PLAYER,
-		MAX_TYPE
+		MAX_TYPE,
+		ENEMY_STATIC,
+		ENEMY_IMP,
 };
 
 enum POINTING_DIR

@@ -136,6 +136,8 @@
     <ClCompile Include="j1App.cpp" />
     <ClCompile Include="j1Audio.cpp" />
     <ClCompile Include="j1Collision.cpp" />
+    <ClCompile Include="j1Enemy.cpp" />
+    <ClCompile Include="j1EnemyIMP.cpp" />
     <ClCompile Include="j1Entity.cpp" />
     <ClCompile Include="j1EntityFactory.cpp" />
     <ClCompile Include="j1EntityPlayer.cpp" />
@@ -161,6 +163,8 @@
     <ClInclude Include="j1App.h" />
     <ClInclude Include="j1Audio.h" />
     <ClInclude Include="j1Collision.h" />
+    <ClInclude Include="j1Enemy.h" />
+    <ClInclude Include="j1EnemyIMP.h" />
     <ClInclude Include="j1Entity.h" />
     <ClInclude Include="j1EntityFactory.h" />
     <ClInclude Include="j1EntityPlatform.h" />

@@ -13,7 +13,7 @@
 
 #include "j1EntityPlayer.h"
 #include "j1EntityPlatform.h"
-
+#include "j1EnemyIMP.h"
 
 #include <assert.h>
 
@@ -49,6 +49,9 @@ bool j1EntityFactory::Start()
 	
 	// for the moment, create player here 
 	player = (j1EntityPlayer*)CreateEntity(PLAYER, 0, 0, "player"); 
+
+	// and test enemies
+	CreateEntity(ENEMY_IMP, 100, 100, "imp"); 
 
 
 
@@ -165,7 +168,9 @@ j1Entity* j1EntityFactory::CreateEntity(ENTITY_TYPE type, int positionX, int pos
 	case PLAYER:
 		ret = DBG_NEW j1EntityPlayer(positionX, positionY); 
 		break;
-
+	case ENEMY_IMP:
+		ret = DBG_NEW j1EnemyIMP(positionX, positionY);
+		break;
 
 	default:
 		break;

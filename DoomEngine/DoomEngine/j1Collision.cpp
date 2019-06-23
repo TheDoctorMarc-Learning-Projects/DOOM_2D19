@@ -104,7 +104,7 @@ bool j1Collision::PreUpdate()
 	{
 		if (colliders[i] != nullptr && colliders[i]->to_delete == true)
 		{
-			if (!colliders[i]->onCollisionWithMe.empty())
+			/*if (!colliders[i]->onCollisionWithMe.empty())
 			{
 				for (auto& col : colliders[i]->onCollisionWithMe)    // put both pointers to each other to null when a col is deleted
 				{
@@ -116,7 +116,7 @@ bool j1Collision::PreUpdate()
 					col = nullptr; 
 				}
 					
-			}
+			}*/
 			delete colliders[i];
 			colliders[i] = nullptr;
 		}
@@ -310,7 +310,7 @@ bool j1Collision::CleanUp()
 	{
 		if (colliders[i] != nullptr)
 		{
-			if (!colliders[i]->onCollisionWithMe.empty())
+			/*if (!colliders[i]->onCollisionWithMe.empty())
 			{
 				for (auto& col : colliders[i]->onCollisionWithMe)   // put both pointers to each other to null when a col is deleted
 				{
@@ -322,7 +322,7 @@ bool j1Collision::CleanUp()
 					col = nullptr;
 				}
 
-			}
+			}*/
 			delete colliders[i];
 
 			colliders[i] = nullptr;

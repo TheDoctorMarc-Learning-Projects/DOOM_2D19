@@ -12,16 +12,6 @@
 #include "j1EntityPlatformDynamic.h"
 #include "j1Scene.h"
 
-#define DEFAULT_GRAV 50.f	
-#define MAX_GRAV 550.f
-
-inline float GravityCalc(float& gm, float& m)  // g  and mass inline calc container
-{
-	 (gm < MAX_GRAV / m) ? gm *= 1.05f : gm = MAX_GRAV * m;
-
-	 return gm;
-}
-
 
 class j1EntityFactory : public j1Module
 {

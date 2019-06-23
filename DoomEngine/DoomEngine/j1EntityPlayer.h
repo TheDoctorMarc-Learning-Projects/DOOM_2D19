@@ -1,10 +1,6 @@
 #ifndef _J1ENTITY_PLAYER_H__
 #define _J1ENTITY_PLAYER_H__
 
-#include "p2Point.h"
-#include "p2Animation.h"
-#include "j1Render.h"
-#include <array>
 
 #include "j1Entity.h"
 
@@ -47,13 +43,6 @@ struct jumpData
 	float verticalIncrementFactor = 1.02f;    // jumpincrement reduces jump power in time, but vertical increment counteracts it a bit 
 };
 
-struct SpeedBlocked
-{
-	bool RX = false; 
-	bool LX = false;
-	bool RY = false; 
-	bool LY = false; 
-};
 class j1Entity; 
 
 class j1EntityPlayer : public j1Entity
@@ -93,7 +82,7 @@ private:
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0); 
 
-	SpeedBlocked speedBlocked; 
+
 	jumpData jumpInfo; 
 	float momentumFactor = 10.f; 
 	float momentum(float speed) { return speed * momentumFactor; };

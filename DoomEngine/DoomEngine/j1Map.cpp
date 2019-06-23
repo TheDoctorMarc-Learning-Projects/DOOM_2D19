@@ -191,19 +191,6 @@ iPoint j1Map::WorldToMap(int x, int y) const
 		ret.x = x / data.tile_width;
 		ret.y = y / data.tile_height;
 	}
-	/*else if(data.type == MAPTYPE_ISOMETRIC)
-	{
-		
-		float half_width = data.tile_width * 0.5f;
-		float half_height = data.tile_height * 0.5f;
-		ret.x = int((x / half_width + (y / half_height)) * 0.5f); // - 1// this is caused because the sprite doesnt fit to 0,0 on real world
-		ret.y = int( (y / half_height - (x / half_width)) * 0.5f);	   // and needs this offset to match ( 1 tile displacement )
-	}
-	else
-	{
-		//LOG("Unknown map type");
-		ret.x = x; ret.y = y;
-	}*/
 
 	return ret;
 }
@@ -712,8 +699,8 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	{
 		MapLayer* layer = *item;
 
-		/*if(layer->properties.Get("Navigation", 0) == 0)
-			continue;*/
+		if(layer->properties.Get("Navigation", 0) == 0)
+			continue;
 
 		uchar* map = DBG_NEW uchar[layer->width*layer->height];
 		memset(map, 1, layer->width*layer->height);

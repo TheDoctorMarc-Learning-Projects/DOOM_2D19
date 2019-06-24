@@ -55,9 +55,10 @@ bool j1Entity::PostUpdate()
 
 bool j1Entity::CleanUp()
 {
+	collider->to_delete = true;
 
-	/*if (entityTex != nullptr)
-		App->tex->UnLoad(entityTex); */
+	if (entityTex != nullptr)
+		App->tex->UnLoad(entityTex); 
 
 	return true;
 }

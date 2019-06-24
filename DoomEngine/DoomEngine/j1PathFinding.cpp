@@ -48,7 +48,7 @@ bool j1PathFinding::PostUpdate()
 	App->win->AddStringToTitle(title);
 
 	// We draw the grid in front of all the Quads
-	DrawGrid();
+//	DrawGrid();
 
 	return true;
 }

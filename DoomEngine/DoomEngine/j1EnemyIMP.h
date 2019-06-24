@@ -15,10 +15,10 @@ public:
 
 	//core loops ------
 	//bool Awake(pugi::xml_node& node);
-	bool Start();
+	/*bool Start();
 	bool PreUpdate();
 	bool Update(float dt);
-	bool PostUpdate();
+	bool PostUpdate();*/
 	void Jump(); 
 
 	// functionality ------

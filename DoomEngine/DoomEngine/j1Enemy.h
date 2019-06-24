@@ -8,7 +8,8 @@ enum class eCombatState
 {
 	IDLE,
 	SHOOT,
-	DIE
+	DYING,
+	DEAD
 };
 
 enum class eMovementState
@@ -52,7 +53,7 @@ public:
 	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
-	bool CleanUp();
+	bool CleanUp() override;
 
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
@@ -64,7 +65,7 @@ public:
 	void VerticalMovement(float dt); 
 	bool FollowPlayer(float dt); 
 	void SolveMove(fPoint direction, float dt); 
-
+	void AssignDirectionWithSpeed(); 
 	bool IsAiming()
 	{
 		return aiming;
@@ -73,7 +74,9 @@ public:
 public:
 
 	Animation run;
+	Animation death1;   // TODO: if all enemies have 2 death anims, put the other also here
 	bool aiming = false;
+	float life; 
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0);
 	fPoint targetPos = fPoint(0, 0);

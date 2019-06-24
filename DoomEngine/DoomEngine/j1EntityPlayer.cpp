@@ -287,28 +287,31 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 						{
 							if (lastAirPos.y + lastPosCollider.h - jumpComfortCornerThreshold > c2->rect.y)    //prevent the case when falling, and colliding laterally  
 							{
-								float offset = 0.f;
-								if (lastSpeed.x > 0)
+								if ((lastGroundPos.x + lastPosCollider.w < c2->rect.x && lastSpeed.x > 0)
+									|| (lastGroundPos.x > c2->rect.x + c2->rect.w) && lastSpeed.x < 0)    // when last ground was to the left and you go right or it was in the right and you go left 
 								{
-									offset = collider->rect.x + collider->rect.w - c2->rect.x;
-									position.x -= offset;
+									float offset = 0.f;
+									if (lastSpeed.x > 0)
+									{
+										offset = collider->rect.x + collider->rect.w - c2->rect.x;
+										position.x -= offset;
+									}
+									else if (lastSpeed.x < 0)
+									{
+
+										offset = c2->rect.x + c2->rect.w - collider->rect.x;
+										position.x += offset;
+									}
+
+									onPlatform = false;
+									if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
+										onDynamicplatform = false;
+									ResetGravity();
+
+									state.movement.at(1) = MovementState::FALL;
+
+									collider->SetPos(position.x, position.y);
 								}
-								else if (lastSpeed.x < 0)
-								{
-
-									offset = c2->rect.x + c2->rect.w - collider->rect.x;
-									position.x += offset;
-								}
-
-								onPlatform = false;
-								if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
-									onDynamicplatform = false;
-								ResetGravity();
-
-								state.movement.at(1) = MovementState::FALL;
-
-								collider->SetPos(position.x, position.y);
-
 
 							}
 							else

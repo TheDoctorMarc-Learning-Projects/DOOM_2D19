@@ -206,14 +206,14 @@
     <ClInclude Include="j1EntityPlatformDynamic.h">
       <Filter>Code\Core\In-Game\Entities\inanimated</Filter>
     </ClInclude>
-    <ClInclude Include="j1Enemy.h">
-      <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
-    </ClInclude>
     <ClInclude Include="j1EnemyIMP.h">
       <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="j1PathFinding.h">
       <Filter>Code\Core\In-Game</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Enemy.h">
+      <Filter>Code\Core\In-Game\Entities\animated</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

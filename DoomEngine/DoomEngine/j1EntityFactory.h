@@ -26,6 +26,7 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+
 	/*bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;*/  // TODO (xd) 
 

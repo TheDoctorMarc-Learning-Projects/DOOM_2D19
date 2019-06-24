@@ -43,6 +43,11 @@ bool j1Enemy::PreUpdate()
 bool j1Enemy::Update(float dt)
 {
 
+	// just testing death: 
+
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+		state.combat = eCombatState::DYING; 
+
 	return true;
 }
 
@@ -57,7 +62,7 @@ bool j1Enemy::CleanUp()
 
 	collider->to_delete = true;
 
-	if (entityTex != nullptr)
+	if (entityTex != nullptr)          // MAJOR TODO: do not delete texture, first create the entity corpse and pass it the texture 
 		App->tex->UnLoad(entityTex);
 
 
@@ -95,35 +100,53 @@ bool j1Enemy::Move(float dt)
 
 	lastPointingDir = pointingDir; 
 
-	iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
-	iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y) + iPoint(0, 1);
 
-	uint Distance = (uint)(int)(float)abs(hypot(playerTilePos.x - tilePos.x, playerTilePos.y - tilePos.y)); 
-	if (Distance <= tileDetectionRange)
+	if (state.combat != eCombatState::DYING && state.combat != eCombatState::DEAD)
 	{
-		if (FollowPlayer(dt))
-			ret = true; 
+		iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
+		iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y) + iPoint(0, 1);
+
+		uint Distance = (uint)(int)(float)abs(hypot(playerTilePos.x - tilePos.x, playerTilePos.y - tilePos.y));
+		if (Distance <= tileDetectionRange)
+		{
+			if (FollowPlayer(dt))
+				ret = true;
+		}
+
+		// - - - - - - - - - - - - - - - - - - warn other modules about the pos if needed
+		WarnOtherModules();
 	}
-		
+	else
+	{
+		if (state.combat == eCombatState::DYING)       // TODO, add second death anim, make a random of the two or play the most brutal if it is a fatality or critic death 
+		{
+			if (currentAnimation != &death1)
+				currentAnimation = &death1; 
+			else if (currentAnimation->Finished())
+			{
+				state.combat = eCombatState::DEAD; 
+				to_delete = true; 
+			}
+				
+				                                                       
+		}
+	}
 
-
-
-
-	VerticalMovement(dt); 
-
-
-	if (position.x < 0)   // TODO: Add right map limit blocking
-		position.x = 0;
+	
 
 	if (!to_delete)
 	{
+
+		VerticalMovement(dt);
+
+
+		if (position.x < 0)   // TODO: Add right map limit blocking
+			position.x = 0;
+
 		collider->SetPos(position.x, position.y);
 		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
 	}
-
-
-	// - - - - - - - - - - - - - - - - - - warn other modules about the pos if needed
-	WarnOtherModules();
+	
 
 
 	return ret;
@@ -175,8 +198,8 @@ void j1Enemy::VerticalMovement(float dt)
 
 
 
-	if (position.y > previousPosition.y && state.movement.at(1) == eMovementState::JUMP)
-		state.movement.at(1) = eMovementState::FALL;
+	/*if (position.y > previousPosition.y && state.movement.at(1) == eMovementState::JUMP)
+		state.movement.at(1) = eMovementState::FALL;*/
 }
 
 void j1Enemy::WarnOtherModules()
@@ -225,9 +248,11 @@ bool j1Enemy::FollowPlayer(float dt)
 
 			SolveMove(direction, dt);
 		}
-	
+
 
 	}
+	else
+	 // TODO: DO melee attack 
 
 
 
@@ -240,6 +265,13 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 
 	Direction.Normalize(); 
 
+	// if too small, set to 0 so that enemy is idle
+
+	if (abs(Direction.x) < 0.1f)
+		Direction.x = 0.f; 
+	if (abs(Direction.y) < 0.1f)
+		Direction.y = 0.f; 
+
 		if (state.movement.at(1) != eMovementState::NOT_ACTIVE)
 		{
 			if (state.movement.at(1) == eMovementState::JUMP)
@@ -251,20 +283,27 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 		else
 			lastSpeed.x = (Direction.x * speed) * dt;
 
-		state.movement.at(0) = (lastSpeed.x < 0) ? eMovementState::INPUT_LEFT : state.movement.at(0);
-		state.movement.at(0) = (lastSpeed.x > 0) ? eMovementState::INPUT_RIGHT : state.movement.at(0);
-		state.movement.at(0) = (lastSpeed.x == 0) ? eMovementState::IDLE : state.movement.at(0);
+		AssignDirectionWithSpeed(); 
+
+		
 
 
 		if (lastSpeed.x != 0)
 		{
-			//currentAnimation = &run;
+			currentAnimation = &run;
 			position.x += lastSpeed.x;
 		}
 	
 	
 
 	
+}
+
+void j1Enemy::AssignDirectionWithSpeed()
+{
+	state.movement.at(0) = (lastSpeed.x < 0) ? eMovementState::INPUT_LEFT : state.movement.at(0);
+	state.movement.at(0) = (lastSpeed.x > 0) ? eMovementState::INPUT_RIGHT : state.movement.at(0);
+	state.movement.at(0) = (lastSpeed.x == 0) ? eMovementState::IDLE : state.movement.at(0);
 }
 
 
@@ -342,7 +381,7 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 								if (collider->rect.y + collider->rect.h > c2->rect.y)
 								{
 
-									if (lastSpeed.y > 0)
+									if (lastSpeed.y)
 									{
 
 										float offset = collider->rect.y + collider->rect.h - c2->rect.y;  // to put back player if it goes off a bit
@@ -428,8 +467,7 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 					}
 					else
 					{
-						if (lastSpeed.y < 0)
-						{
+						
 							float offset = c2->rect.y + c2->rect.h - collider->rect.y;   // to put back player if it goes off a bit
 							position.y += offset;
 
@@ -442,8 +480,7 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 							state.movement.at(1) = eMovementState::FALL;
 
 							collider->SetPos(position.x, position.y);
-						}
-
+					
 					}
 				}
 
@@ -453,6 +490,8 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 
 
 		}
+
+		
 
 		break;
 
@@ -489,7 +528,7 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 	}
 
 
-	if (!lastOnplatform && onPlatform)
+	if (!lastOnplatform && onPlatform && state.combat != eCombatState::DYING)   // TODO: same with player code 
 		App->audio->PlayFx("fall2");
 }
 
@@ -499,14 +538,14 @@ void j1Enemy::OnCollisionExit(Collider* c1, Collider* c2)
 	switch (c2->type)
 	{
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
-		if (c2->hasCallback && c2->callback->type != ENTITY_TYPE::ENTITY_DYNAMIC)
+		if ((c2->hasCallback && c2->callback->type != ENTITY_TYPE::ENTITY_DYNAMIC) || !c2->hasCallback)
 		{
-			if (state.movement.at(1) != eMovementState::JUMP && state.movement.at(0) != eMovementState::IDLE)
+			if ((state.movement.at(1) != eMovementState::JUMP && state.movement.at(0) != eMovementState::IDLE || state.combat == eCombatState::DYING) )
 			{
 				if (onPlatform)
 				{
 
-					if (lastSpeed.y > 0);
+					if (lastSpeed.y > 0 || state.combat == eCombatState::DYING);
 					{
 						onPlatform = false;
 						ResetGravity();

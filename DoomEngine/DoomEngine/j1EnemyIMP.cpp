@@ -9,7 +9,7 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY) : j1Enemy(posX, posY)
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = ENEMY_IMP;
 	size.create(36, 49);
-	speed = 100.75f;
+	speed = 150.75f;
 	mass = 0.6f;
 	gravityFactor = DEFAULT_GRAV * mass;
 	tileDetectionRange = 10;
@@ -30,6 +30,20 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY) : j1Enemy(posX, posY)
 	currentAnimation = &idle;
 	idle.PushBack({ 46, 33, size.x, size.y });
 
+	run.PushBack({ 46, 33, size.x, size.y });
+	run.PushBack({ 42, 123, size.x + 2, size.y + 2});
+	run.PushBack({ 45, 213, size.x -5, size.y + 4});
+	run.speed = 1.5f; 
+	run.loop = true; 
+
+
+	death1.PushBack({ 44, 755, size.x + 6, size.y + 13});
+	death1.PushBack({ 130, 755, size.x + 5, size.y + 10 });
+	death1.PushBack({ 215, 755, size.x + 4, size.y + 5 });
+	death1.PushBack({ 299, 755, size.x + 12, size.y - 3 });
+	death1.PushBack({ 391, 755, size.x + 18, size.y - 27 });
+	death1.speed = 1.8f; 
+	death1.loop = false; 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - collider
 	collider = App->collision->AddCollider({ (int)position.x, (int)position.y, (int)((float)size.x * spriteScale),(int)((float)size.y * spriteScale) }, COLLIDER_TYPE::COLLIDER_ENEMY, this);
 
@@ -39,6 +53,7 @@ j1EnemyIMP::~j1EnemyIMP()
 {
 }
 
+/*
 bool j1EnemyIMP::Start()
 {
 
@@ -57,6 +72,14 @@ bool j1EnemyIMP::Update(float dt)
 	return true;
 }
 
+bool j1EnemyIMP::PostUpdate()
+{
+
+	return true;
+}
+
+*/
+
 bool j1EnemyIMP::Move(float dt)
 {
 	if(j1Enemy::Move(dt))
@@ -64,12 +87,6 @@ bool j1EnemyIMP::Move(float dt)
 
 
 	return true; 
-}
-
-bool j1EnemyIMP::PostUpdate()
-{
-
-	return true;
 }
 
 

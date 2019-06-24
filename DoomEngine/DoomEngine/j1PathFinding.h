@@ -156,7 +156,7 @@ public:
 	void ActivateTile(const iPoint& tile);
 	void DeactivateTile(const iPoint& tile);
 
-	bool debug = true;
+	bool debug = false;
 	bool doingPath = false;
 
 public:

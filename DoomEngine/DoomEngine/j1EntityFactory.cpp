@@ -5,6 +5,7 @@
 #include "j1Window.h"
 #include "j1ParticlesClassic.h"
 #include "j1PathFinding.h"
+#include "j1Input.h"
 
 #include "Brofiler/Brofiler.h"
 
@@ -82,6 +83,19 @@ bool j1EntityFactory::Update(float dt)
 	bool ret = true;
 	BROFILER_CATEGORY("Entities Update", Profiler::Color::Fuchsia);
 
+
+	// testinpurposes 
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		int x, y;
+		x = y = 0;
+		App->input->GetMousePosition(x, y);
+		CreateEntity(ENEMY_IMP, x, y, "imp");
+	}
+
+
+
+
 	std::list<j1Entity*>::iterator item = entities.begin();
 	for (; item != entities.end();)
 	{
@@ -152,6 +166,7 @@ bool j1EntityFactory::CleanUp()
 
 	return ret;
 }
+
 
 
 j1Entity* j1EntityFactory::CreateEntity(ENTITY_TYPE type, int positionX, int positionY, std::string name)

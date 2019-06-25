@@ -66,7 +66,7 @@ struct MapLayer
 	int			height;
 	uint*		data = nullptr;
 	Properties	properties;
-	int         Navigation = 0; 
+	
 
 
 	MapLayer() : data(NULL)

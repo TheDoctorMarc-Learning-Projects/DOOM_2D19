@@ -3,6 +3,7 @@
 
 
 #include "j1Entity.h"
+#include "j1EntityPlatform.h"
 
 //#define jumpPower 20.f
 
@@ -92,7 +93,8 @@ private:
 public: 
 	myState state;
 	bool onDynamicplatform = false;
-	
+	j1EntityPlatform* lastPlatform = nullptr;
+
 
 	friend class j1Entity; 
 

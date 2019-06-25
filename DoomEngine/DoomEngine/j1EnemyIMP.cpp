@@ -100,25 +100,29 @@ void j1EnemyIMP::Jump()
 	if (onPlatform && App->entityFactory->player->onPlatform)  // both on plat 
 	{
 		bool enoughOffset = false;
+		bool inSamePlatform = false; 
 
-		if ((App->entityFactory->player->collider->rect.y + App->entityFactory->player->collider->rect.w < position.y)  // check diff plat height
-			|| position.y + collider->rect.y < App->entityFactory->player->position.y)
+		if (lastPlatform == App->entityFactory->player->lastPlatform)
+			inSamePlatform = true; 
+
+		if (!inSamePlatform) 
 		{
 
 
 			for (const auto& col : App->entityFactory->player->collider->onCollisionWithMe)
 			{
-				if (col->callback->type == ENTITY_DYNAMIC || col->callback->type == ENTITY_STATIC)   // check player in platform 
+				if (col->callback->type == ENTITY_DYNAMIC || col->callback->type == ENTITY_STATIC)   // capture the platform player col  
 				{
 
 					iPoint platfTilePos = App->map->WorldToMap((int)col->callback->position.x, (int)col->callback->position.y) + iPoint(0, 1);
+
 					if (pointingDir == RIGHT)
 					{
 						if (tilePos.x + App->map->WorldToMap(collider->rect.w, 0).x >= platfTilePos.x - jumpTriggerTileRange)               // check I got enough offset to jump and not collide with players' dest platform 
 						{
 							// check I was coming from that direction 
 
-							if (lastTilePos.x < tilePos.x)
+							if (lastTilePos.x < tilePos.x && lastTilePos.x + App->map->WorldToMap(collider->rect.w, 0).x  < platfTilePos.x - jumpTriggerTileRange)
 							{
 								enoughOffset = true;
 							}
@@ -127,29 +131,46 @@ void j1EnemyIMP::Jump()
 					}
 					else if (pointingDir == LEFT)
 					{
-						iPoint platfTilePos = App->map->WorldToMap((int)col->callback->position.x + (int)col->rect.w, (int)col->callback->position.y) + iPoint(0, 1);
-
 						if (tilePos.x <= platfTilePos.x + App->map->WorldToMap(col->rect.w, 0).x + jumpTriggerTileRange)               // check I got enough offset to jump and not collide with players' dest platform 
 						{
-							if (lastTilePos.x > tilePos.x)
+							if (lastTilePos.x > tilePos.x && lastTilePos.x > platfTilePos.x + App->map->WorldToMap(col->rect.w, 0).x + jumpTriggerTileRange)
 							{
 								enoughOffset = true;
 							}
 						}
 
-
 					}
+
+
+					if (App->entityFactory->player->collider->rect.y < collider->rect.y)    // player is above 
+					{
+						if (lastTilePos.x + App->map->WorldToMap(collider->rect.w, 0).x > platfTilePos.x - jumpTriggerTileRange - extraJumpOffset   // inside range, so it needs to go outside to have offset
+							&& lastTilePos.x < platfTilePos.x + App->map->WorldToMap(col->rect.w, 0).x + jumpTriggerTileRange + extraJumpOffset)
+						{
+							if (!enoughOffset)   // repath to a position where the enemy would have enough ofsset to jump
+							{
+								if (position.x + collider->rect.w / 2 > col->rect.x + col->rect.w / 2)  
+									targetPos.value.x = platfTilePos.x + App->map->WorldToMap(col->rect.w, 0).x + jumpTriggerTileRange + extraJumpOffset;
+								else
+									targetPos.value.x = platfTilePos.x - jumpTriggerTileRange - extraJumpOffset;
+							
+								targetPos.value.y = tilePos.y; 
+								targetPos.type = X;
+								state.path = ePathState::TEMPORAL_DEVIATION;
+							}
+						}
+					}
+					
+				
 
 				}
 			}
 
 
 			if (enoughOffset)
-			{
-
-				doJump = true;
-
-			}
+				doJump = true; 
+		
+		
 
 
 		}
@@ -157,5 +178,11 @@ void j1EnemyIMP::Jump()
 
 }
 
+
+
+void j1EnemyIMP::ResolvePathDeviation()
+{
+	doJump = true; 
+}
 
 

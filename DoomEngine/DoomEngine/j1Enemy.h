@@ -2,6 +2,7 @@
 #define _J1ENEMY_H__
 
 #include "j1Entity.h"
+#include "j1EntityPlatform.h"
 #include <vector> 
 
 enum class eCombatState
@@ -10,6 +11,13 @@ enum class eCombatState
 	SHOOT,
 	DYING,
 	DEAD
+};
+
+enum class ePathState
+{
+	FOLLOW_PLAYER,
+	TEMPORAL_DEVIATION,
+	LOOP_DEVIATION
 };
 
 enum class eMovementState
@@ -27,7 +35,21 @@ struct myEnemyState
 {
 	eCombatState combat;
 	std::array<eMovementState, 2> movement; // 0 for idle, run, 1 for jump or fall
+	ePathState path; 
 
+};
+
+enum targetPosType
+{
+	X,
+	Y,
+	XY,
+};
+
+struct TargetPos
+{
+	targetPosType type = targetPosType::XY;
+    fPoint value = fPoint(0, 0); 
 };
 
 struct ejumpData
@@ -63,9 +85,11 @@ public:
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
 	void WarnOtherModules();
 	void VerticalMovement(float dt); 
-	bool FollowPlayer(float dt); 
+	bool FollowPath(float dt); 
 	void SolveMove(fPoint direction, float dt); 
 	void AssignDirectionWithSpeed(); 
+	virtual void ResolvePathDeviation() {};
+
 	bool IsAiming()
 	{
 		return aiming;
@@ -79,14 +103,16 @@ public:
 	float life; 
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0);
-	fPoint targetPos = fPoint(0, 0);
+	TargetPos targetPos; 
 	fPoint deathPosGround = fPoint(0, 0);
+	fPoint currentTarget = fPoint(0, 0); 
 	SDL_Rect deathColllider = { 0, 0, 0, 0 }; 
 	uint tileDetectionRange = 0; 
 	SDL_Rect lastPosCollider;
 	bool doJump = false;
 	POINTING_DIR lastPointingDir; 
 	ejumpData jumpInfo;
+	j1EntityPlatform* lastPlatform = nullptr; 
 private: 
 	float momentumFactor = 10.f;
 	float momentum(float speed) { return speed * momentumFactor; };

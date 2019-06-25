@@ -701,33 +701,37 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 
 		if(layer->properties.Get("Navigation", 0) == 0)
 			continue;
-
-		uchar* map = DBG_NEW uchar[layer->width*layer->height];
-		memset(map, 1, layer->width*layer->height);
-
-		for(int y = 0; y < data.height; ++y)
+		else
 		{
-			for(int x = 0; x < data.width; ++x)
-			{
-				int i = (y*layer->width) + x;
+			uchar* map = DBG_NEW uchar[layer->width*layer->height];
+			memset(map, 1, layer->width*layer->height);
 
-				int tile_id = layer->Get(x, y);
-				TileSet* tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : NULL;
-				
-				if(tileset != NULL)
+			for (int y = 0; y < data.height; ++y)
+			{
+				for (int x = 0; x < data.width; ++x)
 				{
-					map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
-					
+					int i = (y*layer->width) + x;
+
+					int tile_id = layer->Get(x, y);
+					TileSet* tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : NULL;
+
+					if (tileset != NULL)
+					{
+						map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
+
+					}
 				}
 			}
+
+			*buffer = map;
+			width = data.width;
+			height = data.height;
+			ret = true;
+
+			break;
 		}
 
-		*buffer = map;
-		width = data.width;
-		height = data.height;
-		ret = true;
-
-		break;
+	
 	}
 
 	return ret;

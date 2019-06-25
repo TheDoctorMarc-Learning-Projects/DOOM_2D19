@@ -19,7 +19,7 @@ j1Enemy::j1Enemy(int posX, int posY) : j1Entity(ENEMY_STATIC, posX, posY, "enemy
 	state.combat = eCombatState::IDLE;
 	state.movement.at(0) = eMovementState::IDLE;
 	state.movement.at(1) = eMovementState::NOT_ACTIVE;
-
+	state.path = ePathState::FOLLOW_PLAYER; 
 	
 
 }	
@@ -109,7 +109,7 @@ bool j1Enemy::Move(float dt)
 		uint Distance = (uint)(int)(float)abs(hypot(playerTilePos.x - tilePos.x, playerTilePos.y - tilePos.y));
 		if (Distance <= tileDetectionRange)
 		{
-			if (FollowPlayer(dt))
+			if (FollowPath(dt))
 				ret = true;
 		}
 
@@ -229,7 +229,7 @@ void j1Enemy::WarnOtherModules()
 
 }
 
-bool j1Enemy::FollowPlayer(float dt)
+bool j1Enemy::FollowPath(float dt)
 {
 	
 	bool ret = false;
@@ -237,21 +237,39 @@ bool j1Enemy::FollowPlayer(float dt)
 
 	pathToFollow.clear();
 	iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
-	iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y) + iPoint(0, 1);
+	iPoint targetTilePos = iPoint(0, 0);
 
-	if (tilePos.DistanceManhattan(playerTilePos) > 1)       // The enemy doesnt collapse with the player
+	if (state.path == ePathState::FOLLOW_PLAYER)
+	{
+		targetPos.value = App->entityFactory->player->position; 
+		targetTilePos = App->map->WorldToMap(targetPos.value.x, targetPos.value.y) + iPoint(0, 1);
+	}
+	else if (state.path == ePathState::TEMPORAL_DEVIATION)
+	{
+		targetTilePos.x = targetPos.value.x;
+		targetTilePos.y = targetPos.value.y;
+		
+		if (tilePos.DistanceManhattan(targetTilePos) <= 1)
+		{
+			state.path = ePathState::FOLLOW_PLAYER;
+			ResolvePathDeviation(); 
+		}
+
+	}
+
+	if (tilePos.DistanceManhattan(targetTilePos) > 1)       // The enemy doesnt collapse with the player
 	{
 		
-			if (App->pathfinding->CreatePathAStar(tilePos, playerTilePos) != 0)
+			if (App->pathfinding->CreatePathAStar(tilePos, targetTilePos) != 0)
 			{
 				pathToFollow = *App->pathfinding->GetLastPath();
-				if (pathToFollow.size() > 1)
+				if (pathToFollow.size() > 0)
 					pathToFollow.erase(pathToFollow.begin());		// Enemy doesnt go to the center of his initial tile
 
 				/*if (pathToFollow.size() > 1)
 					pathToFollow.pop_back();	*/						// Enemy doesnt eat the player, stays at 1 tile
 
-				ret = (pathToFollow.size() > 0);
+				ret = (pathToFollow.size() > 1);
 			}
 			else LOG("Could not create path correctly");
 	
@@ -262,10 +280,11 @@ bool j1Enemy::FollowPlayer(float dt)
 	{
 		if (pathToFollow.size() > 1)
 		{
-			targetPos.x = (float)(App->map->MapToWorld(pathToFollow.at(1).x, 0).x);
-			targetPos.y = (float)(App->map->MapToWorld(0, pathToFollow.at(1).y).y);
+			fPoint WorldTargetPos = fPoint(0, 0); 
+			WorldTargetPos.x = (float)(App->map->MapToWorld(pathToFollow.at(1).x, 0).x);
+			WorldTargetPos.y = (float)(App->map->MapToWorld(0, pathToFollow.at(1).y).y);
 
-			fPoint direction = targetPos - position;
+			fPoint direction = WorldTargetPos - position;
 
 			SolveMove(direction, dt);
 		}
@@ -550,7 +569,12 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 
 
 	if (!lastOnplatform && onPlatform && state.combat != eCombatState::DYING)   // TODO: same with player code 
+	{
+		lastPlatform = dynamic_cast<j1EntityPlatform*>(c2->callback);
+
 		App->audio->PlayFx("fall2");
+	}
+		
 }
 
 void j1Enemy::OnCollisionExit(Collider* c1, Collider* c2)
@@ -572,6 +596,10 @@ void j1Enemy::OnCollisionExit(Collider* c1, Collider* c2)
 						ResetGravity();
 
 						state.movement.at(1) = eMovementState::FALL;
+
+
+						if (lastPlatform)
+							lastPlatform = nullptr;
 					}
 
 				}
@@ -591,6 +619,9 @@ void j1Enemy::OnCollisionExit(Collider* c1, Collider* c2)
 
 				state.movement.at(1) = eMovementState::FALL;
 
+
+				if (lastPlatform)
+					lastPlatform = nullptr;
 			}
 
 		}

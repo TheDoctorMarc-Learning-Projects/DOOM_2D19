@@ -465,7 +465,12 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 
 	if (!lastOnplatform && onPlatform)
+	{
+		lastPlatform = dynamic_cast<j1EntityPlatform*>(c2->callback);
+
 		App->audio->PlayFx("fall");
+	}
+		
 }
 
 void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
@@ -487,6 +492,12 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 						ResetGravity();
 
 						state.movement.at(1) = MovementState::FALL;
+
+						if (lastPlatform)
+							lastPlatform = nullptr;
+					
+
+
 					}
 
 				}
@@ -506,6 +517,9 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 
 					state.movement.at(1) = MovementState::FALL;
 		
+
+					if (lastPlatform)
+						lastPlatform = nullptr;
 			}
 
 		}

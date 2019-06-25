@@ -20,14 +20,14 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();*/
 	void Jump(); 
-
+	void ResolvePathDeviation(); 
 	// functionality ------
 	bool Move(float dt) override;  // call parent function, then if enemy does enaything extra, do it after call 
 
 private: 
 	//float jumpAngle = 45; 
 	uint jumpTriggerTileRange = 2; 
-
+	uint extraJumpOffset = 3; 
 };
 
 #endif 

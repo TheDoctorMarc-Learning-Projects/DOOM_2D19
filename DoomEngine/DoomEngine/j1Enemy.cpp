@@ -85,21 +85,23 @@ bool j1Enemy::Move(float dt)
 {
 	bool ret = false; 
 
-	previousPosition = position;
+	if (!to_delete)
+	{
+		previousPosition = position;
 
-	if (onPlatform)
-		lastGroundPos = position;
-	else
-		lastAirPos = position;
+		if (onPlatform)
+			lastGroundPos = position;
+		else
+			lastAirPos = position;
 
 
-	if (!onPlatform)
-		onDynamicplatform = false;
+		if (!onPlatform)
+			onDynamicplatform = false;
 
-	lastPosCollider = collider->rect;
+		lastPosCollider = collider->rect;
 
-	lastPointingDir = pointingDir; 
-
+		lastPointingDir = pointingDir;
+	}
 
 	if (state.combat != eCombatState::DYING && state.combat != eCombatState::DEAD)
 	{
@@ -166,6 +168,16 @@ bool j1Enemy::Move(float dt)
 
 		collider->SetPos(position.x, position.y);
 		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+
+		if (collider->rect.h != lastPosCollider.h)
+		{
+			float yOffset = collider->rect.h - lastPosCollider.h;
+			position.y -= yOffset;
+			collider->SetPos(position.x, position.y);
+			collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h, position.x, position.y);
+		}
+		
+
 	}
 	
 
@@ -216,7 +228,6 @@ void j1Enemy::VerticalMovement(float dt)
 	}
 	else
 		lastSpeed.y = 0;
-
 
 
 	/*if (position.y > previousPosition.y && state.movement.at(1) == eMovementState::JUMP)

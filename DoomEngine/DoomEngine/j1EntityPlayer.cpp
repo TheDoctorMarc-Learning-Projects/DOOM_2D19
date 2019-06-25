@@ -213,13 +213,23 @@ bool j1EntityPlayer::Move(float dt)
 	if (position.y > previousPosition.y && state.movement.at(1) == MovementState::JUMP)
 		state.movement.at(1) = MovementState::FALL;
 
-	if (position.x < 0)   // TODO: Add right map limit blocking
-		position.x = 0;
-
 	if (!to_delete)
 	{
+		if (position.x < 0)   // TODO: Add right map limit blocking
+			position.x = 0;
+
 		collider->SetPos(position.x, position.y);
-		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h); 
+		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+
+		if (collider->rect.h != lastPosCollider.h)
+		{
+			float yOffset = collider->rect.h - lastPosCollider.h;
+			position.y -= yOffset;
+			collider->SetPos(position.x, position.y);
+			collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h, position.x, position.y);
+		}
+
+
 	}
 
 

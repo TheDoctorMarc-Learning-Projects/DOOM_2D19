@@ -84,14 +84,14 @@ bool j1EntityFactory::Update(float dt)
 	BROFILER_CATEGORY("Entities Update", Profiler::Color::Fuchsia);
 
 
-	// testinpurposes 
+	/*// testinpurposes 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		int x, y;
 		x = y = 0;
 		App->input->GetMousePosition(x, y);
 		CreateEntity(ENEMY_IMP, x, y, "imp");
-	}
+	}*/
 
 
 

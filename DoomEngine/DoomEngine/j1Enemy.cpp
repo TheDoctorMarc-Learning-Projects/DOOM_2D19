@@ -357,6 +357,15 @@ void j1Enemy::AssignDirectionWithSpeed()
 	state.movement.at(0) = (lastSpeed.x == 0) ? eMovementState::IDLE : state.movement.at(0);
 }
 
+bool j1Enemy::isMeleeRange()
+{
+	iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
+	iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y) + iPoint(0, 1);
+	if (tilePos.DistanceManhattan(playerTilePos) <= 1)
+		return true;
+	return false;
+}
+
 
 void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 {

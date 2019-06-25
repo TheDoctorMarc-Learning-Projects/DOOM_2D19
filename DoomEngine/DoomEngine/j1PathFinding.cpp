@@ -27,7 +27,7 @@ bool j1PathFinding::Start()
 
 bool j1PathFinding::PostUpdate()
 {
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	/*if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
 		debug = !debug;
 
 	if (debug)
@@ -45,7 +45,7 @@ bool j1PathFinding::PostUpdate()
 	static char title[120];
 	sprintf_s(title, 120, " Closed Nodes: %i, Open Nodes: %i, Visited Nodes: %i", closed.pathNodeList.size(), open.pathNodeList.size(), visited.pathNodeList.size());
 
-	App->win->AddStringToTitle(title);
+	App->win->AddStringToTitle(title);*/
 
 	// We draw the grid in front of all the Quads
 //	DrawGrid();

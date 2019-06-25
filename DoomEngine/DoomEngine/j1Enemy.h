@@ -24,6 +24,7 @@ enum class eMovementState
 {
 	IDLE,
 	RUN,
+	STUN,
 	INPUT_RIGHT,
 	INPUT_LEFT,
 	JUMP,
@@ -90,16 +91,13 @@ public:
 	void AssignDirectionWithSpeed(); 
 	virtual void ResolvePathDeviation() {};
 
-	bool IsAiming()
-	{
-		return aiming;
-	}
+
+	bool isMeleeRange(); 
 
 public:
 
 	Animation run;
 	Animation death1;   // TODO: if all enemies have 2 death anims, put the other also here
-	bool aiming = false;
 	float life; 
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0);

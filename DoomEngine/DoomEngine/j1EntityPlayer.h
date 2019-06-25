@@ -20,6 +20,7 @@ enum class MovementState
 {
 	IDLE, 
 	RUN,
+	STUN,
 	INPUT_RIGHT,
 	INPUT_LEFT,
 	JUMP,
@@ -30,7 +31,7 @@ enum class MovementState
 struct myState
 {
 	combatState combat; 
-	std::array<MovementState, 2> movement; // 0 for idle, run, 1 for jump or fall
+	std::array<MovementState, 2> movement; // 0 for idle, run, stun, 1 for jump or fall
 
 };
 

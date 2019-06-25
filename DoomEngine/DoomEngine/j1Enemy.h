@@ -80,6 +80,8 @@ public:
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0);
 	fPoint targetPos = fPoint(0, 0);
+	fPoint deathPosGround = fPoint(0, 0);
+	SDL_Rect deathColllider = { 0, 0, 0, 0 }; 
 	uint tileDetectionRange = 0; 
 	SDL_Rect lastPosCollider;
 	bool doJump = false;

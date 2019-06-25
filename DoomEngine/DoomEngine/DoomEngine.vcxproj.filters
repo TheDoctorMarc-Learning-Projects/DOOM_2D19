@@ -213,7 +213,7 @@
       <Filter>Code\Core\In-Game</Filter>
     </ClInclude>
     <ClInclude Include="j1Enemy.h">
-      <Filter>Code\Core\In-Game\Entities\animated</Filter>
+      <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

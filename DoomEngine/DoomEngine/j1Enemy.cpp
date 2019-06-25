@@ -113,6 +113,8 @@ bool j1Enemy::Move(float dt)
 				ret = true;
 		}
 
+		VerticalMovement(dt);
+
 		// - - - - - - - - - - - - - - - - - - warn other modules about the pos if needed
 		WarnOtherModules();
 	}
@@ -120,6 +122,29 @@ bool j1Enemy::Move(float dt)
 	{
 		if (state.combat == eCombatState::DYING)       // TODO, add second death anim, make a random of the two or play the most brutal if it is a fatality or critic death 
 		{
+			if(!onPlatform)
+				VerticalMovement(dt);
+
+				if (onPlatform && deathPosGround.IsZero())
+				{
+					deathPosGround.y = position.y + collider->rect.h;         // make so when enemy dies and anim changes, he visually stays inmovile in platform 
+					deathColllider = collider->rect;
+
+				}
+				else if(!deathPosGround.IsZero())
+				{
+					float offset = deathColllider.h - collider->rect.h;
+					position.y = deathPosGround.y - deathColllider.h + offset;
+			
+					
+				
+					collider->SetPos(position.x, position.y);
+					collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+				}
+			
+
+
+
 			if (currentAnimation != &death1)
 				currentAnimation = &death1; 
 			else if (currentAnimation->Finished())
@@ -136,10 +161,6 @@ bool j1Enemy::Move(float dt)
 
 	if (!to_delete)
 	{
-
-		VerticalMovement(dt);
-
-
 		if (position.x < 0)   // TODO: Add right map limit blocking
 			position.x = 0;
 
@@ -545,7 +566,7 @@ void j1Enemy::OnCollisionExit(Collider* c1, Collider* c2)
 				if (onPlatform)
 				{
 
-					if (lastSpeed.y > 0 || state.combat == eCombatState::DYING);
+					if (lastSpeed.y > 0);
 					{
 						onPlatform = false;
 						ResetGravity();

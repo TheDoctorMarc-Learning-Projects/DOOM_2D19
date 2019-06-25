@@ -42,7 +42,7 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY) : j1Enemy(posX, posY)
 	death1.PushBack({ 215, 755, size.x + 4, size.y + 5 });
 	death1.PushBack({ 299, 755, size.x + 12, size.y - 3 });
 	death1.PushBack({ 391, 755, size.x + 18, size.y - 27 });
-	death1.speed = 1.8f; 
+	death1.speed = 1.3f; 
 	death1.loop = false; 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - collider
 	collider = App->collision->AddCollider({ (int)position.x, (int)position.y, (int)((float)size.x * spriteScale),(int)((float)size.y * spriteScale) }, COLLIDER_TYPE::COLLIDER_ENEMY, this);

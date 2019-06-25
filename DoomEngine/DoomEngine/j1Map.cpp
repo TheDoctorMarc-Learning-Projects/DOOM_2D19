@@ -415,7 +415,7 @@ bool j1Map::LoadMap()
 			data.type = MAPTYPE_UNKNOWN;
 		}
 		// load custom properties from map data
-		pugi::xml_node propertiesNode = map.child("properties");
+		/*pugi::xml_node propertiesNode = map.child("properties");
 
 		if (propertiesNode == NULL)
 		{
@@ -424,7 +424,7 @@ bool j1Map::LoadMap()
 		else
 		{
 			LoadProperties(map, data.properties);
-		}
+		}*/
 	}
 
 	return ret;
@@ -501,7 +501,9 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->name = node.attribute("name").as_string();
 	layer->width = node.attribute("width").as_int();
 	layer->height = node.attribute("height").as_int();
-	LoadProperties(node, layer->properties);
+	LoadProperties(node, layer);
+	
+
 	pugi::xml_node layer_data = node.child("data");
 
 
@@ -664,7 +666,7 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 }
 
 // Load a group of properties from a node and fill a list with it
-bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
+bool j1Map::LoadProperties(pugi::xml_node& node, MapLayer* layer)
 {
 	bool ret = false;
 
@@ -679,9 +681,13 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 			Properties::Property* p = DBG_NEW Properties::Property();
 
 			p->name = prop.attribute("name").as_string();
-			p->value = prop.attribute("value").as_int();
+			p->value = prop.attribute("value").as_float();
+			
+			if(p->name == "parallaxSpeed")
+				layer->properties.parallaxSpeed = node.child("properties").child("property").attribute("value").as_float();
+	
 
-			properties.list.push_back(p);
+			layer->properties.list.push_back(p);
 		}
 	}
 
@@ -699,7 +705,7 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	{
 		MapLayer* layer = *item;
 
-		if(layer->properties.Get("Navigation", 0) == 0)
+		if(layer->properties.Get("Navigation", 0) == 1)
 			continue;
 		else
 		{

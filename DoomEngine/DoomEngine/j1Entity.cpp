@@ -74,10 +74,10 @@ bool j1Entity::CleanUp()
 void j1Entity::Draw()
 {
 	
-	if (GetDirection() == POINTING_DIR::LEFT)
-		flip = SDL_FLIP_NONE;
+	if (GetDirection() == POINTING_DIR::RIGHT)
+		flip = SDL_FLIP_HORIZONTAL;
 	else
-		flip = SDL_FLIP_HORIZONTAL; 
+		flip = SDL_FLIP_NONE; 
 
 
 	//AdjustColliderToAnimFrame(); 

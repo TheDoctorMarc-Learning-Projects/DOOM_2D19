@@ -141,6 +141,7 @@ public:
 	// Called before render is available
 	bool Awake(pugi::xml_node& conf);
 
+
 	// Called each loop iteration
 	void Draw();
 
@@ -173,6 +174,11 @@ public:
 	bool				showNavLayer = false;
 
 	bool mapDebug = false; 
+
+
+	SDL_Texture*			lootTexture = nullptr;
+	SDL_Texture*			platfTexture = nullptr;   // needed to be created here, because they are loaded in xml before entityfactory loads textures 
+
 	//iPoint pixelTileOffset; // mesures the height between the end of y sprite texture to start of the paint(draw) itself (displacement)
 private:
 

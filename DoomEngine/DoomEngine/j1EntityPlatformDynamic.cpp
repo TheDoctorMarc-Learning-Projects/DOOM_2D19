@@ -2,8 +2,8 @@
 #include "j1Collision.h"
 #include "j1Map.h"
 #include "j1EntityPlayer.h"
+#include "j1Map.h"
 #include "j1EntityFactory.h"
-
 
 j1EntityPlatformDynamic::j1EntityPlatformDynamic(SDL_Rect placing, int heightLevel, int levelsUp, int levelsDown, SceneState level, AXIS_Movement movementType) : j1EntityPlatform(placing, heightLevel)
 {
@@ -36,7 +36,7 @@ j1EntityPlatformDynamic::j1EntityPlatformDynamic(SDL_Rect placing, int heightLev
 
 
 	if (level == SceneState::LEVEL1)
-		entityTex = App->entityFactory->platfTexture; 
+		entityTex = App->map->platfTexture; 
 	/*else if (level == SceneState::LEVEL2)
 		entityTex = App->tex->Load(); */
 

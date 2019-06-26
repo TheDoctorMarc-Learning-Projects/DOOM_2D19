@@ -2,7 +2,7 @@
 #define __J1ENTITY_LOOT_H__
 
 #include "j1Entity.h"
-#include "j1EntityFactory.h"
+#include "j1Map.h"
 
 enum class LOOT_TYPE
 {
@@ -33,7 +33,7 @@ public:
 		type = LOOT;
 		this->loot_type = loot_type; 
 
-		entityTex = App->entityFactory->lootTexture; 
+		entityTex = App->map->lootTexture; 
 	
 	};
 

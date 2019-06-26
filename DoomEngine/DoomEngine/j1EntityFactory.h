@@ -45,8 +45,6 @@ public:
 
 public:
 	fPoint					dmg_vec;
-	SDL_Texture*			lootTexture = nullptr;
-	SDL_Texture*			platfTexture = nullptr;
 	SDL_Texture*			playerTexture = nullptr;
 	SDL_Texture*			impTexture = nullptr;
 

@@ -47,8 +47,7 @@ bool j1EntityFactory::Start()
 	// TODO: textures
 
 
-	lootTexture = App->tex->Load("maps/textures/loot.png");
-	platfTexture = App->tex->Load("maps/textures/plat1.png");
+
 	playerTexture = App->tex->Load("textures/player/player.png");
 	impTexture = App->tex->Load("textures/enemies/IMP/IMP.png");
 	
@@ -167,9 +166,6 @@ bool j1EntityFactory::CleanUp()
 
 	// TODO: unload Atlas texture
 
-
-	App->tex->UnLoad(lootTexture); 
-	App->tex->UnLoad(platfTexture);
 	App->tex->UnLoad(playerTexture);
 	App->tex->UnLoad(impTexture);
 

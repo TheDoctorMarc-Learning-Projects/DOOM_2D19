@@ -240,6 +240,16 @@ bool j1Map::CleanUp()
 
 
 
+
+	App->tex->UnLoad(lootTexture);
+	App->tex->UnLoad(platfTexture);
+
+
+
+
+
+	// what is this: 
+
 	App->tex->UnLoad(texture);
 	texture = nullptr;
 
@@ -252,6 +262,14 @@ bool j1Map::CleanUp()
 // Load new map
 bool j1Map::Load(const char* file_name)
 {
+	
+	// object textures
+	lootTexture = App->tex->Load("maps/textures/loot.png");
+	platfTexture = App->tex->Load("maps/textures/plat1.png");
+
+
+
+
 	bool ret = true;
 	pugi::xml_parse_result result = map_file.load_file(file_name);
 

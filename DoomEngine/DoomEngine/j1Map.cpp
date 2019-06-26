@@ -264,7 +264,7 @@ bool j1Map::Load(const char* file_name)
 {
 	
 	// object textures
-	lootTexture = App->tex->Load("maps/textures/loot.png");
+	lootTexture = App->tex->Load("maps/textures/loot/loot.png");
 	platfTexture = App->tex->Load("maps/textures/plat1.png");
 
 

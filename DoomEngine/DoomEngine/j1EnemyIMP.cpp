@@ -155,7 +155,7 @@ void j1EnemyIMP::Jump()
 									targetPos.value.x = platfTilePos.x - jumpTriggerTileRange - extraJumpOffset;
 							
 								targetPos.value.y = tilePos.y; 
-								targetPos.type = X;
+								targetPos.type = TargetPos::targetPosType::X;
 								state.path = ePathState::TEMPORAL_DEVIATION;
 							}
 						}

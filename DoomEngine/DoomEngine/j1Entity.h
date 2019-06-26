@@ -38,6 +38,7 @@ enum ENTITY_TYPE  // todo, pass to class
 		MAX_TYPE,
 		ENEMY_STATIC,
 		ENEMY_IMP,
+		LOOT,
 };
 
 enum POINTING_DIR
@@ -50,16 +51,11 @@ enum POINTING_DIR
 
 class Collider; 
 
-struct EntityInfo
-{
-	iPoint position;
-	//Collider* collider = nullptr;
-};
-
 class j1Entity
 {
 public:
 	j1Entity(ENTITY_TYPE type, float positionX, float positionY, std::string name);
+	j1Entity(float positionX, float positionY);
 	j1Entity(ENTITY_TYPE type, std::string name);
 	j1Entity() {};
 
@@ -90,17 +86,16 @@ public:
 
 
 public:
-	SDL_Rect atlasRect;
-	SDL_Rect section = {0, 0, 0, 0};
+	SDL_Rect                section = { 0, 0, 0, 0 }; 
 	bool					to_delete = false;
 	bool					to_die = false; 
 	bool                    onPlatform = false; 
-	std::string				name = "\0";
-	fPoint					position;
-	fPoint                  previousPosition; 
-	iPoint					size;
+	std::string				name = "no name";
+	fPoint					position = fPoint(0, 0);
+	fPoint                  previousPosition = fPoint(0, 0);
+	iPoint					size = iPoint(0,0);
 	float                   spriteScale = 1.f; 
-	ENTITY_TYPE				type;
+	ENTITY_TYPE				type = ENTITY_TYPE::NO_TYPE;
 	SDL_RendererFlip		flip = SDL_FLIP_NONE;
 	POINTING_DIR            pointingDir = POINTING_DIR::LEFT; 
 	fPoint                  lastSpeed = fPoint(0, 0);
@@ -113,11 +108,6 @@ public:
 	Animation				idle; 
 	Animation*				currentAnimation = nullptr;
 	SDL_Texture*			entityTex = nullptr;            // specific entity texture
-
-
-protected:
-	iPoint imOnTile;
-	iPoint previousTilePos; 
 };
 
 #endif

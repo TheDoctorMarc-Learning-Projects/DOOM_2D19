@@ -40,15 +40,16 @@ struct myEnemyState
 
 };
 
-enum targetPosType
-{
-	X,
-	Y,
-	XY,
-};
 
 struct TargetPos
 {
+	enum targetPosType
+	{
+		X,
+		Y,
+		XY,
+	};
+
 	targetPosType type = targetPosType::XY;
     fPoint value = fPoint(0, 0); 
 };
@@ -62,6 +63,7 @@ struct ejumpData
 	float speedXIncrementFall = 1.2f;
 	float verticalIncrementFactor = 1.02f;     // jumpincrement reduces jump power in time, but vertical increment counteracts it a bit 
 };
+
 class j1Entity;
 
 class j1Enemy : public j1Entity
@@ -76,7 +78,7 @@ public:
 	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
-	bool CleanUp() override;
+	//bool CleanUp();  // not yey, only is we have an extra texture or something
 
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;

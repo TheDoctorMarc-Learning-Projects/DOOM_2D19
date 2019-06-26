@@ -126,9 +126,6 @@
     <ClCompile Include="j1EntityPlatformDynamic.cpp">
       <Filter>Code\Core\In-Game\Entities\inanimated\platforms</Filter>
     </ClCompile>
-    <ClCompile Include="j1LootEntity.cpp">
-      <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h">
@@ -224,7 +221,10 @@
     <ClInclude Include="j1EntityPlatformDynamic.h">
       <Filter>Code\Core\In-Game\Entities\inanimated\platforms</Filter>
     </ClInclude>
-    <ClInclude Include="j1LootEntity.h">
+    <ClInclude Include="j1EntityLootWeapon.h">
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityLoot.h">
       <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
     </ClInclude>
   </ItemGroup>

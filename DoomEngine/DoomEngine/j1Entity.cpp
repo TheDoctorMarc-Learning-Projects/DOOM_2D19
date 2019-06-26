@@ -20,6 +20,12 @@ j1Entity::j1Entity(ENTITY_TYPE type, std::string name) : type(type), name(name)
 {
 }
 
+
+
+j1Entity::j1Entity(float positionX, float positionY) : position(positionX, positionY)
+{
+}
+
 // TODO, not here, but in each individual entity, do a size.create with the collider dimensions, it will be used in the entity factory PostUpdate Draw() calls
 
 

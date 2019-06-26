@@ -57,7 +57,7 @@ bool j1Enemy::PostUpdate()
 	return true;
 }
 
-bool j1Enemy::CleanUp()
+/*bool j1Enemy::CleanUp()
 {
 
 	collider->to_delete = true;
@@ -67,7 +67,7 @@ bool j1Enemy::CleanUp()
 
 
 	return true;
-}
+}*/
 
 bool j1Enemy::Load(pugi::xml_node &)
 {

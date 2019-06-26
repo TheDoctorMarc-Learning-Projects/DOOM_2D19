@@ -44,9 +44,13 @@ bool j1EntityFactory::Start()
 			(*item)->Start();
 	}
 
-	// TODO: Load Atlas 
+	// TODO: textures
 
-	
+
+	lootTexture = App->tex->Load("maps/textures/loot.png");
+	platfTexture = App->tex->Load("maps/textures/plat1.png");
+	playerTexture = App->tex->Load("textures/player/player.png");
+	impTexture = App->tex->Load("textures/enemies/IMP/IMP.png");
 	
 	// for the moment, create player here 
 	player = (j1EntityPlayer*)CreateEntity(PLAYER, 0, 0, "player"); 
@@ -162,6 +166,12 @@ bool j1EntityFactory::CleanUp()
 	entities.clear();
 
 	// TODO: unload Atlas texture
+
+
+	App->tex->UnLoad(lootTexture); 
+	App->tex->UnLoad(platfTexture);
+	App->tex->UnLoad(playerTexture);
+	App->tex->UnLoad(impTexture);
 
 
 	return ret;

@@ -34,8 +34,9 @@ j1EntityPlatformDynamic::j1EntityPlatformDynamic(SDL_Rect placing, int heightLev
 	section.h = placing.h; 
 	previousPosition = position;
 
+
 	if (level == SceneState::LEVEL1)
-		entityTex = App->tex->Load("maps/textures/plat1.png");
+		entityTex = App->entityFactory->platfTexture; 
 	/*else if (level == SceneState::LEVEL2)
 		entityTex = App->tex->Load(); */
 
@@ -293,17 +294,6 @@ void j1EntityPlatformDynamic::OnCollisionExit(Collider* c1, Collider* c2)
 
 bool j1EntityPlatformDynamic::PostUpdate()
 {
-
-	return true;
-}
-
-bool j1EntityPlatformDynamic::CleanUp()
-{
-	
-
-	if (entityTex)
-		App->tex->UnLoad(entityTex); 
-	
 
 	return true;
 }

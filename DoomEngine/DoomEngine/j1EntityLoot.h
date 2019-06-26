@@ -2,6 +2,7 @@
 #define __J1ENTITY_LOOT_H__
 
 #include "j1Entity.h"
+#include "j1EntityFactory.h"
 
 enum class LOOT_TYPE
 {
@@ -22,11 +23,18 @@ class j1EntityLoot : public j1Entity
 {
 
 public:
-	j1EntityLoot(float posX, float posY, LOOT_TYPE loot_type, std::string name) :j1Entity(posX, posY) {
+	j1EntityLoot(float posX, float posY, LOOT_TYPE loot_type, std::string name, SDL_Rect atlasSection) :j1Entity(posX, posY) {
+		
+	
+		position = previousPosition = fPoint(posX, posY);
+		section = atlasSection; 
+		collider = App->collision->AddCollider(section, COLLIDER_TYPE::COLLIDER_LOOT, this);
 
 		type = LOOT;
 		this->loot_type = loot_type; 
-		position = previousPosition = fPoint(posX, posY);
+
+		entityTex = App->entityFactory->lootTexture; 
+	
 	};
 
 	j1EntityLoot() {};

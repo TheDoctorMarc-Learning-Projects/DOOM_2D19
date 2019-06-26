@@ -63,8 +63,10 @@ bool j1Entity::CleanUp()
 {
 	collider->to_delete = true;
 
-	if (entityTex != nullptr)
-		App->tex->UnLoad(entityTex); 
+	/*if (entityTex != nullptr)    // loaded and unloaded in atlas 
+	{
+		App->tex->UnLoad(entityTex);
+	}*/
 
 	return true;
 }
@@ -89,14 +91,7 @@ void j1Entity::Draw()
 		
 	}
 		
-	else
-	{
-		if (section.w > 0 && section.h > 0)
-			App->render->Blit(App->entityFactory->atlasTexture, position.x, position.y, &section, 1.f, SDL_FLIP_NONE, spriteScale);
-		else if(currentAnimation)
-			App->render->Blit(App->entityFactory->atlasTexture, position.x, position.y, &currentAnimation->GetCurrentFrame(), 1.f, flip, spriteScale);
 	
-	}
 		
 
 		

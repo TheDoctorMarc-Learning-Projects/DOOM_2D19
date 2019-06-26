@@ -54,14 +54,6 @@ bool j1EntityPlatform::PostUpdate()
 	return true;
 }
 
-bool j1EntityPlatform::CleanUp()
-{
-	collider->to_delete = true;
-
-
-	return true;
-}
-
 
 /*void j1EntityPlatform::Draw()
 {

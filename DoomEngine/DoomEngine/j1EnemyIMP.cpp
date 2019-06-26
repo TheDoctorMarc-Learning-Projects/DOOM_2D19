@@ -4,7 +4,7 @@
 j1EnemyIMP::j1EnemyIMP(int posX, int posY) : j1Enemy(posX, posY)
 {
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - texture
-	entityTex = App->tex->Load("textures/enemies/IMP/IMP.png");
+	entityTex = App->entityFactory->impTexture; 
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = ENEMY_IMP;

@@ -45,8 +45,10 @@ public:
 
 public:
 	fPoint					dmg_vec;
-	SDL_Texture*			atlasTexture = nullptr;
-	
+	SDL_Texture*			lootTexture = nullptr;
+	SDL_Texture*			platfTexture = nullptr;
+	SDL_Texture*			playerTexture = nullptr;
+	SDL_Texture*			impTexture = nullptr;
 
 	//std::vector<GroupInfo> spawngroups;
 	std::list<j1Entity*>	entities;

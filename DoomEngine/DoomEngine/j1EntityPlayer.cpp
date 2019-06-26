@@ -14,7 +14,7 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY) : j1Entity(PLAYER, posX , pos
 {
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - texture
-	entityTex = App->tex->Load("textures/player/player.png");
+	entityTex = App->entityFactory->playerTexture; 
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = PLAYER; 
@@ -72,17 +72,7 @@ bool j1EntityPlayer::PostUpdate()
 	return true;
 }
 
-bool j1EntityPlayer::CleanUp()
-{
 
-	collider->to_delete = true; 
-	
-	if (entityTex != nullptr)
-		App->tex->UnLoad(entityTex);
-
-
-	return true;
-}
 
 bool j1EntityPlayer::Load(pugi::xml_node &)
 {

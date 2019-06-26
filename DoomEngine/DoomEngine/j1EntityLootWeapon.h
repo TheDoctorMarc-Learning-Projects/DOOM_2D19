@@ -19,6 +19,22 @@ enum class WEAPON_STATE  // TODO:  define this in WEAPON header
 	INACTIVE
 };
 
+
+struct  weaponInfo
+{
+
+	enum firingType
+	{
+
+    };
+
+int damage;
+int cadence;
+int maxBullets;
+
+
+};
+
 class j1EntityLoot;
 class Collider; 
 
@@ -27,7 +43,7 @@ class j1EntityLootWeapon : public j1EntityLoot
 {
 
 public:
-	j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_type, std::string name, WEAPON_TYPE weapon_type);
+	j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_type, std::string name, SDL_Rect atlasSection, WEAPON_TYPE weapon_type);
 	j1EntityLootWeapon() {};
 	~j1EntityLootWeapon();
 
@@ -39,9 +55,7 @@ public:
 
 private:
 	WEAPON_TYPE weapon_type = WEAPON_TYPE::NO_WEAPON;
-
-
-
+	weaponInfo weaponData; 
 
 };
 

@@ -21,30 +21,20 @@ enum class WEAPON_STATE  // TODO:  define this in WEAPON header
 
 class j1EntityLoot;
 class Collider; 
-class LOOT_TYPE; 
+
 
 class j1EntityLootWeapon : public j1EntityLoot
 {
 
 public:
-	j1EntityLootWeapon(int posX, int posY, LOOT_TYPE loot_type) :j1EntityLoot(posX, posY);
+	j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_type, std::string name, WEAPON_TYPE weapon_type);
 	j1EntityLootWeapon() {};
 	~j1EntityLootWeapon();
-
-	/*bool CleanUp()
-	{
-		collider->to_delete = true;
-		if (entityTex)
-			App->tex->UnLoad(entityTex);
-	};*/
-
-	/*bool Load(pugi::xml_node& node, LootEntity* loot);
-	bool Save(pugi::xml_node&) const;*/
 
 	void OnCollision(Collider* c1, Collider* c2) override {};
 	void OnCollisionExit(Collider* c1, Collider* c2) override {};
 
-	WEAPON_TYPE GetWeaponType(); // define this in weapon cpp
+	WEAPON_TYPE GetWeaponType() { return weapon_type; }; // define this in weapon cpp
 
 
 private:

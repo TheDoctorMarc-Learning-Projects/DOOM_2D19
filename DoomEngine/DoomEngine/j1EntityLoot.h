@@ -1,5 +1,5 @@
-#ifndef _J1ENTITY_LOOT_H__
-#define _J1ENTITY_LOOT_H__
+#ifndef  __J1ENTITY_LOOT_H__
+#define __J1ENTITY_LOOT_H__
 
 #include "j1Entity.h"
 
@@ -25,6 +25,7 @@ public:
 	j1EntityLoot(float posX, float posY, LOOT_TYPE loot_type, std::string name) :j1Entity(posX, posY) {
 
 		type = LOOT;
+		this->loot_type = loot_type; 
 		position = previousPosition = fPoint(posX, posY);
 	};
 
@@ -44,5 +45,4 @@ private:
 
 };
 
-#endif
-
+#endif // ! __J1ENTITY_LOOT_H__

@@ -167,7 +167,7 @@ void j1Scene::UnLoadScene()
 		App->pathfinding->Disable();
 	
 
-	App->audio->UnLoadAudio(); // scene already loads it in start 
+	App->audio->CleanUp(); // scene already loads it in start 
 
 	// particles TODO 
 

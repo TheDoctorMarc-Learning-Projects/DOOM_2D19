@@ -139,7 +139,7 @@ void j1EntityPlatformDynamic::UpdateEntitiesOnTopPositions(bool justOfsset, floa
 
 void j1EntityPlatformDynamic::CheckPlatformSameLevel()
 {
-	for (auto& platf : App->entityFactory->entities)
+	for (auto& platf : App->entityFactory->entities)    // TODO: Rework this, its ugly code 
 	{
 		if (platf->type == ENTITY_TYPE::ENTITY_STATIC)
 		{

@@ -23,12 +23,10 @@ class j1EntityLoot : public j1Entity
 {
 
 public:
-	j1EntityLoot(float posX, float posY, LOOT_TYPE loot_type, std::string name, SDL_Rect atlasSection) :j1Entity(posX, posY) {
+	j1EntityLoot(float posX, float posY, LOOT_TYPE loot_type, std::string name) :j1Entity(posX, posY) {
 		
 	
-		position = previousPosition = fPoint(posX, posY);
-		section = atlasSection; 
-		collider = App->collision->AddCollider(section, COLLIDER_TYPE::COLLIDER_LOOT, this);
+		position = previousPosition = fPoint(posX, posY); 
 
 		type = LOOT;
 		this->loot_type = loot_type; 

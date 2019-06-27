@@ -5,8 +5,9 @@
 #include "j1Textures.h"
 #include "j1Map.h"
 #include "j1Window.h"
-#include"j1Input.h"
+#include "j1Input.h"
 #include "j1EntityFactory.h"
+#include "j1EntityLootWeapon.h"
 
 #include "Brofiler/Brofiler.h"
 
@@ -264,7 +265,7 @@ bool j1Map::Load(const char* file_name)
 {
 	
 	// object textures
-	lootTexture = App->tex->Load("maps/textures/loot/loot.png");
+	lootTexture = App->tex->Load("textures/loot/loot.png");
 	platfTexture = App->tex->Load("maps/textures/plat1.png");
 
 
@@ -558,45 +559,6 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	return ret;
 }
 
-/*bool j1Map::LoadMapColliders(pugi::xml_node& node)//, MapObjects* obj)
-{
-	bool ret = true;
-
-	SDL_Rect colliderRect;
-
-	// iterate all objectgroups
-	for (pugi::xml_node objectGroup = node.child("objectgroup"); objectGroup && ret; objectGroup = objectGroup.next_sibling("objectgroup"))
-	{
-		std::string tmp = objectGroup.attribute("name").as_string();
-		MapObjects* newObject = DBG_NEW MapObjects();
-
-		newObject->name = tmp.data();
-
-		// Load custom properties
-		LoadProperties(objectGroup, newObject->properties);
-
-	
-		int i = 0; 
-		for (pugi::xml_node object = objectGroup.child("object"); object; object = object.next_sibling("object"))
-		{
-			
-
-			colliderRect.x = object.attribute("x").as_int(0);
-			colliderRect.y = object.attribute("y").as_int(0);
-			colliderRect.h = object.attribute("height").as_int(0);
-			colliderRect.w = object.attribute("width").as_int(0);
-		
-			++i;
-		}
-
-		// add object to list
-		data.mapObjects.push_back(*newObject);
-	}
-
-	return ret;
-}*/
-
-
 
 bool j1Map::LoadMapObjects(pugi::xml_node& node)
 {
@@ -675,6 +637,50 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 
 			App->entityFactory->CreatePlatform(ENTITY_TYPE::ENTITY_DYNAMIC, worldPos, heightLevel, "platform",
 				levelsUp, levelsDown, SceneState::LEVEL1, axisMov);
+
+
+			
+
+
+
+		}
+
+
+		else 
+		{
+			// weapons, health, ammo:: 
+
+			if (ObjectName == "weapon")
+			{
+				std::string weaponName; 
+				std::string firingTypeName;
+
+				weaponInfo weaponData;                // capture weapon data 
+
+				for (auto property = object.child("properties").child("property"); property; property = property.next_sibling("property"))
+				{
+					std::string name = property.attribute("name").as_string();
+					if (name == "name")
+						weaponName = property.attribute("value").as_string();
+					else if (name == "firingType")
+						firingTypeName = property.attribute("value").as_string();
+					else if (name == "damage")
+					    weaponData.damage = property.attribute("value").as_float();  
+					else if (name == "cadence")
+						weaponData.cadence = property.attribute("value").as_int();
+					else if (name == "maxBullets")
+						weaponData.maxBullets = property.attribute("value").as_int();
+					
+					
+				}
+				weaponData.weaponType = weaponTypeMap.at(weaponName); 
+				weaponData.FiringType = weaponFiringTypeMap.at(firingTypeName);
+
+
+				App->entityFactory->CreateWeapon(ENTITY_TYPE::LOOT, worldPos.x, worldPos.y, weaponName, LOOT_TYPE::WEAPON, weaponData);
+			}
+
+
 		}
 
 	}

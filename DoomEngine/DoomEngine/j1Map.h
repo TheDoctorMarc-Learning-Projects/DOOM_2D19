@@ -6,7 +6,7 @@
 #include "p2Point.h"
 #include "j1Module.h"
 #include "SDL/include/SDL.h"
-#include <variant>
+
 
 struct SDL_Rect; 
 struct SDL_Texture; 

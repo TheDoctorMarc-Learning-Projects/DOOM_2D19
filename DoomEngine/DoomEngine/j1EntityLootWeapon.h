@@ -2,8 +2,9 @@
 #define _J1ENTITY_LOOT_H__
 
 #include "j1EntityLoot.h"
+#include <map>
 
-enum class WEAPON_TYPE   // TODO:  define this in WEAPON header 
+enum class WEAPON_TYPE   
 {
 	DEFAULT,
 	CHAINSAW,
@@ -12,26 +13,55 @@ enum class WEAPON_TYPE   // TODO:  define this in WEAPON header
 
 };
 
-enum class WEAPON_STATE  // TODO:  define this in WEAPON header 
+enum class WEAPON_STATE  
 {
 	AWAIT,
 	ACTIVE,
 	INACTIVE
 };
 
+enum class firingType
+{
+	AUTO,
+	SEMI,
+	MANUAL,
+	MELEE,
+	NO_FIRING_TYPE
+};
+
+
+	const std::map<std::string, WEAPON_TYPE> weaponTypeMap =
+	{
+		{"default", WEAPON_TYPE::DEFAULT},
+		{"chainsaw", WEAPON_TYPE::CHAINSAW},
+		{"shotgun", WEAPON_TYPE::SHOTGUN},
+		{"", WEAPON_TYPE::NO_WEAPON}
+	};
+	
+
+	const std::map<std::string, firingType> weaponFiringTypeMap =
+	{
+		{"auto", firingType::AUTO},
+		{"semi", firingType::SEMI},
+		{"manual", firingType::MANUAL},
+		{"melee", firingType::MELEE},
+		{"", firingType::NO_FIRING_TYPE}
+	};
+
+// TODO: audio map according with weapon type ?
+
 
 struct  weaponInfo
 {
+	WEAPON_TYPE weaponType; 
+	WEAPON_STATE weaponState; 
+	firingType FiringType;
 
-	enum firingType
-	{
+int damage = 0;
+int cadence = 0;
+int maxBullets = 0;
 
-    };
-
-int damage;
-int cadence;
-int maxBullets;
-
+fPoint offsetFromPlayer = fPoint(0.f,0.f); 
 
 };
 
@@ -43,18 +73,17 @@ class j1EntityLootWeapon : public j1EntityLoot
 {
 
 public:
-	j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_type, std::string name, SDL_Rect atlasSection, WEAPON_TYPE weapon_type);
+	j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_type, std::string name, weaponInfo weaponData);
 	j1EntityLootWeapon() {};
 	~j1EntityLootWeapon();
 
 	void OnCollision(Collider* c1, Collider* c2) override {};
 	void OnCollisionExit(Collider* c1, Collider* c2) override {};
 
-	WEAPON_TYPE GetWeaponType() { return weapon_type; }; // define this in weapon cpp
+	WEAPON_TYPE GetWeaponType() { return weaponData.weaponType; }; // define this in weapon cpp
 
 
 private:
-	WEAPON_TYPE weapon_type = WEAPON_TYPE::NO_WEAPON;
 	weaponInfo weaponData; 
 
 };

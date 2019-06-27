@@ -17,9 +17,12 @@
 
 #include <math.h>
 
+#define MAX_BLIT_LAYERS 2
+
 
 #define DEFAULT_GRAV 50.f	
 #define MAX_GRAV 550.f
+
 
 inline float GravityCalc(float& gm, float& m)  // g  and mass inline calc container
 {
@@ -108,6 +111,7 @@ public:
 	Animation				idle; 
 	Animation*				currentAnimation = nullptr;
 	SDL_Texture*			entityTex = nullptr;            // specific entity texture
+	uint                    blitOrder = 0; 
 };
 
 #endif

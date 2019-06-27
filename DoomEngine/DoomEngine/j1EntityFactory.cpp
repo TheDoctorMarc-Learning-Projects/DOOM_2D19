@@ -224,5 +224,15 @@ j1Entity* j1EntityFactory::CreatePlatform(ENTITY_TYPE type, SDL_Rect placing, in
 	return ret;
 }
 
+j1Entity* j1EntityFactory::CreateWeapon(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type, weaponInfo weaponData)
+{
+	j1Entity* ret = nullptr;
 
+	ret = DBG_NEW j1EntityLootWeapon(positionX, positionY, loot_type, name, weaponData);
+
+	if (ret)
+		entities.push_back(ret);
+
+	return ret;
+}
 

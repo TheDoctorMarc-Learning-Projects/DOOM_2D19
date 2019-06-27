@@ -73,8 +73,11 @@ bool j1Audio::CleanUp()
 
 
 	for (auto& fx : fxMap)
-		Mix_FreeChunk(fx.second); 
-
+	{
+		Mix_FreeChunk(fx.second);
+		fx.second = nullptr; 
+	}
+		
 	fxMap.clear(); 
 
 
@@ -224,19 +227,13 @@ void j1Audio::UnLoadAudio()
 		music = NULL;
 	}
 
-	/*std::list<Mix_Chunk*>::iterator item;
-	for (item = fx.begin(); item != fx.end(); ++item)
-	{
-		Mix_FreeChunk(*item);
-		*item = nullptr;
-	}
-	fx.clear();*/
 
 	for (auto& fx : fxMap)
 	{
 		Mix_FreeChunk(fx.second);
+		fx.second = nullptr; 
 	}
-		
+	fxMap.clear(); 
 
 
 

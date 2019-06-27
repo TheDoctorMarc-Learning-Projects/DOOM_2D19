@@ -13,7 +13,7 @@ public:
 	j1EntityPlatform(SDL_Rect placing, int heightLevel);
 	~j1EntityPlatform();
 
-	//core loops ------
+
 	//bool Awake(pugi::xml_node& node);
 	bool Start();
 	bool PreUpdate();

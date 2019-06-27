@@ -7,6 +7,7 @@
 #include "j1EntityFactory.h"
 #include "j1Window.h"
 #include "j1Scene.h"
+
 #include <math.h>
 
 
@@ -15,6 +16,7 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY) : j1Entity(PLAYER, posX , pos
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - texture
 	entityTex = App->entityFactory->playerTexture; 
+	useRenderFlip = true; 
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = PLAYER; 
@@ -36,7 +38,7 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY) : j1Entity(PLAYER, posX , pos
 	run.PushBack({ 7, 227, size.x + 4, size.y + 1});
 	run.PushBack({ 7, 324, size.x, size.y + 1 });
 	run.loop = true; 
-	run.speed = 2.f; 
+	run.speed = 3.f; 
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - collider
 	collider = App->collision->AddCollider({(int)position.x, (int)position.y, (int)((float)size.x * spriteScale),(int)((float)size.y * spriteScale) }, COLLIDER_TYPE::COLLIDER_PLAYER, this);
@@ -203,8 +205,7 @@ bool j1EntityPlayer::Move(float dt)
 	if (position.y > previousPosition.y && state.movement.at(1) == MovementState::JUMP)
 		state.movement.at(1) = MovementState::FALL;
 
-	if (!to_delete)
-	{
+	
 		if (position.x < 0)   // TODO: Add right map limit blocking
 			position.x = 0;
 
@@ -220,9 +221,6 @@ bool j1EntityPlayer::Move(float dt)
 		}
 
 
-	}
-
-
 	// - - - - - - - - - - - - - - - - - - warn other modules about the pos if needed
 	WarnOtherModules(); 
 
@@ -231,8 +229,26 @@ bool j1EntityPlayer::Move(float dt)
 }
 
 
+bool j1EntityPlayer::CleanUp()
+{
+	j1Entity::CleanUp(); 
+
+	myWeapons.clear();   // the content is destroyed in their clean up
+
+	return true; 
+}
+
+
 void j1EntityPlayer::WarnOtherModules()
 {
+	// - - - - - - - - - - - - - - - - >> Loot (weapon)
+
+	if(!myWeapons.empty())
+		for (auto& weapon : myWeapons)
+			if(weapon->weaponData.weaponState == WEAPON_STATE::ACTIVE)
+				weapon->PlaceMeWithPlayer();
+
+	
 
 	// - - - - - - - - - - - - - - - - >> Render 
 
@@ -459,6 +475,38 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 		}
 
 	break;
+
+
+
+	case COLLIDER_TYPE::COLLIDER_LOOT:
+
+		if (c2->hasCallback)
+		{
+			if (dynamic_cast<j1EntityLoot*>(c2->callback)->GetType() == LOOT_TYPE::WEAPON)
+			{
+				if (dynamic_cast<j1EntityLootWeapon*>(c2->callback)->weaponData.weaponState == WEAPON_STATE::AWAIT)   // pick weapon only if I don't have it
+				{
+
+					// firs check if another weapon is active 
+
+					for (const auto& weapon : myWeapons)
+						if (weapon->weaponData.weaponState == WEAPON_STATE::ACTIVE)
+						{
+							weapon->weaponData.weaponState = WEAPON_STATE::INACTIVE;  // if other was active, put it to inactive
+							weapon->drawActive = false;       // do not draw it --> TODO: when swappig weapon put to active both variables
+						}
+							
+					myWeapons.push_back(dynamic_cast<j1EntityLootWeapon*>(c2->callback));
+					dynamic_cast<j1EntityLootWeapon*>(c2->callback)->weaponData.weaponState = WEAPON_STATE::ACTIVE;    // put to active 
+
+							 
+					dynamic_cast<j1EntityLootWeapon*>(c2->callback)->PlaceMeWithPlayer();  // player the new weapon in the desired pos; 
+				}
+				
+			}
+	    }
+
+		break;
 
 
 	}

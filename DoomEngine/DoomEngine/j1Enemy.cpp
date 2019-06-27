@@ -12,6 +12,7 @@
 
 j1Enemy::j1Enemy(int posX, int posY) : j1Entity(ENEMY_STATIC, posX, posY, "enemy")
 {
+	useRenderFlip = true; 
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	position = previousPosition = fPoint(posX, posY);

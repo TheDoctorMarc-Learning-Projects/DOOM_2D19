@@ -62,12 +62,13 @@ int cadence = 0;
 int maxBullets = 0;
 
 fPoint offsetFromPlayer = fPoint(0.f,0.f); 
+float extraOffsetXPlayerIdle = 0.f; 
 
 };
 
 class j1EntityLoot;
 class Collider; 
-
+class j1EntityPlayer; 
 
 class j1EntityLootWeapon : public j1EntityLoot
 {
@@ -83,9 +84,12 @@ public:
 	WEAPON_TYPE GetWeaponType() { return weaponData.weaponType; }; // define this in weapon cpp
 
 
+	void PlaceMeWithPlayer(); 
+
 private:
 	weaponInfo weaponData; 
 
+	friend class j1EntityPlayer; 
 };
 
 #endif

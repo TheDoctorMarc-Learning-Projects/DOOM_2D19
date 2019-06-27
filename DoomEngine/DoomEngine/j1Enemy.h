@@ -9,6 +9,7 @@ enum class eCombatState
 {
 	IDLE,
 	SHOOT,
+	STUN,
 	DYING,
 	DEAD
 };
@@ -24,7 +25,6 @@ enum class eMovementState
 {
 	IDLE,
 	RUN,
-	STUN,
 	INPUT_RIGHT,
 	INPUT_LEFT,
 	JUMP,

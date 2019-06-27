@@ -4,6 +4,9 @@
 
 #include "j1Entity.h"
 #include "j1EntityPlatform.h"
+#include "j1EntityLoot.h"
+#include "j1EntityLootWeapon.h"
+
 
 //#define jumpPower 20.f
 
@@ -13,6 +16,8 @@ enum class combatState
 {
 	IDLE,
 	SHOOT,
+	STUN,
+	DYING,
 	DIE
 };
 
@@ -20,7 +25,6 @@ enum class MovementState
 {
 	IDLE, 
 	RUN,
-	STUN,
 	INPUT_RIGHT,
 	INPUT_LEFT,
 	JUMP,
@@ -59,14 +63,16 @@ public:
 	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
-   
+	bool CleanUp() override;
+
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 	// functionality ------
 	bool Move(float dt) override;
 	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
-	void WarnOtherModules(); 
+	void WarnOtherModules();
+	void ShootWeapon(); 
 
 	POINTING_DIR GetDirection() override; 
 
@@ -86,14 +92,17 @@ private:
 	jumpData jumpInfo; 
 	float momentumFactor = 10.f; 
 	float momentum(float speed) { return speed * momentumFactor; };
-	SDL_Rect lastPosCollider; 
+	
 
 	
 	bool godMode = false; 
 public: 
 	myState state;
 	bool onDynamicplatform = false;
+	SDL_Rect lastPosCollider;
 	j1EntityPlatform* lastPlatform = nullptr;
+
+	std::list<j1EntityLootWeapon*> myWeapons; 
 
 
 	friend class j1Entity; 

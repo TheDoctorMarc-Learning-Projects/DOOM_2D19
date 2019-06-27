@@ -74,18 +74,20 @@ bool j1Entity::CleanUp()
 void j1Entity::Draw()
 {
 	
-	if (GetDirection() == POINTING_DIR::RIGHT)
-		flip = SDL_FLIP_HORIZONTAL;
-	else
-		flip = SDL_FLIP_NONE; 
+	if (useRenderFlip)
+	{
+		if (GetDirection() == defaultPointingDir)
+			flip = SDL_FLIP_NONE;
+		else
+			flip = SDL_FLIP_HORIZONTAL;
+
+	}
 
 
-	//AdjustColliderToAnimFrame(); 
-
-	if (entityTex != nullptr)
+	if (entityTex != nullptr && drawActive)
 	{
 		if(section.w > 0 && section.h > 0)
-			App->render->Blit(entityTex, position.x, position.y, &section, 1.f, SDL_FLIP_NONE, spriteScale);
+			App->render->Blit(entityTex, position.x, position.y, &section, 1.f, flip, spriteScale);
 		else if(currentAnimation)
 			App->render->Blit(entityTex, position.x, position.y, &currentAnimation->GetCurrentFrame(), 1.f, flip, spriteScale);
 		
@@ -108,19 +110,13 @@ POINTING_DIR j1Entity::GetDirection()
 
 	// TODO: only do this with player and enemies  AND REWORK IT 
 
-
-
-
-	if (type != ENTITY_DYNAMIC)
-	{
-
+	
 		if (lastSpeed.x < 0)
 			return pointingDir = POINTING_DIR::LEFT;
 		else if (lastSpeed.x > 0)
 			return pointingDir = POINTING_DIR::RIGHT;
 
 		return pointingDir;    // no change in speed results in same pointing dir
-	}
 
 }
 

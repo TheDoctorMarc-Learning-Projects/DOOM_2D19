@@ -48,8 +48,8 @@ enum POINTING_DIR
 {
 	RIGHT,
 	LEFT,
-	UP,
-	DOWN   // for dyn platforms
+	UP,    // for dyn platforms
+	DOWN   // for dyn platforms   
 };
 
 class Collider; 
@@ -92,7 +92,9 @@ public:
 	SDL_Rect                section = { 0, 0, 0, 0 }; 
 	bool					to_delete = false;
 	bool					to_die = false; 
+	bool                    drawActive = true; 
 	bool                    onPlatform = false; 
+	bool                    useRenderFlip = false; 
 	std::string				name = "no name";
 	fPoint					position = fPoint(0, 0);
 	fPoint                  previousPosition = fPoint(0, 0);
@@ -101,6 +103,7 @@ public:
 	ENTITY_TYPE				type = ENTITY_TYPE::NO_TYPE;
 	SDL_RendererFlip		flip = SDL_FLIP_NONE;
 	POINTING_DIR            pointingDir = POINTING_DIR::LEFT; 
+	POINTING_DIR            defaultPointingDir = POINTING_DIR::LEFT; 
 	fPoint                  lastSpeed = fPoint(0, 0);
 	float					life = (float)LONG_MAX;
 	float					maxLife = (float)LONG_MAX;
@@ -111,7 +114,7 @@ public:
 	Animation				idle; 
 	Animation*				currentAnimation = nullptr;
 	SDL_Texture*			entityTex = nullptr;            // specific entity texture
-	uint                    blitOrder = 0; 
+	//uint                    blitOrder = 0; 
 };
 
 #endif

@@ -84,7 +84,9 @@ public:
 	WEAPON_TYPE GetWeaponType() { return weaponData.weaponType; }; // define this in weapon cpp
 
 
+
 	void PlaceMeWithPlayer(); 
+	void Shoot(); 
 
 private:
 	weaponInfo weaponData; 

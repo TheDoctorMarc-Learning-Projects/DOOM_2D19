@@ -90,141 +90,14 @@ bool j1EntityPlayer::Save(pugi::xml_node &) const
 
 bool j1EntityPlayer::Move(float dt)
 {
-
-	previousPosition = position;
-
-	if (onPlatform)
-		lastGroundPos = position;
-	else
-		lastAirPos = position;
-
-
-	// dirty stuff just to debug for the mom 
-
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
-		godMode = !godMode; 
-	
-	if (godMode)
-		jumpInfo.jumpPower = 40.f;
-	else
-		jumpInfo.jumpPower = 17.f; 
-
-
-	if (!onPlatform)
-		onDynamicplatform = false; 
-
-	lastPosCollider = collider->rect; 
-
-	Sint16 xAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
-	Sint16 yAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY);
-
-	// - - - - - - - - - - - - - - - - - - horizontal movement
-	if (xAxis > 0 || xAxis < 0)
-	{
-
-
-		currentAnimation = &run;
-
-		if (state.movement.at(1) != MovementState::NOT_ACTIVE)
-		{
-			if(state.movement.at(1) == MovementState::JUMP)
-				lastSpeed.x = (xAxis * speed) * jumpInfo.speedXIncrementJump* dt;
-			else if(state.movement.at(1) == MovementState::FALL)
-				lastSpeed.x = (xAxis * speed) * jumpInfo.speedXIncrementFall* dt;
-			
-		}
-		else
-			lastSpeed.x = (xAxis * speed) * dt;
-			
-		state.movement.at(0) = (xAxis < 0) ? MovementState::INPUT_LEFT : state.movement.at(0);
-		state.movement.at(0) = (xAxis > 0) ? MovementState::INPUT_RIGHT : state.movement.at(0); 
-
-		position.x += lastSpeed.x;
-
-	}
-	else
-	{
-		if (state.movement.at(0) != MovementState::IDLE)
-		{
-			state.movement.at(0) = MovementState::IDLE;
-			//currentAnimation = &idle;
-
-		}
-	 
-		currentAnimation = &idle;
-		lastSpeed.x = 0; 
-	}
- 
-
-	// - - - - - - - - - - - - - - - - - - vertical movement
-
-	if(App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		if (yAxis <= 0)
-			if (onPlatform)
-			{
-				state.movement.at(1) = MovementState::JUMP; 
-				App->audio->PlayFx("dash");
-
-
-				onPlatform = false;
-				ResetGravity();
-
-			
-
-			}
-	
-	if (!onPlatform)
-	{
-		if (state.movement.at(1) == MovementState::FALL)
-		{
-			lastSpeed.y = GravityCalc(gravityFactor, mass) * dt;
-			position.y += lastSpeed.y;
-		}
-
-		else if (state.movement.at(1) == MovementState::JUMP)
-		{
-			if(lastSpeed.x == 0)
-				lastSpeed.y = (-(jumpInfo.currenJumpPower *= jumpInfo.jumpIncrementFactor * jumpInfo.verticalIncrementFactor)) + GravityCalc(gravityFactor, mass) * dt;
-
-			else 
-				lastSpeed.y = (-(jumpInfo.currenJumpPower *= jumpInfo.jumpIncrementFactor)) + GravityCalc(gravityFactor, mass) * dt;
-
-			position.y += lastSpeed.y;
-
-			if (lastSpeed.y > 0)
-				state.movement.at(1) = MovementState::FALL;
-
-		}
-
-	}
-	else
-		lastSpeed.y = 0; 
-		
-	
-
-	if (position.y > previousPosition.y && state.movement.at(1) == MovementState::JUMP)
-		state.movement.at(1) = MovementState::FALL;
-
-	
-		if (position.x < 0)   // TODO: Add right map limit blocking
-			position.x = 0;
-
-		collider->SetPos(position.x, position.y);
-		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
-
-		if (collider->rect.h != lastPosCollider.h)
-		{
-			float yOffset = collider->rect.h - lastPosCollider.h;
-			position.y -= yOffset;
-			collider->SetPos(position.x, position.y);
-			collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h, position.x, position.y);
-		}
-
-
+	SetPreviousFrameData(); 
+	HorizonatlMovement(dt); 
+	VerticalMovement(dt); 
+	SetCollider(); 
+	WeaponLogic(); 
 	// - - - - - - - - - - - - - - - - - - warn other modules about the pos if needed
-	WarnOtherModules(); 
+	WarnOtherModules();
 
-		
 	return true;
 }
 
@@ -238,6 +111,239 @@ bool j1EntityPlayer::CleanUp()
 	return true; 
 }
 
+void j1EntityPlayer::SetPreviousFrameData()
+{
+	previousPosition = position;
+
+	if (onPlatform)
+		lastGroundPos = position;
+	else
+		lastAirPos = position;
+
+	if (!onPlatform)
+		onDynamicplatform = false;
+
+	lastPosCollider = collider->rect;
+}
+
+
+void j1EntityPlayer::HorizonatlMovement(float dt)
+{
+	Sint16 xAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
+
+	// - - - - - - - - - - - - - - - - - - horizontal movement
+	if (xAxis > 0 || xAxis < 0)
+	{
+
+
+		currentAnimation = &run;
+
+		if (state.movement.at(1) != MovementState::NOT_ACTIVE)
+		{
+			if (state.movement.at(1) == MovementState::JUMP)
+				lastSpeed.x = (xAxis * speed) * jumpInfo.speedXIncrementJump* dt;
+			else if (state.movement.at(1) == MovementState::FALL)
+				lastSpeed.x = (xAxis * speed) * jumpInfo.speedXIncrementFall* dt;
+
+		}
+		else
+			lastSpeed.x = (xAxis * speed) * dt;
+
+		state.movement.at(0) = (xAxis < 0) ? MovementState::INPUT_LEFT : state.movement.at(0);
+		state.movement.at(0) = (xAxis > 0) ? MovementState::INPUT_RIGHT : state.movement.at(0);
+
+		position.x += lastSpeed.x;
+
+	}
+	else
+	{
+		if (state.movement.at(0) != MovementState::IDLE)
+		{
+			state.movement.at(0) = MovementState::IDLE;
+			//currentAnimation = &idle;
+
+		}
+
+		currentAnimation = &idle;
+		lastSpeed.x = 0;
+	}
+
+}
+
+void j1EntityPlayer::VerticalMovement(float dt)
+{
+	// - - - - - - - - - - - - - - - - - - vertical movement
+	Sint16 yAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY);
+
+	if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+		if (yAxis <= 0)
+			if (onPlatform)
+			{
+				state.movement.at(1) = MovementState::JUMP;
+				App->audio->PlayFx("dash");
+
+
+				onPlatform = false;
+				ResetGravity();
+
+
+
+			}
+
+	if (!onPlatform)
+	{
+		if (state.movement.at(1) == MovementState::FALL)
+		{
+			lastSpeed.y = GravityCalc(gravityFactor, mass) * dt;
+			position.y += lastSpeed.y;
+		}
+
+		else if (state.movement.at(1) == MovementState::JUMP)
+		{
+			if (lastSpeed.x == 0)
+				lastSpeed.y = (-(jumpInfo.currenJumpPower *= jumpInfo.jumpIncrementFactor * jumpInfo.verticalIncrementFactor)) + GravityCalc(gravityFactor, mass) * dt;
+
+			else
+				lastSpeed.y = (-(jumpInfo.currenJumpPower *= jumpInfo.jumpIncrementFactor)) + GravityCalc(gravityFactor, mass) * dt;
+
+			position.y += lastSpeed.y;
+
+			if (lastSpeed.y > 0)
+				state.movement.at(1) = MovementState::FALL;
+
+		}
+
+	}
+	else
+		lastSpeed.y = 0;
+
+
+
+	if (position.y > previousPosition.y && state.movement.at(1) == MovementState::JUMP)
+		state.movement.at(1) = MovementState::FALL;
+}
+
+void j1EntityPlayer::SetCollider()
+{
+	if (position.x < 0)   // TODO: Add right map limit blocking
+		position.x = 0;
+
+	collider->SetPos(position.x, position.y);
+	collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+
+	if (collider->rect.h != lastPosCollider.h)
+	{
+		float yOffset = collider->rect.h - lastPosCollider.h;
+		position.y -= yOffset;
+		collider->SetPos(position.x, position.y);
+		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h, position.x, position.y);
+	}
+
+}
+
+void j1EntityPlayer::WeaponLogic()
+{
+	
+	if (!myWeapons.empty())
+	{
+		// capture input 
+		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN) //if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == KEY_DOWN)
+		{
+			//ChangeWeapon(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
+			ChangeWeapon(SDL_CONTROLLER_BUTTON_B);
+		}
+
+		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == KEY_DOWN)
+		{
+			ChangeWeapon(SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
+		}
+
+		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_RIGHTSTICK) == KEY_DOWN)
+		{
+			ShootWeapon(); 
+		}
+
+	}
+
+}
+
+void j1EntityPlayer::ChangeWeapon(SDL_GameControllerButton button)
+{
+	if (myWeapons.size() >= 2)  // at least 2 weapons for the functionality to occur 
+	{
+		int i = 0;
+		for (auto weapon = myWeapons.begin(); weapon != myWeapons.end(); ++weapon)
+		{
+			if ((*weapon)->weaponData.weaponState == WEAPON_STATE::ACTIVE)
+			{
+				// 1) first deEquip the current weapon
+				(*weapon)->weaponData.weaponState = WEAPON_STATE::INACTIVE;
+				(*weapon)->drawActive = false;
+				(*weapon)->collider->to_delete = true; 
+
+				int desiredIndex = 0; 
+
+				// 2) then equip next or last weapon in list
+				if (button == SDL_CONTROLLER_BUTTON_B) // if (button == SDL_CONTROLLER_BUTTON_RIGHTSHOULDER)
+				{
+					if (i < myWeapons.size() - 1 || i == 0)    // prevent trying to get a weapon not in the list
+					{
+						desiredIndex = i + 1; 
+					}
+					else  // jump to the first weapon in the list
+					{
+						desiredIndex = 0; 
+					}
+					
+				}
+				else if (button == SDL_CONTROLLER_BUTTON_LEFTSHOULDER)
+				{
+					if (i > 0)    // prevent trying to get a weapon not in the lsit 
+					{
+						desiredIndex = i - 1; 
+					}
+					else // jump to the last weapon in the list
+					{
+						desiredIndex = myWeapons.size() - 1; 
+				    }
+			    }
+
+
+				if (myWeapons.at(desiredIndex)->weaponData.weaponState == WEAPON_STATE::INACTIVE)
+				{
+					myWeapons.at(desiredIndex)->weaponData.weaponState = WEAPON_STATE::ACTIVE;
+					myWeapons.at(desiredIndex)->drawActive = true;
+
+
+					// add a collider again needed to draw
+					myWeapons.at(desiredIndex)->collider = App->collision->AddCollider({ myWeapons.at(desiredIndex)->section.x, myWeapons.at(desiredIndex)->section.y,
+						(int)((float)myWeapons.at(desiredIndex)->section.w * myWeapons.at(desiredIndex)->spriteScale),
+						(int)((float)myWeapons.at(desiredIndex)->section.h * myWeapons.at(desiredIndex)->spriteScale) }, COLLIDER_TYPE::COLLIDER_LOOT, myWeapons.at(desiredIndex));
+
+					myWeapons.at(desiredIndex)->PlaceMeWithPlayer();
+				}
+			
+
+				break; 
+			} 
+		
+
+			++i;
+		}
+
+		
+	}
+		
+
+	
+
+
+}
+
+void j1EntityPlayer::ShootWeapon()
+{
+
+}
 
 void j1EntityPlayer::WarnOtherModules()
 {
@@ -494,13 +600,14 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 						{
 							weapon->weaponData.weaponState = WEAPON_STATE::INACTIVE;  // if other was active, put it to inactive
 							weapon->drawActive = false;       // do not draw it --> TODO: when swappig weapon put to active both variables
+							weapon->collider->to_delete = true; 
 						}
 							
 					myWeapons.push_back(dynamic_cast<j1EntityLootWeapon*>(c2->callback));
-					dynamic_cast<j1EntityLootWeapon*>(c2->callback)->weaponData.weaponState = WEAPON_STATE::ACTIVE;    // put to active 
 
-							 
+					dynamic_cast<j1EntityLootWeapon*>(c2->callback)->weaponData.weaponState = WEAPON_STATE::ACTIVE;    // put to active 
 					dynamic_cast<j1EntityLootWeapon*>(c2->callback)->PlaceMeWithPlayer();  // player the new weapon in the desired pos; 
+					
 				}
 				
 			}

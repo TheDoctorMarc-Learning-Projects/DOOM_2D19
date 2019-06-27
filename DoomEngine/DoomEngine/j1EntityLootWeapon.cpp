@@ -13,8 +13,7 @@ j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_ty
 
 	// define an offset from player, which may vary depending on weapon sprite
 
-	this->weaponData.offsetFromPlayer = fPoint(21, 15);   // this is the default value 
-
+	 
 	spriteScale = 0.65f;   // in the available sprites weapons are too big 
 
 	switch (weaponData.weaponType)
@@ -25,8 +24,20 @@ j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_ty
 		section = {30, 0, size.x, size.y}; 
 		
 		// TODO: offset form player (when player is holding the weapon)
+		this->weaponData.offsetFromPlayer = fPoint(21, 15);
 
 		break; 
+
+
+	case WEAPON_TYPE::SHOTGUN:
+
+		size.create(63, 12);
+		section = { 147, 0, size.x, size.y };
+
+		// TODO: offset form player (when player is holding the weapon)
+		this->weaponData.offsetFromPlayer = fPoint(21, 20);
+
+		break;
 	}
 
 	collider = App->collision->AddCollider({ section.x, section.y, (int)((float)section.w*spriteScale), (int)((float)section.h* spriteScale) }, COLLIDER_TYPE::COLLIDER_LOOT, this);
@@ -52,23 +63,19 @@ void j1EntityLootWeapon::PlaceMeWithPlayer()
 
 		if (App->entityFactory->player->state.movement.at(0) == MovementState::IDLE)
 		{
-			if (weaponData.extraOffsetXPlayerIdle == 0.f)
-				weaponData.extraOffsetXPlayerIdle = App->entityFactory->player->collider->rect.w - App->entityFactory->player->lastPosCollider.w;
+			float offset = App->entityFactory->player->collider->rect.w - App->entityFactory->player->lastPosCollider.w;
+
+			if (offset > 0)
+				weaponData.extraOffsetXPlayerIdle = offset;
 
 			position.x += weaponData.extraOffsetXPlayerIdle;
 
 		}
 		
-
-
-			    // reposition to a new offset  
 	}
-		
 
-
-
-	collider->SetPos(position.x, position.y);
- 
+	collider->SetPos(position.x, position.y); 
 	lastSpeed = App->entityFactory->player->lastSpeed; 
+
 }
 

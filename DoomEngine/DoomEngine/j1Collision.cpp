@@ -121,19 +121,41 @@ bool j1Collision::PreUpdate()
 	{
 		if (colliders[i] != nullptr && colliders[i]->to_delete == true)
 		{
-			/*if (!colliders[i]->onCollisionWithMe.empty())
+			if (!colliders[i]->onCollisionWithMe.empty())
 			{
-				for (auto& col : colliders[i]->onCollisionWithMe)    // put both pointers to each other to null when a col is deleted
+				for (auto col = colliders[i]->onCollisionWithMe.begin(); col != colliders[i]->onCollisionWithMe.end();)    // put both pointers to each other to null when a col is deleted
 				{
-					for (auto& colReverse : col->onCollisionWithMe)
+					bool deleteIt = false; 
+
+					if (!(*col)->onCollisionWithMe.empty())
 					{
-						if (colReverse == colliders[i])
-							colReverse = nullptr;
+						for (auto colReverse = (*col)->onCollisionWithMe.begin(); colReverse != (*col)->onCollisionWithMe.end();)
+						{
+							if ((*colReverse) == colliders[i])  // is I find my self in another collider on collision with me, delete me from the list, and also delete it from my list
+							{
+								colReverse = (*col)->onCollisionWithMe.erase(colReverse);  // delete myself from ther other's lits
+								deleteIt = true;
+							}
+							else
+							{
+								++colReverse;
+							}
+						}
 					}
-					col = nullptr; 
+					
+
+					if (deleteIt)
+					{
+						col = colliders[i]->onCollisionWithMe.erase(col);  // delete the other from my list
+
+					}
+					else
+					{
+						++col;
+					}
 				}
 					
-			}*/
+			}
 			delete colliders[i];
 			colliders[i] = nullptr;
 		}

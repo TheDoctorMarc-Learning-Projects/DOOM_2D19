@@ -665,7 +665,7 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 					else if (name == "firingType")
 						firingTypeName = property.attribute("value").as_string();
 					else if (name == "damage")
-					    weaponData.damage = property.attribute("value").as_float();  
+					    weaponData.damage = property.attribute("value").as_int();  
 					else if (name == "cadence")
 						weaponData.cadence = property.attribute("value").as_int();
 					else if (name == "maxBullets")

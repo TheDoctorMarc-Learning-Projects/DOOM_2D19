@@ -6,7 +6,7 @@
 #include "j1EntityPlatform.h"
 #include "j1EntityLoot.h"
 #include "j1EntityLootWeapon.h"
-
+#include <vector>
 
 //#define jumpPower 20.f
 
@@ -69,10 +69,16 @@ public:
 	bool Save(pugi::xml_node&) const;
 	// functionality ------
 	bool Move(float dt) override;
+	void HorizonatlMovement(float dt); 
+	void VerticalMovement(float dt);
+	void SetPreviousFrameData(); 
+	void SetCollider(); 
 	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
 	void WarnOtherModules();
+	void WeaponLogic(); 
 	void ShootWeapon(); 
+	void ChangeWeapon(SDL_GameControllerButton button); 
 
 	POINTING_DIR GetDirection() override; 
 
@@ -102,7 +108,7 @@ public:
 	SDL_Rect lastPosCollider;
 	j1EntityPlatform* lastPlatform = nullptr;
 
-	std::list<j1EntityLootWeapon*> myWeapons; 
+	std::vector<j1EntityLootWeapon*> myWeapons; 
 
 
 	friend class j1Entity; 

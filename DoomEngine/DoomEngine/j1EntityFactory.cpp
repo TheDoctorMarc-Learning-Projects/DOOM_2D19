@@ -108,7 +108,7 @@ bool j1EntityFactory::Update(float dt)
 			{
 				
 					ret = (*item)->Update(dt);
-					ret = ((*item)->Move(dt));
+					ret = (*item)->Move(dt);
 
 					++item;
 			

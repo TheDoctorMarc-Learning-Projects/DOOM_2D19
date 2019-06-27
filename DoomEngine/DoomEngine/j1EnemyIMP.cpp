@@ -8,6 +8,7 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY) : j1Enemy(posX, posY)
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = ENEMY_IMP;
+	maxLife = 100; 
 	size.create(36, 49);
 	speed = 150.75f;
 	mass = 0.6f;
@@ -111,7 +112,7 @@ void j1EnemyIMP::Jump()
 
 			for (const auto& col : App->entityFactory->player->collider->onCollisionWithMe)
 			{
-				if (col->callback->type == ENTITY_DYNAMIC || col->callback->type == ENTITY_STATIC)   // capture the platform player col  
+				if (col->hasCallback && col->callback->type == ENTITY_DYNAMIC || col->callback->type == ENTITY_STATIC)   // capture the platform player col  
 				{
 
 					iPoint platfTilePos = App->map->WorldToMap((int)col->callback->position.x, (int)col->callback->position.y) + iPoint(0, 1);

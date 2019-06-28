@@ -15,7 +15,7 @@
 enum class combatState
 {
 	IDLE,
-	SHOOT,
+	AIM,
 	STUN,
 	DYING,
 	DIE
@@ -41,7 +41,7 @@ struct myState
 
 struct jumpData
 {
-	float jumpPower = 20.5f; 
+	float jumpPower = 16.5f; 
 	float currenJumpPower = jumpPower; 
 	float jumpIncrementFactor = .9f;
 	float speedXIncrementJump = 1.7f; 
@@ -77,8 +77,10 @@ public:
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
 	void WarnOtherModules();
 	void WeaponLogic(); 
+	void ChangeWeapon(SDL_GameControllerButton button);
+	void AimWeapon(); 
 	void ShootWeapon(); 
-	void ChangeWeapon(SDL_GameControllerButton button); 
+
 
 	POINTING_DIR GetDirection() override; 
 
@@ -90,6 +92,8 @@ public:
 private:
 
 	Animation run; 
+	Animation aimUp; 
+	Animation aimDown; 
 	bool aiming = false;
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0); 
@@ -107,6 +111,7 @@ public:
 	bool onDynamicplatform = false;
 	SDL_Rect lastPosCollider;
 	j1EntityPlatform* lastPlatform = nullptr;
+	j1EntityLootWeapon* currentWeapon = nullptr; 
 
 	std::vector<j1EntityLootWeapon*> myWeapons; 
 

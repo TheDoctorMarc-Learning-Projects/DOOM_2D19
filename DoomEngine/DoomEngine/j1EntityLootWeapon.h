@@ -23,8 +23,7 @@ enum class WEAPON_STATE
 enum class firingType
 {
 	AUTO,
-	SEMI,
-	MANUAL,
+	SEMI,  // for the sake of simplicity semi and manual will be the same
 	MELEE,
 	NO_FIRING_TYPE
 };
@@ -43,7 +42,6 @@ enum class firingType
 	{
 		{"auto", firingType::AUTO},
 		{"semi", firingType::SEMI},
-		{"manual", firingType::MANUAL},
 		{"melee", firingType::MELEE},
 		{"", firingType::NO_FIRING_TYPE}
 	};
@@ -82,7 +80,7 @@ public:
 	void OnCollisionExit(Collider* c1, Collider* c2) override {};
 
 	WEAPON_TYPE GetWeaponType() { return weaponData.weaponType; }; // define this in weapon cpp
-
+	firingType GetFiringType() { return weaponData.FiringType; }; 
 
 
 	void PlaceMeWithPlayer(); 

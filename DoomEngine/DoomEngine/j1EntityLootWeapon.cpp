@@ -35,7 +35,7 @@ j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_ty
 		section = { 147, 0, size.x, size.y };
 
 		// TODO: offset form player (when player is holding the weapon)
-		this->weaponData.offsetFromPlayer = fPoint(21, 20);
+		this->weaponData.offsetFromPlayer = fPoint(17, 20);
 
 		break;
 	}
@@ -53,10 +53,11 @@ j1EntityLootWeapon::~j1EntityLootWeapon()
 
 void j1EntityLootWeapon::PlaceMeWithPlayer()
 {
+	pointingDir = App->entityFactory->player->pointingDir; 
 
-	if(App->entityFactory->player->pointingDir == POINTING_DIR::RIGHT)
+	if(pointingDir == POINTING_DIR::RIGHT)
 		position = App->entityFactory->player->position + weaponData.offsetFromPlayer;
-	else if (App->entityFactory->player->pointingDir == POINTING_DIR::LEFT)
+	else if (pointingDir == POINTING_DIR::LEFT)
 	{
 		
 		position = App->entityFactory->player->position + fPoint(App->entityFactory->player->size.x * App->entityFactory->player->spriteScale - weaponData.offsetFromPlayer.x - collider->rect.w, weaponData.offsetFromPlayer.y);

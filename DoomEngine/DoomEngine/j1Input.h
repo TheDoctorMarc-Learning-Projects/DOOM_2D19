@@ -11,6 +11,8 @@
 //#define LAST_KEYS_PRESSED_BUFFER 50
 #define DEAD_ZONE 8000
 
+#define MAX_CONTROLLER_AXIS 32768
+
 struct SDL_Rect;
 
 enum j1EventWindow

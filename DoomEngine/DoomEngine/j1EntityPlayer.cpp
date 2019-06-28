@@ -33,12 +33,17 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY) : j1Entity(PLAYER, posX , pos
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - anims
 	currentAnimation = &idle;
 	idle.PushBack({1, 421, size.x + 17, size.y}); 
+
 	run.PushBack({ 8, 33, size.x + 8, size.y });
 	run.PushBack({ 4, 130, size.x + 3, size.y + 2 });
 	run.PushBack({ 7, 227, size.x + 4, size.y + 1});
 	run.PushBack({ 7, 324, size.x, size.y + 1 });
 	run.loop = true; 
 	run.speed = 3.f; 
+
+	aimUp.PushBack({ 70, 33, size.x + 6, size.y + 2 });
+
+	aimDown.PushBack({ 70, 422, size.x, size.y - 1 });
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - collider
 	collider = App->collision->AddCollider({(int)position.x, (int)position.y, (int)((float)size.x * spriteScale),(int)((float)size.y * spriteScale) }, COLLIDER_TYPE::COLLIDER_PLAYER, this);
@@ -93,8 +98,8 @@ bool j1EntityPlayer::Move(float dt)
 	SetPreviousFrameData(); 
 	HorizonatlMovement(dt); 
 	VerticalMovement(dt); 
+	WeaponLogic();
 	SetCollider(); 
-	WeaponLogic(); 
 	// - - - - - - - - - - - - - - - - - - warn other modules about the pos if needed
 	WarnOtherModules();
 
@@ -231,12 +236,39 @@ void j1EntityPlayer::SetCollider()
 	collider->SetPos(position.x, position.y);
 	collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
 
-	if (collider->rect.h != lastPosCollider.h)
+	if (onPlatform)
 	{
-		float yOffset = collider->rect.h - lastPosCollider.h;
-		position.y -= yOffset;
-		collider->SetPos(position.x, position.y);
-		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h, position.x, position.y);
+		if (collider->rect.h != lastPosCollider.h)                         // do some corrections not to go through floor 
+		{
+			float yOffset = collider->rect.h - lastPosCollider.h;
+	
+			if (position.y + collider->rect.h - yOffset <= lastPlatform->position.y)
+			{
+				position.y -= yOffset;
+
+				
+			}
+			else
+			{
+				position.y = lastPlatform->position.y - collider->rect.h; 
+			}
+
+			collider->SetPos(position.x, position.y);
+			collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h, position.x, position.y);
+
+		}
+
+		if (collider->rect.w != lastPosCollider.w)
+		{
+			float xOffset = collider->rect.w - lastPosCollider.w;
+
+			if (pointingDir == POINTING_DIR::LEFT)           // do corrections when changing anim to aim, so player stays visually in the same pos 
+				position.x -= xOffset;
+
+
+			collider->SetPos(position.x, position.y);
+			collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h, position.x, position.y);
+		}
 	}
 
 }
@@ -247,7 +279,7 @@ void j1EntityPlayer::WeaponLogic()
 	if (!myWeapons.empty())
 	{
 		// capture input 
-		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN) //if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == KEY_DOWN)
+		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == KEY_DOWN) //if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == KEY_DOWN)
 		{
 			//ChangeWeapon(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
 			ChangeWeapon(SDL_CONTROLLER_BUTTON_B);
@@ -257,6 +289,8 @@ void j1EntityPlayer::WeaponLogic()
 		{
 			ChangeWeapon(SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
 		}
+
+		AimWeapon(); 
 
 		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_RIGHTSTICK) == KEY_DOWN)
 		{
@@ -280,6 +314,7 @@ void j1EntityPlayer::ChangeWeapon(SDL_GameControllerButton button)
 				(*weapon)->weaponData.weaponState = WEAPON_STATE::INACTIVE;
 				(*weapon)->drawActive = false;
 				(*weapon)->collider->to_delete = true; 
+				currentWeapon = nullptr; 
 
 				int desiredIndex = 0; 
 
@@ -321,6 +356,7 @@ void j1EntityPlayer::ChangeWeapon(SDL_GameControllerButton button)
 						(int)((float)myWeapons.at(desiredIndex)->section.h * myWeapons.at(desiredIndex)->spriteScale) }, COLLIDER_TYPE::COLLIDER_LOOT, myWeapons.at(desiredIndex));
 
 					myWeapons.at(desiredIndex)->PlaceMeWithPlayer();
+					currentWeapon = myWeapons.at(desiredIndex); 
 				}
 			
 
@@ -337,6 +373,32 @@ void j1EntityPlayer::ChangeWeapon(SDL_GameControllerButton button)
 
 	
 
+
+}
+
+void j1EntityPlayer::AimWeapon()
+{
+	if (state.movement.at(0) == MovementState::IDLE && (state.combat == combatState::IDLE || state.combat == combatState::AIM))  // have to be idle to aim, to give some challenge, but you can run and shoot horizontally
+	{
+		if (currentWeapon->GetFiringType() != firingType::MELEE)   // no aim with chainsaw etc
+		{
+			Sint16 yAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_RIGHTY);
+
+			int partition = MAX_CONTROLLER_AXIS / 3;  // devide positive Y positive axis in 3 partitions, as well as another 3 for the negative 
+
+			if (yAxis < -MAX_CONTROLLER_AXIS + 2 * partition)
+				currentAnimation = &aimUp;
+			else if (yAxis > -MAX_CONTROLLER_AXIS + 2 * partition && yAxis < MAX_CONTROLLER_AXIS - 2 * partition)
+				currentAnimation = &idle;
+			else
+				currentAnimation = &aimDown; 
+
+			(currentAnimation == &idle) ? state.combat = combatState::IDLE : state.combat = combatState::AIM; 
+
+			
+		}
+
+	}
 
 }
 
@@ -601,9 +663,11 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 							weapon->weaponData.weaponState = WEAPON_STATE::INACTIVE;  // if other was active, put it to inactive
 							weapon->drawActive = false;       // do not draw it --> TODO: when swappig weapon put to active both variables
 							weapon->collider->to_delete = true; 
+							currentWeapon = nullptr; 
 						}
 							
 					myWeapons.push_back(dynamic_cast<j1EntityLootWeapon*>(c2->callback));
+					currentWeapon = dynamic_cast<j1EntityLootWeapon*>(c2->callback); 
 
 					dynamic_cast<j1EntityLootWeapon*>(c2->callback)->weaponData.weaponState = WEAPON_STATE::ACTIVE;    // put to active 
 					dynamic_cast<j1EntityLootWeapon*>(c2->callback)->PlaceMeWithPlayer();  // player the new weapon in the desired pos; 

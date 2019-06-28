@@ -10096,7 +10096,7 @@
    <properties>
     <property name="cadence" type="int" value="0"/>
     <property name="damage" type="int" value="100"/>
-    <property name="firingType" value="manual"/>
+    <property name="firingType" value="semi"/>
     <property name="maxBullets" type="int" value="38"/>
     <property name="name" value="shotgun"/>
    </properties>

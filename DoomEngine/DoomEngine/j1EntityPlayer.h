@@ -11,6 +11,7 @@
 //#define jumpPower 20.f
 
 #define jumpComfortCornerThreshold 20
+#define comfortShootAngle 45
 
 enum class combatState
 {

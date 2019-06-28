@@ -60,9 +60,9 @@ void j1EntityLootWeapon::PlaceMeWithPlayer()
 	else if (pointingDir == POINTING_DIR::LEFT)
 	{
 		
-		position = App->entityFactory->player->position + fPoint(App->entityFactory->player->size.x * App->entityFactory->player->spriteScale - weaponData.offsetFromPlayer.x - collider->rect.w, weaponData.offsetFromPlayer.y);
+		position = App->entityFactory->player->position + fPoint(App->entityFactory->player->collider->rect.w /** App->entityFactory->player->spriteScale*/ - weaponData.offsetFromPlayer.x - collider->rect.w, weaponData.offsetFromPlayer.y);
 
-		if (App->entityFactory->player->state.movement.at(0) == MovementState::IDLE)
+		/*if (App->entityFactory->player->state.movement.at(0) == MovementState::IDLE)
 		{
 			float offset = App->entityFactory->player->collider->rect.w - App->entityFactory->player->lastPosCollider.w;
 
@@ -71,12 +71,35 @@ void j1EntityLootWeapon::PlaceMeWithPlayer()
 
 			position.x += weaponData.extraOffsetXPlayerIdle;
 
-		}
+		}*/
 		
 	}
 
 	collider->SetPos(position.x, position.y); 
 	lastSpeed = App->entityFactory->player->lastSpeed; 
 
+}
+
+
+void j1EntityLootWeapon::ChangeRotation(double angle)
+{
+	spriteRotation = angle; 
+
+	if (angle == 0)
+		rotationPivots.create(INT_MAX, INT_MAX); 
+	else
+	{
+		if((angle > 0 && pointingDir == RIGHT) || (angle < 0 && pointingDir == LEFT))
+			rotationPivots.y = collider->rect.h / 2;
+		else
+			rotationPivots.y = -collider->rect.h / 2;
+		
+
+		if (pointingDir == POINTING_DIR::RIGHT)
+			rotationPivots.x = weaponData.xDisplacementWhenRotated; 
+		else if (pointingDir == POINTING_DIR::LEFT)
+			rotationPivots.x = collider->rect.w - weaponData.xDisplacementWhenRotated; 
+		
+	}
 }
 

@@ -61,7 +61,7 @@ int maxBullets = 0;
 
 fPoint offsetFromPlayer = fPoint(0.f,0.f); 
 float extraOffsetXPlayerIdle = 0.f; 
-
+int xDisplacementWhenRotated = 10; 
 };
 
 class j1EntityLoot;
@@ -85,6 +85,7 @@ public:
 
 	void PlaceMeWithPlayer(); 
 	void Shoot(); 
+	void ChangeRotation(double angle); 
 
 private:
 	weaponInfo weaponData; 

@@ -87,9 +87,9 @@ void j1Entity::Draw()
 	if (entityTex != nullptr && drawActive)
 	{
 		if(section.w > 0 && section.h > 0)
-			App->render->Blit(entityTex, position.x, position.y, &section, 1.f, flip, spriteScale);
+			App->render->Blit(entityTex, position.x, position.y, &section, 1.f, flip, spriteScale, spriteRotation, rotationPivots.x, rotationPivots.y);
 		else if(currentAnimation)
-			App->render->Blit(entityTex, position.x, position.y, &currentAnimation->GetCurrentFrame(), 1.f, flip, spriteScale);
+			App->render->Blit(entityTex, position.x, position.y, &currentAnimation->GetCurrentFrame(), 1.f, flip, spriteScale, spriteRotation, rotationPivots.x, rotationPivots.y);
 		
 	}
 		

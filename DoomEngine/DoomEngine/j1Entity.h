@@ -114,6 +114,8 @@ public:
 	Animation				idle; 
 	Animation*				currentAnimation = nullptr;
 	SDL_Texture*			entityTex = nullptr;            // specific entity texture
+	double                  spriteRotation = 0; 
+	iPoint                  rotationPivots = iPoint(INT_MAX, INT_MAX); 
 	//uint                    blitOrder = 0; 
 };
 

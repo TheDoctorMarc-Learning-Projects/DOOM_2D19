@@ -134,44 +134,48 @@ void j1EntityPlayer::SetPreviousFrameData()
 
 void j1EntityPlayer::HorizonatlMovement(float dt)
 {
-	Sint16 xAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
-
-	// - - - - - - - - - - - - - - - - - - horizontal movement
-	if (xAxis > 0 || xAxis < 0)
+	if (state.combat != combatState::AIM)
 	{
+		Sint16 xAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
 
-
-		currentAnimation = &run;
-
-		if (state.movement.at(1) != MovementState::NOT_ACTIVE)
+		// - - - - - - - - - - - - - - - - - - horizontal movement
+		if (xAxis > 0 || xAxis < 0)
 		{
-			if (state.movement.at(1) == MovementState::JUMP)
-				lastSpeed.x = (xAxis * speed) * jumpInfo.speedXIncrementJump* dt;
-			else if (state.movement.at(1) == MovementState::FALL)
-				lastSpeed.x = (xAxis * speed) * jumpInfo.speedXIncrementFall* dt;
+
+
+			currentAnimation = &run;
+
+			if (state.movement.at(1) != MovementState::NOT_ACTIVE)
+			{
+				if (state.movement.at(1) == MovementState::JUMP)
+					lastSpeed.x = (xAxis * speed) * jumpInfo.speedXIncrementJump* dt;
+				else if (state.movement.at(1) == MovementState::FALL)
+					lastSpeed.x = (xAxis * speed) * jumpInfo.speedXIncrementFall* dt;
+
+			}
+			else
+				lastSpeed.x = (xAxis * speed) * dt;
+
+			state.movement.at(0) = (xAxis < 0) ? MovementState::INPUT_LEFT : state.movement.at(0);
+			state.movement.at(0) = (xAxis > 0) ? MovementState::INPUT_RIGHT : state.movement.at(0);
+
+			position.x += lastSpeed.x;
 
 		}
 		else
-			lastSpeed.x = (xAxis * speed) * dt;
-
-		state.movement.at(0) = (xAxis < 0) ? MovementState::INPUT_LEFT : state.movement.at(0);
-		state.movement.at(0) = (xAxis > 0) ? MovementState::INPUT_RIGHT : state.movement.at(0);
-
-		position.x += lastSpeed.x;
-
-	}
-	else
-	{
-		if (state.movement.at(0) != MovementState::IDLE)
 		{
-			state.movement.at(0) = MovementState::IDLE;
-			//currentAnimation = &idle;
+			if (state.movement.at(0) != MovementState::IDLE)
+			{
+				state.movement.at(0) = MovementState::IDLE;
+				//currentAnimation = &idle;
 
+			}
+
+			currentAnimation = &idle;
+			lastSpeed.x = 0;
 		}
-
-		currentAnimation = &idle;
-		lastSpeed.x = 0;
 	}
+
 
 }
 
@@ -378,22 +382,61 @@ void j1EntityPlayer::ChangeWeapon(SDL_GameControllerButton button)
 
 void j1EntityPlayer::AimWeapon()
 {
+
 	if (state.movement.at(0) == MovementState::IDLE && (state.combat == combatState::IDLE || state.combat == combatState::AIM))  // have to be idle to aim, to give some challenge, but you can run and shoot horizontally
 	{
 		if (currentWeapon->GetFiringType() != firingType::MELEE)   // no aim with chainsaw etc
 		{
+			
+
 			Sint16 yAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_RIGHTY);
+			Sint16 xAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_RIGHTX);
+
+			// first consider if player has to change pointing direction, so he can aim in any direction
+
+			if (xAxis > 0 && pointingDir == LEFT)
+				pointingDir = RIGHT;
+			else if (xAxis < 0 && pointingDir == RIGHT)
+				pointingDir = LEFT; 
+
+
+
+
+			// then alter the playr animation according to axis thresholds and then alter the current weapon sprite rotation
 
 			int partition = MAX_CONTROLLER_AXIS / 3;  // devide positive Y positive axis in 3 partitions, as well as another 3 for the negative 
 
 			if (yAxis < -MAX_CONTROLLER_AXIS + 2 * partition)
+			{
 				currentAnimation = &aimUp;
-			else if (yAxis > -MAX_CONTROLLER_AXIS + 2 * partition && yAxis < MAX_CONTROLLER_AXIS - 2 * partition)
-				currentAnimation = &idle;
-			else
-				currentAnimation = &aimDown; 
 
-			(currentAnimation == &idle) ? state.combat = combatState::IDLE : state.combat = combatState::AIM; 
+				if(pointingDir == RIGHT)
+					currentWeapon->ChangeRotation(-(double)comfortShootAngle);
+				else if(pointingDir == LEFT)
+					currentWeapon->ChangeRotation((double)comfortShootAngle);
+				
+			}
+				
+			else if (yAxis > -MAX_CONTROLLER_AXIS + 2 * partition && yAxis < MAX_CONTROLLER_AXIS - 2 * partition)
+			{
+				currentAnimation = &idle;
+				currentWeapon->ChangeRotation(0);
+			}
+				
+			else
+			{
+				currentAnimation = &aimDown;
+				
+
+				if (pointingDir == RIGHT)
+					currentWeapon->ChangeRotation((double)comfortShootAngle);
+				else if (pointingDir == LEFT)
+					currentWeapon->ChangeRotation(-(double)comfortShootAngle);
+
+			}
+				
+
+			(xAxis == 0 && yAxis == 0) ? state.combat = combatState::IDLE : state.combat = combatState::AIM;  // when released, combat is idle again
 
 			
 		}

@@ -16,6 +16,8 @@
 #include "j1EntityPlatform.h"
 #include "j1EnemyIMP.h"
 
+#include "LootWeaponMaps.h"
+
 #include <assert.h>
 
 j1EntityFactory::j1EntityFactory()
@@ -26,6 +28,7 @@ j1EntityFactory::j1EntityFactory()
 
 j1EntityFactory::~j1EntityFactory()
 {
+	CleanLootMaps();    // they are defined it their header, but are useful until app closes
 }
 
 bool j1EntityFactory::Awake(pugi::xml_node & node)
@@ -168,7 +171,6 @@ bool j1EntityFactory::CleanUp()
 
 	App->tex->UnLoad(playerTexture);
 	App->tex->UnLoad(impTexture);
-
 
 	return ret;
 }

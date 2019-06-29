@@ -49,6 +49,9 @@
     <Filter Include="Code\Core\In-Game\Entities\inanimated\loot">
       <UniqueIdentifier>{47371f93-e41b-41db-94b8-888ddf37cfe6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Core\In-Game\Entities\inanimated\loot\help">
+      <UniqueIdentifier>{f25ecf02-da7c-4d75-a3b0-9c6f834b3345}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="j1App.cpp">
@@ -229,6 +232,9 @@
     </ClInclude>
     <ClInclude Include="j1PathFinding.h">
       <Filter>Code\Core\In-Game</Filter>
+    </ClInclude>
+    <ClInclude Include="LootWeaponMaps.h">
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot\help</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

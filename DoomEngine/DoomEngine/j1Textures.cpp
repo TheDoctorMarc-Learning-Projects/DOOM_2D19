@@ -74,6 +74,8 @@ SDL_Texture* const j1Textures::Load(const char* path)
 		SDL_FreeSurface(surface);
 	}
 
+	
+
 	return texture;
 }
 
@@ -82,6 +84,10 @@ bool j1Textures::UnLoad(SDL_Texture* texture)
 {
 	textures.remove(texture);
 	SDL_DestroyTexture(texture);
+
+	LOG("- - - - - - - - - - - - - - - - - - - Textures Loaded %i", texturesLoaded);
+
+
 	return false;
 }
 

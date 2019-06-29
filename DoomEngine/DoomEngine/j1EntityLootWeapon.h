@@ -9,6 +9,7 @@ enum class WEAPON_TYPE
 	DEFAULT,
 	CHAINSAW,
 	SHOTGUN,
+	MACHINE_GUN,
 	NO_WEAPON      // add stuff here 
 
 };
@@ -29,39 +30,25 @@ enum class firingType
 };
 
 
-	const std::map<std::string, WEAPON_TYPE> weaponTypeMap =
-	{
-		{"default", WEAPON_TYPE::DEFAULT},
-		{"chainsaw", WEAPON_TYPE::CHAINSAW},
-		{"shotgun", WEAPON_TYPE::SHOTGUN},
-		{"", WEAPON_TYPE::NO_WEAPON}
-	};
-	
 
-	const std::map<std::string, firingType> weaponFiringTypeMap =
-	{
-		{"auto", firingType::AUTO},
-		{"semi", firingType::SEMI},
-		{"melee", firingType::MELEE},
-		{"", firingType::NO_FIRING_TYPE}
-	};
-
-// TODO: audio map according with weapon type ?
-
-
-struct  weaponInfo
+struct  weaponInfo   
 {
+// - - - - - - - - - - - - global 
 	WEAPON_TYPE weaponType; 
 	WEAPON_STATE weaponState; 
 	firingType FiringType;
 
-int damage = 0;
-int cadence = 0;
-int maxBullets = 0;
+// - - - - - - - - - - - - stats 
+   int damage = 0;
+   int cadence = 0;
+   int maxBullets = 0;
+   float scopeFactor = 0.f; 
 
-fPoint offsetFromPlayer = fPoint(0.f,0.f); 
-float extraOffsetXPlayerIdle = 0.f; 
-int xDisplacementWhenRotated = 10; 
+// - - - - - - - - - - - - placing 
+   fPoint offsetFromPlayer = fPoint(0.f,0.f); 
+   float extraOffsetXPlayerIdle = 0.f; 
+   int xDisplacementWhenRotated = 10;
+
 };
 
 class j1EntityLoot;
@@ -86,6 +73,7 @@ public:
 	void PlaceMeWithPlayer(); 
 	void Shoot(); 
 	void ChangeRotation(double angle); 
+
 
 private:
 	weaponInfo weaponData; 

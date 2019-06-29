@@ -359,6 +359,9 @@ bool j1App::CleanUp()
 	while(item != modules.rend() && ret == true)
 	{
 		ret = (*item)->CleanUp();
+
+		RELEASE(*item);
+
 		++item;
 	}
 	
@@ -524,7 +527,7 @@ float j1App::GetDt()
 	return dt;
 }
 
-bool j1App::ExsistDocument(std::string doc)
+bool j1App::ExistDocument(std::string doc)
 {
 	bool ret = false;
 

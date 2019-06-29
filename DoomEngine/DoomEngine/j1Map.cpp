@@ -7,7 +7,7 @@
 #include "j1Window.h"
 #include "j1Input.h"
 #include "j1EntityFactory.h"
-#include "j1EntityLootWeapon.h"
+#include "LootWeaponMaps.h"
 
 #include "Brofiler/Brofiler.h"
 
@@ -46,34 +46,7 @@ void j1Map::Draw()
 	if (map_loaded == false)
 		return;
 
-	/*std::list<MapLayer*>::iterator layer = data.layers.begin();
-
-	for (; layer != data.layers.end(); ++layer)
-	{
-		if ((*layer)->name == "navigationLayer" && showNavLayer == false) {
-			continue;
-		}
-
-	}
-
-	if (debugDraw)
-	{
-		BROFILER_CATEGORY("Map Tiles Debug", Profiler::Color::DarkSlateGray);
-		DebugDraw();
-	}*/
-
-	
-	
-	
-
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
-		mapDebug = !mapDebug; 
-
-	// --------------------------------------------------------------------->>>    This is only for the first layer!
-
 	std::list<MapLayer*>::iterator layer = data.layers.begin();
-
-
 	
 	for (auto& layer : data.layers)
 	{
@@ -670,7 +643,9 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 						weaponData.cadence = property.attribute("value").as_int();
 					else if (name == "maxBullets")
 						weaponData.maxBullets = property.attribute("value").as_int();
-					
+					else if (name == "scopeFactor")
+						weaponData.scopeFactor = property.attribute("value").as_int();
+
 					
 				}
 				weaponData.weaponType = weaponTypeMap.at(weaponName); 

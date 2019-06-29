@@ -1,5 +1,5 @@
-#include "j1EntityLootWeapon.h"
 #include "j1EntityFactory.h"
+#include "LootWeaponMaps.h"
 
 j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_type, std::string name, weaponInfo weaponData) :j1EntityLoot(posX, posY, loot_type, name)
 {
@@ -23,7 +23,7 @@ j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_ty
 		size.create(62, 23); 
 		section = {30, 0, size.x, size.y}; 
 		
-		// TODO: offset form player (when player is holding the weapon)
+		// offset form player (when player is holding the weapon)
 		this->weaponData.offsetFromPlayer = fPoint(21, 15);
 
 		break; 
@@ -34,8 +34,19 @@ j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_ty
 		size.create(63, 12);
 		section = { 147, 0, size.x, size.y };
 
-		// TODO: offset form player (when player is holding the weapon)
+		// offset form player (when player is holding the weapon)
 		this->weaponData.offsetFromPlayer = fPoint(17, 20);
+
+		break;
+
+	case WEAPON_TYPE::MACHINE_GUN:
+
+		size.create(54, 16);
+		section = { 0, 24, size.x, size.y };
+
+		// offset form player (when player is holding the weapon)
+		this->weaponData.offsetFromPlayer = fPoint(21, 15);
+		this->weaponData.xDisplacementWhenRotated = 0; 
 
 		break;
 	}
@@ -60,19 +71,7 @@ void j1EntityLootWeapon::PlaceMeWithPlayer()
 	else if (pointingDir == POINTING_DIR::LEFT)
 	{
 		
-		position = App->entityFactory->player->position + fPoint(App->entityFactory->player->collider->rect.w /** App->entityFactory->player->spriteScale*/ - weaponData.offsetFromPlayer.x - collider->rect.w, weaponData.offsetFromPlayer.y);
-
-		/*if (App->entityFactory->player->state.movement.at(0) == MovementState::IDLE)
-		{
-			float offset = App->entityFactory->player->collider->rect.w - App->entityFactory->player->lastPosCollider.w;
-
-			if (offset > 0)
-				weaponData.extraOffsetXPlayerIdle = offset;
-
-			position.x += weaponData.extraOffsetXPlayerIdle;
-
-		}*/
-		
+		position = App->entityFactory->player->position + fPoint(App->entityFactory->player->collider->rect.w - weaponData.offsetFromPlayer.x - collider->rect.w, weaponData.offsetFromPlayer.y);
 	}
 
 	collider->SetPos(position.x, position.y); 
@@ -89,17 +88,16 @@ void j1EntityLootWeapon::ChangeRotation(double angle)
 		rotationPivots.create(INT_MAX, INT_MAX); 
 	else
 	{
-		if((angle > 0 && pointingDir == RIGHT) || (angle < 0 && pointingDir == LEFT))
-			rotationPivots.y = collider->rect.h / 2;
-		else
-			rotationPivots.y = -collider->rect.h / 2;
+		rotationPivots.y = 0; 
 		
-
 		if (pointingDir == POINTING_DIR::RIGHT)
 			rotationPivots.x = weaponData.xDisplacementWhenRotated; 
 		else if (pointingDir == POINTING_DIR::LEFT)
 			rotationPivots.x = collider->rect.w - weaponData.xDisplacementWhenRotated; 
 		
 	}
+
+
 }
+
 

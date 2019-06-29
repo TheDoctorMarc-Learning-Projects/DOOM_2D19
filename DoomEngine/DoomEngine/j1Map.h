@@ -47,18 +47,6 @@ struct Properties
 };
 
 
-struct MapObjects
-{
-	std::string name;
-	uint id = 0;
-	//Collider* colliders[MAX_OBJECTGROUP_COLLIDERS] = { nullptr };
-	Properties properties;
-
-	~MapObjects()
-	{
-		//RELEASE_ARRAY(colliders[MAX_OBJECTGROUP_COLLIDERS]);
-	}
-};
 // ----------------------------------------------------
 struct MapLayer
 {
@@ -124,7 +112,6 @@ struct MapData
 	MapTypes				type;
 	std::list<TileSet*>		tilesets;
 	std::list<MapLayer*>	layers;
-	std::list<MapObjects>	mapObjects;
 	Properties				properties;
 };
 

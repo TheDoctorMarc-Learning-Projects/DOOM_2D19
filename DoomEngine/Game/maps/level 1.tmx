@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="278" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="29">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="278" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="30">
  <tileset firstgid="1" name="qzNJ1V6_3x (1)" tilewidth="32" tileheight="32" tilecount="2520" columns="140">
   <image source="textures/background_level1.png" width="4488" height="600"/>
  </tileset>
@@ -10086,19 +10086,31 @@
   <object id="27" name="weapon" x="608" y="512" width="32" height="32">
    <properties>
     <property name="cadence" type="int" value="0"/>
-    <property name="damage" type="int" value="2"/>
+    <property name="damage" type="int" value="5"/>
     <property name="firingType" value="melee"/>
     <property name="maxBullets" type="int" value="0"/>
     <property name="name" value="chainsaw"/>
+    <property name="scopeFactor" type="float" value="0"/>
    </properties>
   </object>
-  <object id="28" name="weapon" x="288" y="512" width="32" height="32">
+  <object id="28" name="weapon" x="576" y="224" width="32" height="32">
    <properties>
-    <property name="cadence" type="int" value="0"/>
+    <property name="cadence" type="int" value="800"/>
+    <property name="damage" type="int" value="5"/>
+    <property name="firingType" value="auto"/>
+    <property name="maxBullets" type="int" value="200"/>
+    <property name="name" value="machineGun"/>
+    <property name="scopeFactor" type="float" value="0.95"/>
+   </properties>
+  </object>
+  <object id="29" name="weapon" x="285.333" y="506.667" width="32" height="32">
+   <properties>
+    <property name="cadence" type="int" value="30"/>
     <property name="damage" type="int" value="100"/>
     <property name="firingType" value="semi"/>
     <property name="maxBullets" type="int" value="38"/>
     <property name="name" value="shotgun"/>
+    <property name="scopeFactor" type="float" value="0.6"/>
    </properties>
   </object>
  </objectgroup>

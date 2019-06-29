@@ -96,8 +96,6 @@ void j1Entity::Draw()
 	
 		
 
-		
-
 }
 
 fPoint j1Entity::GetPosition()

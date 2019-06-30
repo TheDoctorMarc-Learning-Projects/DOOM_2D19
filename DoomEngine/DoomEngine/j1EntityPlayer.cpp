@@ -447,6 +447,8 @@ void j1EntityPlayer::AimWeapon()
 void j1EntityPlayer::ShootWeapon()
 {
 
+	currentWeapon->Shoot(); 
+
 }
 
 void j1EntityPlayer::WarnOtherModules()

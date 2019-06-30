@@ -2,6 +2,7 @@
 #define _J1ENTITY_LOOT_H__
 
 #include "j1EntityLoot.h"
+#include "j1ParticlesClassic.h"
 #include <map>
 
 enum class WEAPON_TYPE   
@@ -47,7 +48,10 @@ struct  weaponInfo
 // - - - - - - - - - - - - placing 
    fPoint offsetFromPlayer = fPoint(0.f,0.f); 
    float extraOffsetXPlayerIdle = 0.f; 
-   int xDisplacementWhenRotated = 10;
+   int tipPosDisplacement = 0.f; 
+
+// - - - - - - - - - - - - particle data
+   bool launchesProjectile = false; 
 
 };
 
@@ -77,6 +81,7 @@ public:
 
 private:
 	weaponInfo weaponData; 
+
 
 	friend class j1EntityPlayer; 
 };

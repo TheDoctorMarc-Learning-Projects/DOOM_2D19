@@ -19,6 +19,7 @@ const std::map<std::string, firingType> weaponFiringTypeMap =
 	{"", firingType::NO_FIRING_TYPE}
 };
 
+
 // TODO: audio and particle map according with weapon type ?
 
 static void CleanLootMaps() 

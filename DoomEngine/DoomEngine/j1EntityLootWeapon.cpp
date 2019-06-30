@@ -3,7 +3,7 @@
 
 j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_type, std::string name, weaponInfo weaponData) :j1EntityLoot(posX, posY, loot_type, name)
 {
-
+	this->name = name; 
 	useRenderFlip = true;
 	defaultPointingDir = POINTING_DIR::RIGHT; 
 	pointingDir = POINTING_DIR::RIGHT; 
@@ -25,6 +25,7 @@ j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_ty
 		
 		// offset form player (when player is holding the weapon)
 		this->weaponData.offsetFromPlayer = fPoint(21, 15);
+		this->weaponData.tipPosDisplacement = 16 * spriteScale;
 
 		break; 
 
@@ -36,6 +37,7 @@ j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_ty
 
 		// offset form player (when player is holding the weapon)
 		this->weaponData.offsetFromPlayer = fPoint(17, 20);
+		this->weaponData.tipPosDisplacement = 2 * spriteScale;
 
 		break;
 
@@ -46,7 +48,8 @@ j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_ty
 
 		// offset form player (when player is holding the weapon)
 		this->weaponData.offsetFromPlayer = fPoint(21, 15);
-		this->weaponData.xDisplacementWhenRotated = 0; 
+		this->weaponData.tipPosDisplacement = 3 * spriteScale;
+	
 
 		break;
 	}
@@ -90,14 +93,32 @@ void j1EntityLootWeapon::ChangeRotation(double angle)
 	{
 		rotationPivots.y = 0; 
 		
-		if (pointingDir == POINTING_DIR::RIGHT)
-			rotationPivots.x = weaponData.xDisplacementWhenRotated; 
-		else if (pointingDir == POINTING_DIR::LEFT)
-			rotationPivots.x = collider->rect.w - weaponData.xDisplacementWhenRotated; 
-		
 	}
 
 
 }
 
 
+
+void j1EntityLootWeapon::Shoot()
+{
+
+	iPoint weaponTipPos = iPoint(0, 0); 
+
+	if (pointingDir == POINTING_DIR::LEFT)
+		weaponTipPos = iPoint(position.x, position.y + weaponData.tipPosDisplacement);
+	else if (pointingDir == POINTING_DIR::RIGHT)
+		weaponTipPos = iPoint(position.x + collider->rect.w, position.y + weaponData.tipPosDisplacement);
+
+	/*if (weaponData.launchesProjectile)
+		App->particles->AddParticle("defaultShotFire", this, weaponTipPos.x, weaponTipPos.y, COLLIDER_NONE);  // the proper projectile with callback (this) that will do damage 
+		*/
+	Particle* shotFire = App->particles->AddParticleRet("defaultShotFire", weaponTipPos.x, weaponTipPos.y, this, COLLIDER_SHOT);   // just visual 
+
+
+	// adjust the particle pos so that it appears centered at wepons tip 
+
+	shotFire->position.y -= shotFire->collider->rect.h / 2; 
+	if (pointingDir == POINTING_DIR::LEFT)
+		shotFire->position.x -= shotFire->collider->rect.w; 
+}

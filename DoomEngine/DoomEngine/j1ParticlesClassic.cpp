@@ -35,8 +35,19 @@ bool j1ParticlesClassic::Start()
 	LOG("Loading particles");
 
 
+	texture = App->tex->Load("textures/particles/particles.png"); 
 
-	//texture = App->tex->Load("textures/particles/BuffParticles2.png");   // TODO: change atlas path
+	// default shot fire 
+	defaultShotFire.name = "defaultShotFire"; 
+	defaultShotFire.anim.PushBack({0, 298, 7, 6}); 
+	defaultShotFire.life = 200;
+	defaultShotFire.speed.create(0, 0); 
+	defaultShotFire.anim.speed = 0.5;
+	defaultShotFire.anim.loop = false;
+
+	// todo: fx according to weapon 
+	particleMap.insert(std::pair(defaultShotFire.name, defaultShotFire)); 
+
 	
 	return true;
 }
@@ -48,11 +59,11 @@ bool j1ParticlesClassic::CleanUp()
 
 	//unloading graphics
 	
-/*	if (texture != nullptr)
+	if (texture != nullptr)
 	{
-		App->tex->UnLoad(texture);    // TODO: change atlas path
+		App->tex->UnLoad(texture);    
 		texture = nullptr;
-	}*/
+	}
 
 
 	//removing active particles
@@ -62,11 +73,6 @@ bool j1ParticlesClassic::CleanUp()
 
 		for (; particles != active.end();)
 		{
-			if ((*particles)->texture != nullptr)
-			{
-				App->tex->UnLoad((*particles)->texture);
-				(*particles)->texture = nullptr;
-			}
 			delete (*particles);
 			(*particles) = nullptr;
 			particles = active.erase(particles);
@@ -74,6 +80,8 @@ bool j1ParticlesClassic::CleanUp()
 		active.clear();
 	}
 
+
+	particleMap.clear(); // check if content is stil there
 
 	return true;
 }
@@ -101,9 +109,13 @@ bool j1ParticlesClassic::PostUpdate()//float dt)
 			(*p) = nullptr;
 			p = active.erase(p);
 		}
-		else if (SDL_GetTicks() >= (*p)->born)
+		else if (SDL_GetTicks() >= (*p)->born)            // TODO: update collider pos if hasCollider 
 		{
-			App->render->Blit((*p)->texture, (*p)->position.x, (*p)->position.y, &(*p)->anim.GetCurrentFrame(), (*p)->parallaxSpeed, (*p)->renderFlip, (*p)->scale, (*p)->angle, (*p)->pivot.x * App->win->GetScale(), (*p)->pivot.y * App->win->GetScale(), (*p)->useCameraScale);
+			App->render->Blit(texture, (*p)->position.x, (*p)->position.y, &(*p)->anim.GetCurrentFrame(), (*p)->parallaxSpeed, (*p)->renderFlip, (*p)->scale, (*p)->angle, (*p)->pivot.x * App->win->GetScale(), (*p)->pivot.y * App->win->GetScale(), (*p)->useCameraScale);
+
+			if ((*p)->hasCollider)
+				(*p)->collider->SetPos((*p)->position.x, (*p)->position.y);   
+
 			if ((*p)->fx_played == false && (*p)->fx != "")
 			{
 				(*p)->fx_played = true;
@@ -120,13 +132,22 @@ bool j1ParticlesClassic::PostUpdate()//float dt)
 }
 
 //void ModuleParticles::AddParticle(const Particle& particle, Animation& sourceAnim, int x, int y, Uint32 delay, iPoint speed, Uint32 life, char* name)
-void j1ParticlesClassic::AddParticle(const Particle& particle, int x, int y, iPoint speed, Uint32 delay, SDL_RendererFlip rFlip, double angle, int pivotx, int pivoty, float scale, float parallaxSpeed, bool useCameraScale, bool onScreen)
+void j1ParticlesClassic::AddParticle(std::string nameAtMap, int x, int y, j1Entity* callback, COLLIDER_TYPE coltype, iPoint speed, Uint32 delay, SDL_RendererFlip rFlip, double angle, int pivotx, int pivoty, float scale, float parallaxSpeed, bool useCameraScale, bool onScreen)
 {
-	Particle* p = DBG_NEW Particle(particle);
+	Particle* p = DBG_NEW Particle(particleMap.at(nameAtMap));
+
+	if (coltype != COLLIDER_TYPE::COLLIDER_NONE)
+	{
+		p->hasCollider = true; 
+		p->collider = App->collision->AddCollider(p->anim.GetCurrentFrame(), coltype, callback);   // TODO: like player, update the collider rect according to frame ??? or is it overkill ???
+		p->collider->SetPos(p->position.x, p->position.y);
+	}
+		
+	
 	p->born = SDL_GetTicks() + delay;
 	p->position.x = x;
 	p->position.y = y;
-	if (speed.x != 0 || speed.y != 0) //if we send specific speed, defines it
+	if (speed.x != 0 || speed.y != 0)  
 	{
 		p->speed = speed;
 	}
@@ -150,6 +171,47 @@ void j1ParticlesClassic::AddParticle(const Particle& particle, int x, int y, iPo
 }
 
 
+Particle* j1ParticlesClassic::AddParticleRet(std::string nameAtMap, int x, int y, j1Entity* callback, COLLIDER_TYPE coltype, iPoint speed, Uint32 delay, SDL_RendererFlip rFlip, double angle, int pivotx, int pivoty, float scale, float parallaxSpeed, bool useCameraScale, bool onScreen)
+{
+	Particle* p = DBG_NEW Particle(particleMap.at(nameAtMap));
+
+	if (coltype != COLLIDER_TYPE::COLLIDER_NONE)
+	{
+		p->hasCollider = true;
+		p->collider = App->collision->AddCollider(p->anim.GetCurrentFrame(), coltype, callback);   // TODO: like player, update the collider rect according to frame ??? or is it overkill ???
+		p->collider->SetPos(p->position.x, p->position.y);
+	}
+
+
+	p->born = SDL_GetTicks() + delay;
+	p->position.x = x;
+	p->position.y = y;
+	if (speed.x != 0 || speed.y != 0)
+	{
+		p->speed = speed;
+	}
+	p->renderFlip = rFlip;
+	p->angle = angle;
+	if (pivotx != INT_MAX && pivoty != INT_MAX)
+	{
+		p->pivot.x = pivotx;
+		p->pivot.y = pivoty;
+		p->position -= p->pivot;
+	}
+
+	p->scale = scale;
+	p->parallaxSpeed = parallaxSpeed;
+	p->useCameraScale = useCameraScale;
+	p->onScreen = onScreen;
+
+
+	active.push_back(p);
+
+
+	return p; 
+
+}
+
 Particle::Particle()
 {
 	position.SetToZero();
@@ -157,16 +219,15 @@ Particle::Particle()
 }
 
 Particle::Particle(const Particle& p) :
-	anim(p.anim), position(p.position), speed(p.speed), fx(p.fx), born(p.born), life(p.life), texture(p.texture), renderFlip(p.renderFlip)/*,
-	damage(p.damage), onCollisionGeneralParticle(p.onCollisionGeneralParticle), onCollisionWallParticle(p.onCollisionWallParticle),
-	impactPosition(p.impactPosition), deathParticle(p.deathParticle)*/
+	anim(p.anim), position(p.position), speed(p.speed), fx(p.fx), born(p.born), life(p.life), renderFlip(p.renderFlip)
+	
 {}
 
 Particle::~Particle()
 {
-	/*if (collider != nullptr)
-		App->collision->DeleteCollider(collider);*/
-	//App->entityFactory->DeleteEntityFromSubtile(this);
+	if(hasCollider)
+		collider->to_delete = true;
+	
 }
 
 bool Particle::Update(float dt)

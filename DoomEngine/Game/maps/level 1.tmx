@@ -10105,7 +10105,7 @@
   </object>
   <object id="29" name="weapon" x="285.333" y="506.667" width="32" height="32">
    <properties>
-    <property name="cadence" type="int" value="30"/>
+    <property name="cadence" type="int" value="60"/>
     <property name="damage" type="int" value="100"/>
     <property name="firingType" value="semi"/>
     <property name="maxBullets" type="int" value="38"/>

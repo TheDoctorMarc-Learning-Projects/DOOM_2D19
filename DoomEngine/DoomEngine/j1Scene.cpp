@@ -46,7 +46,7 @@ bool j1Scene::Start()
 	App->audio->LoadFx("sound/fx/fall2.wav", "fall2");
 	App->audio->LoadFx("sound/fx/dash.wav", "dash");
 	App->audio->LoadFx("sound/fx/enemydash.wav", "enemydash");
-
+	App->audio->LoadFx("sound/fx/shotgunShotFire.wav", "shotgunShotFire");
 
 	
 

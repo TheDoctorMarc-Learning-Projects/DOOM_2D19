@@ -41,14 +41,15 @@ struct  weaponInfo
 
 // - - - - - - - - - - - - stats 
    int damage = 0;
-   int cadence = 0;
+   int cadence = 0;      // this is captured in shots per minute and then translated 
    int maxBullets = 0;
-   float scopeFactor = 0.f; 
+   float scopeFactor = 0.f;  // the further away, the less damage
 
 // - - - - - - - - - - - - placing 
    fPoint offsetFromPlayer = fPoint(0.f,0.f); 
    float extraOffsetXPlayerIdle = 0.f; 
    int tipPosDisplacement = 0.f; 
+   float xDisplacementWhenRotated = 10.f; 
 
 // - - - - - - - - - - - - particle data
    bool launchesProjectile = false; 

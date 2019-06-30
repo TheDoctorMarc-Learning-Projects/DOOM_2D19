@@ -74,7 +74,7 @@ private:
 	std::map<std::string, Particle> particleMap;
 
 
-	Particle defaultShotFire;
+	Particle shotgunShotFire;
 
 public:
 	

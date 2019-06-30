@@ -38,15 +38,16 @@ bool j1ParticlesClassic::Start()
 	texture = App->tex->Load("textures/particles/particles.png"); 
 
 	// default shot fire 
-	defaultShotFire.name = "defaultShotFire"; 
-	defaultShotFire.anim.PushBack({0, 298, 7, 6}); 
-	defaultShotFire.life = 200;
-	defaultShotFire.speed.create(0, 0); 
-	defaultShotFire.anim.speed = 0.5;
-	defaultShotFire.anim.loop = false;
+	shotgunShotFire.name = "shotgunShotFire";
+	shotgunShotFire.anim.PushBack({0, 298, 7, 6});
+	shotgunShotFire.life = 200;
+	shotgunShotFire.speed.create(0, 0);
+	shotgunShotFire.anim.speed = 0.5;
+	shotgunShotFire.anim.loop = false;
+	shotgunShotFire.fx = "shotgunShotFire"; 
 
 	// todo: fx according to weapon 
-	particleMap.insert(std::pair(defaultShotFire.name, defaultShotFire)); 
+	particleMap.insert(std::pair(shotgunShotFire.name, shotgunShotFire));
 
 	
 	return true;

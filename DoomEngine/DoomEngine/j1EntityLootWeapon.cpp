@@ -91,8 +91,13 @@ void j1EntityLootWeapon::ChangeRotation(double angle)
 		rotationPivots.create(INT_MAX, INT_MAX); 
 	else
 	{
-		rotationPivots.y = 0; 
-		
+		rotationPivots.y = 0;
+
+		if (pointingDir == POINTING_DIR::RIGHT)
+			rotationPivots.x = weaponData.xDisplacementWhenRotated;
+		else if (pointingDir == POINTING_DIR::LEFT)
+			rotationPivots.x = collider->rect.w - weaponData.xDisplacementWhenRotated;
+
 	}
 
 
@@ -103,22 +108,48 @@ void j1EntityLootWeapon::ChangeRotation(double angle)
 void j1EntityLootWeapon::Shoot()
 {
 
-	iPoint weaponTipPos = iPoint(0, 0); 
+	// TODO: take cadence and capture last shot ticks, to add the cooldown   // TODO 2: auto weapons, get the key repeat 
 
-	if (pointingDir == POINTING_DIR::LEFT)
-		weaponTipPos = iPoint(position.x, position.y + weaponData.tipPosDisplacement);
-	else if (pointingDir == POINTING_DIR::RIGHT)
-		weaponTipPos = iPoint(position.x + collider->rect.w, position.y + weaponData.tipPosDisplacement);
+	static uint lastTimeShoot = 0; 
 
-	/*if (weaponData.launchesProjectile)
-		App->particles->AddParticle("defaultShotFire", this, weaponTipPos.x, weaponTipPos.y, COLLIDER_NONE);  // the proper projectile with callback (this) that will do damage 
-		*/
-	Particle* shotFire = App->particles->AddParticleRet("defaultShotFire", weaponTipPos.x, weaponTipPos.y, this, COLLIDER_SHOT);   // just visual 
+	float ShotsInAMilisec = (float)weaponData.cadence / 60000.f;   // per minute / (60 (sec) * 1000 (milisec))
+	float MiliSecShotTIme = 1.f / ShotsInAMilisec; 
 
 
-	// adjust the particle pos so that it appears centered at wepons tip 
 
-	shotFire->position.y -= shotFire->collider->rect.h / 2; 
-	if (pointingDir == POINTING_DIR::LEFT)
-		shotFire->position.x -= shotFire->collider->rect.w; 
+
+	if (SDL_GetTicks() > lastTimeShoot + (uint)(int)MiliSecShotTIme)
+	{
+		lastTimeShoot = SDL_GetTicks();
+
+		SDL_RendererFlip shotFlip = SDL_FLIP_NONE;   // TODO: all particles sprites to the right by default, bo matche the weapon sprites and simplify this 
+		iPoint weaponTipPos = iPoint(0, 0);
+
+		if (pointingDir == POINTING_DIR::LEFT)
+		{
+			weaponTipPos = iPoint(position.x, position.y + weaponData.tipPosDisplacement);
+			SDL_RendererFlip shotFlip = SDL_FLIP_HORIZONTAL;
+		}
+
+		else if (pointingDir == POINTING_DIR::RIGHT)
+		{
+			weaponTipPos = iPoint(position.x + collider->rect.w, position.y + weaponData.tipPosDisplacement);
+		}
+
+
+		/*if (weaponData.launchesProjectile)
+			App->particles->AddParticle(name + "Shot", this, weaponTipPos.x, weaponTipPos.y, COLLIDER_NONE);  // the proper projectile with callback (this) that will do damage
+			*/
+		Particle* shotFire = App->particles->AddParticleRet(name + "ShotFire", weaponTipPos.x, weaponTipPos.y, this, COLLIDER_SHOT, { 0,0 }, 0U,
+			SDL_FLIP_NONE, spriteRotation);   // just visual 
+
+
+		// adjust the particle pos so that it appears centered at weapons tip 
+
+		shotFire->position.y -= shotFire->collider->rect.h / 2;
+		if (pointingDir == POINTING_DIR::LEFT)
+			shotFire->position.x -= shotFire->collider->rect.w;
+	}
+	
+	
 }

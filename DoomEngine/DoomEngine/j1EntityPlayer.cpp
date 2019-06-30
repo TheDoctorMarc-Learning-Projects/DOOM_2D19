@@ -286,7 +286,7 @@ void j1EntityPlayer::WeaponLogic()
 		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == KEY_DOWN) //if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == KEY_DOWN)
 		{
 			//ChangeWeapon(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
-			ChangeWeapon(SDL_CONTROLLER_BUTTON_B);
+			ChangeWeapon(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
 		}
 
 		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == KEY_DOWN)
@@ -323,7 +323,7 @@ void j1EntityPlayer::ChangeWeapon(SDL_GameControllerButton button)
 				int desiredIndex = 0; 
 
 				// 2) then equip next or last weapon in list
-				if (button == SDL_CONTROLLER_BUTTON_B) // if (button == SDL_CONTROLLER_BUTTON_RIGHTSHOULDER)
+				if (button == SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) 
 				{
 					if (i < myWeapons.size() - 1 || i == 0)    // prevent trying to get a weapon not in the list
 					{

@@ -34,9 +34,6 @@ public:
 public:
 
 	std::list<SDL_Texture*>	textures;
-
-
-	int texturesLoaded = 0; 
 };
 
 

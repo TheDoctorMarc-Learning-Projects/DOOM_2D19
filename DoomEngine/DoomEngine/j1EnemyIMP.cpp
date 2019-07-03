@@ -10,7 +10,7 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY, std::string name) : j1Enemy(posX, pos
 	type = ENEMY_IMP;
 	this->name = name; 
 	damage = 30; 
-	maxLife = 100; 
+	maxLife = 50; 
 	life = (float)maxLife;
 	size.create(36, 49);
 	speed = 150.75f;
@@ -52,6 +52,17 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY, std::string name) : j1Enemy(posX, pos
 	death1.loop = false; 
 
 
+
+	death2.PushBack({ 44, 850, size.x + 10, size.y + 10 });
+	death2.PushBack({ 134, 850, size.x + 13, size.y + 12 });
+	death2.PushBack({ 227, 850, size.x + 19, size.y + 12 });
+	death2.PushBack({ 326, 850, size.x + 21, size.y + 12 });
+	death2.PushBack({ 427, 850, size.x + 21, size.y - 5 });
+	death2.PushBack({ 528, 850, size.x + 21, size.y - 15 });
+	death2.PushBack({ 629, 850, size.x + 20, size.y - 18 });
+	death2.PushBack({ 729, 850, size.x + 20, size.y - 31 });
+	death2.speed = 1.3f;
+	death2.loop = false;
 
 	attack.PushBack({ 46, 396, size.x + 3, size.y});
 	attack.PushBack({ 54, 489, size.x + 6, size.y });

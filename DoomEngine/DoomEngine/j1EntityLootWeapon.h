@@ -5,7 +5,7 @@
 #include "j1ParticlesClassic.h"
 #include <map>
 
-#define simulBulletSpeed 10
+#define simulBulletSpeed 40
 
 enum class WEAPON_TYPE   
 {

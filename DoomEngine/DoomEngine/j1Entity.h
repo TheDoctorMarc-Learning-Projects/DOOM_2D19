@@ -19,8 +19,7 @@
 
 #include <math.h>
 
-#define MAX_BLIT_LAYERS 2
-
+#define EXTRA_DAMAGE_TO_TRIGGER_BRUTAL_DEATH 40
 
 #define DEFAULT_GRAV 50.f	
 #define MAX_GRAV 550.f
@@ -32,7 +31,6 @@ inline float GravityCalc(float& gm, float& m)  // g  and mass inline calc contai
 
 	return gm;
 }
-
 
 enum ENTITY_TYPE  // todo, pass to class
 {

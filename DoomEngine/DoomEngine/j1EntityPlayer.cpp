@@ -35,7 +35,7 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY, std::string name) : j1Entity(
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - anims
 	currentAnimation = &idle;
-	idle.PushBack({1, 421, size.x + 17, size.y}); 
+	idle.PushBack({18, 421, size.x, size.y}); 
 
 	run.PushBack({ 8, 33, size.x + 8, size.y });
 	run.PushBack({ 4, 130, size.x + 3, size.y + 2 });

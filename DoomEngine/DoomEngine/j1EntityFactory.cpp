@@ -250,7 +250,12 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage)
 
 	if (ent->life <= 0)
 	{
-		ent->SetDeathAnim();   // to do: pass it true if brutal
+		bool brutal = false; 
+
+		if (ent->life <= -EXTRA_DAMAGE_TO_TRIGGER_BRUTAL_DEATH)
+			brutal = true; 
+
+		ent->SetDeathAnim(brutal);
 	}
 
 }

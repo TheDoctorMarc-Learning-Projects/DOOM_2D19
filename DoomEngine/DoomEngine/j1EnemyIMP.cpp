@@ -8,12 +8,16 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY) : j1Enemy(posX, posY)
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = ENEMY_IMP;
+	damage = 30; 
 	maxLife = 100; 
+	life = (float)maxLife;
 	size.create(36, 49);
 	speed = 150.75f;
+	defaultSpeed = speed; 
 	mass = 0.6f;
 	gravityFactor = DEFAULT_GRAV * mass;
 	tileDetectionRange = 10;
+	cadenceValues.melee = 1200; 
 
 	// jumpdata
 
@@ -45,6 +49,14 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY) : j1Enemy(posX, posY)
 	death1.PushBack({ 391, 755, size.x + 18, size.y - 27 });
 	death1.speed = 1.3f; 
 	death1.loop = false; 
+
+
+
+	attack.PushBack({ 46, 396, size.x + 3, size.y});
+	attack.PushBack({ 54, 489, size.x + 6, size.y });
+	attack.PushBack({ 52, 577, size.x + 22, size.y + 2});
+	attack.speed = 2.5f;
+	attack.loop = false;
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - collider
 	collider = App->collision->AddCollider({ (int)position.x, (int)position.y, (int)((float)size.x * spriteScale),(int)((float)size.y * spriteScale) }, COLLIDER_TYPE::COLLIDER_ENEMY, this);
 
@@ -83,8 +95,12 @@ bool j1EnemyIMP::PostUpdate()
 
 bool j1EnemyIMP::Move(float dt)
 {
-	if(j1Enemy::Move(dt))
+	if (j1Enemy::Move(dt))
+	{
 		Jump();
+		DoAttack(false); 
+	}
+		
 
 
 	return true; 
@@ -93,6 +109,11 @@ bool j1EnemyIMP::Move(float dt)
 
 void j1EnemyIMP::Jump()
 {
+
+
+	BROFILER_CATEGORY("Enemy IMP jump", Profiler::Color::AntiqueWhite);
+
+
 	// modified positions to check offset with platform
 
 	iPoint lastTilePos = App->map->WorldToMap((int)previousPosition.x, (int)position.y) + iPoint(0, 1);
@@ -184,6 +205,65 @@ void j1EnemyIMP::Jump()
 void j1EnemyIMP::ResolvePathDeviation()
 {
 	doJump = true; 
+}
+
+
+void j1EnemyIMP::DoAttack(bool meleeRange)
+{
+	static uint lastTimeAttack = 0; 
+
+	uint now = SDL_GetTicks();
+	
+	if (onPlatform)
+	{
+		if (state.combat == eCombatState::SHOOT)
+		{
+			if (currentAnimation != &attack)
+				currentAnimation = &attack; 
+
+			if (currentAnimation == &attack && currentAnimation->Finished() == true)  // hit is over 
+			{
+				if (isPlayerOnMeleeRange())   // do damage 
+				{
+			
+					App->entityFactory->player->life -= damage;
+
+				}
+
+				
+					currentAttackType = IMP_ATTACK_TYPE::NO_ATTACK_TYPE;     // retreat 
+					state.combat = eCombatState::IDLE;
+					speed = defaultSpeed;
+			
+				if (lastSpeed.IsZero())
+					currentAnimation = &idle;   // go back to default anim depending on enemy speed
+				else
+					currentAnimation = &run;
+
+			}
+
+		}
+		else if (state.combat == eCombatState::IDLE)
+		{
+			if (now >= lastTimeAttack + cadenceValues.melee)
+			{
+				if (meleeRange)
+				{
+
+					currentAttackType = IMP_ATTACK_TYPE::MELEE;
+					state.combat = eCombatState::SHOOT;
+					currentAnimation = &attack;
+					currentAnimation->Reset();
+					lastTimeAttack = now;
+
+				}
+		
+			}
+			
+		}
+	}
+	
+
 }
 
 

@@ -40,7 +40,7 @@ bool j1ParticlesClassic::Start()
 	// default shot fire 
 	shotgunShotFire.name = "shotgunShotFire";
 	shotgunShotFire.anim.PushBack({0, 298, 7, 6});
-	shotgunShotFire.life = 200;
+	shotgunShotFire.life = 75;
 	shotgunShotFire.speed.create(0, 0);
 	shotgunShotFire.anim.speed = 0.5;
 	shotgunShotFire.anim.loop = false;

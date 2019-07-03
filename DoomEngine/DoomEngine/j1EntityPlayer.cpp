@@ -95,6 +95,8 @@ bool j1EntityPlayer::Save(pugi::xml_node &) const
 
 bool j1EntityPlayer::Move(float dt)
 {
+	BROFILER_CATEGORY("Player Move", Profiler::Color::Aqua);
+
 	SetPreviousFrameData(); 
 	HorizonatlMovement(dt); 
 	VerticalMovement(dt); 

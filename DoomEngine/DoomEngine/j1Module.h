@@ -8,6 +8,7 @@
 
 #include <string>
 #include "PugiXml\src\pugixml.hpp"
+#include "Brofiler\Brofiler.h"
 
 struct Collider;
 

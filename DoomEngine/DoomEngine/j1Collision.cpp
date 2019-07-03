@@ -121,6 +121,7 @@ bool j1Collision::PreUpdate()
 	{
 		if (colliders[i] != nullptr && colliders[i]->to_delete == true)
 		{
+
 			if (!colliders[i]->onCollisionWithMe.empty())
 			{
 				for (auto col = colliders[i]->onCollisionWithMe.begin(); col != colliders[i]->onCollisionWithMe.end();)    // put both pointers to each other to null when a col is deleted
@@ -158,6 +159,13 @@ bool j1Collision::PreUpdate()
 			}
 			delete colliders[i];
 			colliders[i] = nullptr;
+		}
+		else if(colliders[i] != nullptr)
+		{
+			if (colliders[i]->hasSpeed)
+				colliders[i]->SetPos(colliders[i]->rect.x + colliders[i]->speed.x, colliders[i]->rect.y + colliders[i]->speed.y);
+
+
 		}
 	}
 
@@ -399,7 +407,7 @@ bool j1Collision::CleanUp()
 }
                                                  
 
-Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* callback)
+Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* callback, fPoint speed)
 {
 	BROFILER_CATEGORY("Collision AddCollider", Profiler::Color::DeepPink);
 	Collider* ret = nullptr;
@@ -408,7 +416,7 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* 
 	{
 		if (colliders[i] == nullptr)
 		{
-			ret = colliders[i] = new Collider(rect, type, callback);
+			ret = colliders[i] = new Collider(rect, type, callback, speed);
 
 			if (callback)
 				ret->hasCallback = true; 

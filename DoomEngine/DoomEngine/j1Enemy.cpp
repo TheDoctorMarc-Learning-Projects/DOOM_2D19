@@ -22,7 +22,8 @@ j1Enemy::j1Enemy(int posX, int posY) : j1Entity(ENEMY_STATIC, posX, posY, "enemy
 	state.movement.at(1) = eMovementState::NOT_ACTIVE;
 	state.path = ePathState::FOLLOW_PLAYER; 
 	
-
+	
+	
 }	
 
 j1Enemy::~j1Enemy()
@@ -43,11 +44,6 @@ bool j1Enemy::PreUpdate()
 
 bool j1Enemy::Update(float dt)
 {
-
-	// just testing death: 
-
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-		state.combat = eCombatState::DYING; 
 
 	return true;
 }
@@ -84,6 +80,10 @@ bool j1Enemy::Save(pugi::xml_node &) const
 
 bool j1Enemy::Move(float dt)
 {
+
+
+	BROFILER_CATEGORY("Enemy Move", Profiler::Color::AliceBlue); 
+
 	bool ret = false; 
 
 	if (!to_delete)
@@ -137,7 +137,12 @@ bool j1Enemy::Move(float dt)
 				else if(!deathPosGround.IsZero())
 				{
 					float offset = deathColllider.h - collider->rect.h;
-					position.y = deathPosGround.y - deathColllider.h + offset;
+
+					if(!onDynamicplatform)
+						position.y = deathPosGround.y - deathColllider.h + offset;
+				//	else
+
+				
 			
 					
 				
@@ -247,6 +252,9 @@ bool j1Enemy::FollowPath(float dt)
 	bool ret = false;
 
 
+
+	BROFILER_CATEGORY("Enemy Follow Path", Profiler::Color::Azure);
+
 	pathToFollow.clear();
 	iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
 	iPoint targetTilePos = iPoint(0, 0);
@@ -303,9 +311,11 @@ bool j1Enemy::FollowPath(float dt)
 
 
 	}
-	else
-	 // TODO: DO melee attack 
+	
 
+
+	if (isPlayerOnMeleeRange())   // do it even if stunned depending on enemy, maybe some enemies cancel attacks etc 
+		DoAttack(true); 
 
 
 	return ret; 
@@ -358,7 +368,7 @@ void j1Enemy::AssignDirectionWithSpeed()
 	state.movement.at(0) = (lastSpeed.x == 0) ? eMovementState::IDLE : state.movement.at(0);
 }
 
-bool j1Enemy::isMeleeRange()
+bool j1Enemy::isPlayerOnMeleeRange()
 {
 	iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
 	iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y) + iPoint(0, 1);
@@ -661,3 +671,7 @@ void j1Enemy::OnCollisionExit(Collider* c1, Collider* c2)
 		lastAirPos = position;
 
 }
+
+
+
+

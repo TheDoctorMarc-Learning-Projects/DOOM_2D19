@@ -64,6 +64,13 @@ struct ejumpData
 	float verticalIncrementFactor = 1.02f;     // jumpincrement reduces jump power in time, but vertical increment counteracts it a bit 
 };
 
+
+struct baseCadenceValues
+{
+	uint melee = 0U; 
+	uint longRange = 0U; 
+};
+
 class j1Entity;
 
 class j1Enemy : public j1Entity
@@ -94,13 +101,16 @@ public:
 	virtual void ResolvePathDeviation() {};
 
 
-	bool isMeleeRange(); 
+	virtual void DoAttack(bool meleeRange) {};
+	bool isPlayerOnMeleeRange(); 
 
 public:
 
+	int damage = INT_MAX; 
+	baseCadenceValues cadenceValues; 
 	Animation run;
+	Animation attack; 
 	Animation death1;   // TODO: if all enemies have 2 death anims, put the other also here
-	float life; 
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0);
 	TargetPos targetPos; 

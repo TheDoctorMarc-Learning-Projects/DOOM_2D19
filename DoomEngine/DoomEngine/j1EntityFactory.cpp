@@ -40,6 +40,8 @@ return ret;
 
 bool j1EntityFactory::Start()
 {
+
+
 	std::list<j1Entity*>::iterator item = entities.begin();
 	for (; item != entities.end(); ++item)
 	{

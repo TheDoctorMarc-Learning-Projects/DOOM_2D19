@@ -1,5 +1,6 @@
 #include "j1EntityFactory.h"
 #include "LootWeaponMaps.h"
+#include "j1Enemy.h"
 
 j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_type, std::string name, weaponInfo weaponData) :j1EntityLoot(posX, posY, loot_type, name)
 {
@@ -38,6 +39,7 @@ j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_ty
 		// offset form player (when player is holding the weapon)
 		this->weaponData.offsetFromPlayer = fPoint(17, 20);
 		this->weaponData.tipPosDisplacement = 2 * spriteScale;
+		this->weaponData.offsetRotated = iPoint(30, 25); 
 
 		break;
 
@@ -98,6 +100,7 @@ void j1EntityLootWeapon::ChangeRotation(double angle)
 		else if (pointingDir == POINTING_DIR::LEFT)
 			rotationPivots.x = collider->rect.w - weaponData.xDisplacementWhenRotated;
 
+		
 	}
 
 
@@ -126,30 +129,147 @@ void j1EntityLootWeapon::Shoot()
 		iPoint weaponTipPos = iPoint(0, 0);
 
 		if (pointingDir == POINTING_DIR::LEFT)
-		{
-			weaponTipPos = iPoint(position.x, position.y + weaponData.tipPosDisplacement);
 			SDL_RendererFlip shotFlip = SDL_FLIP_HORIZONTAL;
+
+		if (App->entityFactory->player->currentAnimation == &App->entityFactory->player->idle || App->entityFactory->player->currentAnimation == &App->entityFactory->player->run)
+		{
+			if (pointingDir == POINTING_DIR::LEFT)
+			{
+				weaponTipPos = iPoint(position.x, position.y + weaponData.tipPosDisplacement);
+			}
+
+			else if (pointingDir == POINTING_DIR::RIGHT)
+			{
+				weaponTipPos = iPoint(position.x + collider->rect.w, position.y + weaponData.tipPosDisplacement);
+			}
+
+
+			
+			Particle* shotFire = App->particles->AddParticleRet(name + "ShotFire", weaponTipPos.x, weaponTipPos.y, this, COLLIDER_SHOT, { 0,0 }, 0U,
+				flip, spriteRotation);   // just visual 
+
+
+			// adjust the particle pos so that it appears centered at weapons tip 
+
+			shotFire->position.y -= shotFire->collider->rect.h / 2;
+			if (pointingDir == POINTING_DIR::LEFT)
+				shotFire->position.x -= shotFire->collider->rect.w;
+		}
+		else
+		{
+			double alpha = spriteRotation; 
+
+			weaponTipPos = iPoint(position.x, position.y); 
+
+
+			Particle * shotFire = App->particles->AddParticleRet(name + "ShotFire", weaponTipPos.x, weaponTipPos.y, this, COLLIDER_SHOT, { 0,0 }, 0U,
+				flip, alpha);   // just visual 
+
+
+			if (App->entityFactory->player->currentAnimation == &App->entityFactory->player->aimUp)
+			{
+				if (pointingDir == POINTING_DIR::LEFT)
+				{
+					weaponTipPos += iPoint(collider->rect.w - weaponData.offsetRotated.x - shotFire->collider->rect.w, -weaponData.offsetRotated.y);
+
+					shotFire->angle = 225; 
+				}
+				else if (pointingDir == POINTING_DIR::RIGHT)
+				{
+					weaponTipPos += iPoint(weaponData.offsetRotated.x, -weaponData.offsetRotated.y);
+				}
+			}
+			else if (App->entityFactory->player->currentAnimation == &App->entityFactory->player->aimDown)
+
+			{
+				if (pointingDir == POINTING_DIR::LEFT)
+				{
+
+					weaponTipPos += iPoint(collider->rect.w - weaponData.offsetRotated.x - shotFire->collider->rect.w, weaponData.offsetRotated.y - collider->rect.h / 2);
+
+					shotFire->angle = 135;
+				}
+
+				else if (pointingDir == POINTING_DIR::RIGHT)
+				{
+					weaponTipPos += iPoint(weaponData.offsetRotated.x, weaponData.offsetRotated.y - collider->rect.h / 2);  // check this out its really hardcoded
+				}
+			}
+
+			shotFire->position = weaponTipPos; 
+			
+
 		}
 
-		else if (pointingDir == POINTING_DIR::RIGHT)
-		{
-			weaponTipPos = iPoint(position.x + collider->rect.w, position.y + weaponData.tipPosDisplacement);
-		}
+		// the proper shot:: 
 
 
 		/*if (weaponData.launchesProjectile)
 			App->particles->AddParticle(name + "Shot", this, weaponTipPos.x, weaponTipPos.y, COLLIDER_NONE);  // the proper projectile with callback (this) that will do damage
-			*/
-		Particle* shotFire = App->particles->AddParticleRet(name + "ShotFire", weaponTipPos.x, weaponTipPos.y, this, COLLIDER_SHOT, { 0,0 }, 0U,
-			SDL_FLIP_NONE, spriteRotation);   // just visual 
-
-
-		// adjust the particle pos so that it appears centered at weapons tip 
-
-		shotFire->position.y -= shotFire->collider->rect.h / 2;
-		if (pointingDir == POINTING_DIR::LEFT)
-			shotFire->position.x -= shotFire->collider->rect.w;
+		else*/
+			CalculateStrike(); 
+	
 	}
 	
 	
+}
+
+
+
+void j1EntityLootWeapon::CalculateStrike()
+{
+	fPoint speed = fPoint(0, 0); 
+
+	if (pointingDir == RIGHT)
+	{
+
+		if (App->entityFactory->player->currentAnimation == &App->entityFactory->player->aimUp)
+		{
+			speed = fPoint(simulBulletSpeed, -simulBulletSpeed); 
+		}
+		else if (App->entityFactory->player->currentAnimation == &App->entityFactory->player->aimDown)
+		{
+			speed = fPoint(simulBulletSpeed, simulBulletSpeed);
+		}
+		else
+			speed = fPoint(simulBulletSpeed, 0);
+
+	}
+	else if (pointingDir == LEFT)
+	{
+		if (App->entityFactory->player->currentAnimation == &App->entityFactory->player->aimUp)
+		{
+			speed = fPoint(-simulBulletSpeed, -simulBulletSpeed);
+		}
+		else if (App->entityFactory->player->currentAnimation == &App->entityFactory->player->aimDown)
+		{
+			speed = fPoint(-simulBulletSpeed, simulBulletSpeed);
+		}
+		else
+			speed = fPoint(-simulBulletSpeed, 0);
+	}
+
+
+	Collider* shot = App->collision->AddCollider({(int)position.x, (int)position.y, 10, 10}, COLLIDER_TYPE::COLLIDER_SHOT, this, speed); // add a mini colllider to simulate bullet 
+	//shot->SetPos(position.x, position.y); 
+
+
+}
+
+
+void j1EntityLootWeapon::OnCollision(Collider* c1, Collider* c2)
+{
+
+	if (c2->type == COLLIDER_ENEMY)
+	{
+		c2->callback->life -= weaponData.damage; 
+
+		if (c2->callback->life <= 0)
+		{
+			dynamic_cast<j1Enemy*>(c2->callback)->state.combat = eCombatState::DYING; 
+		}
+
+		c1->to_delete = true; // delete the shot 
+	}
+
 }

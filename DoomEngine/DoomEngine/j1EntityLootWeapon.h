@@ -5,6 +5,8 @@
 #include "j1ParticlesClassic.h"
 #include <map>
 
+#define simulBulletSpeed 10
+
 enum class WEAPON_TYPE   
 {
 	DEFAULT,
@@ -50,7 +52,7 @@ struct  weaponInfo
    float extraOffsetXPlayerIdle = 0.f; 
    int tipPosDisplacement = 0.f; 
    float xDisplacementWhenRotated = 10.f; 
-
+   iPoint offsetRotated = iPoint(0, 0);
 // - - - - - - - - - - - - particle data
    bool launchesProjectile = false; 
 
@@ -68,7 +70,7 @@ public:
 	j1EntityLootWeapon() {};
 	~j1EntityLootWeapon();
 
-	void OnCollision(Collider* c1, Collider* c2) override {};
+	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override {};
 
 	WEAPON_TYPE GetWeaponType() { return weaponData.weaponType; }; // define this in weapon cpp
@@ -77,6 +79,8 @@ public:
 
 	void PlaceMeWithPlayer(); 
 	void Shoot(); 
+	void CalculateStrike(); 
+	void DoDamage(); 
 	void ChangeRotation(double angle); 
 
 

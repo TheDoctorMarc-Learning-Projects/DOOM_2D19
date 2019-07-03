@@ -96,8 +96,12 @@ bool j1Scene::Update(float dt)
 		App->map->Draw();
 
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
-		App->audio->PlayFx("bigenemygrunt"); 
+	int x, y; 
+	x = y = 0; 
+	App->input->GetMousePosition(x, y); 
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+		App->entityFactory->CreateEntity(ENEMY_IMP, x, y, "imp"); 
 
 	
 

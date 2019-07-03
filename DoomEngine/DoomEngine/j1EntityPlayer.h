@@ -90,11 +90,12 @@ public:
 		return aiming;
 	}
 
-private:
+public:
 
 	Animation run; 
 	Animation aimUp; 
 	Animation aimDown; 
+private: 
 	bool aiming = false;
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0); 

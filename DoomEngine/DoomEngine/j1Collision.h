@@ -40,12 +40,18 @@ struct Collider
 	COLLIDER_TYPE type;
 	j1Entity* callback = nullptr;
 	bool hasCallback = false; 
+	bool hasSpeed = false; 
+	fPoint speed = fPoint(0, 0); 
 
-	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, j1Entity* callback = nullptr) :
+	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, j1Entity* callback = nullptr, fPoint speed = fPoint(0,0)) :
 		rect(rectangle),
 		type(type),
-		callback(callback)
-	{}
+		callback(callback),
+		speed(speed)
+	{
+		if (!speed.IsZero())
+			hasSpeed = true; 
+	}
 
 	void SetPos(int x, int y)
 	{
@@ -79,7 +85,7 @@ public:
 	bool PreUpdate(); 
 	bool Update(float dt);
 	bool CleanUp(); 
-	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* callback = nullptr);
+	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* callback = nullptr, fPoint speed = fPoint(0,0));
 	void DebugDraw();
 	
 	

@@ -73,7 +73,8 @@ bool j1Entity::CleanUp()
 
 void j1Entity::Draw()
 {
-	
+	BROFILER_CATEGORY("Entity Draw", Profiler::Color::Aqua);
+
 	if (useRenderFlip)
 	{
 		if (GetDirection() == defaultPointingDir)

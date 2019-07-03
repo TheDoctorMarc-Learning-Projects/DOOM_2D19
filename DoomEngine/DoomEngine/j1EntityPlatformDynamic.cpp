@@ -60,6 +60,10 @@ bool j1EntityPlatformDynamic::PreUpdate()
 
 bool j1EntityPlatformDynamic::Update(float dt)
 {
+
+
+	BROFILER_CATEGORY("Entity Platform Update", Profiler::Color::AntiqueWhite);
+
 	lastPointingDir = pointingDir;
 	previousPosition = position; 
 

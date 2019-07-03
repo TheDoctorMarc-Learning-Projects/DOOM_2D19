@@ -14,6 +14,7 @@
 #include <math.h>
 
 
+
 #include "SDL_image/include/SDL_image.h"
 
 #include <math.h>
@@ -73,7 +74,8 @@ public:
 	virtual bool Update(float dt);
 	virtual bool PostUpdate();
 	virtual bool CleanUp();
-
+	virtual void SetDeathAnim(bool brutal = false) {};
+	virtual void CheckDeathFinished() {};
 
 	virtual bool Move(float dt);
 	virtual void Draw();

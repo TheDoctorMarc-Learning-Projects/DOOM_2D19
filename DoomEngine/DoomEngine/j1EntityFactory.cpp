@@ -240,3 +240,18 @@ j1Entity* j1EntityFactory::CreateWeapon(ENTITY_TYPE type, int positionX, int pos
 	return ret;
 }
 
+
+void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage)
+{
+
+	uint previousLife = ent->life; // TODO: compare this with new life and play death2 (brutal one) if it exceeds a certain amount 
+
+	ent->life -= damage; 
+
+	if (ent->life <= 0)
+	{
+		ent->SetDeathAnim();   // to do: pass it true if brutal
+	}
+
+}
+

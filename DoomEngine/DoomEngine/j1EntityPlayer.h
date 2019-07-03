@@ -19,7 +19,7 @@ enum class combatState
 	AIM,
 	STUN,
 	DYING,
-	DIE
+	DEAD
 };
 
 enum class MovementState
@@ -82,6 +82,25 @@ public:
 	void AimWeapon(); 
 	void ShootWeapon(); 
 
+	virtual void SetDeathAnim(bool brutal = false)
+	{
+		state.combat = combatState::DYING;
+
+		if (!brutal)
+			currentAnimation = &death1;
+		else
+			currentAnimation = &death2;
+
+	};
+
+	virtual void CheckDeathFinished() override
+	{
+		if (currentAnimation->Finished())
+		{
+			state.combat = combatState::DEAD;
+			to_delete = true;
+		}
+	}
 
 	POINTING_DIR GetDirection() override; 
 
@@ -95,6 +114,9 @@ public:
 	Animation run; 
 	Animation aimUp; 
 	Animation aimDown; 
+	Animation death1;
+	Animation death2;
+
 private: 
 	bool aiming = false;
 	fPoint lastGroundPos = fPoint(0, 0);

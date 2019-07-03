@@ -19,15 +19,11 @@ public:
 	j1EnemyIMP(int posX, int posY);
 	~j1EnemyIMP();
 
-	//core loops ------
-	//bool Awake(pugi::xml_node& node);
-	/*bool Start();
-	bool PreUpdate();
-	bool Update(float dt);
-	bool PostUpdate();*/
+	// functionality ------
+
 	void Jump(); 
 	void ResolvePathDeviation(); 
-	// functionality ------
+
 	bool Move(float dt) override;  // call parent function, then if enemy does enaything extra, do it after call 
 
 	void DoAttack(bool meleeRange) override; 

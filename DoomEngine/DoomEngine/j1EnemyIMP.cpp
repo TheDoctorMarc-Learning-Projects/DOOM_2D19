@@ -225,8 +225,7 @@ void j1EnemyIMP::DoAttack(bool meleeRange)
 			{
 				if (isPlayerOnMeleeRange())   // do damage 
 				{
-			
-					App->entityFactory->player->life -= damage;
+					App->entityFactory->DoDamagetoEntity(App->entityFactory->player, damage);
 
 				}
 

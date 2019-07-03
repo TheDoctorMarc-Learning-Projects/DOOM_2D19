@@ -7,6 +7,7 @@
 #include "j1EntityFactory.h"
 #include "j1Window.h"
 #include "j1Scene.h"
+#include "j1EntityFactory.h" // needed for some functions
 
 #include <math.h>
 
@@ -20,6 +21,7 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY) : j1Entity(PLAYER, posX , pos
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = PLAYER; 
+	life = 300; 
 	position = previousPosition = fPoint(posX, posY); 
 	pointingDir = RIGHT;
 	size.create(34, 53);
@@ -44,6 +46,9 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY) : j1Entity(PLAYER, posX , pos
 	aimUp.PushBack({ 70, 33, size.x + 6, size.y + 2 });
 
 	aimDown.PushBack({ 70, 422, size.x, size.y - 1 });
+
+
+
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - collider
 	collider = App->collision->AddCollider({(int)position.x, (int)position.y, (int)((float)size.x * spriteScale),(int)((float)size.y * spriteScale) }, COLLIDER_TYPE::COLLIDER_PLAYER, this);
@@ -814,21 +819,4 @@ POINTING_DIR j1EntityPlayer::GetDirection()
 	
 	return pointingDir;     // no speed results in no dir change
 }
-
-
-
-/*
-bool j1EntityPlayer::InputCombat()
-{
-	
-
-	// reset combat state
-	combat_state = combatState::IDLE;
-	
-
-	return true;
-}
-*/
-
-
 

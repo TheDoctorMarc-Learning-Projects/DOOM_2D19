@@ -140,7 +140,7 @@ bool j1Enemy::Move(float dt)
 
 					if(!onDynamicplatform)
 						position.y = deathPosGround.y - deathColllider.h + offset;
-				//	else
+				
 
 				
 			
@@ -151,15 +151,7 @@ bool j1Enemy::Move(float dt)
 				}
 			
 
-
-
-			if (currentAnimation != &death1)
-				currentAnimation = &death1; 
-			else if (currentAnimation->Finished())
-			{
-				state.combat = eCombatState::DEAD; 
-				to_delete = true; 
-			}
+				CheckDeathFinished(); 
 				
 				                                                       
 		}

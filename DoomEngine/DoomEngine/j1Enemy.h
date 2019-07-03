@@ -99,9 +99,30 @@ public:
 	void SolveMove(fPoint direction, float dt); 
 	void AssignDirectionWithSpeed(); 
 	virtual void ResolvePathDeviation() {};
-
+	
 
 	virtual void DoAttack(bool meleeRange) {};
+
+	virtual void SetDeathAnim(bool brutal = false)
+	{
+		state.combat = eCombatState::DYING; 
+
+		if (!brutal)
+			currentAnimation = &death1;
+		else
+			currentAnimation = &death2; 
+
+	};
+
+	virtual void CheckDeathFinished() override
+	{
+		if (currentAnimation->Finished())
+		{
+			state.combat = eCombatState::DEAD;
+			to_delete = true;
+		}
+	}
+
 	bool isPlayerOnMeleeRange(); 
 
 public:
@@ -110,7 +131,8 @@ public:
 	baseCadenceValues cadenceValues; 
 	Animation run;
 	Animation attack; 
-	Animation death1;   // TODO: if all enemies have 2 death anims, put the other also here
+	Animation death1;   
+	Animation death2; 
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0);
 	TargetPos targetPos; 

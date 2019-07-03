@@ -262,14 +262,9 @@ void j1EntityLootWeapon::OnCollision(Collider* c1, Collider* c2)
 
 	if (c2->type == COLLIDER_ENEMY)
 	{
-		c2->callback->life -= weaponData.damage; 
+		App->entityFactory->DoDamagetoEntity(c2->callback, weaponData.damage); 
 
-		if (c2->callback->life <= 0)
-		{
-			dynamic_cast<j1Enemy*>(c2->callback)->state.combat = eCombatState::DYING; 
-		}
-
-		c1->to_delete = true; // delete the shot 
+		c1->to_delete = true; // delete the shot --_> TODO: delete out of screen 
 	}
 
 }

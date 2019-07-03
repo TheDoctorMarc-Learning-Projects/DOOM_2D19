@@ -127,7 +127,7 @@ bool j1Entity::Move(float dt)
 
 void j1Entity::ResetGravity()
 {
-
+	
 	gravityFactor = DEFAULT_GRAV * mass;
 
 	if (type == ENTITY_TYPE::PLAYER)

@@ -29,6 +29,7 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	void DoDamagetoEntity(j1Entity* ent, uint damage); 
 
 	/*bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;*/  // TODO (xd) 
@@ -50,7 +51,6 @@ public:
 
 
 public:
-	fPoint					dmg_vec;
 	SDL_Texture*			playerTexture = nullptr;
 	SDL_Texture*			impTexture = nullptr;
 

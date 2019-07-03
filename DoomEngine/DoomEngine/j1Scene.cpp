@@ -51,7 +51,7 @@ bool j1Scene::Start()
 	App->audio->LoadFx("sound/fx/shotgunShotFire.wav", "shotgunShotFire");
 	App->audio->LoadFx("sound/fx/EnemyIMPDeath.wav", "EnemyIMPDeath");
 	App->audio->LoadFx("sound/fx/playerDeath.wav", "playerDeath");
-
+	App->audio->LoadFx("sound/fx/playerDeath2.wav", "playerDeath2");
 
 	if (state == SceneState::LEVEL1)
 	{

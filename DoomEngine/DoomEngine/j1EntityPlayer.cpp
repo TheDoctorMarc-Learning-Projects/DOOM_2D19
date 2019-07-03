@@ -48,8 +48,27 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY, std::string name) : j1Entity(
 
 	aimDown.PushBack({ 70, 422, size.x, size.y - 1 });
 
+	death1.PushBack({ 48, 688, size.x + 6, size.y - 3 });
+	death1.PushBack({ 132, 688, size.x + 6, size.y - 3 });
+	death1.PushBack({ 211, 688, size.x + 2, size.y - 3 });
+	death1.PushBack({ 291, 688, size.x + 7, size.y - 16 });
+	death1.PushBack({ 376, 688, size.x + 17, size.y - 39 });
+	death1.PushBack({ 471, 688, size.x + 17, size.y - 39 });
+	death1.PushBack({ 566, 688, size.x + 17, size.y - 39 });
+	death1.speed = 3.f;
+	death1.loop = false; 
 
-
+	death2.PushBack({ 46, 771, size.x + 2, size.y + 3 });
+	death2.PushBack({ 126, 771, size.x + 4, size.y + 6 });
+	death2.PushBack({ 214, 771, size.x + 14, size.y + 4 });
+	death2.PushBack({ 306, 771, size.x + 19, size.y - 1 });
+	death2.PushBack({ 402, 771, size.x + 21, size.y - 6 });
+	death2.PushBack({ 502, 771, size.x + 23, size.y - 13 });
+	death2.PushBack({ 603, 771, size.x + 23, size.y - 20 });
+	death2.PushBack({ 704, 771, size.x + 23, size.y - 30 });
+	death2.PushBack({ 805, 771, size.x + 23, size.y - 31 });
+	death2.speed = 3.f;
+	death2.loop = false;
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - collider
 	collider = App->collision->AddCollider({(int)position.x, (int)position.y, (int)((float)size.x * spriteScale),(int)((float)size.y * spriteScale) }, COLLIDER_TYPE::COLLIDER_PLAYER, this);
@@ -103,15 +122,48 @@ bool j1EntityPlayer::Move(float dt)
 {
 	BROFILER_CATEGORY("Player Move", Profiler::Color::Aqua);
 
-	SetPreviousFrameData(); 
-	HorizonatlMovement(dt); 
-	VerticalMovement(dt); 
-	WeaponLogic();
-	SetCollider(); 
-	// - - - - - - - - - - - - - - - - - - warn other modules about the pos if needed
-	WarnOtherModules();
+	if (state.combat != combatState::DYING)
+	{
+		SetPreviousFrameData();
+		HorizonatlMovement(dt);
+		VerticalMovement(dt);
+		WeaponLogic();
+		SetCollider();
+		// - - - - - - - - - - - - - - - - - - warn other modules about the pos if needed
+		WarnOtherModules();
+	}
+	else
+		DieLogic(dt); 
+
+	
 
 	return true;
+}
+
+void j1EntityPlayer::DieLogic(float dt)
+{
+	if (!onPlatform)
+		VerticalMovement(dt);
+
+	if (onPlatform && deathPosGround.IsZero())
+	{
+		deathPosGround.y = position.y + collider->rect.h;         // make so when enemy dies and anim changes, he visually stays inmovile in platform 
+		deathColllider = collider->rect;
+
+	}
+	else if (!deathPosGround.IsZero())
+	{
+		float offset = deathColllider.h - collider->rect.h;
+
+		if (!onDynamicplatform)
+			position.y = deathPosGround.y - deathColllider.h + offset;
+
+		collider->SetPos(position.x, position.y);
+		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+	}
+
+
+	CheckDeathFinished();
 }
 
 

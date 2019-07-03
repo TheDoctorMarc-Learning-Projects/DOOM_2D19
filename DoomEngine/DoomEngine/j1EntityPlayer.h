@@ -81,23 +81,30 @@ public:
 	void ChangeWeapon(SDL_GameControllerButton button);
 	void AimWeapon(); 
 	void ShootWeapon(); 
+	void DieLogic(float dt); 
 
 	virtual void SetDeathAnim(bool brutal = false)
 	{
 		state.combat = combatState::DYING;
 
 		if (!brutal)
+		{
 			currentAnimation = &death1;
+			App->audio->PlayFx(this->name + "Death");
+		}
+			
 		else
+		{
 			currentAnimation = &death2;
-
-		App->audio->PlayFx(this->name + "Death");
+			App->audio->PlayFx(this->name + "Death2");
+		}
+		
 
 	};
 
 	virtual void CheckDeathFinished() override
 	{
-		if (currentAnimation->Finished())
+		if (currentAnimation->Finished())   // assumes current anim is death, maybe check it... xd
 		{
 			state.combat = combatState::DEAD;
 			to_delete = true;
@@ -124,7 +131,8 @@ private:
 	bool aiming = false;
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0); 
-
+	fPoint deathPosGround = fPoint(0, 0);
+	SDL_Rect deathColllider = { 0, 0, 0, 0 };
 
 	jumpData jumpInfo; 
 	float momentumFactor = 10.f; 

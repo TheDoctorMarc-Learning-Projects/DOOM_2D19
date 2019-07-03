@@ -244,6 +244,18 @@ j1Entity* j1EntityFactory::CreateWeapon(ENTITY_TYPE type, int positionX, int pos
 void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage)
 {
 
+	if (ent->type == PLAYER)   // prevention; 
+	{
+		if (dynamic_cast<j1EntityPlayer*>(ent)->state.combat == combatState::DYING)
+			return;
+	}
+	else if (dynamic_cast<j1EntityPlayer*>(ent)->state.combat == combatState::DYING)
+	{
+		return; 
+	}
+		
+		
+
 	uint previousLife = ent->life; // TODO: compare this with new life and play death2 (brutal one) if it exceeds a certain amount 
 
 	ent->life -= damage; 

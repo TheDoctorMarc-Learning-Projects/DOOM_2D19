@@ -162,8 +162,16 @@ bool j1Collision::PreUpdate()
 		}
 		else if(colliders[i] != nullptr)
 		{
-			if (colliders[i]->hasSpeed)
-				colliders[i]->SetPos(colliders[i]->rect.x + colliders[i]->speed.x, colliders[i]->rect.y + colliders[i]->speed.y);
+			if (App->render->IsOnCamera(colliders[i]->rect.x, colliders[i]->rect.y, colliders[i]->rect.w, colliders[i]->rect.h))
+			{
+				if (colliders[i]->hasSpeed)
+					colliders[i]->SetPos(colliders[i]->rect.x + colliders[i]->speed.x, colliders[i]->rect.y + colliders[i]->speed.y);
+			}
+			else
+			{
+				if (colliders[i]->volatileOutOfScreen)  // delete whe out of camera limits 
+					colliders[i]->to_delete = true; 
+			}
 
 
 		}
@@ -407,7 +415,7 @@ bool j1Collision::CleanUp()
 }
                                                  
 
-Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* callback, fPoint speed)
+Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* callback, fPoint speed, bool volatileOutOfScreen)
 {
 	BROFILER_CATEGORY("Collision AddCollider", Profiler::Color::DeepPink);
 	Collider* ret = nullptr;
@@ -416,7 +424,7 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* 
 	{
 		if (colliders[i] == nullptr)
 		{
-			ret = colliders[i] = new Collider(rect, type, callback, speed);
+			ret = colliders[i] = new Collider(rect, type, callback, speed, volatileOutOfScreen);
 
 			if (callback)
 				ret->hasCallback = true; 

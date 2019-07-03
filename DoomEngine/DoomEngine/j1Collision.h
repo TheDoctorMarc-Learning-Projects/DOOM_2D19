@@ -41,13 +41,15 @@ struct Collider
 	j1Entity* callback = nullptr;
 	bool hasCallback = false; 
 	bool hasSpeed = false; 
+	bool volatileOutOfScreen = false; 
 	fPoint speed = fPoint(0, 0); 
 
-	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, j1Entity* callback = nullptr, fPoint speed = fPoint(0,0)) :
+	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, j1Entity* callback = nullptr, fPoint speed = fPoint(0,0), bool volatileOutOfScreen = false) :
 		rect(rectangle),
 		type(type),
 		callback(callback),
-		speed(speed)
+		speed(speed),
+		volatileOutOfScreen(volatileOutOfScreen)
 	{
 		if (!speed.IsZero())
 			hasSpeed = true; 
@@ -85,7 +87,7 @@ public:
 	bool PreUpdate(); 
 	bool Update(float dt);
 	bool CleanUp(); 
-	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* callback = nullptr, fPoint speed = fPoint(0,0));
+	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* callback = nullptr, fPoint speed = fPoint(0,0), bool volatileOutOfScreen = false);
 	void DebugDraw();
 	
 	

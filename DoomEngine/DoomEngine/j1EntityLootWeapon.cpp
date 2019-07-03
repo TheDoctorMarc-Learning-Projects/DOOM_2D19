@@ -250,7 +250,7 @@ void j1EntityLootWeapon::CalculateStrike()
 	}
 
 
-	Collider* shot = App->collision->AddCollider({(int)position.x, (int)position.y, 10, 10}, COLLIDER_TYPE::COLLIDER_SHOT, this, speed); // add a mini colllider to simulate bullet 
+	Collider* shot = App->collision->AddCollider({(int)position.x, (int)position.y, 10, 10}, COLLIDER_TYPE::COLLIDER_SHOT, this, speed, true); // add a mini colllider to simulate bullet 
 	//shot->SetPos(position.x, position.y); 
 
 

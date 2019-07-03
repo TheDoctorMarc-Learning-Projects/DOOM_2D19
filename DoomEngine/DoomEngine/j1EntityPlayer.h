@@ -55,7 +55,7 @@ class j1Entity;
 class j1EntityPlayer : public j1Entity
 {
 public:
-	j1EntityPlayer(int posX, int posY);
+	j1EntityPlayer(int posX, int posY, std::string name);
 	~j1EntityPlayer();
 
 	//core loops ------
@@ -91,6 +91,8 @@ public:
 		else
 			currentAnimation = &death2;
 
+		App->audio->PlayFx(this->name + "Death");
+
 	};
 
 	virtual void CheckDeathFinished() override
@@ -99,6 +101,7 @@ public:
 		{
 			state.combat = combatState::DEAD;
 			to_delete = true;
+
 		}
 	}
 

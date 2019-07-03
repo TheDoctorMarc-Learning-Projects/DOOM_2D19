@@ -12,7 +12,7 @@
 #include <math.h>
 
 
-j1EntityPlayer::j1EntityPlayer(int posX, int posY) : j1Entity(PLAYER, posX , posY, "player")
+j1EntityPlayer::j1EntityPlayer(int posX, int posY, std::string name) : j1Entity(PLAYER, posX , posY, "player")
 {
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - texture
@@ -21,6 +21,7 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY) : j1Entity(PLAYER, posX , pos
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = PLAYER; 
+	this->name = name;
 	life = 300; 
 	position = previousPosition = fPoint(posX, posY); 
 	pointingDir = RIGHT;

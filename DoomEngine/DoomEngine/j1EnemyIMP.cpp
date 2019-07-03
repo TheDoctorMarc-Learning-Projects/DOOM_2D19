@@ -1,13 +1,14 @@
 #include "j1EnemyIMP.h"
 #include "j1EntityFactory.h"
 
-j1EnemyIMP::j1EnemyIMP(int posX, int posY) : j1Enemy(posX, posY)
+j1EnemyIMP::j1EnemyIMP(int posX, int posY, std::string name) : j1Enemy(posX, posY)
 {
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - texture
 	entityTex = App->entityFactory->impTexture; 
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = ENEMY_IMP;
+	this->name = name; 
 	damage = 30; 
 	maxLife = 100; 
 	life = (float)maxLife;

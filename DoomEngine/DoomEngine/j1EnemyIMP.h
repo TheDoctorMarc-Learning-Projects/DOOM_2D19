@@ -16,7 +16,7 @@ class j1Enemy;
 class j1EnemyIMP : public j1Enemy
 {
 public:
-	j1EnemyIMP(int posX, int posY);
+	j1EnemyIMP(int posX, int posY, std::string name);
 	~j1EnemyIMP();
 
 	// functionality ------

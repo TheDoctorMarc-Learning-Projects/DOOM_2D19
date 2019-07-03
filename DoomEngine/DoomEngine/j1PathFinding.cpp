@@ -483,9 +483,6 @@ int j1PathFinding::CreatePathJPS(const iPoint & origin, const iPoint & destinati
 		return -1;
 	}
 
-	// TODO 7: Make the starting process and the cycle process of the JPS in one take here
-	// It's really easy, its copying the same code you've in the correct position.  
-
 	// Horizontal Cases
 
 	// East
@@ -708,7 +705,7 @@ PathState j1PathFinding::StartJPS(const iPoint & origin, const iPoint & destinat
 		return PathState::Unavailable;
 	}
 
-	// TODO 0: Add 8 different starting nodes, with the 8 possible directions to the open list
+
 	// DIAGONAL CASES 
 	// North - East
 	open.pathNodeList.push_back(PathNode(0, origin.DistanceManhattan(goal), origin, nullptr, { 1, 1 }));
@@ -777,10 +774,6 @@ PathState j1PathFinding::CycleJPS()
 			// Fill a list of all adjancent nodes
 			PathList neighbors;
 
-			// TODO 1: Fill the nieghbours list with the pruned neighbours.  
-			// Keep in mind that we do the same like in A*, only that we prune before adding elements
-			// It's a single line
-
 			PruneAdjacents(closed.pathNodeList.back(), neighbors, &closed.pathNodeList.back());
 
 			// Iterate adjancent nodes:
@@ -845,9 +838,6 @@ void j1PathFinding::HorizontalJump(const PathNode& node, PathList& listToFill, c
 	visited.pathNodeList.push_back(jumpPoint);
 	// --- 
 
-	// TODO 2: Find any possible forced neighbour for an horizontal Jump
-	// When we find one, we have to add it to the list to make sure its analyzed later on (with the proper direction), and we exit
-	// Also, before we exit, don't forget to add the current propagation (as a node), so it can be completed and not forgotten
 	if (!IsWalkable(newPos + iPoint(0, 1)) && IsWalkable(newPos + iPoint(horizontalDir, 1)) && IsWalkable(newPos + node.direction))
 	{
 		jumpPoint.direction = { horizontalDir, 1 };
@@ -867,8 +857,6 @@ void j1PathFinding::HorizontalJump(const PathNode& node, PathList& listToFill, c
 		return;
 	}
 
-	// TODO 3: Really simple: if not found any forced neighbour, we just keep on jumping in the same direction as we are "coming from"
-	// You have to make sure to return what that jump returns us
 	jumpPoint.direction = node.direction;
 	return HorizontalJump(jumpPoint, listToFill, parent);
 }
@@ -976,11 +964,6 @@ void j1PathFinding::DiagonalJump(const PathNode & node, PathList& listToFill, co
 		return;
 	}
 
-
-	// TODO 4: Make an horizontal jump with the proper direction
-	// If it detected any forced neighbour, you have to add 
-	// to the list the remaining directions that we are looking for (as nodes)
-	// so they don't get lost. 
 	jumpPoint.direction = { horizontalDir, 0 };
 	HorizontalJump(jumpPoint, listToFill, parent);
 	if (listToFill.pathNodeList.empty() == false)
@@ -994,8 +977,7 @@ void j1PathFinding::DiagonalJump(const PathNode & node, PathList& listToFill, co
 	}
 	else
 	{
-		// TODO 5: Make a vertical Jump with the proper direction if the Horizontal jump
-		// did not find any jumpPoints. Like before, make sure to add the remaining directions.
+		
 		jumpPoint.direction = { 0, verticalDir };
 		VerticalJump(jumpPoint, listToFill, parent);
 		if (listToFill.pathNodeList.empty() == false)
@@ -1009,8 +991,6 @@ void j1PathFinding::DiagonalJump(const PathNode & node, PathList& listToFill, co
 		}
 		else
 		{
-			// TODO 6: If none of the past two jumps returned an interesting Point, make a diagonal Jump
-			// with the same direction as this one.
 			jumpPoint.direction = node.direction;
 			return DiagonalJump(jumpPoint, listToFill, parent);
 		}

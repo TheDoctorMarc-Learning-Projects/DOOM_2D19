@@ -111,17 +111,17 @@ void j1EntityLootWeapon::ChangeRotation(double angle)
 void j1EntityLootWeapon::Shoot()
 {
 
-	// TODO: take cadence and capture last shot ticks, to add the cooldown   // TODO 2: auto weapons, get the key repeat 
+
 
 	static uint lastTimeShoot = 0; 
 
 	float ShotsInAMilisec = (float)weaponData.cadence / 60000.f;   // per minute / (60 (sec) * 1000 (milisec))
 	float MiliSecShotTIme = 1.f / ShotsInAMilisec; 
 
+	// TODO: auto weapons key repeat 
 
 
-
-	if (SDL_GetTicks() > lastTimeShoot + (uint)(int)MiliSecShotTIme)
+	if (SDL_GetTicks() > lastTimeShoot + (uint)(int)MiliSecShotTIme)    // TODO later on: MAXBULLETS, bullet functionality discount and prevent firing when 0 bullets etc
 	{
 		lastTimeShoot = SDL_GetTicks();
 
@@ -264,7 +264,7 @@ void j1EntityLootWeapon::OnCollision(Collider* c1, Collider* c2)
 	{
 		App->entityFactory->DoDamagetoEntity(c2->callback, weaponData.damage); 
 
-		c1->to_delete = true; // delete the shot --_> TODO: delete out of screen 
+		c1->to_delete = true; // delete the shot --> TODO: delete out of screen 
 	}
 
 }

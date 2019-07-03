@@ -112,6 +112,8 @@ public:
 		else
 			currentAnimation = &death2; 
 
+		App->audio->PlayFx(this->name + "Death");
+
 	};
 
 	virtual void CheckDeathFinished() override
@@ -120,6 +122,7 @@ public:
 		{
 			state.combat = eCombatState::DEAD;
 			to_delete = true;
+
 		}
 	}
 

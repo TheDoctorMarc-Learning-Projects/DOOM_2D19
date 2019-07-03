@@ -60,7 +60,7 @@ bool j1EntityFactory::Start()
 	player = (j1EntityPlayer*)CreateEntity(PLAYER, 0, 0, "player"); 
 
 	// and test enemies
-	CreateEntity(ENEMY_IMP, 150, 100, "imp"); 
+	CreateEntity(ENEMY_IMP, 150, 100, "EnemyIMP"); 
 
 
 
@@ -186,10 +186,10 @@ j1Entity* j1EntityFactory::CreateEntity(ENTITY_TYPE type, int positionX, int pos
 	switch (type)
 	{
 	case PLAYER:
-		ret = DBG_NEW j1EntityPlayer(positionX, positionY); 
+		ret = DBG_NEW j1EntityPlayer(positionX, positionY, name); 
 		break;
 	case ENEMY_IMP:
-		ret = DBG_NEW j1EnemyIMP(positionX, positionY);
+		ret = DBG_NEW j1EnemyIMP(positionX, positionY, name);
 		break;
 
 	default:

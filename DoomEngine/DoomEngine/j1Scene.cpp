@@ -41,14 +41,16 @@ bool j1Scene::Start()
 	// TODO: call load new map in each case --> do not do it in load / unload, or do not do it here if it is already being done there the previous frame
 
 
+	// TODO: WHY THE HELL is this loaded here? And not in audio start haha. It is borderline idiotic :/ (punishes himself) :/ 
+
 	App->audio->LoadFx("sound/fx/bigenemygrunt.wav", "bigenemygrunt"); 
 	App->audio->LoadFx("sound/fx/fall.wav", "fall");
 	App->audio->LoadFx("sound/fx/fall2.wav", "fall2");
 	App->audio->LoadFx("sound/fx/dash.wav", "dash");
 	App->audio->LoadFx("sound/fx/enemydash.wav", "enemydash");
 	App->audio->LoadFx("sound/fx/shotgunShotFire.wav", "shotgunShotFire");
-
-	
+	App->audio->LoadFx("sound/fx/EnemyIMPDeath.wav", "EnemyIMPDeath");
+	App->audio->LoadFx("sound/fx/playerDeath.wav", "playerDeath");
 
 
 	if (state == SceneState::LEVEL1)
@@ -101,7 +103,7 @@ bool j1Scene::Update(float dt)
 	App->input->GetMousePosition(x, y); 
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-		App->entityFactory->CreateEntity(ENEMY_IMP, x, y, "imp"); 
+		App->entityFactory->CreateEntity(ENEMY_IMP, x, y, "EnemyIMP"); 
 
 	
 

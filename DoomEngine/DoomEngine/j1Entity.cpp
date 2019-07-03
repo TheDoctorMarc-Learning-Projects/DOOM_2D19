@@ -13,6 +13,9 @@
 
 j1Entity::j1Entity(ENTITY_TYPE type, float positionX, float positionY,std::string name) : type(type), position(positionX,positionY), name(name)
 {
+
+
+	this->name = name; 
 }
 
 

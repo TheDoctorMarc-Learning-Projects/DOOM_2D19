@@ -172,14 +172,7 @@ bool j1Audio::PlayFx(std::string name, int repeat)
 	if(!active)
 		return false;
 
-/*	if(id > 0 && id <= fx.size())
-	{
-		std::list< Mix_Chunk*>::iterator item;
-			item = next(fx.begin(), id - 1);
-		Mix_PlayChannel(-1, (*item), repeat);
-	}*/
-	   
-	if(fxMap.at(name))
+	if(fxMap.at(name)) // TODO: future prevention here
 		Mix_PlayChannel(-1, fxMap.at(name), repeat);
 
 

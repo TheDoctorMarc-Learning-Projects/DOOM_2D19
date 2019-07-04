@@ -96,9 +96,6 @@
     <ClCompile Include="j1Collision.cpp">
       <Filter>Code\Core\In-Game</Filter>
     </ClCompile>
-    <ClCompile Include="j1ParticlesClassic.cpp">
-      <Filter>Code\Core\In-Game</Filter>
-    </ClCompile>
     <ClCompile Include="j1PathFinding.cpp">
       <Filter>Code\Core\In-Game</Filter>
     </ClCompile>
@@ -131,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="j1EntityLootWeapon.cpp">
       <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Particles.cpp">
+      <Filter>Code\Core\In-Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -197,9 +197,6 @@
     <ClInclude Include="j1Collision.h">
       <Filter>Code\Core\In-Game</Filter>
     </ClInclude>
-    <ClInclude Include="j1ParticlesClassic.h">
-      <Filter>Code\Core\In-Game</Filter>
-    </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>Code\Help</Filter>
     </ClInclude>
@@ -235,6 +232,9 @@
     </ClInclude>
     <ClInclude Include="LootWeaponMaps.h">
       <Filter>Code\Core\In-Game\Entities\inanimated\loot\help</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Particles.h">
+      <Filter>Code\Core\In-Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

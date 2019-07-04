@@ -152,7 +152,7 @@
     <ClCompile Include="j1Input.cpp" />
     <ClCompile Include="j1Main.cpp" />
     <ClCompile Include="j1Map.cpp" />
-    <ClCompile Include="j1ParticlesClassic.cpp" />
+    <ClCompile Include="j1Particles.cpp" />
     <ClCompile Include="j1PathFinding.cpp" />
     <ClCompile Include="j1PerfTimer.cpp" />
     <ClCompile Include="j1Render.cpp" />
@@ -181,7 +181,7 @@
     <ClInclude Include="j1Input.h" />
     <ClInclude Include="j1Map.h" />
     <ClInclude Include="j1Module.h" />
-    <ClInclude Include="j1ParticlesClassic.h" />
+    <ClInclude Include="j1Particles.h" />
     <ClInclude Include="j1PathFinding.h" />
     <ClInclude Include="j1PerfTimer.h" />
     <ClInclude Include="j1Render.h" />

@@ -6,6 +6,7 @@
 #include "j1EntityPlatform.h"
 #include "j1EntityLoot.h"
 #include "j1EntityLootWeapon.h"
+#include "j1Input.h"
 #include <vector>
 
 //#define jumpPower 20.f
@@ -80,7 +81,7 @@ public:
 	void WeaponLogic(); 
 	void ChangeWeapon(SDL_GameControllerButton button);
 	void AimWeapon(); 
-	void ShootWeapon(); 
+	void ShootWeapon(j1KeyState state);
 	void DieLogic(float dt); 
 
 	virtual void SetDeathAnim(bool brutal = false)

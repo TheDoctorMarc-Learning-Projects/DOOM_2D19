@@ -3,7 +3,7 @@
 #include "p2Log.h"
 #include "j1Scene.h"
 #include "j1Window.h"
-#include "j1ParticlesClassic.h"
+#include "j1Particles.h"
 #include "j1PathFinding.h"
 #include "j1Input.h"
 
@@ -244,12 +244,15 @@ j1Entity* j1EntityFactory::CreateWeapon(ENTITY_TYPE type, int positionX, int pos
 void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage)
 {
 
-	if (ent->type == PLAYER)   // prevention; 
+	if (ent->to_delete)  // first line prevention 
+		return; 
+
+	if (ent->type == PLAYER)   // second line prevention
 	{
 		if (dynamic_cast<j1EntityPlayer*>(ent)->state.combat == combatState::DYING)
 			return;
 	}
-	else if (dynamic_cast<j1EntityPlayer*>(ent)->state.combat == combatState::DYING)
+	else if (dynamic_cast<j1Enemy*>(ent)->state.combat == eCombatState::DYING)
 	{
 		return; 
 	}

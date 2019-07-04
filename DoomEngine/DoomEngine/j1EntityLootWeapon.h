@@ -2,8 +2,9 @@
 #define _J1ENTITY_LOOT_H__
 
 #include "j1EntityLoot.h"
-#include "j1ParticlesClassic.h"
-#include <map>
+#include "j1Particles.h"
+#include "j1Input.h"
+
 
 #define simulBulletSpeed 40
 
@@ -73,14 +74,13 @@ public:
 	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override {};
 
-	WEAPON_TYPE GetWeaponType() { return weaponData.weaponType; }; // define this in weapon cpp
+	WEAPON_TYPE GetWeaponType() { return weaponData.weaponType; };
 	firingType GetFiringType() { return weaponData.FiringType; }; 
 
 
 	void PlaceMeWithPlayer(); 
-	void Shoot(); 
+	void Shoot(j1KeyState state);
 	void CalculateStrike(); 
-	void DoDamage(); 
 	void ChangeRotation(double angle); 
 
 

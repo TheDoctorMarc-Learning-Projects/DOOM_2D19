@@ -595,7 +595,7 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 	{
 		lastPlatform = dynamic_cast<j1EntityPlatform*>(c2->callback);
 
-		App->audio->PlayFx("fall2");
+		App->audio->PlayFx("fall");
 	}
 		
 }

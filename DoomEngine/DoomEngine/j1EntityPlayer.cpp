@@ -1,5 +1,4 @@
 #include "j1EntityPlayer.h"
-#include "j1Input.h"
 #include "j1Render.h"
 #include "p2Log.h"
 #include "j1Map.h"
@@ -355,9 +354,11 @@ void j1EntityPlayer::WeaponLogic()
 
 		AimWeapon(); 
 
-		if (App->input->GetControllerAxisPulsation(SDL_CONTROLLER_AXIS_TRIGGERRIGHT) == KEY_DOWN)
+		j1KeyState shootButtonState = App->input->GetControllerAxisPulsation(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+
+		if (shootButtonState == KEY_DOWN || shootButtonState == KEY_REPEAT)
 		{
-			ShootWeapon(); 
+			ShootWeapon(shootButtonState);
 		}
 
 	}
@@ -504,10 +505,10 @@ void j1EntityPlayer::AimWeapon()
 
 }
 
-void j1EntityPlayer::ShootWeapon()
+void j1EntityPlayer::ShootWeapon(j1KeyState state)
 {
 
-	currentWeapon->Shoot(); 
+	currentWeapon->Shoot(state);
 
 }
 

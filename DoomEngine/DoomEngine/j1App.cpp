@@ -16,7 +16,7 @@
 #include "j1Collision.h"
 #include "j1PathFinding.h"
 #include "j1Fonts.h"
-#include "j1ParticlesClassic.h"
+#include "j1Particles.h"
 #include "j1EntityFactory.h"
 
 #include "Brofiler/Brofiler.h"
@@ -45,7 +45,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	map = DBG_NEW j1Map();
 	pathfinding = DBG_NEW j1PathFinding();
 	font = DBG_NEW j1Fonts();
-	particles = DBG_NEW j1ParticlesClassic();
+	particles = DBG_NEW j1Particles();
 	collision = DBG_NEW j1Collision();
 	entityFactory = DBG_NEW j1EntityFactory();
 

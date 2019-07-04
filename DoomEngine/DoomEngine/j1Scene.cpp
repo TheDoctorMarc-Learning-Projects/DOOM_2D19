@@ -10,7 +10,7 @@
 #include "j1Scene.h"
 #include "j1PathFinding.h"
 #include "j1Fonts.h"
-#include "j1ParticlesClassic.h"
+#include "j1Particles.h"
 #include "j1Collision.h"        
 #include "j1EntityFactory.h"
                                                      // TODO: later on, check if any library is not neede here 
@@ -43,15 +43,14 @@ bool j1Scene::Start()
 
 	// TODO: WHY THE HELL is this loaded here? And not in audio start haha. It is borderline idiotic :/ (punishes himself) :/ 
 
-	App->audio->LoadFx("sound/fx/bigenemygrunt.wav", "bigenemygrunt"); 
-	App->audio->LoadFx("sound/fx/fall.wav", "fall");
-	App->audio->LoadFx("sound/fx/fall2.wav", "fall2");
+	App->audio->LoadFx("sound/fx/dsoof.wav", "fall");
 	App->audio->LoadFx("sound/fx/dash.wav", "dash");
-	App->audio->LoadFx("sound/fx/enemydash.wav", "enemydash");
-	App->audio->LoadFx("sound/fx/shotgunShotFire.wav", "shotgunShotFire");
-	App->audio->LoadFx("sound/fx/EnemyIMPDeath.wav", "EnemyIMPDeath");
-	App->audio->LoadFx("sound/fx/playerDeath.wav", "playerDeath");
-	App->audio->LoadFx("sound/fx/playerDeath2.wav", "playerDeath2");
+	App->audio->LoadFx("sound/fx/dsshotgn.wav", "shotgunShotFire");
+	App->audio->LoadFx("sound/fx/dspistol.wav", "machineGunShotFire");
+	App->audio->LoadFx("sound/fx/dsbgdth1.wav", "EnemyIMPDeath");
+	App->audio->LoadFx("sound/fx/dsbgdth2.wav", "EnemyIMPDeath2");
+	App->audio->LoadFx("sound/fx/dspldeth.wav", "playerDeath");
+	App->audio->LoadFx("sound/fx/dsslop.wav", "playerDeath2");
 
 	if (state == SceneState::LEVEL1)
 	{

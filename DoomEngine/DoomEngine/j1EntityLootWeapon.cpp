@@ -108,9 +108,11 @@ void j1EntityLootWeapon::ChangeRotation(double angle)
 
 
 
-void j1EntityLootWeapon::Shoot()
+void j1EntityLootWeapon::Shoot(j1KeyState state)
 {
 
+	if (state == KEY_REPEAT && weaponData.FiringType != firingType::AUTO)
+		return; 
 
 
 	static uint lastTimeShoot = 0; 
@@ -125,7 +127,7 @@ void j1EntityLootWeapon::Shoot()
 	{
 		lastTimeShoot = SDL_GetTicks();
 
-		SDL_RendererFlip shotFlip = SDL_FLIP_NONE;   // TODO: all particles sprites to the right by default, bo matche the weapon sprites and simplify this 
+		SDL_RendererFlip shotFlip = SDL_FLIP_NONE;   // TODO: all particles sprites to the right by default, to match the weapon sprites and simplify this 
 		iPoint weaponTipPos = iPoint(0, 0);
 
 		if (pointingDir == POINTING_DIR::LEFT)

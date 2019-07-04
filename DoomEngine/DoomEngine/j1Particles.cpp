@@ -51,8 +51,8 @@ bool j1Particles::Start()
 
 	// machine gun shot fire 
 	machineGunShotFire.name = "machineGunShotFire";
-	machineGunShotFire.anim.PushBack({ 0, 307, 7, 12 });
-	machineGunShotFire.life = 75;
+	machineGunShotFire.anim.PushBack({ 0, 307, 7, 6 });
+	machineGunShotFire.life = 20;
 	machineGunShotFire.speed.create(0, 0);
 	machineGunShotFire.anim.speed = 0.5;
 	machineGunShotFire.anim.loop = false;

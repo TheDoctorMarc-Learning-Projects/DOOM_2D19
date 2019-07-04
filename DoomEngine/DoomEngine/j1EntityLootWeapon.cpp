@@ -51,7 +51,7 @@ j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_ty
 		// offset form player (when player is holding the weapon)
 		this->weaponData.offsetFromPlayer = fPoint(21, 15);
 		this->weaponData.tipPosDisplacement = 3 * spriteScale;
-	
+		this->weaponData.offsetRotated = iPoint(26, 24);
 
 		break;
 	}
@@ -160,7 +160,6 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 		else
 		{
 			double alpha = spriteRotation; 
-
 			weaponTipPos = iPoint(position.x, position.y); 
 
 
@@ -174,7 +173,7 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 				{
 					weaponTipPos += iPoint(collider->rect.w - weaponData.offsetRotated.x - shotFire->collider->rect.w, -weaponData.offsetRotated.y);
 
-					shotFire->angle = 225; 
+					shotFire->angle = 45; 
 				}
 				else if (pointingDir == POINTING_DIR::RIGHT)
 				{
@@ -189,7 +188,7 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 
 					weaponTipPos += iPoint(collider->rect.w - weaponData.offsetRotated.x - shotFire->collider->rect.w, weaponData.offsetRotated.y - collider->rect.h / 2);
 
-					shotFire->angle = 135;
+					shotFire->angle = 315;
 				}
 
 				else if (pointingDir == POINTING_DIR::RIGHT)

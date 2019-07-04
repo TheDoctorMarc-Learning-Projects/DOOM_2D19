@@ -49,6 +49,8 @@ bool j1Scene::Start()
 	App->audio->LoadFx("sound/fx/dspistol.wav", "machineGunShotFire");
 	App->audio->LoadFx("sound/fx/dsbgdth1.wav", "EnemyIMPDeath");
 	App->audio->LoadFx("sound/fx/dsbgdth2.wav", "EnemyIMPDeath2");
+	App->audio->LoadFx("sound/fx/dspopain.wav", "EnemyIMPInjured");
+	App->audio->LoadFx("sound/fx/dsplpain.wav", "playerInjured");
 	App->audio->LoadFx("sound/fx/dspldeth.wav", "playerDeath");
 	App->audio->LoadFx("sound/fx/dsslop.wav", "playerDeath2");
 

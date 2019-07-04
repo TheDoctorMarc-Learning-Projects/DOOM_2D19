@@ -257,12 +257,10 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage)
 		return; 
 	}
 		
-		
-
-	uint previousLife = ent->life; // TODO: compare this with new life and play death2 (brutal one) if it exceeds a certain amount 
+	uint previousLife = ent->life; 
 
 	ent->life -= damage; 
-
+	
 	if (ent->life <= 0)
 	{
 		bool brutal = false; 
@@ -272,6 +270,8 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage)
 
 		ent->SetDeathAnim(brutal);
 	}
+	else
+		App->audio->PlayFx(ent->name + "Injured");
 
 }
 

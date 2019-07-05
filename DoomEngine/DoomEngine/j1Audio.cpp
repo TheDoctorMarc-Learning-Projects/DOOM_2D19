@@ -57,6 +57,25 @@ bool j1Audio::Awake(pugi::xml_node& config)
 
 bool j1Audio::Start()
 {
+
+	LoadFx("sound/fx/dsoof.wav", "fall");
+	LoadFx("sound/fx/dash.wav", "dash");
+	LoadFx("sound/fx/dsshotgn.wav", "shotgunShotFire");
+	LoadFx("sound/fx/dspistol.wav", "machineGunShotFire");
+	LoadFx("sound/fx/dsbgdth1.wav", "EnemyIMPDeath");
+	LoadFx("sound/fx/dsbgdth2.wav", "EnemyIMPDeath2");
+	LoadFx("sound/fx/dspopain.wav", "EnemyIMPInjured");
+	LoadFx("sound/fx/dsplpain.wav", "playerInjured");
+	LoadFx("sound/fx/dspldeth.wav", "playerDeath");
+	LoadFx("sound/fx/dsslop.wav", "playerDeath2");
+	LoadFx("sound/fx/dswpnup.wav", "weaponPickUp");
+	LoadFx("sound/fx/dssawup.wav", "chainsawStart");
+	LoadFx("sound/fx/dssawidl.wav", "chainsawIdle");
+	LoadFx("sound/fx/dssawful.wav", "chainsawShotFire");
+	LoadFx("sound/fx/dssawhit.wav", "chainsawHit");
+
+
+
 	return true;
 }
 
@@ -179,6 +198,23 @@ bool j1Audio::PlayFx(std::string name, int repeat)
 	return ret;
 }
 
+bool j1Audio::SetSpecificFxVolume(std::string name, float volume)
+{
+	bool ret = false;
+
+	if (!active)
+		return false;
+
+	final_fx_volume = MIX_MAX_VOLUME * volume;;
+	if (final_fx_volume < 0.0f || final_fx_volume > MIX_MAX_VOLUME)
+		final_fx_volume = (final_fx_volume < 0.0f) ? 0.0f : MIX_MAX_VOLUME;
+
+
+	if (fxMap.at(name)) // TODO: future prevention here
+		Mix_VolumeChunk(fxMap.at(name), final_fx_volume);
+
+	return ret;
+}
 
 
 

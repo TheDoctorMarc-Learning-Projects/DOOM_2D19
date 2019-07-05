@@ -78,6 +78,7 @@ public:
 	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
 	void WarnOtherModules();
+	void PickWeapon(Collider* c2); 
 	void WeaponLogic(); 
 	void ChangeWeapon(SDL_GameControllerButton button);
 	void AimWeapon(); 
@@ -139,10 +140,8 @@ private:
 	float momentumFactor = 10.f; 
 	float momentum(float speed) { return speed * momentumFactor; };
 	
-
-	
-	bool godMode = false; 
 public: 
+	bool godMode = false;
 	myState state;
 	bool onDynamicplatform = false;
 	SDL_Rect lastPosCollider;

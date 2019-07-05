@@ -6,7 +6,7 @@
 #include <list>
 
 
-#define MAX_COLLIDERS 200
+#define MAX_COLLIDERS 1000
 
 enum CollisionType
 {

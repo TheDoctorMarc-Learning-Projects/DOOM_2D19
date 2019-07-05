@@ -344,13 +344,13 @@ void j1Collision::DebugDraw()
 			App->render->DrawQuad(colliders[i]->rect, 255, 50, 255, alpha);
 			break;
 		case COLLIDER_SHOT:
-			App->render->DrawQuad(colliders[i]->rect, 200, 150, 75, alpha);
+			App->render->DrawQuad(colliders[i]->rect, 200, 250, 200, alpha);
 			break;
 		case COLLIDER_FLOOR:
 			App->render->DrawQuad(colliders[i]->rect, 50, 50, 255, alpha);
 			break;
 		case COLLIDER_LOOT:
-			App->render->DrawQuad(colliders[i]->rect, 150, 230, 200, alpha);
+			//App->render->DrawQuad(colliders[i]->rect, 150, 230, 200, alpha);
 			break;
 
 		}

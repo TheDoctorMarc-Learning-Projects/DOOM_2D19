@@ -37,6 +37,8 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(std::string name, int repeat = 0);
 
+	bool SetSpecificFxVolume(std::string name, float volume);
+
 	// Set music volume
 	void SetVolume(float volume);
 

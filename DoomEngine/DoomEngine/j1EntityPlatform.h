@@ -3,7 +3,6 @@
 
 #include "j1Entity.h"
 
-struct collider;
 
 class j1Entity; 
 

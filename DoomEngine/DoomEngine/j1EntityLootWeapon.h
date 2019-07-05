@@ -3,6 +3,7 @@
 
 #include "j1EntityLoot.h"
 #include "j1Particles.h"
+#include "j1Collision.h"
 #include "j1Input.h"
 
 
@@ -54,8 +55,11 @@ struct  weaponInfo
    int tipPosDisplacement = 0.f; 
    float xDisplacementWhenRotated = 10.f; 
    iPoint offsetRotated = iPoint(0, 0);
+
+   SDL_Rect hotspot = { 0, 0, 0, 0 }; // for mchainsaw basically 
 // - - - - - - - - - - - - particle data
    bool launchesProjectile = false; 
+
 
 };
 
@@ -82,11 +86,13 @@ public:
 	void Shoot(j1KeyState state);
 	void CalculateStrike(); 
 	void ChangeRotation(double angle); 
+	void AddHotSpotToChainsaw(bool add); 
 
 
 private:
 	weaponInfo weaponData; 
-
+	Collider* hotspotCol; 
+	bool firing = false; 
 
 	friend class j1EntityPlayer; 
 };

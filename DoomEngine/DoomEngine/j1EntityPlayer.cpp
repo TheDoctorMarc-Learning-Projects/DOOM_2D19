@@ -88,6 +88,9 @@ bool j1EntityPlayer::Start()
 bool j1EntityPlayer::PreUpdate()
 {
 	
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+		godMode = !godMode; 
+
 	return true;
 }
 
@@ -378,10 +381,17 @@ void j1EntityPlayer::ChangeWeapon(SDL_GameControllerButton button)
 				(*weapon)->weaponData.weaponState = WEAPON_STATE::INACTIVE;
 				(*weapon)->drawActive = false;
 				(*weapon)->collider->to_delete = true; 
+
+				if ((*weapon)->firing)
+					(*weapon)->firing = false; 
+
+				// chainsaw hotspot collider needs to be deleted too: 
+				if ((*weapon)->GetWeaponType() == WEAPON_TYPE::CHAINSAW)
+					(*weapon)->AddHotSpotToChainsaw(false);
+
 				currentWeapon = nullptr; 
 
 				int desiredIndex = 0; 
-
 				// 2) then equip next or last weapon in list
 				if (button == SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) 
 				{
@@ -419,8 +429,17 @@ void j1EntityPlayer::ChangeWeapon(SDL_GameControllerButton button)
 						(int)((float)myWeapons.at(desiredIndex)->section.w * myWeapons.at(desiredIndex)->spriteScale),
 						(int)((float)myWeapons.at(desiredIndex)->section.h * myWeapons.at(desiredIndex)->spriteScale) }, COLLIDER_TYPE::COLLIDER_LOOT, myWeapons.at(desiredIndex));
 
+					// chainsaw needs a hotspot collider to do damage: 
+					if (myWeapons.at(desiredIndex)->GetWeaponType() == WEAPON_TYPE::CHAINSAW)
+						myWeapons.at(desiredIndex)->AddHotSpotToChainsaw(true);
+
 					myWeapons.at(desiredIndex)->PlaceMeWithPlayer();
 					currentWeapon = myWeapons.at(desiredIndex); 
+
+
+
+
+				
 				}
 			
 
@@ -757,27 +776,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 		{
 			if (dynamic_cast<j1EntityLoot*>(c2->callback)->GetType() == LOOT_TYPE::WEAPON)
 			{
-				if (dynamic_cast<j1EntityLootWeapon*>(c2->callback)->weaponData.weaponState == WEAPON_STATE::AWAIT)   // pick weapon only if I don't have it
-				{
-
-					// firs check if another weapon is active 
-
-					for (const auto& weapon : myWeapons)
-						if (weapon->weaponData.weaponState == WEAPON_STATE::ACTIVE)
-						{
-							weapon->weaponData.weaponState = WEAPON_STATE::INACTIVE;  // if other was active, put it to inactive
-							weapon->drawActive = false;       // do not draw it --> TODO: when swappig weapon put to active both variables
-							weapon->collider->to_delete = true; 
-							currentWeapon = nullptr; 
-						}
-							
-					myWeapons.push_back(dynamic_cast<j1EntityLootWeapon*>(c2->callback));
-					currentWeapon = dynamic_cast<j1EntityLootWeapon*>(c2->callback); 
-
-					dynamic_cast<j1EntityLootWeapon*>(c2->callback)->weaponData.weaponState = WEAPON_STATE::ACTIVE;    // put to active 
-					dynamic_cast<j1EntityLootWeapon*>(c2->callback)->PlaceMeWithPlayer();  // player the new weapon in the desired pos; 
-					
-				}
+				PickWeapon(c2);
 				
 			}
 	    }
@@ -874,3 +873,40 @@ POINTING_DIR j1EntityPlayer::GetDirection()
 	return pointingDir;     // no speed results in no dir change
 }
 
+
+
+void j1EntityPlayer::PickWeapon(Collider* c2)
+{
+	if (dynamic_cast<j1EntityLootWeapon*>(c2->callback)->weaponData.weaponState == WEAPON_STATE::AWAIT)   // pick weapon only if I don't have it
+	{
+
+		// first check if another weapon is active 
+
+		for (const auto& weapon : myWeapons)
+			if (weapon->weaponData.weaponState == WEAPON_STATE::ACTIVE)
+			{
+				weapon->weaponData.weaponState = WEAPON_STATE::INACTIVE;  // if other was active, put it to inactive
+				weapon->drawActive = false;       // do not draw it --> TODO: when swappig weapon put to active both variables
+				weapon->collider->to_delete = true;
+				currentWeapon = nullptr;
+			}
+
+		myWeapons.push_back(dynamic_cast<j1EntityLootWeapon*>(c2->callback));
+		currentWeapon = dynamic_cast<j1EntityLootWeapon*>(c2->callback);
+
+		// chainsaw needs a hotspot collider to do damage: 
+		if (dynamic_cast<j1EntityLootWeapon*>(c2->callback)->weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
+			dynamic_cast<j1EntityLootWeapon*>(c2->callback)->AddHotSpotToChainsaw(true);
+
+		dynamic_cast<j1EntityLootWeapon*>(c2->callback)->weaponData.weaponState = WEAPON_STATE::ACTIVE;    // put to active 
+		dynamic_cast<j1EntityLootWeapon*>(c2->callback)->PlaceMeWithPlayer();  // player the new weapon in the desired pos; 
+
+		App->audio->PlayFx("weaponPickUp");
+
+
+
+
+		
+
+	}
+}

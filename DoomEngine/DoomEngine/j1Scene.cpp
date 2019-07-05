@@ -43,16 +43,6 @@ bool j1Scene::Start()
 
 	// TODO: WHY THE HELL is this loaded here? And not in audio start haha. It is borderline idiotic :/ (punishes himself) :/ 
 
-	App->audio->LoadFx("sound/fx/dsoof.wav", "fall");
-	App->audio->LoadFx("sound/fx/dash.wav", "dash");
-	App->audio->LoadFx("sound/fx/dsshotgn.wav", "shotgunShotFire");
-	App->audio->LoadFx("sound/fx/dspistol.wav", "machineGunShotFire");
-	App->audio->LoadFx("sound/fx/dsbgdth1.wav", "EnemyIMPDeath");
-	App->audio->LoadFx("sound/fx/dsbgdth2.wav", "EnemyIMPDeath2");
-	App->audio->LoadFx("sound/fx/dspopain.wav", "EnemyIMPInjured");
-	App->audio->LoadFx("sound/fx/dsplpain.wav", "playerInjured");
-	App->audio->LoadFx("sound/fx/dspldeth.wav", "playerDeath");
-	App->audio->LoadFx("sound/fx/dsslop.wav", "playerDeath2");
 
 	if (state == SceneState::LEVEL1)
 	{

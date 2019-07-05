@@ -27,6 +27,7 @@ j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_ty
 		// offset form player (when player is holding the weapon)
 		this->weaponData.offsetFromPlayer = fPoint(21, 15);
 		this->weaponData.tipPosDisplacement = 16 * spriteScale;
+		this->weaponData.hotspot = { (int)(24.f * spriteScale), (int)(10.f * spriteScale), (int)(39.f * spriteScale), (int)(11.f * spriteScale)};
 
 		break; 
 
@@ -80,8 +81,13 @@ void j1EntityLootWeapon::PlaceMeWithPlayer()
 	}
 
 	collider->SetPos(position.x, position.y); 
-	lastSpeed = App->entityFactory->player->lastSpeed; 
+	lastSpeed = App->entityFactory->player->lastSpeed;
 
+	if (weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
+		hotspotCol->SetPos((int)position.x + weaponData.hotspot.x, (int)position.y + weaponData.hotspot.y);
+
+	
+	
 }
 
 
@@ -111,9 +117,23 @@ void j1EntityLootWeapon::ChangeRotation(double angle)
 void j1EntityLootWeapon::Shoot(j1KeyState state)
 {
 
-	if (state == KEY_REPEAT && weaponData.FiringType != firingType::AUTO)
-		return; 
+	if (state == KEY_REPEAT && (weaponData.FiringType == firingType::SEMI || weaponData.FiringType == firingType::MELEE))
+	{
+		firing = false; 
+		return;
+	}
+		
 
+	if (state == KEY_UP && firing)
+		firing = false; 
+
+	if (weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
+	{
+		firing = true; 
+		App->audio->PlayFx(name + "ShotFire"); 
+		return;
+	}
+		
 
 	static uint lastTimeShoot = 0; 
 
@@ -125,6 +145,8 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 
 	if (SDL_GetTicks() > lastTimeShoot + (uint)(int)MiliSecShotTIme)    // TODO later on: MAXBULLETS, bullet functionality discount and prevent firing when 0 bullets etc
 	{
+		firing = true;
+
 		lastTimeShoot = SDL_GetTicks();
 
 		SDL_RendererFlip shotFlip = SDL_FLIP_NONE;   // TODO: all particles sprites to the right by default, to match the weapon sprites and simplify this 
@@ -146,7 +168,7 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 			}
 
 
-			
+
 			Particle* shotFire = App->particles->AddParticleRet(name + "ShotFire", weaponTipPos.x, weaponTipPos.y, this, COLLIDER_SHOT, { 0,0 }, 0U,
 				flip, spriteRotation);   // just visual 
 
@@ -159,8 +181,8 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 		}
 		else
 		{
-			double alpha = spriteRotation; 
-			weaponTipPos = iPoint(position.x, position.y); 
+			double alpha = spriteRotation;
+			weaponTipPos = iPoint(position.x, position.y);
 
 
 			Particle * shotFire = App->particles->AddParticleRet(name + "ShotFire", weaponTipPos.x, weaponTipPos.y, this, COLLIDER_SHOT, { 0,0 }, 0U,
@@ -173,7 +195,7 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 				{
 					weaponTipPos += iPoint(collider->rect.w - weaponData.offsetRotated.x - shotFire->collider->rect.w, -weaponData.offsetRotated.y);
 
-					shotFire->angle = 45; 
+					shotFire->angle = 45;
 				}
 				else if (pointingDir == POINTING_DIR::RIGHT)
 				{
@@ -197,8 +219,8 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 				}
 			}
 
-			shotFire->position = weaponTipPos; 
-			
+			shotFire->position = weaponTipPos;
+
 
 		}
 
@@ -208,17 +230,18 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 		/*if (weaponData.launchesProjectile)
 			App->particles->AddParticle(name + "Shot", this, weaponTipPos.x, weaponTipPos.y, COLLIDER_NONE);  // the proper projectile with callback (this) that will do damage
 		else*/
-			CalculateStrike(); 
-	
+		CalculateStrike();
+
 	}
-	
+	else
+		firing = false; 
 	
 }
 
 
 
 void j1EntityLootWeapon::CalculateStrike()
-{
+{                                                     // TODO: ajust the pos, very fake when pointing left etc
 	fPoint speed = fPoint(0, 0); 
 
 	if (pointingDir == RIGHT)
@@ -263,9 +286,40 @@ void j1EntityLootWeapon::OnCollision(Collider* c1, Collider* c2)
 
 	if (c2->type == COLLIDER_ENEMY)
 	{
+
+		if (weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
+		{
+			if (!firing)
+				return;
+			else
+				App->audio->PlayFx(name + "Hit"); 
+		}
+		else
+			c1->to_delete = true;  // do not delete chainsaw hotspot 
+
+
 		App->entityFactory->DoDamagetoEntity(c2->callback, weaponData.damage); 
 
-		c1->to_delete = true; // delete the shot --> TODO: delete out of screen 
+		
 	}
+
+}
+
+
+void j1EntityLootWeapon::AddHotSpotToChainsaw(bool add)
+{
+	if (add)
+	{
+		hotspotCol = App->collision->AddCollider({ (int)position.x + weaponData.hotspot.x, (int)position.y +
+		weaponData.hotspot.y, weaponData.hotspot.w, weaponData.hotspot.h }, COLLIDER_TYPE::COLLIDER_SHOT, this);
+
+		App->audio->PlayFx(name + "Start");
+		
+	}
+	
+	else
+		hotspotCol->to_delete = true;
+	
+		
 
 }

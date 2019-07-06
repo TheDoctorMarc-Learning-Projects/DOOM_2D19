@@ -8,6 +8,8 @@ j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_ty
 	useRenderFlip = true;
 	defaultPointingDir = POINTING_DIR::RIGHT; 
 	pointingDir = POINTING_DIR::RIGHT; 
+	mass = 1.f;  // no need to be too accurate
+	gravityFactor = DEFAULT_GRAV * mass;
 
 	this->weaponData = weaponData; 
 	this->weaponData.weaponState = WEAPON_STATE::AWAIT; 
@@ -345,7 +347,11 @@ void j1EntityLootWeapon::OnCollision(Collider* c1, Collider* c2)
 
 		
 	}
+	if (c2->type == COLLIDER_FLOOR && playerKO)
+	{
+		arrivedFloor = true; 
 
+	}
 }
 
 
@@ -388,4 +394,14 @@ void j1EntityLootWeapon::AddHotSpotToChainsaw(bool add)
 
 }
 
+
+void j1EntityLootWeapon::FallToTheFloor(float dt)
+{
+	if (!arrivedFloor)
+	{
+		lastSpeed.y = GravityCalc(gravityFactor, mass) * dt;
+		position.y += lastSpeed.y;
+		collider->SetPos(position.x, position.y);
+	}
+}
 

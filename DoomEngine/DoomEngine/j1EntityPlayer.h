@@ -85,7 +85,7 @@ public:
 	void ShootWeapon(j1KeyState state);
 	void DieLogic(float dt); 
 
-	virtual void SetDeathAnim(bool brutal = false)
+	virtual void SetDyingState(bool brutal = false)
 	{
 		state.combat = combatState::DYING;
 

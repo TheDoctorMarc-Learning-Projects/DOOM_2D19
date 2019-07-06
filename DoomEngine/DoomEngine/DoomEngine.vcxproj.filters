@@ -130,7 +130,7 @@
       <Filter>Code\Core\In-Game</Filter>
     </ClCompile>
     <ClCompile Include="j1EntityLootWeapon.cpp">
-      <Filter>Code\Core\In-Game\Entities\inanimated\platforms</Filter>
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

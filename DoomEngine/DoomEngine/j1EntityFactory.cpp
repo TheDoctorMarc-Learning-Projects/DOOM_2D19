@@ -268,7 +268,7 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage)
 		if (ent->life <= -EXTRA_DAMAGE_TO_TRIGGER_BRUTAL_DEATH)
 			brutal = true; 
 
-		ent->SetDeathAnim(brutal);
+		ent->SetDyingState(brutal);
 	}
 	else
 		App->audio->PlayFx(ent->name + "Injured");

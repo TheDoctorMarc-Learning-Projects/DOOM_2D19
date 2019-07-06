@@ -19,7 +19,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_LOOT][COLLIDER_WIN] = false;
 	matrix[COLLIDER_LOOT][COLLIDER_ENEMY] = false;
 	matrix[COLLIDER_LOOT][COLLIDER_SHOT] = false;
-	matrix[COLLIDER_LOOT][COLLIDER_FLOOR] = false;
+	matrix[COLLIDER_LOOT][COLLIDER_FLOOR] = true;
 
 	matrix[COLLIDER_WALL][COLLIDER_WALL] = false;
 	matrix[COLLIDER_WALL][COLLIDER_PLAYER] = true;
@@ -40,7 +40,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_FLOOR][COLLIDER_WIN] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_ENEMY] = true;
 	matrix[COLLIDER_FLOOR][COLLIDER_SHOT] = true;
-	matrix[COLLIDER_FLOOR][COLLIDER_LOOT] = false;
+	matrix[COLLIDER_FLOOR][COLLIDER_LOOT] = true;
 
 
 

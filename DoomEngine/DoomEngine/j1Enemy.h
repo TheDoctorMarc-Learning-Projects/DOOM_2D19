@@ -103,7 +103,7 @@ public:
 
 	virtual void DoAttack(bool meleeRange) {};
 
-	virtual void SetDeathAnim(bool brutal = false)
+	virtual void SetDyingState(bool brutal = false)
 	{
 		state.combat = eCombatState::DYING; 
 

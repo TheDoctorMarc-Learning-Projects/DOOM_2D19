@@ -87,12 +87,15 @@ public:
 	void CalculateStrike(); 
 	void ChangeRotation(double angle); 
 	void AddHotSpotToChainsaw(bool add); 
+	void FallToTheFloor(float dt); 
 
 
 private:
 	weaponInfo weaponData; 
 	Collider* hotspotCol; 
 	bool firing = false; 
+	bool playerKO = false; 
+	bool arrivedFloor = false; 
 
 	friend class j1EntityPlayer; 
 };

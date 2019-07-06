@@ -72,7 +72,7 @@ public:
 	virtual bool Update(float dt);
 	virtual bool PostUpdate();
 	virtual bool CleanUp();
-	virtual void SetDeathAnim(bool brutal = false) {};
+	virtual void SetDyingState(bool brutal = false) {};
 	virtual void CheckDeathFinished() {};
 
 	virtual bool Move(float dt);

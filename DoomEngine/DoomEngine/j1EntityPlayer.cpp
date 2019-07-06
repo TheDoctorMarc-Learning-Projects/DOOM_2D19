@@ -165,6 +165,14 @@ void j1EntityPlayer::DieLogic(float dt)
 	}
 
 
+	if (!myWeapons.empty())
+	{
+		currentWeapon->playerKO = true; 
+		currentWeapon->FallToTheFloor(dt);
+	}
+		
+
+
 	CheckDeathFinished();
 }
 

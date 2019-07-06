@@ -14,7 +14,7 @@
 
 #define bloodCubeSideSize 2
 
-#define bloodModuleSpeed 4.5f
+#define bloodModuleSpeed 10.5f
 
 class j1EntityBloodDrop; 
 
@@ -51,6 +51,7 @@ public:
 	fPoint GenerateTargetedSpeedForBloodDrop();
 
 	float GetRandomValue(float v1, float v2);
+	int GetRandomIntValue(int v1, int v2);
 private: 
 
 	std::list<bloodStream*> bloodStreams;   // draw them if on camera only

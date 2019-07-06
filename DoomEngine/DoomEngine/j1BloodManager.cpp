@@ -208,6 +208,16 @@ float j1BloodManager::GetRandomValue(float v1, float v2)
 	return ret;
 }
 
+int j1BloodManager::GetRandomIntValue(int v1, int v2)
+{
+	std::uniform_int_distribution<int> range(v1, v2);
+
+	int ret = range(rd);
+
+
+	return ret;
+}
+
 Color j1BloodManager::GenerateColorForBloodDrop()
 {
 	Color ret; 
@@ -223,8 +233,12 @@ fPoint j1BloodManager::GenerateRandomSpeedForBloodDrop()
 {
 	fPoint speed = fPoint(0, 0); 
 
-	speed.x = GetRandomValue(0.f, bloodModuleSpeed);
-	speed.y = sqrt(pow(bloodModuleSpeed, 2.f) - pow(speed.x, 2.f)); 
+	speed.x = GetRandomValue(-bloodModuleSpeed, bloodModuleSpeed);  // between negative max and positive max
+	speed.y = sqrt(pow(bloodModuleSpeed, 2.f) - pow(speed.x, 2.f));  // this calculus is always positive
+
+	float speedYSign = GetRandomIntValue(0, 1);    // give the last calculus a proper sign
+	if (speedYSign == 0)
+		speed.y = -speed.y; 
 
 	return speed; 
 

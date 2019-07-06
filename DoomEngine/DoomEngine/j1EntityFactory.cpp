@@ -19,6 +19,7 @@
 #include "LootWeaponMaps.h"
 
 #include "j1BloodManager.h"
+#include "j1EntityBloodDrop.h"
 
 #include <assert.h>
 

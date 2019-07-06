@@ -9,3 +9,6 @@ Color Cian = Color(0.0F, 255.0F, 255.0F);
 Color Yellow = Color(255.0F, 255.0F, 0.0F);
 Color Pink = Color(255.0F, 155.0F, 255.0F);
 Color DarkGray = Color(75.0F, 75.0F, 100.0F);
+
+Color BloodRedMostColor = Color(221.f, 5.f, 5.f, 255.f);
+Color BloodBlackMostColor = Color(30.f, 3.f, 3.f, 255.f);

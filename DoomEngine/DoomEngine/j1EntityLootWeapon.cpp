@@ -405,3 +405,16 @@ void j1EntityLootWeapon::FallToTheFloor(float dt)
 	}
 }
 
+
+void j1EntityLootWeapon::StopAllFxs()  // when changin weapon
+{
+	App->audio->StopSpecificFx(name + "ShotFire");
+
+	if (weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
+	{
+		App->audio->StopSpecificFx(name + "Start");
+		App->audio->StopSpecificFx(name + "Idle");
+		App->audio->StopSpecificFx(name + "Hit");
+	}
+
+}

@@ -42,6 +42,7 @@ enum ENTITY_TYPE  // todo, pass to class
 		ENEMY_STATIC,
 		ENEMY_IMP,
 		LOOT,
+		BLOOD,
 };
 
 enum POINTING_DIR
@@ -52,7 +53,7 @@ enum POINTING_DIR
 	DOWN   // for dyn platforms   
 };
 
-class Collider; 
+struct Collider; 
 
 class j1Entity
 {

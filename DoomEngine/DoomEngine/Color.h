@@ -34,5 +34,7 @@ extern Color Cian;
 extern Color Yellow;
 extern Color Pink;
 extern Color DarkGray;
+extern Color BloodRedMostColor;
+extern Color BloodBlackMostColor;
 
 #endif

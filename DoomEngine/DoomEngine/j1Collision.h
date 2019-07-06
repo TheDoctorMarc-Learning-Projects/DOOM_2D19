@@ -5,15 +5,8 @@
 #include "p2Point.h"
 #include <list>
 
-
+#include "SDL/include/SDL_rect.h"
 #define MAX_COLLIDERS 1000
-
-enum CollisionType
-{
-	TOP,
-	BOTTOM,
-	LATERAL
-};
 
 enum COLLIDER_TYPE
 {
@@ -27,6 +20,7 @@ enum COLLIDER_TYPE
 	COLLIDER_ENEMY,
 	COLLIDER_SHOT,
 	COLLIDER_LOOT,
+	COLLIDER_BLOOD,
 	COLLIDER_MAX
 };
 
@@ -71,8 +65,6 @@ struct Collider
 		if (y)
 			rect.y = y; 
 	}
-
-	CollisionType currentCollisionType; 
 
 	bool CheckCollision(const SDL_Rect& r);
 };

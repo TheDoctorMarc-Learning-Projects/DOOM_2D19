@@ -11,7 +11,7 @@
 #include "SDL/include/SDL_stdinc.h"
 
 
-// Modules || forward declarations
+// Modules forward declarations
 class j1Window;
 class j1Input;
 class j1Render;
@@ -24,6 +24,7 @@ class j1Fonts;
 class j1Particles;
 class j1Collision;
 class j1EntityFactory; 
+class j1BloodManager; 
 
 class j1App
 {
@@ -111,6 +112,7 @@ public:
 	j1Fonts*			font = nullptr;
 	j1Collision*  		collision = nullptr; 
 	j1EntityFactory*    entityFactory = nullptr; 
+	j1BloodManager*     bloodManager = nullptr; 
 
 	bool				vsync = false;
 	bool				pause = false;

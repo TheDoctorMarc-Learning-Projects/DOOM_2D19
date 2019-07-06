@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -100,7 +100,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link />
   </ItemDefinitionGroup>
@@ -113,7 +113,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -129,7 +129,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -140,10 +140,12 @@
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="j1App.cpp" />
     <ClCompile Include="j1Audio.cpp" />
+    <ClCompile Include="j1BloodManager.cpp" />
     <ClCompile Include="j1Collision.cpp" />
     <ClCompile Include="j1Enemy.cpp" />
     <ClCompile Include="j1EnemyIMP.cpp" />
     <ClCompile Include="j1Entity.cpp" />
+    <ClCompile Include="j1EntityBloodDrop.cpp" />
     <ClCompile Include="j1EntityFactory.cpp" />
     <ClCompile Include="j1EntityLootWeapon.cpp" />
     <ClCompile Include="j1EntityPlayer.cpp" />
@@ -168,10 +170,12 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="j1App.h" />
     <ClInclude Include="j1Audio.h" />
+    <ClInclude Include="j1BloodManager.h" />
     <ClInclude Include="j1Collision.h" />
     <ClInclude Include="j1Enemy.h" />
     <ClInclude Include="j1EnemyIMP.h" />
     <ClInclude Include="j1Entity.h" />
+    <ClInclude Include="j1EntityBloodDrop.h" />
     <ClInclude Include="j1EntityFactory.h" />
     <ClInclude Include="j1EntityLoot.h" />
     <ClInclude Include="j1EntityLootWeapon.h" />

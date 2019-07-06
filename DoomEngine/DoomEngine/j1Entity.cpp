@@ -86,9 +86,9 @@ void j1Entity::Draw()
 			flip = SDL_FLIP_HORIZONTAL;
 
 	}
+		
 
-
-	if (entityTex != nullptr && drawActive)
+	if (drawActive && entityTex != nullptr)
 	{
 		if(section.w > 0 && section.h > 0)
 			App->render->Blit(entityTex, position.x, position.y, &section, 1.f, flip, spriteScale, spriteRotation, rotationPivots.x, rotationPivots.y);

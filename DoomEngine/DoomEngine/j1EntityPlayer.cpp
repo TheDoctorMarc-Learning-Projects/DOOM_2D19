@@ -399,6 +399,9 @@ void j1EntityPlayer::ChangeWeapon(SDL_GameControllerButton button)
 				if ((*weapon)->GetWeaponType() == WEAPON_TYPE::CHAINSAW)
 					(*weapon)->AddHotSpotToChainsaw(false);
 
+				(*weapon)->StopAllFxs(); 
+
+
 				currentWeapon = nullptr; 
 
 				int desiredIndex = 0; 

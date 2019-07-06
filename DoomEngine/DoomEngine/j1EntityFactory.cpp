@@ -18,6 +18,8 @@
 
 #include "LootWeaponMaps.h"
 
+#include "j1BloodManager.h"
+
 #include <assert.h>
 
 j1EntityFactory::j1EntityFactory()
@@ -273,5 +275,6 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage)
 	else
 		App->audio->PlayFx(ent->name + "Injured");
 
+	App->bloodManager->CreateRandomBloodStream(ent->collider->rect, 0.5f, 8);    // change this for targeted, only random for chainsaw??? 
 }
 

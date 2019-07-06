@@ -64,7 +64,7 @@ struct  weaponInfo
 };
 
 class j1EntityLoot;
-class Collider; 
+struct Collider; 
 class j1EntityPlayer; 
 
 class j1EntityLootWeapon : public j1EntityLoot
@@ -88,7 +88,7 @@ public:
 	void ChangeRotation(double angle); 
 	void AddHotSpotToChainsaw(bool add); 
 	void FallToTheFloor(float dt); 
-
+	void StopAllFxs(); 
 
 private:
 	weaponInfo weaponData; 

@@ -18,6 +18,7 @@
 #include "j1Fonts.h"
 #include "j1Particles.h"
 #include "j1EntityFactory.h"
+#include "j1BloodManager.h"
 
 #include "Brofiler/Brofiler.h"
 
@@ -48,6 +49,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	particles = DBG_NEW j1Particles();
 	collision = DBG_NEW j1Collision();
 	entityFactory = DBG_NEW j1EntityFactory();
+	bloodManager = DBG_NEW j1BloodManager(); 
 
 	// Ordered for awake / Start / Update
 
@@ -66,6 +68,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(font);
 	AddModule(collision); 
 	AddModule(entityFactory); 
+	AddModule(bloodManager);
 
 	// render last to swap buffer
 	AddModule(render);

@@ -466,9 +466,8 @@ void j1EntityPlayer::AimWeapon()
 
 	if (state.movement.at(0) == MovementState::IDLE && (state.combat == combatState::IDLE || state.combat == combatState::AIM))  // have to be idle to aim, to give some challenge, but you can run and shoot horizontally
 	{
-		if (currentWeapon->GetFiringType() != firingType::MELEE)   // no aim with chainsaw etc
+		if (currentWeapon->GetFiringType() != firingType::MELEE && currentWeapon->GetWeaponType() != WEAPON_TYPE::CHAINSAW)   // no aim with chainsaw etc
 		{
-			
 
 			Sint16 yAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_RIGHTY);
 			Sint16 xAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_RIGHTX);
@@ -480,10 +479,7 @@ void j1EntityPlayer::AimWeapon()
 			else if (xAxis < 0 && pointingDir == RIGHT)
 				pointingDir = LEFT; 
 
-
-
-
-			// then alter the playr animation according to axis thresholds and then alter the current weapon sprite rotation
+			// then alter the player animation according to axis thresholds and then alter the current weapon sprite rotation
 
 			int partition = MAX_CONTROLLER_AXIS / 3;  // devide positive Y positive axis in 3 partitions, as well as another 3 for the negative 
 

@@ -276,7 +276,6 @@ void j1EntityLootWeapon::CalculateStrike()
 
 	if (pointingDir == RIGHT)
 	{
-
 		if (App->entityFactory->player->currentAnimation == &App->entityFactory->player->aimUp)
 		{
 			speed = fPoint(simulBulletSpeed, -simulBulletSpeed); 
@@ -288,9 +287,11 @@ void j1EntityLootWeapon::CalculateStrike()
 		else
 			speed = fPoint(simulBulletSpeed, 0);
 
+		Collider* shot = App->collision->AddCollider({ (int)position.x, (int)position.y, 10, 10 }, COLLIDER_TYPE::COLLIDER_SHOT, this, speed, true); // add a mini colllider to simulate bullet 
 	}
 	else if (pointingDir == LEFT)
 	{
+	
 		if (App->entityFactory->player->currentAnimation == &App->entityFactory->player->aimUp)
 		{
 			speed = fPoint(-simulBulletSpeed, -simulBulletSpeed);
@@ -301,10 +302,12 @@ void j1EntityLootWeapon::CalculateStrike()
 		}
 		else
 			speed = fPoint(-simulBulletSpeed, 0);
+
+		Collider* shot = App->collision->AddCollider({ (int)position.x + collider->rect.w, (int)position.y, 10, 10 }, COLLIDER_TYPE::COLLIDER_SHOT, this, speed, true); // add a mini colllider to simulate bullet 
 	}
 
 
-	Collider* shot = App->collision->AddCollider({(int)position.x, (int)position.y, 10, 10}, COLLIDER_TYPE::COLLIDER_SHOT, this, speed, true); // add a mini colllider to simulate bullet 
+
 	//shot->SetPos(position.x, position.y); 
 
 

@@ -126,11 +126,11 @@
     <ClCompile Include="j1EntityPlatformDynamic.cpp">
       <Filter>Code\Core\In-Game\Entities\inanimated\platforms</Filter>
     </ClCompile>
-    <ClCompile Include="j1EntityLootWeapon.cpp">
-      <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
-    </ClCompile>
     <ClCompile Include="j1Particles.cpp">
       <Filter>Code\Core\In-Game</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EntityLootWeapon.cpp">
+      <Filter>Code\Core\In-Game\Entities\inanimated\platforms</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -76,7 +76,7 @@ public:
 	~j1EntityLootWeapon();
 
 	void OnCollision(Collider* c1, Collider* c2) override;
-	void OnCollisionExit(Collider* c1, Collider* c2) override {};
+	void OnCollisionExit(Collider* c1, Collider* c2) override;
 
 	WEAPON_TYPE GetWeaponType() { return weaponData.weaponType; };
 	firingType GetFiringType() { return weaponData.FiringType; }; 

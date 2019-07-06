@@ -12,6 +12,12 @@
 struct _Mix_Music;
 struct Mix_Chunk;
 
+struct Mix_Chunk_Avanced
+{
+	Mix_Chunk* chunk; 
+	int actualChannel = -1; 
+};
+
 class j1Audio : public j1Module
 {
 public:
@@ -37,6 +43,7 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(std::string name, int repeat = 0);
 
+	//Set specific FX volume
 	bool SetSpecificFxVolume(std::string name, float volume);
 
 	// Set music volume
@@ -46,6 +53,20 @@ public:
 	void SetFxVolume(float volume);
 
 	void UnLoadAudio();
+
+	// Stop specific FX
+	void StopSpecificFx(std::string name); 
+
+	// Pause specific FX
+	void PauseSpecificFx(std::string name);
+
+	// Resume specific FX
+	void ResumeSpecificFx(std::string name);
+
+	// Gather the status of a FX
+	bool isPlayingFx(std::string name); 
+	bool isPausedFx(std::string name); 
+
 private:
 
 	_Mix_Music*			music = nullptr;
@@ -53,9 +74,10 @@ private:
 	float final_volume = MIX_MAX_VOLUME;
 	float final_fx_volume = MIX_MAX_VOLUME;
 	float last_volume = 0.0f;
+	float last_fx_volume = 0.0f; 
 
-
-	std::map<std::string, Mix_Chunk*> fxMap;
+public: 
+	std::map<std::string, Mix_Chunk_Avanced> fxMap;
 
 };
 

@@ -344,6 +344,7 @@ void j1EntityPlayer::WeaponLogic()
 	
 	if (!myWeapons.empty())
 	{
+
 		// capture input 
 		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == KEY_DOWN) 
 		{
@@ -358,15 +359,16 @@ void j1EntityPlayer::WeaponLogic()
 		AimWeapon(); 
 
 		j1KeyState shootButtonState = App->input->GetControllerAxisPulsation(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
-
-		if (shootButtonState == KEY_DOWN || shootButtonState == KEY_REPEAT)
-		{
+	
+		if(shootButtonState != KEY_IDLE)
 			ShootWeapon(shootButtonState);
-		}
+		
+		
 
 	}
 
 }
+
 
 void j1EntityPlayer::ChangeWeapon(SDL_GameControllerButton button)
 {

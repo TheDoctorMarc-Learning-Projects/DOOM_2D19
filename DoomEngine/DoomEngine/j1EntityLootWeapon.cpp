@@ -84,7 +84,15 @@ void j1EntityLootWeapon::PlaceMeWithPlayer()
 	lastSpeed = App->entityFactory->player->lastSpeed;
 
 	if (weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
+	{
 		hotspotCol->SetPos((int)position.x + weaponData.hotspot.x, (int)position.y + weaponData.hotspot.y);
+
+		if(App->audio->isPlayingFx(name + "Start") == false)
+			App->audio->PlayFx(name + "Idle");
+
+		
+	}
+		
 
 	
 	
@@ -124,13 +132,35 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 	}
 		
 
-	if (state == KEY_UP && firing)
-		firing = false; 
+	if (state == KEY_UP /*&& firing*/)
+	{
+		firing = false;
+
+		if (weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
+		{
+			/*App->audio->SetSpecificFxVolume(name + "Idle", App->audio->fxMap.at(name + "Hit")->volume);    // restore idle and shot sounds back to normal
+			App->audio->SetSpecificFxVolume(name + "ShotFire", App->audio->fxMap.at(name + "Hit")->volume);*/
+
+			App->audio->StopSpecificFx(name + "ShotFire"); 
+			App->audio->StopSpecificFx(name + "Hit"); 
+			App->audio->ResumeSpecificFx(name + "Idle");
+		}
+
+		return; 
+	}
+		
 
 	if (weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
 	{
 		firing = true; 
-		App->audio->PlayFx(name + "ShotFire"); 
+		//App->audio->SetSpecificFxVolume(name + "Idle", 0.f); 
+
+		App->audio->PauseSpecificFx(name + "Start");
+		App->audio->PauseSpecificFx(name + "Idle"); 
+
+		if(App->audio->isPlayingFx(name + "ShotFire") == false)
+			App->audio->PlayFx(name + "ShotFire");
+	
 		return;
 	}
 		
@@ -292,7 +322,17 @@ void j1EntityLootWeapon::OnCollision(Collider* c1, Collider* c2)
 			if (!firing)
 				return;
 			else
-				App->audio->PlayFx(name + "Hit"); 
+			{
+				/*App->audio->SetSpecificFxVolume(name + "Idle", 0.0f);    // cancel idle and shot fxs so that only hit is played
+				App->audio->SetSpecificFxVolume(name + "ShotFire", 0.f);*/
+
+				App->audio->PauseSpecificFx(name + "ShotFire");
+
+				if (App->audio->isPlayingFx(name + "Hit") == false)
+					App->audio->PlayFx(name + "Hit");
+			
+			}
+				
 		}
 		else
 			c1->to_delete = true;  // do not delete chainsaw hotspot 
@@ -302,6 +342,27 @@ void j1EntityLootWeapon::OnCollision(Collider* c1, Collider* c2)
 
 		
 	}
+
+}
+
+
+
+void j1EntityLootWeapon::OnCollisionExit(Collider* c1, Collider* c2)
+{
+
+
+	if (c2->type == COLLIDER_ENEMY)
+	{
+
+		if (weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
+		{
+			if (firing)
+			{
+				App->audio->ResumeSpecificFx(name + "ShotFire"); 
+			}
+		}
+	}
+
 
 }
 
@@ -323,3 +384,5 @@ void j1EntityLootWeapon::AddHotSpotToChainsaw(bool add)
 		
 
 }
+
+

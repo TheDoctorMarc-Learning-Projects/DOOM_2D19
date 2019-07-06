@@ -74,7 +74,15 @@ bool j1Audio::Start()
 	LoadFx("sound/fx/dssawful.wav", "chainsawShotFire");
 	LoadFx("sound/fx/dssawhit.wav", "chainsawHit");
 
+	int i = 0; 
+	for (auto chunk = fxMap.begin(); chunk != fxMap.end(); ++chunk)
+	{
+		(*chunk).second.actualChannel = i; 
+		++i; 
+	}
 
+	Mix_AllocateChannels(i); 
+ 
 
 	return true;
 }
@@ -93,8 +101,8 @@ bool j1Audio::CleanUp()
 
 	for (auto& fx : fxMap)
 	{
-		Mix_FreeChunk(fx.second);
-		fx.second = nullptr; 
+		Mix_FreeChunk(fx.second.chunk);
+		fx.second.chunk = nullptr; 
 	}
 		
 	fxMap.clear(); 
@@ -176,7 +184,9 @@ unsigned int j1Audio::LoadFx(const char* path, std::string wantedName)
 	}
 	else
 	{
-		fxMap.insert(std::make_pair(wantedName, chunk));
+		Mix_Chunk_Avanced advancedChunk; 
+		advancedChunk.chunk = chunk; 
+		fxMap.insert(std::make_pair(wantedName, advancedChunk));
 		ret = fxMap.size();
 	}
 
@@ -191,8 +201,11 @@ bool j1Audio::PlayFx(std::string name, int repeat)
 	if(!active)
 		return false;
 
-	if(fxMap.at(name)) // TODO: future prevention here
-		Mix_PlayChannel(-1, fxMap.at(name), repeat);
+	int channel = 0; 
+
+	if(fxMap.at(name).chunk) // TODO: future prevention here
+		channel = Mix_PlayChannel(fxMap.at(name).actualChannel, fxMap.at(name).chunk, repeat);
+		
 
 
 	return ret;
@@ -205,13 +218,16 @@ bool j1Audio::SetSpecificFxVolume(std::string name, float volume)
 	if (!active)
 		return false;
 
+
+	
+	
 	final_fx_volume = MIX_MAX_VOLUME * volume;;
 	if (final_fx_volume < 0.0f || final_fx_volume > MIX_MAX_VOLUME)
 		final_fx_volume = (final_fx_volume < 0.0f) ? 0.0f : MIX_MAX_VOLUME;
 
 
-	if (fxMap.at(name)) // TODO: future prevention here
-		Mix_VolumeChunk(fxMap.at(name), final_fx_volume);
+	if (fxMap.at(name).chunk) // TODO: future prevention here
+		Mix_VolumeChunk(fxMap.at(name).chunk, final_fx_volume);
 
 	return ret;
 }
@@ -236,9 +252,10 @@ void j1Audio::SetFxVolume(float volume)
 		final_fx_volume = (final_fx_volume < 0.0f) ? 0.0f : MIX_MAX_VOLUME;
 
 	for (auto& fx : fxMap)
-		Mix_VolumeChunk(fx.second, final_fx_volume);
-
+		Mix_VolumeChunk(fx.second.chunk, final_fx_volume);
 	
+	
+	last_fx_volume = volume; 
 
 	/*for (std::list<Mix_Chunk*>::iterator item_fx = fx.begin();item_fx!=fx.end() ; ++item_fx)
 	{
@@ -259,11 +276,60 @@ void j1Audio::UnLoadAudio()
 
 	for (auto& fx : fxMap)
 	{
-		Mix_FreeChunk(fx.second);
-		fx.second = nullptr; 
+		Mix_FreeChunk(fx.second.chunk);
+		fx.second.chunk = nullptr; 
 	}
 	fxMap.clear(); 
 
 
 
 }
+
+void j1Audio::StopSpecificFx(std::string name)
+{
+	if (fxMap.at(name).chunk)
+	{
+		if(isPlayingFx(name) == true)
+			Mix_HaltChannel(fxMap.at(name).actualChannel);
+	
+	}
+		
+}
+
+
+void j1Audio::PauseSpecificFx(std::string name)
+{
+	if (fxMap.at(name).chunk)
+	{
+		if (isPlayingFx(name) == true)
+			Mix_Pause(fxMap.at(name).actualChannel);
+	
+	}
+	
+}
+
+void j1Audio::ResumeSpecificFx(std::string name)
+{
+	if (fxMap.at(name).chunk)
+	{
+		if (isPausedFx(name))
+			Mix_Resume(fxMap.at(name).actualChannel);
+	}
+		
+}
+
+bool j1Audio::isPlayingFx(std::string name)
+{
+	if (Mix_Playing(fxMap.at(name).actualChannel) == 0)
+		return false;
+	return true;
+}
+
+bool j1Audio::isPausedFx(std::string name)
+{
+	if (Mix_Paused(fxMap.at(name).actualChannel) == 0)
+		return false;
+	return true;
+}
+
+

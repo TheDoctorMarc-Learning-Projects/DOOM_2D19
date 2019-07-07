@@ -64,7 +64,9 @@ bool j1Entity::PostUpdate()
 
 bool j1Entity::CleanUp()
 {
-	collider->to_delete = true;
+	if(colliderActive)
+		collider->to_delete = true;
+
 
 	/*if (entityTex != nullptr)    // loaded and unloaded in atlas 
 	{

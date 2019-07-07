@@ -16,7 +16,6 @@ public:
 
 	void Draw() override; // special draw, call bloodmanager draw and drawquad; 
 	bool Update(float dt); 
-	bool CleanUp(); 
 
 	void OnCollision(Collider* c1, Collider* c2) override;
 	//void OnCollisionExit(Collider* c1, Collider* c2) override;

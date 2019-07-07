@@ -118,6 +118,7 @@ public:
 	SDL_Texture*			entityTex = nullptr;            // specific entity texture
 	double                  spriteRotation = 0; 
 	iPoint                  rotationPivots = iPoint(INT_MAX, INT_MAX); 
+	bool                    colliderActive = true; 
 	//uint                    blitOrder = 0; 
 };
 

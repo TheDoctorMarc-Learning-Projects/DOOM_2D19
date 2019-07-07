@@ -12,7 +12,7 @@ j1Collision::j1Collision()
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 		colliders[i] = nullptr;
 
-	matrix[COLLIDER_BLOOD][COLLIDER_BLOOD] = false;
+	matrix[COLLIDER_BLOOD][COLLIDER_BLOOD] = true;
 	matrix[COLLIDER_BLOOD][COLLIDER_LOOT] = false;
 	matrix[COLLIDER_BLOOD][COLLIDER_WALL] = false;
 	matrix[COLLIDER_BLOOD][COLLIDER_PLAYER] = false;

@@ -66,6 +66,8 @@ public:
 	float GetDt();
 	//float GetGameTime();
 
+	uint32  GetFPS() { return frames_on_last_update;  };
+
 	bool ExistDocument(std::string doc);
 private:
 
@@ -138,6 +140,7 @@ private:
 	j1Timer				startup_time;
 	j1Timer				frame_time;
 	j1Timer				last_sec_frame_time;
+	uint32              frames_on_last_update = 0; 
 	uint32				last_sec_frame_count = 0;
 	uint32				prev_last_sec_frame_count = 0;
 	uint32				capTime = 0;

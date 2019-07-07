@@ -5,6 +5,7 @@
 #include "j1Collision.h"
 #include "Color.h"
 
+
 class j1Entity;
 
 class j1EntityBloodDrop : public j1Entity
@@ -24,6 +25,7 @@ public:
        // new collider in collision cpp, than can collide with floor, but ignores entitites for the mom
 	Color c;
 	fPoint initialSpeed = fPoint(0, 0); 
+	bool floorReached = false; 
 
 	friend class j1BloodManager;
 

@@ -237,7 +237,8 @@ void j1EnemyIMP::DoAttack(bool meleeRange)
 			{
 				if (isPlayerOnMeleeRange())   // do damage 
 				{
-					App->entityFactory->DoDamagetoEntity(App->entityFactory->player, damage);
+					float ShotsPerSec = 1 / (cadenceValues.melee / 1000);
+					App->entityFactory->DoDamagetoEntity(App->entityFactory->player, damage, ShotsPerSec);
 
 				}
 

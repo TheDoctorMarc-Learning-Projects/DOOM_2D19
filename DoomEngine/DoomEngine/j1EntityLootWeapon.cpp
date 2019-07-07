@@ -27,7 +27,7 @@ j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_ty
 		section = {30, 0, size.x, size.y}; 
 		
 		// offset form player (when player is holding the weapon)
-		this->weaponData.offsetFromPlayer = fPoint(21, 15);
+		this->weaponData.offsetFromPlayer = fPoint(19, 21);
 		this->weaponData.tipPosDisplacement = 16 * spriteScale;
 		this->weaponData.hotspot = { (int)(24.f * spriteScale), (int)(10.f * spriteScale), (int)(39.f * spriteScale), (int)(11.f * spriteScale)};
 
@@ -342,8 +342,9 @@ void j1EntityLootWeapon::OnCollision(Collider* c1, Collider* c2)
 		else
 			c1->to_delete = true;  // do not delete chainsaw hotspot 
 
-
-		App->entityFactory->DoDamagetoEntity(c2->callback, weaponData.damage); 
+	
+		float ShotsPerSec = (float)weaponData.cadence / 60.f;  // shot per minute / 60 seconds 
+		App->entityFactory->DoDamagetoEntity(c2->callback, weaponData.damage, ShotsPerSec);
 
 		
 	}

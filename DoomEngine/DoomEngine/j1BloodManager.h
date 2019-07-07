@@ -9,12 +9,15 @@
 #include "Color.h"
 #include "j1Collision.h"
 #include "j1EntityBloodDrop.h"
+#include "j1EntityFactory.h"
 #include <random>
 
 
-#define bloodCubeSideSize 2
+#define bloodCubeSideSize 3
 
 #define bloodModuleSpeed 10.5f
+
+#define bloodAmountPerDamageProportion 0.34f
 
 class j1EntityBloodDrop; 
 
@@ -49,6 +52,8 @@ public:
 	Color GenerateColorForBloodDrop();   // TODO: std random with a defined spectrum 
 	fPoint GenerateRandomSpeedForBloodDrop(); 
 	fPoint GenerateTargetedSpeedForBloodDrop();
+
+	uint CalculateNumberOfBloodDropsToBeSpawned(float damage, float shotsPerSec);
 
 	float GetRandomValue(float v1, float v2);
 	int GetRandomIntValue(int v1, int v2);

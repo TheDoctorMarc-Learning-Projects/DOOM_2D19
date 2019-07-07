@@ -15112,7 +15112,7 @@
   <object id="27" name="weapon" x="608" y="512" width="32" height="32">
    <properties>
     <property name="cadence" type="int" value="0"/>
-    <property name="damage" type="int" value="5"/>
+    <property name="damage" type="int" value="1"/>
     <property name="firingType" value="auto"/>
     <property name="maxBullets" type="int" value="0"/>
     <property name="name" value="chainsaw"/>

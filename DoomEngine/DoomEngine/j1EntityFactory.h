@@ -14,7 +14,11 @@
 #include "j1EntityLoot.h"
 #include "j1EntityLootWeapon.h"
 
-
+enum damage_Frame_Type
+{
+	ONE_SHOT,
+	EACH_FRAME
+};
 
 class j1EntityFactory : public j1Module
 {
@@ -29,7 +33,7 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	void DoDamagetoEntity(j1Entity* ent, uint damage);   // to do: capture shot dir and enemy rect for the blood functionality
+	void DoDamagetoEntity(j1Entity* ent, uint damage, float shotsPerSecond);   // to do: capture shot dir and enemy rect for the blood functionality
 
 	/*bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;*/  // TODO (xd) 

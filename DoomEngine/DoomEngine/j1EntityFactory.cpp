@@ -244,7 +244,7 @@ j1Entity* j1EntityFactory::CreateWeapon(ENTITY_TYPE type, int positionX, int pos
 }
 
 
-void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage)
+void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage, float cadence)
 {
 
 	if (ent->to_delete)  // first line prevention 
@@ -276,6 +276,10 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage)
 	else
 		App->audio->PlayFx(ent->name + "Injured");
 
-	App->bloodManager->CreateRandomBloodStream(ent->collider->rect, 0.5f, 8);    // change this for targeted, only random for chainsaw??? 
+
+	uint bloodDropAmount = App->bloodManager->CalculateNumberOfBloodDropsToBeSpawned(damage, cadence);
+
+	App->bloodManager->CreateRandomBloodStream(ent->collider->rect, 0.5f, bloodDropAmount);    // change this for targeted, only random for chainsaw??? 
+
 }
 

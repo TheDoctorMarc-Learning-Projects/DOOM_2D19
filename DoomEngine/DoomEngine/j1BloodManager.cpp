@@ -243,3 +243,30 @@ fPoint j1BloodManager::GenerateRandomSpeedForBloodDrop()
 	return speed; 
 
 }
+
+uint j1BloodManager::CalculateNumberOfBloodDropsToBeSpawned(float damage, float shotsPerSec)
+{
+	float drops = 0; 
+	
+	// if it shots like chainsaw, that means that each frame blood is generated, so there would be 60+ blood drops per second
+
+
+	if (shotsPerSec == 0.0f) // chainsaw, 1 shot per frame, = 60 shots per second (60 FPS)
+	{
+		shotsPerSec = 60.f; // App->GetFPS();
+	}
+
+	drops = (damage * (damage / (damage * 5.f))) * (1.f / shotsPerSec);
+
+	if (drops < 1)
+	{
+		
+		int prop = GetRandomIntValue(0, (int)shotsPerSec);
+
+		if (prop < 10)
+			return 1U; 
+	}
+		
+	return (uint)(int)drops; 
+
+}

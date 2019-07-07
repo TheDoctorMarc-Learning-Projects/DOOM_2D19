@@ -39,24 +39,30 @@ void j1EntityBloodDrop::Draw()
 
 bool j1EntityBloodDrop::Update(float dt)
 {
-	static float decrementY = 0.85f; 
-	static float decrementX = 0.93f; 
+	if (!floorReached)
+	{
+		static float decrementY = 0.85f;
+		static float decrementX = 0.93f;
 
-	
+
 
 		float v1 = initialSpeed.y *= decrementY;
 		float v2 = GravityCalc(gravityFactor, mass) * dt;
 
 		lastSpeed.y = v1 + v2;
+
+		lastSpeed.x *= decrementX;
+
+		position.x += lastSpeed.x;
+		position.y += lastSpeed.y;
+
+		collider->SetPos(position.x, position.y);
+
+		
+	}
+
+	return true;
 	
-	lastSpeed.x *= decrementX; 
-
-	position.x += lastSpeed.x; 
-	position.y += lastSpeed.y; 
-
-	collider->SetPos(position.x, position.y);
-
-	return true; 
 }
 
 bool j1EntityBloodDrop::CleanUp()
@@ -69,6 +75,21 @@ bool j1EntityBloodDrop::CleanUp()
 
 void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 {
+	if (!floorReached)
+	{
+		if (c2->type == COLLIDER_FLOOR)
+		{
+			if (collider->rect.y + collider->rect.h > c2->rect.y)
+			{
+				floorReached = true;
+
+				float offset = collider->rect.y + collider->rect.h - c2->rect.y;  // to put back if it goes off a bit
+				position.y -= offset;
+
+			}
+		}
+	}
+
 
 }
 

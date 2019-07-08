@@ -3,6 +3,7 @@
 
 #include "j1Entity.h"
 #include "j1Collision.h"
+#include "j1EntityPlatformDynamic.h"
 #include "Color.h"
 
 
@@ -23,6 +24,7 @@ public:
 
 	void Draw() override; // special draw, call bloodmanager draw and drawquad; 
 	bool Update(float dt); 
+	bool CleanUp() override; 
 
 	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
@@ -35,6 +37,7 @@ public:
 	bool roofReached = false; 
 	SDL_Rect lastPosCollider = { 0,0,0,0 }; 
 	Viscosity viscosityData; 
+	j1EntityPlatformDynamic* dynGroundCallback = nullptr; 
 
 	friend class j1BloodManager;
 

@@ -92,12 +92,16 @@ public:
 		if (!brutal)
 		{
 			currentAnimation = &death1;
+
+			App->audio->StopSpecificFx(name + "Injured");   // so that death is audible 
 			App->audio->PlayFx(this->name + "Death");
 		}
 			
 		else
 		{
 			currentAnimation = &death2;
+
+			App->audio->StopSpecificFx(name + "Injured");   // so that death is audible 
 			App->audio->PlayFx(this->name + "Death2");
 		}
 		

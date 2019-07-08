@@ -65,16 +65,25 @@ bool j1EntityPlatformDynamic::Update(float dt)
 	BROFILER_CATEGORY("Entity Platform Update", Profiler::Color::AntiqueWhite);
 
 	lastPointingDir = pointingDir;
-	previousPosition = position; 
+	previousPosition = position;  
 
 	switch (movementType)
 	{
 	case AXIS_Movement::HORIZONTAL:
 
+		
 		if (pointingDir == POINTING_DIR::RIGHT)
-			position.x += speed * dt; 
-		else if(pointingDir == POINTING_DIR::LEFT)
+		{
+			position.x += speed * dt;
+			lastSpeed.x = speed * dt;
+		}
+			
+		else if (pointingDir == POINTING_DIR::LEFT)
+		{
 			position.x -= speed * dt;
+			lastSpeed.x = -speed * dt;
+		}
+		
 
 		break; 
 
@@ -82,10 +91,20 @@ bool j1EntityPlatformDynamic::Update(float dt)
 	case AXIS_Movement::VERTICAL:
 		CheckPlatformSameLevel();
 
+
+		
 		if (pointingDir == POINTING_DIR::UP)
+		{
 			position.y -= speed * dt;
+			lastSpeed.y = -speed * dt;
+		}
+
 		else if (pointingDir == POINTING_DIR::DOWN)
+		{
 			position.y += speed * dt;
+			lastSpeed.y = speed * dt;
+		}
+			
 
 
 		if(!collider->onCollisionWithMe.empty())

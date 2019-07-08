@@ -14,7 +14,7 @@ j1Collision::j1Collision()
 
 	matrix[COLLIDER_BLOOD][COLLIDER_BLOOD] = true;
 	matrix[COLLIDER_BLOOD][COLLIDER_LOOT] = false;
-	matrix[COLLIDER_BLOOD][COLLIDER_WALL] = false;
+	matrix[COLLIDER_BLOOD][COLLIDER_WALL] = true;
 	matrix[COLLIDER_BLOOD][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_BLOOD][COLLIDER_DEATH] = false;
 	matrix[COLLIDER_BLOOD][COLLIDER_GOD] = false;
@@ -44,7 +44,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_WALL][COLLIDER_SHOT] = true;
 	matrix[COLLIDER_WALL][COLLIDER_FLOOR] = false;
 	matrix[COLLIDER_WALL][COLLIDER_LOOT] = false;
-	matrix[COLLIDER_WALL][COLLIDER_BLOOD] = false;
+	matrix[COLLIDER_WALL][COLLIDER_BLOOD] = true;
 
 
 	matrix[COLLIDER_FLOOR][COLLIDER_FLOOR] = true;  // needed for dynamic platforms

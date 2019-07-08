@@ -48,8 +48,6 @@ bool j1EntityBloodDrop::Update(float dt)
 			static float decrementY = 0.85f;
 			static float decrementX = 0.97f;
 
-
-
 			float v1 = initialSpeed.y *= decrementY;
 			float v2 = GravityCalc(gravityFactor, mass) * dt;  // when it has reached roof and has to fall, ONLY this should be considered
 
@@ -80,6 +78,19 @@ bool j1EntityBloodDrop::Update(float dt)
 
 		
 	}
+	else
+	{
+		if (dynGroundCallback)
+		{
+			position.y = dynGroundCallback->collider->rect.y - size.y;    // check this out, works just fine, but put it to nullptr
+
+			if(dynGroundCallback->movementType == AXIS_Movement::HORIZONTAL)
+				position.x += dynGroundCallback->lastSpeed.x;
+		
+		}
+			
+	}
+	
 
 	return true;
 	
@@ -91,33 +102,34 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 {
 	if (!floorReached)
 	{
-		if (c2->type == COLLIDER_FLOOR)
+		if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_WALL)
 		{
+
+			float offset = 0.0f; 
+			float preventiveOffSet = 20.f; // the collision case when boold goes up, then down in one frame and is inside lower part of platf, not to put it on top of platf
 			if (!roofReached)
 			{
-				if (collider->rect.y + collider->rect.h > c2->rect.y)  // FALL 
+				if (collider->rect.y + collider->rect.h > c2->rect.y && collider->rect.y + collider->rect.h < c2->rect.y + preventiveOffSet)  // FALL 
 				{
 					
 						if (lastPosCollider.x > c2->rect.x && lastPosCollider.x + lastPosCollider.w < c2->rect.x + c2->rect.w)   // if it comes from top and not sides 
 						{
-							if (lastSpeed.y >= 0)
+							if (lastSpeed.y > 0)
 							{
 								floorReached = true;
 
-								float offset = collider->rect.y + collider->rect.h - c2->rect.y;  // to put back if it goes off a bit
+								offset = collider->rect.y + collider->rect.h - c2->rect.y;  // to put back if it goes off a bit
 								position.y -= offset;
 
 
-								collider->SetPos(position.x, position.y);
-
+								if (c2->hasCallback && c2->callback->type == ENTITY_DYNAMIC)
+									dynGroundCallback = dynamic_cast<j1EntityPlatformDynamic*>(c2->callback); 
 							}
 						}
 
 					
 
 				}
-
-
 
 				if (collider->rect.y < c2->rect.y + c2->rect.h)   // ROOF
 				{
@@ -128,11 +140,9 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 							roofReached = true;
 
 
-							float offset = c2->rect.y + c2->rect.h - collider->rect.y;  // to put back if it goes off a bit
+							offset = c2->rect.y + c2->rect.h - collider->rect.y;  // to put back if it goes off a bit
 							position.y += offset;
 
-
-							collider->SetPos(position.x, position.y);
 
 						}
 					}
@@ -144,23 +154,24 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 					roofReached = true;
 
 
-					float offset = collider->rect.x + collider->rect.w - c2->rect.x;  // to put back if it goes off a bit
+					offset = collider->rect.x + collider->rect.w - c2->rect.x;  // to put back if it goes off a bit
 					position.x -= offset;
 
-
-					collider->SetPos(position.x, position.y);
 				}
 				else if (collider->rect.x < c2->rect.x + c2->rect.w && lastPosCollider.x > c2->rect.x + c2->rect.w && lastSpeed.x < 0 )
 				{
 
 					roofReached = true;
 
-					float offset = c2->rect.x + c2->rect.w - collider->rect.x;  // to put back if it goes off a bit
+					offset = c2->rect.x + c2->rect.w - collider->rect.x;  // to put back if it goes off a bit
 					position.x += offset;
 
 
-					collider->SetPos(position.x, position.y);
+					
 				}
+
+
+				collider->SetPos(position.x, position.y);
 			}
 			
 		}
@@ -193,7 +204,7 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 
 void j1EntityBloodDrop::OnCollisionExit(Collider* c1, Collider* c2)
 {
-	if (c2->type == COLLIDER_FLOOR)
+	if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_WALL)
 	{
 		if (lastSpeed.y > 0 && collider->rect.y > c2->rect.y + c2->rect.h)
 		{
@@ -202,4 +213,15 @@ void j1EntityBloodDrop::OnCollisionExit(Collider* c1, Collider* c2)
 		}
 	
 	}
+}
+
+
+bool j1EntityBloodDrop::CleanUp()
+{
+	j1Entity::CleanUp(); 
+
+	if (dynGroundCallback)
+		dynGroundCallback = nullptr; 
+
+	return true; 
 }

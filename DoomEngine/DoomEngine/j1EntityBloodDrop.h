@@ -8,6 +8,13 @@
 
 class j1Entity;
 
+struct Viscosity
+{
+	float speed = 3.f; 
+	uint frameRate = 30U; 
+	uint frameCounter = 0U; 
+};
+
 class j1EntityBloodDrop : public j1Entity
 {
 public:
@@ -18,13 +25,16 @@ public:
 	bool Update(float dt); 
 
 	void OnCollision(Collider* c1, Collider* c2) override;
-	//void OnCollisionExit(Collider* c1, Collider* c2) override;
+	void OnCollisionExit(Collider* c1, Collider* c2) override;
 
 public: 
        // new collider in collision cpp, than can collide with floor, but ignores entitites for the mom
 	Color c;
 	fPoint initialSpeed = fPoint(0, 0); 
 	bool floorReached = false; 
+	bool roofReached = false; 
+	SDL_Rect lastPosCollider = { 0,0,0,0 }; 
+	Viscosity viscosityData; 
 
 	friend class j1BloodManager;
 

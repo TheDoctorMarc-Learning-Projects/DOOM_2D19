@@ -107,7 +107,7 @@ void j1EntityPlatformDynamic::UpdateEntitiesOnTopPositions(bool justOfsset, floa
 	
 	for (auto& col : collider->onCollisionWithMe)
 	{
-		if (col->type == COLLIDER_PLAYER || col->type == COLLIDER_ENEMY)  // god also?? 
+		if (col->type == COLLIDER_PLAYER || col->type == COLLIDER_ENEMY || col->type == COLLIDER_BLOOD)  // god also?? 
 		{
 			if (pointingDir == POINTING_DIR::UP)
 			{

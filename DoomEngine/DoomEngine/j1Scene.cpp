@@ -89,12 +89,24 @@ bool j1Scene::Update(float dt)
 		App->map->Draw();
 
 
-	int x, y; 
-	x = y = 0; 
-	App->input->GetMousePosition(x, y); 
+	
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-		App->entityFactory->CreateEntity(ENEMY_IMP, x, y, "EnemyIMP"); 
+	{
+		int x, y;
+		x = y = 0; 
+		App->input->GetMousePosition(x, y);
+
+		uint wX, wY; 
+
+		App->win->GetWindowSize(wX, wY); 
+
+		if (App->render->camera.x < 0)
+			x += -App->render->camera.x; 
+
+		App->entityFactory->CreateEntity(ENEMY_IMP, x, y, "EnemyIMP");
+	}
+		
 
 	
 

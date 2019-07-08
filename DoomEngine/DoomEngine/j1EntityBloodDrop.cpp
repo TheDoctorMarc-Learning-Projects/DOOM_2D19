@@ -212,9 +212,9 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 	else
 	{
 		 
-		if (c2->type == COLLIDER_BLOOD)     // if a blood drop is EXACTLY in the same pos as another, it will be rendered on top, so no need to have the other alive
+		if (c2->type == COLLIDER_BLOOD)     // if a blood drop is in the same pos as another, it will be rendered on top, so no need to have the other alive
 		{
-			if (position.x == c2->callback->position.x && position.y == c2->callback->position.y)
+			if ((int)position.x == (int)c2->callback->position.x && (int)position.y == (int)c2->callback->position.y)
 			{
 				c2->callback->to_delete = true; 
 			}

@@ -102,7 +102,7 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 {
 	if (!floorReached)
 	{
-		if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_WALL)
+		if (c2->type == COLLIDER_FLOOR)
 		{
 
 			float offset = 0.0f; 
@@ -174,6 +174,37 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 				collider->SetPos(position.x, position.y);
 			}
 			
+		}
+
+
+
+		if (c2->type == COLLIDER_WALL)   // just sides 
+		{
+			float offset = 0.0f;
+
+			if (collider->rect.x + collider->rect.w > c2->rect.x /*&& lastPosCollider.x + lastPosCollider.w < c2->rect.x*/ && lastSpeed.x > 0) // sides
+			{
+				roofReached = true;
+
+
+				offset = collider->rect.x + collider->rect.w - c2->rect.x;  // to put back if it goes off a bit
+				position.x -= offset;
+
+			}
+			else if (collider->rect.x < c2->rect.x + c2->rect.w /*&& lastPosCollider.x > c2->rect.x + c2->rect.w*/ && lastSpeed.x < 0)
+			{
+
+				roofReached = true;
+
+				offset = c2->rect.x + c2->rect.w - collider->rect.x;  // to put back if it goes off a bit
+				position.x += offset;
+
+
+
+			}
+
+
+			collider->SetPos(position.x, position.y);
 		}
 
 

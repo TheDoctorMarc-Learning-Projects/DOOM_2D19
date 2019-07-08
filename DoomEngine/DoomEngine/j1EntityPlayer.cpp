@@ -753,9 +753,9 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 		float offset;
 
-		if (pointingDir == RIGHT && lastSpeed.x > 0)
+		if (pointingDir == RIGHT /*&& lastSpeed.x > 0*/)
 		{
-			if (collider->rect.x + collider->rect.w > c2->rect.x)
+			if (collider->rect.x + collider->rect.w > c2->rect.x && collider->rect.x < c2->rect.x)  // second condition is due to aiming and changing pointing dir and collider
 			{
 
 				offset = collider->rect.x + collider->rect.w - c2->rect.x;
@@ -765,9 +765,9 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 			
 				
 		}
-	    else if (pointingDir == LEFT && lastSpeed.x < 0)
+	    else if (pointingDir == LEFT /*&& lastSpeed.x < 0*/)
 		{
-			if (collider->rect.x < c2->rect.x + c2->rect.w)
+			if (collider->rect.x < c2->rect.x + c2->rect.w && collider->rect.x > c2->rect.x)  // second condition is due to aiming and changing pointing dir and collider
 			{
 				offset = c2->rect.x + c2->rect.w - collider->rect.x;
 				position.x += offset;

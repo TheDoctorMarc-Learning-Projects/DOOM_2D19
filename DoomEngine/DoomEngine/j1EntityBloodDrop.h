@@ -11,8 +11,8 @@ class j1Entity;
 
 struct Viscosity
 {
-	float speed = 3.f; 
-	uint frameRate = 30U; 
+	float speed = 4.f; 
+	uint frameRate = 40U; 
 	uint frameCounter = 0U; 
 };
 

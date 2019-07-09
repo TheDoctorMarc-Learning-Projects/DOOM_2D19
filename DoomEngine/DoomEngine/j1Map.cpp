@@ -643,8 +643,8 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 						weaponData.cadence = property.attribute("value").as_int();
 					else if (name == "maxBullets")
 						weaponData.maxBullets = property.attribute("value").as_int();
-					else if (name == "scopeFactor")
-						weaponData.scopeFactor = property.attribute("value").as_int();
+					else if (name == "scope")
+						weaponData.scope = property.attribute("value").as_float();
 
 					
 				}

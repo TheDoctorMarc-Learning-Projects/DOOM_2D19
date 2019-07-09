@@ -9,6 +9,7 @@
 
 #define simulBulletSpeed 40
 
+
 enum class WEAPON_TYPE   
 {
 	DEFAULT,
@@ -47,7 +48,7 @@ struct  weaponInfo
    int damage = 0;
    int cadence = 0;      // this is captured in shots per minute and then translated 
    int maxBullets = 0;
-   float scopeFactor = 0.f;  // the further away, the less damage
+   float scope = 0.f;  // the further away, the less damage
 
 // - - - - - - - - - - - - placing 
    fPoint offsetFromPlayer = fPoint(0.f,0.f); 
@@ -90,9 +91,12 @@ public:
 	void FallToTheFloor(float dt); 
 	void StopAllFxs(); 
 
+	float CalculateRealDamage(fPoint shotTravel); 
+
 private:
 	weaponInfo weaponData; 
 	Collider* hotspotCol; 
+	int currentBullets; 
 	bool firing = false; 
 	bool playerKO = false; 
 	bool arrivedFloor = false; 

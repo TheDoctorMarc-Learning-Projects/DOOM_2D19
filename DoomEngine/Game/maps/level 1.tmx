@@ -15116,7 +15116,7 @@
     <property name="firingType" value="auto"/>
     <property name="maxBullets" type="int" value="0"/>
     <property name="name" value="chainsaw"/>
-    <property name="scopeFactor" type="float" value="0"/>
+    <property name="scope" type="float" value="0"/>
    </properties>
   </object>
   <object id="28" name="weapon" x="576" y="224" width="32" height="32">
@@ -15126,7 +15126,7 @@
     <property name="firingType" value="auto"/>
     <property name="maxBullets" type="int" value="200"/>
     <property name="name" value="machineGun"/>
-    <property name="scopeFactor" type="float" value="0.95"/>
+    <property name="scope" type="float" value="5000"/>
    </properties>
   </object>
   <object id="29" name="weapon" x="285.333" y="506.667" width="32" height="32">
@@ -15136,7 +15136,7 @@
     <property name="firingType" value="semi"/>
     <property name="maxBullets" type="int" value="38"/>
     <property name="name" value="shotgun"/>
-    <property name="scopeFactor" type="float" value="0.6"/>
+    <property name="scope" type="float" value="1000"/>
    </properties>
   </object>
  </objectgroup>

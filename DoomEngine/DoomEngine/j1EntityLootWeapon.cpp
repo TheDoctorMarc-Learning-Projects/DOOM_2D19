@@ -178,6 +178,7 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 	if (SDL_GetTicks() > lastTimeShoot + (uint)(int)MiliSecShotTIme)    // TODO later on: MAXBULLETS, bullet functionality discount and prevent firing when 0 bullets etc
 	{
 		firing = true;
+		currentBullets--; 
 
 		lastTimeShoot = SDL_GetTicks();
 
@@ -344,7 +345,11 @@ void j1EntityLootWeapon::OnCollision(Collider* c1, Collider* c2)
 
 
 		float ShotsPerSec = (float)weaponData.cadence / 60.f;  // shot per minute / 60 seconds 
-		App->entityFactory->DoDamagetoEntity(c2->callback, weaponData.damage, ShotsPerSec, c1->speed);
+	
+		fPoint shotTravel = fPoint((float)c1->rect.x, (float)c1->rect.y) - c1->initialPos;
+		float realDamage = CalculateRealDamage(shotTravel);
+
+		App->entityFactory->DoDamagetoEntity(c2->callback, realDamage, ShotsPerSec, c1->speed);
 
 		
 	}
@@ -373,6 +378,24 @@ void j1EntityLootWeapon::OnCollisionExit(Collider* c1, Collider* c2)
 		}
 	}
 
+
+}
+
+float j1EntityLootWeapon::CalculateRealDamage(fPoint shotTravel)
+{
+	if (weaponData.scope == 0.0f || shotTravel.IsZero())
+		return weaponData.damage;             // no scope, melee, just returns default damage
+	else
+	{
+		float shotTravelModule = sqrt(pow(shotTravel.x, 2) + pow(shotTravel.y, 2)); 
+		float damageSubstractionFactor = ((shotTravelModule * 100) / weaponData.scope) / 100;    // rule of 3, and then in percentatge
+
+		if (shotTravelModule > weaponData.scope)
+			return 0.0f; 
+		else 
+			return weaponData.damage - (damageSubstractionFactor * weaponData.damage);
+	
+	}
 
 }
 

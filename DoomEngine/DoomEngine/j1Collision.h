@@ -37,6 +37,7 @@ struct Collider
 	bool hasSpeed = false; 
 	bool volatileOutOfScreen = false; 
 	fPoint speed = fPoint(0, 0); 
+	fPoint initialPos = fPoint(0, 0);  // needed sometimes like shot, to compare first and last pos
 
 	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, j1Entity* callback = nullptr, fPoint speed = fPoint(0,0), bool volatileOutOfScreen = false) :
 		rect(rectangle),
@@ -46,7 +47,11 @@ struct Collider
 		volatileOutOfScreen(volatileOutOfScreen)
 	{
 		if (!speed.IsZero())
-			hasSpeed = true; 
+		{
+			hasSpeed = true;
+			initialPos = fPoint((float)rect.x, (float)rect.y); 
+		}
+			
 	}
 
 	void SetPos(int x, int y)

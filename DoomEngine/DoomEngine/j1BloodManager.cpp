@@ -322,7 +322,12 @@ uint j1BloodManager::CalculateNumberOfBloodDropsToBeSpawned(float damage, float 
 		shotsPerSec = 60.f; // App->GetFPS();
 	}
 
+	if (damage == 0.0f || shotsPerSec == 0.0f)  // prevention for the next line divisions
+		return 0U;  
+
 	drops = (damage * (damage / (damage * 5.f))) * (1.f / shotsPerSec);
+
+	assert(drops < 1000 && "Too much blood drops!! Something went wrong :/");
 
 	if (drops < 1)
 	{

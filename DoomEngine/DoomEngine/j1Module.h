@@ -7,6 +7,8 @@
 #define __j1MODULE_H__
 
 #include <string>
+#include <assert.h>
+#include "p2Log.h"
 #include "PugiXml\src\pugixml.hpp"
 #include "Brofiler\Brofiler.h"
 

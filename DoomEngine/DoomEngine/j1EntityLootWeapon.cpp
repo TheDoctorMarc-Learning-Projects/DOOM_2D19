@@ -320,7 +320,7 @@ void j1EntityLootWeapon::CalculateStrike()
 void j1EntityLootWeapon::OnCollision(Collider* c1, Collider* c2)
 {
 
-	if (c2->type == COLLIDER_ENEMY)
+	if (c2->type == COLLIDER_ENEMY && c1->type == COLLIDER_SHOT)
 	{
 
 		if (weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
@@ -341,12 +341,14 @@ void j1EntityLootWeapon::OnCollision(Collider* c1, Collider* c2)
 				
 		}
 		else
-			c1->to_delete = true;  // do not delete chainsaw hotspot 
+			c1->to_delete = true;  // do not delete chainsaw hotspot, but do delete shot 
 
 
 		float ShotsPerSec = (float)weaponData.cadence / 60.f;  // shot per minute / 60 seconds 
 	
 		fPoint shotTravel = fPoint((float)c1->rect.x, (float)c1->rect.y) - c1->initialPos;
+		shotTravel = fPoint(abs(shotTravel.x), abs(shotTravel.y)); 
+
 		float realDamage = CalculateRealDamage(shotTravel);
 
 		App->entityFactory->DoDamagetoEntity(c2->callback, realDamage, ShotsPerSec, c1->speed);
@@ -383,9 +385,8 @@ void j1EntityLootWeapon::OnCollisionExit(Collider* c1, Collider* c2)
 
 float j1EntityLootWeapon::CalculateRealDamage(fPoint shotTravel)
 {
-	if (weaponData.scope == 0.0f || shotTravel.IsZero())
-		return weaponData.damage;             // no scope, melee, just returns default damage
-	else
+	
+	if(weaponData.scope != 0.F && shotTravel.IsZero() == false)
 	{
 		float shotTravelModule = sqrt(pow(shotTravel.x, 2) + pow(shotTravel.y, 2)); 
 		float damageSubstractionFactor = ((shotTravelModule * 100) / weaponData.scope) / 100;    // rule of 3, and then in percentatge
@@ -396,6 +397,8 @@ float j1EntityLootWeapon::CalculateRealDamage(fPoint shotTravel)
 			return weaponData.damage - (damageSubstractionFactor * weaponData.damage);
 	
 	}
+	else
+		return weaponData.damage;             // no scope, melee, just returns default damage
 
 }
 

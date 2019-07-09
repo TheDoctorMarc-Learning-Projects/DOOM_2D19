@@ -27,7 +27,7 @@ j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_ty
 		section = {30, 0, size.x, size.y}; 
 		
 		// offset form player (when player is holding the weapon)
-		this->weaponData.offsetFromPlayer = fPoint(19, 21);
+		this->weaponData.offsetFromPlayer = fPoint(19, 25);
 		this->weaponData.tipPosDisplacement = 16 * spriteScale;
 		this->weaponData.hotspot = { (int)(24.f * spriteScale), (int)(10.f * spriteScale), (int)(39.f * spriteScale), (int)(11.f * spriteScale)};
 

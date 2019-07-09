@@ -60,7 +60,7 @@ bool j1EntityBloodDrop::Update(float dt)
 			initialSpeed.y = 0;  // so that when it falls from roof again, it just goes down with gravity 
 			lastSpeed.x = 0;
 
-			if (viscosityData.frameCounter % viscosityData.frameRate == 0)
+			if (viscosityData.frameCounter != 0 && viscosityData.frameCounter % viscosityData.frameRate == 0)
 				lastSpeed.y = viscosityData.speed;
 			else
 				lastSpeed.y = 0; 

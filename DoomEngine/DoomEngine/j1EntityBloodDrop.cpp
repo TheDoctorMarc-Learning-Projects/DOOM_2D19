@@ -240,7 +240,13 @@ void j1EntityBloodDrop::OnCollisionExit(Collider* c1, Collider* c2)
 		if (lastSpeed.y > 0 && collider->rect.y > c2->rect.y + c2->rect.h)
 		{
 			if (roofReached)
+			{
 				roofReached = false;
+
+				if (c2->type == COLLIDER_WALL)  // when it is sliding down a wall and gets to the botton, we must assume its floor 
+					floorReached = true; 
+			}
+				
 		}
 	
 	}

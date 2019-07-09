@@ -35,6 +35,7 @@ public:
 	fPoint initialSpeed = fPoint(0, 0); 
 	bool floorReached = false; 
 	bool roofReached = false; 
+	bool collidedWithVerticalWall = false; 
 	SDL_Rect lastPosCollider = { 0,0,0,0 }; 
 	Viscosity viscosityData; 
 	j1EntityPlatformDynamic* dynGroundCallback = nullptr; 

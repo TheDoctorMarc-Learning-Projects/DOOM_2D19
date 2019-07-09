@@ -244,7 +244,7 @@ j1Entity* j1EntityFactory::CreateWeapon(ENTITY_TYPE type, int positionX, int pos
 }
 
 
-void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage, float cadence)
+void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage, float cadence, fPoint shotSpeed)
 {
 
 	if (ent->to_delete)  // first line prevention 
@@ -277,9 +277,9 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage, float cadence
 		App->audio->PlayFx(ent->name + "Injured");
 
 
-	uint bloodDropAmount = App->bloodManager->CalculateNumberOfBloodDropsToBeSpawned(damage, cadence);
+	uint bloodDropAmount = App->bloodManager->CalculateNumberOfBloodDropsToBeSpawned(damage, cadence);   // TODO: damage in weapon is affected by scope, so calculate it accordingly
 
-	App->bloodManager->CreateRandomBloodStream(ent->collider->rect, 0.5f, bloodDropAmount);    // change this for targeted, only random for chainsaw??? 
-
+	//App->bloodManager->CreateRandomBloodStream(ent->collider->rect, 0.5f, bloodDropAmount);    // change this for targeted, only random for chainsaw??? 
+	App->bloodManager->CreateTargetedBloodSteam(ent->collider->rect, 0.5f, bloodDropAmount, shotSpeed);
 }
 

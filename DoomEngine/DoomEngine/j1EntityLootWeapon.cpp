@@ -342,9 +342,9 @@ void j1EntityLootWeapon::OnCollision(Collider* c1, Collider* c2)
 		else
 			c1->to_delete = true;  // do not delete chainsaw hotspot 
 
-	
+
 		float ShotsPerSec = (float)weaponData.cadence / 60.f;  // shot per minute / 60 seconds 
-		App->entityFactory->DoDamagetoEntity(c2->callback, weaponData.damage, ShotsPerSec);
+		App->entityFactory->DoDamagetoEntity(c2->callback, weaponData.damage, ShotsPerSec, c1->speed);
 
 		
 	}

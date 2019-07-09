@@ -33,7 +33,7 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	void DoDamagetoEntity(j1Entity* ent, uint damage, float shotsPerSecond);   // to do: capture shot dir and enemy rect for the blood functionality
+	void DoDamagetoEntity(j1Entity* ent, uint damage, float shotsPerSecond, fPoint shotSpeed = fPoint(0,0));   // to do: capture shot dir and enemy rect for the blood functionality
 
 	/*bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;*/  // TODO (xd) 

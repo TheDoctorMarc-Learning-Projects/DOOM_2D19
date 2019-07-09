@@ -159,10 +159,38 @@ void j1BloodManager::CreateRandomBloodStream(SDL_Rect enemyRect, float centerAre
 }
 
 
-/*void j1BloodManager::CreateTargetedBloodSteam()
+void j1BloodManager::CreateTargetedBloodSteam(SDL_Rect enemyRect, float damage, uint numberOfBloodDrops, fPoint shotSpeed)
 {
 
-}*/
+	if (shotSpeed.IsZero() == true)  // caution, when near (1 tile away from enemy) 
+	{
+		CreateRandomBloodStream(enemyRect, 0.5F, numberOfBloodDrops);
+		return; 
+	}
+		
+
+	bloodStream* stream = DBG_NEW bloodStream;
+
+	// for the random stream, get a central area inside the enemy rect; 
+	SDL_Rect centerOriginArea = GetRectCentralArea(enemyRect, 0.85F);    // get the central area, let it be smaller so it seems more targeted 
+
+	for (int i = 0; i < numberOfBloodDrops; ++i)
+	{
+		float originXpos = GetRandomValue(centerOriginArea.x, centerOriginArea.x + centerOriginArea.w);   // get a X value inside area
+		float originYpos = GetRandomValue(centerOriginArea.y, centerOriginArea.y + centerOriginArea.h);   // get a Y value inside area
+
+		fPoint speed = GenerateTargetedSpeedForBloodDrop(shotSpeed);
+		Color c = GenerateColorForBloodDrop();
+
+		j1EntityBloodDrop* drop = DBG_NEW j1EntityBloodDrop(originXpos, originYpos, speed, c);
+
+		if (drop != nullptr)
+			stream->myBloodDrops.push_back(drop);
+
+	}
+
+	bloodStreams.push_back(stream);
+}
 
 SDL_Rect j1BloodManager::GetRectCentralArea(SDL_Rect enemyRect, float centerAreaScaleFactor)
 {
@@ -236,13 +264,51 @@ fPoint j1BloodManager::GenerateRandomSpeedForBloodDrop()
 	speed.x = GetRandomValue(-bloodModuleSpeed, bloodModuleSpeed);  // between negative max and positive max
 	speed.y = sqrt(pow(bloodModuleSpeed, 2.f) - pow(speed.x, 2.f));  // this calculus is always positive
 
-	float speedYSign = GetRandomIntValue(0, 1);    // give the last calculus a proper sign
-	if (speedYSign == 0)
-		speed.y = -speed.y; 
+	/*float speedYSign = GetRandomIntValue(0, 1);    // give the last calculus a proper sign
+    if (speedYSign == 0)*/
+		speed.y = -speed.y;    // always positive at start, like a fountain 
 
 	return speed; 
 
 }
+
+fPoint j1BloodManager::GenerateTargetedSpeedForBloodDrop(fPoint shotSpeed)
+{
+	fPoint speed = fPoint(0, 0); 
+	 
+	 
+	if (shotSpeed.x != 0)
+		shotSpeed.x /= abs(shotSpeed.x);    // direction: either 1 or -1 (or it was 0 before) 
+	if (shotSpeed.y != 0)
+		shotSpeed.y /= abs(shotSpeed.y);    // direction: either 1 or -1 (or it was 0 before)
+
+	if (shotSpeed.x == 0 && shotSpeed.y != 0)
+	{
+		speed.y = bloodModuleSpeed * shotSpeed.y;   // take a module and the direction 
+	}
+	else if (shotSpeed.y == 0 && shotSpeed.x != 0)
+	{
+		speed.x = bloodModuleSpeed * shotSpeed.x;    // take a module and the direction 
+	}
+	else   // diagonals
+	{
+		speed.x = sqrt((pow(bloodModuleSpeed, 2) / 2));   // from the hipotenuse formula, with two identical cathetus 
+		speed.y = speed.x; 
+		speed.x *= shotSpeed.x;    // give it a direction 
+		speed.y *= shotSpeed.y;    // give it a direction 
+
+	}
+
+	// do a little spectrum so they do not have exactly the same speed, don't mind being a tad bigger than module
+
+	float semiRange = 1.5f;
+
+	speed.x += GetRandomValue(-semiRange, semiRange); 
+	speed.y += GetRandomValue(-semiRange, semiRange);
+	
+	return speed; 
+}
+
 
 uint j1BloodManager::CalculateNumberOfBloodDropsToBeSpawned(float damage, float shotsPerSec)
 {

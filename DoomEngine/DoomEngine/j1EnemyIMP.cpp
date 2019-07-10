@@ -19,6 +19,7 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY, std::string name) : j1Enemy(posX, pos
 	gravityFactor = DEFAULT_GRAV * mass;
 	tileDetectionRange = 10;
 	cadenceValues.melee = 1200; 
+	pathType = enemyPathType::ALL_ROUND; 
 
 	// jumpdata
 

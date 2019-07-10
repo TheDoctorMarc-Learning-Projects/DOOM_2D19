@@ -243,8 +243,13 @@ void j1EntityBloodDrop::OnCollisionExit(Collider* c1, Collider* c2)
 			{
 				roofReached = false;
 
-				if (c2->type == COLLIDER_WALL)  // when it is sliding down a wall and gets to the botton, we must assume its floor 
-					floorReached = true; 
+				if (c2->type == COLLIDER_WALL)
+				{
+					floorReached = true;
+					float offset = collider->rect.y + collider->rect.h - c2->rect.y;  // to put back if it goes off a bit
+					position.y -= offset;
+				}// when it is sliding down a wall and gets to the botton, we must assume its floor 
+					 
 			}
 				
 		}

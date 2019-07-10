@@ -243,18 +243,16 @@ bool j1Enemy::FollowPath(float dt)
 	
 	bool ret = false;
 
-
-
 	BROFILER_CATEGORY("Enemy Follow Path", Profiler::Color::Azure);
 
 	pathToFollow.clear();
-	iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
+	iPoint tilePos = App->map->WorldToMap(position.x, position.y + collider->rect.h) + iPoint(1,0);
 	iPoint targetTilePos = iPoint(0, 0);
 
 	if (state.path == ePathState::FOLLOW_PLAYER)
 	{
 		targetPos.value = App->entityFactory->player->position; 
-		targetTilePos = App->map->WorldToMap(targetPos.value.x, targetPos.value.y) + iPoint(0, 1);
+		targetTilePos = App->map->WorldToMap(targetPos.value.x, targetPos.value.y) + iPoint(1, 2);
 	}
 	else if (state.path == ePathState::TEMPORAL_DEVIATION)
 	{
@@ -269,10 +267,10 @@ bool j1Enemy::FollowPath(float dt)
 
 	}
 
-	if (tilePos.DistanceManhattan(targetTilePos) > 1)       // The enemy doesnt collapse with the player
+	if (tilePos.DistanceManhattan(targetTilePos) > 0)       // The enemy doesnt collapse with the player
 	{
 		
-			if (App->pathfinding->CreatePathAStar(tilePos, targetTilePos) != 0)
+		if (App->pathfinding->CreatePathAStar(tilePos + iPoint(0,1), targetTilePos + iPoint(0,1)) != 0)
 			{
 				pathToFollow = *App->pathfinding->GetLastPath();
 				if (pathToFollow.size() > 0)
@@ -290,9 +288,9 @@ bool j1Enemy::FollowPath(float dt)
 
 	if (ret)
 	{
-		if (pathToFollow.size() > 1)
+		if (IsWalkableForMe(pathToFollow.at(1)))
 		{
-			fPoint WorldTargetPos = fPoint(0, 0); 
+			fPoint WorldTargetPos = fPoint(0, 0);
 			WorldTargetPos.x = (float)(App->map->MapToWorld(pathToFollow.at(1).x, 0).x);
 			WorldTargetPos.y = (float)(App->map->MapToWorld(0, pathToFollow.at(1).y).y);
 
@@ -301,9 +299,9 @@ bool j1Enemy::FollowPath(float dt)
 			SolveMove(direction, dt);
 		}
 
-
+				
 	}
-	
+
 
 
 	if (isPlayerOnMeleeRange())   // do it even if stunned depending on enemy, maybe some enemies cancel attacks etc 
@@ -312,6 +310,31 @@ bool j1Enemy::FollowPath(float dt)
 
 	return ret; 
 
+}
+
+bool j1Enemy::IsWalkableForMe(iPoint mapPos)
+{
+	// JUST TESTING: 
+	bool ret = false; 
+
+	
+
+
+	switch(pathType)
+	{
+	case enemyPathType::ALL_ROUND:
+		ret = true;
+		break; 
+	case enemyPathType::A_TO_B:
+		if (App->pathfinding->IsWalkable(mapPos))
+			ret = true;
+		break;
+	case enemyPathType::FLYING:
+		break;
+
+	}
+
+	return ret; 
 }
 
 void j1Enemy::SolveMove(fPoint Direction, float dt)

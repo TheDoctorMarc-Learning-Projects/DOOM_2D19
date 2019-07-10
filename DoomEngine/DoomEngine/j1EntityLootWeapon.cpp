@@ -13,6 +13,7 @@ j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_ty
 
 	this->weaponData = weaponData; 
 	this->weaponData.weaponState = WEAPON_STATE::AWAIT; 
+	currentBullets = weaponData.maxBullets; 
 
 	// define an offset from player, which may vary depending on weapon sprite
 
@@ -175,7 +176,7 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 	// TODO: auto weapons key repeat 
 
 
-	if (SDL_GetTicks() > lastTimeShoot + (uint)(int)MiliSecShotTIme)    // TODO later on: MAXBULLETS, bullet functionality discount and prevent firing when 0 bullets etc
+	if (SDL_GetTicks() > lastTimeShoot + (uint)(int)MiliSecShotTIme && currentBullets > 0)    // TODO later on: MAXBULLETS, bullet functionality discount and prevent firing when 0 bullets etc
 	{
 		firing = true;
 		currentBullets--; 

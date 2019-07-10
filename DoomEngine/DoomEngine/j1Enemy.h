@@ -5,6 +5,13 @@
 #include "j1EntityPlatform.h"
 #include <vector> 
 
+enum class enemyPathType
+{
+	ALL_ROUND,
+	A_TO_B,
+	FLYING
+};
+
 enum class eCombatState
 {
 	IDLE,
@@ -96,6 +103,7 @@ public:
 	void WarnOtherModules();
 	void VerticalMovement(float dt); 
 	bool FollowPath(float dt); 
+	bool IsWalkableForMe(iPoint mapPos); 
 	void SolveMove(fPoint direction, float dt); 
 	void AssignDirectionWithSpeed(); 
 	virtual void ResolvePathDeviation() {};
@@ -132,6 +140,7 @@ public:
 public:
 
 	int damage = INT_MAX; 
+	enemyPathType pathType; 
 	baseCadenceValues cadenceValues; 
 	Animation run;
 	Animation attack; 

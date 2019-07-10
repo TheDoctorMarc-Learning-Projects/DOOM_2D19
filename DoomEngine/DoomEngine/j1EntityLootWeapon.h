@@ -96,7 +96,7 @@ public:
 private:
 	weaponInfo weaponData; 
 	Collider* hotspotCol; 
-	int currentBullets; 
+	int currentBullets = 0; 
 	bool firing = false; 
 	bool playerKO = false; 
 	bool arrivedFloor = false; 

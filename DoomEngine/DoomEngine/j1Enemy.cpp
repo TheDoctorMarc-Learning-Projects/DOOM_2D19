@@ -86,6 +86,28 @@ bool j1Enemy::Move(float dt)
 
 	bool ret = false; 
 
+	SetPreviousFrameData(); 
+
+	if (state.combat != eCombatState::DYING)
+	{
+		SetPath(dt, ret);
+		VerticalMovement(dt);
+		SetCollider(); 
+	}
+	else
+		DieLogic(dt);
+
+	
+
+	
+	
+
+
+	return ret;
+}
+
+void j1Enemy::SetPreviousFrameData()
+{
 	if (!to_delete)
 	{
 		previousPosition = position;
@@ -103,8 +125,12 @@ bool j1Enemy::Move(float dt)
 
 		lastPointingDir = pointingDir;
 	}
+}
 
-	if (state.combat != eCombatState::DYING && state.combat != eCombatState::DEAD)
+void j1Enemy::SetPath(float dt, bool& success)
+{
+
+	if (state.path == ePathState::FOLLOW_PLAYER)
 	{
 		iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
 		iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y) + iPoint(0, 1);
@@ -113,52 +139,45 @@ bool j1Enemy::Move(float dt)
 		if (Distance <= tileDetectionRange)
 		{
 			if (FollowPath(dt))
-				ret = true;
-		}
+				success = true;
 
+		}
+	}
+	else if (state.path == ePathState::TEMPORAL_DEVIATION)
+	{
+		success = true;
+	}
+	
+}
+
+void j1Enemy::DieLogic(float dt)
+{
+	if (!onPlatform)
 		VerticalMovement(dt);
 
-		// - - - - - - - - - - - - - - - - - - warn other modules about the pos if needed
-		WarnOtherModules();
-	}
-	else
+	if (onPlatform && deathPosGround.IsZero())
 	{
-		if (state.combat == eCombatState::DYING)       // TODO, add second death anim, make a random of the two or play the most brutal if it is a fatality or critic death 
-		{
-			if(!onPlatform)
-				VerticalMovement(dt);
+		deathPosGround.y = position.y + collider->rect.h;         // make so when enemy dies and anim changes, he visually stays inmovile in platform 
+		deathColllider = collider->rect;
 
-				if (onPlatform && deathPosGround.IsZero())
-				{
-					deathPosGround.y = position.y + collider->rect.h;         // make so when enemy dies and anim changes, he visually stays inmovile in platform 
-					deathColllider = collider->rect;
+	}
+	else if (!deathPosGround.IsZero())
+	{
+		float offset = deathColllider.h - collider->rect.h;
 
-				}
-				else if(!deathPosGround.IsZero())
-				{
-					float offset = deathColllider.h - collider->rect.h;
+		if (!onDynamicplatform)
+			position.y = deathPosGround.y - deathColllider.h + offset;
 
-					if(!onDynamicplatform)
-						position.y = deathPosGround.y - deathColllider.h + offset;
-				
-
-				
-			
-					
-				
-					collider->SetPos(position.x, position.y);
-					collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
-				}
-			
-
-				CheckDeathFinished(); 
-				
-				                                                       
-		}
+		collider->SetPos(position.x, position.y);
+		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
 	}
 
-	
 
+	CheckDeathFinished();
+}
+
+void j1Enemy::SetCollider()
+{
 	if (!to_delete)
 	{
 		if (position.x < 0)   // TODO: Add right map limit blocking
@@ -174,14 +193,11 @@ bool j1Enemy::Move(float dt)
 			collider->SetPos(position.x, position.y);
 			collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h, position.x, position.y);
 		}
-		
+
 
 	}
-	
-
-
-	return ret;
 }
+
 
 void j1Enemy::VerticalMovement(float dt)
 {
@@ -202,7 +218,7 @@ void j1Enemy::VerticalMovement(float dt)
 
 	if (!onPlatform)
 	{
-		if (state.movement.at(1) == eMovementState::FALL)
+		if (state.movement.at(1) == eMovementState::FALL)                // cacodemon already ignores this, cannot be in these states
 		{
 			lastSpeed.y = GravityCalc(gravityFactor, mass) * dt;
 			position.y += lastSpeed.y;
@@ -232,11 +248,7 @@ void j1Enemy::VerticalMovement(float dt)
 		state.movement.at(1) = eMovementState::FALL;*/
 }
 
-void j1Enemy::WarnOtherModules()
-{
 
-
-}
 
 bool j1Enemy::FollowPath(float dt)
 {
@@ -334,7 +346,9 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 	if (abs(Direction.y) < 0.1f)
 		Direction.y = 0.f; 
 
-		if (state.movement.at(1) != eMovementState::NOT_ACTIVE)
+	// - - - - - - - - - - - - - - - - - -  X Axis
+
+		if (state.movement.at(1) != eMovementState::NOT_ACTIVE)  // jump or fall 
 		{
 			if (state.movement.at(1) == eMovementState::JUMP)
 				lastSpeed.x = (Direction.x * speed) * jumpInfo.speedXIncrementJump * dt;
@@ -345,17 +359,39 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 		else
 			lastSpeed.x = (Direction.x * speed) * dt;
 
+
+	// - - - - - - - - - - - - - - - - - -  Y Axis
+
+		if (pathType == enemyPathType::FLYING)
+			lastSpeed.y = (Direction.y * speed) * dt;
+
+	// - - - - - - - - - - - - - - - - - -  Assign Direction
+
 		AssignDirectionWithSpeed(); 
 
-		
+	// - - - - - - - - - - - - - - - - - -  Assign Position and Animation
 
 
-		if (lastSpeed.x != 0)
+		if (pathType != enemyPathType::FLYING)
 		{
-			currentAnimation = &run;
-			position.x += lastSpeed.x;
+			if (lastSpeed.x != 0)
+			{
+				currentAnimation = &run;
+				position.x += lastSpeed.x;
+			}
+
 		}
-	
+		else
+		{
+			if (lastSpeed.x != 0 || lastSpeed.y != 0)
+			{
+				currentAnimation = &run;
+				position.x += lastSpeed.x;
+				position.y += lastSpeed.y;
+			}
+
+		}
+		
 	
 
 	

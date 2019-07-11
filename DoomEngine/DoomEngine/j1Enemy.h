@@ -78,6 +78,12 @@ struct baseCadenceValues
 	uint longRange = 0U; 
 };
 
+struct deathData
+{
+	bool hasSecondDeathAnim = false; 
+	bool hasSecondDeathFx = false; 
+};
+
 class j1Entity;
 
 class j1Enemy : public j1Entity
@@ -98,7 +104,6 @@ public:
 	bool Move(float dt) override;
 	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
-	void WarnOtherModules();
 	void VerticalMovement(float dt); 
 	bool FollowPath(float dt); 
 	void CallPathCreation(iPoint pos, iPoint target, bool& success); 
@@ -106,6 +111,10 @@ public:
 	void AssignDirectionWithSpeed(); 
 	virtual void ResolvePathDeviation() {};
 	
+	void SetPath(float dt, bool& moveSuccess); 
+	void SetPreviousFrameData();
+	void SetCollider();
+	void DieLogic(float dt); 
 
 	virtual void DoAttack(bool meleeRange) {};
 
@@ -113,13 +122,25 @@ public:
 	{
 		state.combat = eCombatState::DYING; 
 
-		if (!brutal)
-			currentAnimation = &death1;
-		else
-			currentAnimation = &death2; 
-
 		App->audio->StopSpecificFx(name + "Injured");   // so that death is audible 
-		App->audio->PlayFx(this->name + "Death");
+
+		if (!brutal || deathDataAnimFx.hasSecondDeathAnim == false)   // check this out (for the ones that only have one death anim) 
+		{
+			currentAnimation = &death1;
+			App->audio->PlayFx(this->name + "Death");  // TODO: if two deaths sounds, play one or another
+		}
+			
+		else
+		{
+			currentAnimation = &death2;
+
+			if(deathDataAnimFx.hasSecondDeathFx)
+				App->audio->PlayFx(this->name + "Death2");  // TODO: if two deaths sounds, play one or another
+			else
+				App->audio->PlayFx(this->name + "Death");  // TODO: if two deaths sounds, play one or another
+		}
+			
+
 
 	};
 
@@ -130,7 +151,7 @@ public:
 			state.combat = eCombatState::DEAD;
 			
 			
-			to_delete = true;   // to do: create the corpse here 
+			to_delete = true;   // TODO: create the corpse here 
 
 		}
 	}
@@ -140,12 +161,13 @@ public:
 public:
 
 	int damage = INT_MAX; 
+	deathData deathDataAnimFx; 
 	enemyPathType pathType; 
 	baseCadenceValues cadenceValues; 
 	Animation run;
 	Animation attack; 
 	Animation death1;   
-	Animation death2; 
+	Animation death2;
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0);
 	TargetPos targetPos; 

@@ -254,11 +254,11 @@
     <ClInclude Include="j1BloodManager.h">
       <Filter>Code\Core\In-Game\Entities\animated\Enemies\Other\Blood</Filter>
     </ClInclude>
-    <ClInclude Include="j1EntityBloodDrop.h">
-      <Filter>Code\Core\In-Game\Entities\animated\Enemies\Other\Blood</Filter>
-    </ClInclude>
     <ClInclude Include="j1EnemyCacodemon.h">
       <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityBloodDrop.h">
+      <Filter>Code\Core\In-Game\Entities\animated\Enemies\Other\Blood</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

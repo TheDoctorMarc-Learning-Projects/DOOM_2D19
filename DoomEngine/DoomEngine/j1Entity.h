@@ -41,6 +41,7 @@ enum ENTITY_TYPE  // todo, pass to class
 		MAX_TYPE,
 		ENEMY_STATIC,
 		ENEMY_IMP,
+		ENEMY_CACODEMON,
 		LOOT,
 		BLOOD,
 };

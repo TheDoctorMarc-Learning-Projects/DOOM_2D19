@@ -57,22 +57,32 @@ bool j1Audio::Awake(pugi::xml_node& config)
 
 bool j1Audio::Start()
 {
-
-	LoadFx("sound/fx/dsoof.wav", "fall");
-	LoadFx("sound/fx/dash.wav", "dash");
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - weapons
+	LoadFx("sound/fx/dswpnup.wav", "weaponPickUp");
 	LoadFx("sound/fx/dsshotgn.wav", "shotgunShotFire");
 	LoadFx("sound/fx/dspistol.wav", "machineGunShotFire");
-	LoadFx("sound/fx/dsbgdth1.wav", "EnemyIMPDeath");
-	LoadFx("sound/fx/dsbgdth2.wav", "EnemyIMPDeath2");
-	LoadFx("sound/fx/dspopain.wav", "EnemyIMPInjured");
-	LoadFx("sound/fx/dsplpain.wav", "playerInjured");
-	LoadFx("sound/fx/dspldeth.wav", "playerDeath");
-	LoadFx("sound/fx/dsslop.wav", "playerDeath2");
-	LoadFx("sound/fx/dswpnup.wav", "weaponPickUp");
 	LoadFx("sound/fx/dssawup.wav", "chainsawStart");
 	LoadFx("sound/fx/dssawidl.wav", "chainsawIdle");
 	LoadFx("sound/fx/dssawful.wav", "chainsawShotFire");
 	LoadFx("sound/fx/dssawhit.wav", "chainsawHit");
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - enemies
+	LoadFx("sound/fx/dsclaw.wav", "EnemyImpAttack");
+	LoadFx("sound/fx/dsbgdth1.wav", "EnemyIMPDeath");
+	LoadFx("sound/fx/dsbgdth2.wav", "EnemyIMPDeath2");
+	LoadFx("sound/fx/dspopain.wav", "EnemyIMPInjured");
+
+	LoadFx("sound/fx/dsfirsht.wav", "EnemyCacodemonAttack"); // long range 
+	LoadFx("sound/fx/dssgtdth.wav", "EnemyCacodemonDeath");
+	LoadFx("sound/fx/dsdmpain.wav", "EnemyCacodemonInjured");
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - player
+	LoadFx("sound/fx/dsoof.wav", "fall");
+	LoadFx("sound/fx/dash.wav", "dash");
+	LoadFx("sound/fx/dsplpain.wav", "playerInjured");
+	LoadFx("sound/fx/dspldeth.wav", "playerDeath");
+	LoadFx("sound/fx/dsslop.wav", "playerDeath2");
+
 
 	int i = 0; 
 	for (auto chunk = fxMap.begin(); chunk != fxMap.end(); ++chunk)

@@ -3,7 +3,7 @@
 
 #include "j1Enemy.h"
 
-enum CACODEMON_ATTACK_TYPE
+enum class CACODEMON_ATTACK_TYPE
 {
 	MELEE,
 	FIREBALL,
@@ -21,11 +21,12 @@ public:
 
 	// functionality ------
 
-	void ResolvePathDeviation();
+	//void ResolvePathDeviation();
 
 	bool Move(float dt) override;  // call parent function, then if enemy does enaything extra, do it after call 
 
-	void DoAttack(bool meleeRange) override;
+	//void OnCollision(Collider* c1, Collider* c2) override;        // TODO: cacodemon ignores jump, fall, onplatform etc
+	//void OnCollisionExit(Collider* c1, Collider* c2) override;    
 
 private:
 	uint stopNearPlayerRange = 10; 

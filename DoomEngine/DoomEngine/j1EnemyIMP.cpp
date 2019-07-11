@@ -22,6 +22,8 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY, std::string name) : j1Enemy(posX, pos
 	tileDetectionRange = 10;
 	cadenceValues.melee = 1200; 
 	pathType = enemyPathType::ALL_ROUND; 
+	deathDataAnimFx.hasSecondDeathAnim = true; 
+	deathDataAnimFx.hasSecondDeathFx = false; 
 
 	// jumpdata
 
@@ -216,6 +218,7 @@ void j1EnemyIMP::DoAttack(bool meleeRange)
 				{
 					float ShotsPerSec = 1 / (cadenceValues.melee / 1000);
 					App->entityFactory->DoDamagetoEntity(App->entityFactory->player, damage, ShotsPerSec);
+					App->audio->PlayFx(name + "Attack"); 
 
 				}
 

@@ -15,6 +15,7 @@
 #include "j1EntityPlayer.h"
 #include "j1EntityPlatform.h"
 #include "j1EnemyIMP.h"
+#include "j1EnemyCacodemon.h"
 
 #include "LootWeaponMaps.h"
 
@@ -56,12 +57,14 @@ bool j1EntityFactory::Start()
 
 	entityTextureMap.insert(std::pair("player", App->tex->Load("textures/player/player.png")));
 	entityTextureMap.insert(std::pair("EnemyIMP", App->tex->Load("textures/enemies/IMP/IMP.png")));
+	entityTextureMap.insert(std::pair("EnemyCacodemon", App->tex->Load("textures/enemies/Cacodemon/Cacodemon.png")));
+
 	
 	// for the moment, create player here 
 	player = (j1EntityPlayer*)CreateEntity(PLAYER, 0, 0, "player"); 
 
 	// and test enemies
-	CreateEntity(ENEMY_IMP, 150, 100, "EnemyIMP"); 
+	CreateEntity(ENEMY_CACODEMON, 150, 100, "EnemyCacodemon"); 
 
 
 
@@ -194,6 +197,10 @@ j1Entity* j1EntityFactory::CreateEntity(ENTITY_TYPE type, int positionX, int pos
 	case ENEMY_IMP:
 		ret = DBG_NEW j1EnemyIMP(positionX, positionY, name);
 		break;
+	case ENEMY_CACODEMON:
+		ret = DBG_NEW j1EnemyCacodemon(positionX, positionY, name);
+		break;
+
 
 	default:
 		break;

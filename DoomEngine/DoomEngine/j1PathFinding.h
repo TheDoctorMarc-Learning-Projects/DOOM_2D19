@@ -48,7 +48,7 @@ struct PathNode
 	PathNode(const PathNode& node);
 
 	// Fills a list (PathList) of all valid adjacent pathnodes
-	uint FindWalkableAdjacents(PathList& list_to_fill) const;
+	uint FindWalkableAdjacents(PathList& list_to_fill, bool walkableAccounts = true) const;
 
 	// Calculates this tile score
 	int Score() const;
@@ -104,7 +104,7 @@ public:
 	void CreatePath(const iPoint& origin, const iPoint& destination, bool usingJps = true, bool stepByStep = false);
 
 	// Main function to request a path from A to B
-	int CreatePathAStar(const iPoint& origin, const iPoint& destination);
+	int CreatePathAStar(const iPoint& origin, const iPoint& destination, bool walkableAccounts = true);
 	int CreatePathJPS(const iPoint& origin, const iPoint& destination);
 
 	// Main function to cycle the algorythm, choses which one

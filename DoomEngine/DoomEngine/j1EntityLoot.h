@@ -31,7 +31,7 @@ public:
 		type = LOOT;
 		this->loot_type = loot_type; 
 
-		entityTex = App->map->lootTexture; 
+		entityTex = App->map->entityTextureMap.at("loot");
 	
 	};
 

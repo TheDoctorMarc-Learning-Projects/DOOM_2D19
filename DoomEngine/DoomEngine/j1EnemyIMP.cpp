@@ -4,7 +4,9 @@
 j1EnemyIMP::j1EnemyIMP(int posX, int posY, std::string name) : j1Enemy(posX, posY)
 {
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - texture
-	entityTex = App->entityFactory->impTexture; 
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - texture
+	entityTex = App->entityFactory->entityTextureMap.at(name);
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = ENEMY_IMP;
@@ -79,32 +81,6 @@ j1EnemyIMP::~j1EnemyIMP()
 {
 }
 
-/*
-bool j1EnemyIMP::Start()
-{
-
-	return true;
-}
-
-bool j1EnemyIMP::PreUpdate()
-{
-
-	return true;
-}
-
-bool j1EnemyIMP::Update(float dt)
-{
-
-	return true;
-}
-
-bool j1EnemyIMP::PostUpdate()
-{
-
-	return true;
-}
-
-*/
 
 bool j1EnemyIMP::Move(float dt)
 {

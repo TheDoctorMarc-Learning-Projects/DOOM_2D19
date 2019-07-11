@@ -263,47 +263,47 @@ PathNode::PathNode(const PathNode& node) : g(node.g), h(node.h), pos(node.pos), 
 // PathNode -------------------------------------------------------------------------
 // Fills a list (PathList) of all valid adjacent pathnodes
 // ----------------------------------------------------------------------------------
-uint PathNode::FindWalkableAdjacents(PathList& list_to_fill) const
+uint PathNode::FindWalkableAdjacents(PathList& list_to_fill, bool walkableAccounts) const
 {
 	iPoint cell;
 
 	cell.create(pos.x, pos.y + 1);
-	if (App->pathfinding->IsWalkable(cell))
+	if (!walkableAccounts || (walkableAccounts && App->pathfinding->IsWalkable(cell)))
 		list_to_fill.pathNodeList.push_back(PathNode(-1, -1, cell, this));
 
 	// south
 	cell.create(pos.x, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell))
+	if (!walkableAccounts || (walkableAccounts && App->pathfinding->IsWalkable(cell)))
 		list_to_fill.pathNodeList.push_back(PathNode(-1, -1, cell, this));
 
 	// east
 	cell.create(pos.x + 1, pos.y);
-	if (App->pathfinding->IsWalkable(cell))
+	if (!walkableAccounts || (walkableAccounts && App->pathfinding->IsWalkable(cell)))
 		list_to_fill.pathNodeList.push_back(PathNode(-1, -1, cell, this));
 
 	// west
 	cell.create(pos.x - 1, pos.y);
-	if (App->pathfinding->IsWalkable(cell))
+	if (!walkableAccounts || (walkableAccounts && App->pathfinding->IsWalkable(cell)))
 		list_to_fill.pathNodeList.push_back(PathNode(-1, -1, cell, this));
 
 	// north-west
 	cell.create(pos.x + 1, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell))
+	if (!walkableAccounts || (walkableAccounts && App->pathfinding->IsWalkable(cell)))
 		list_to_fill.pathNodeList.push_back(PathNode(-1, -1, cell, this, { 0,0 }, true));
 
 	// south-west
 	cell.create(pos.x - 1, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell))
+	if (!walkableAccounts || (walkableAccounts && App->pathfinding->IsWalkable(cell)))
 		list_to_fill.pathNodeList.push_back(PathNode(-1, -1, cell, this, { 0,0 }, true));
 
 	// north-west
 	cell.create(pos.x + 1, pos.y + 1);
-	if (App->pathfinding->IsWalkable(cell))
+	if (!walkableAccounts || (walkableAccounts && App->pathfinding->IsWalkable(cell)))
 		list_to_fill.pathNodeList.push_back(PathNode(-1, -1, cell, this, { 0,0 }, true));
 
 	// south-est
 	cell.create(pos.x - 1, pos.y + 1);
-	if (App->pathfinding->IsWalkable(cell))
+	if (!walkableAccounts || (walkableAccounts && App->pathfinding->IsWalkable(cell)))
 		list_to_fill.pathNodeList.push_back(PathNode(-1, -1, cell, this, { 0,0 }, true));
 
 	return list_to_fill.pathNodeList.size();
@@ -364,7 +364,7 @@ void j1PathFinding::CreatePath(const iPoint & origin, const iPoint & destination
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
-int j1PathFinding::CreatePathAStar(const iPoint& origin, const iPoint& destination)
+int j1PathFinding::CreatePathAStar(const iPoint& origin, const iPoint& destination, bool walkableAccounts)
 {
 	closed.pathNodeList.clear();
 	open.pathNodeList.clear();
@@ -377,7 +377,7 @@ int j1PathFinding::CreatePathAStar(const iPoint& origin, const iPoint& destinati
 	last_path.clear();
 
 	// If origin or destination are not walkable leave
-	if (!IsWalkable(origin) || !IsWalkable(destination))
+	if (walkableAccounts && (!IsWalkable(origin) || !IsWalkable(destination)))
 	{
 		return -1;
 	}
@@ -433,7 +433,7 @@ int j1PathFinding::CreatePathAStar(const iPoint& origin, const iPoint& destinati
 		else {
 			// Fill a list of all adjancent nodes
 			PathList neighbors;
-			closed.pathNodeList.back().FindWalkableAdjacents(neighbors);
+			closed.pathNodeList.back().FindWalkableAdjacents(neighbors, walkableAccounts);
 
 			// Iterate adjancent nodes:
 			std::list<PathNode>::iterator iterator = neighbors.pathNodeList.begin();

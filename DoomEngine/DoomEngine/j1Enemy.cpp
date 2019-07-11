@@ -246,50 +246,33 @@ bool j1Enemy::FollowPath(float dt)
 	BROFILER_CATEGORY("Enemy Follow Path", Profiler::Color::Azure);
 
 	pathToFollow.clear();
-	iPoint tilePos = App->map->WorldToMap(position.x, position.y + collider->rect.h) + iPoint(1,0);
+	iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
 	iPoint targetTilePos = iPoint(0, 0);
 
 	if (state.path == ePathState::FOLLOW_PLAYER)
 	{
-		targetPos.value = App->entityFactory->player->position; 
-		targetTilePos = App->map->WorldToMap(targetPos.value.x, targetPos.value.y) + iPoint(1, 2);
+		targetPos.value = App->entityFactory->player->position;
+		targetTilePos = App->map->WorldToMap(targetPos.value.x, targetPos.value.y) + iPoint(0, 1);
 	}
 	else if (state.path == ePathState::TEMPORAL_DEVIATION)
 	{
 		targetTilePos.x = targetPos.value.x;
 		targetTilePos.y = targetPos.value.y;
-		
+
 		if (tilePos.DistanceManhattan(targetTilePos) <= 1)
 		{
 			state.path = ePathState::FOLLOW_PLAYER;
-			ResolvePathDeviation(); 
+			ResolvePathDeviation();
 		}
 
 	}
 
-	if (tilePos.DistanceManhattan(targetTilePos) > 0)       // The enemy doesnt collapse with the player
-	{
-		
-		if (App->pathfinding->CreatePathAStar(tilePos + iPoint(0,1), targetTilePos + iPoint(0,1)) != 0)
-			{
-				pathToFollow = *App->pathfinding->GetLastPath();
-				if (pathToFollow.size() > 0)
-					pathToFollow.erase(pathToFollow.begin());		// Enemy doesnt go to the center of his initial tile
-
-				/*if (pathToFollow.size() > 1)
-					pathToFollow.pop_back();	*/						// Enemy doesnt eat the player, stays at 1 tile
-
-				ret = (pathToFollow.size() > 1);
-			}
-			else LOG("Could not create path correctly");
 	
-		
-	}
+	CallPathCreation(tilePos + iPoint(0, 1), targetTilePos + iPoint(0, 1), ret);
 
+	
 	if (ret)
 	{
-		if (IsWalkableForMe(pathToFollow.at(1)))
-		{
 			fPoint WorldTargetPos = fPoint(0, 0);
 			WorldTargetPos.x = (float)(App->map->MapToWorld(pathToFollow.at(1).x, 0).x);
 			WorldTargetPos.y = (float)(App->map->MapToWorld(0, pathToFollow.at(1).y).y);
@@ -297,8 +280,6 @@ bool j1Enemy::FollowPath(float dt)
 			fPoint direction = WorldTargetPos - position;
 
 			SolveMove(direction, dt);
-		}
-
 				
 	}
 
@@ -312,30 +293,34 @@ bool j1Enemy::FollowPath(float dt)
 
 }
 
-bool j1Enemy::IsWalkableForMe(iPoint mapPos)
+void j1Enemy::CallPathCreation(iPoint pos, iPoint target, bool& success)
 {
-	// JUST TESTING: 
-	bool ret = false; 
+	bool walkableAccounts = false; 
 
-	
+	if (pathType == enemyPathType::A_TO_B)
+		walkableAccounts = true; 
 
-
-	switch(pathType)
+	if (pos.DistanceManhattan(target) > 0)       // The enemy doesnt collapse with the player
 	{
-	case enemyPathType::ALL_ROUND:
-		ret = true;
-		break; 
-	case enemyPathType::A_TO_B:
-		if (App->pathfinding->IsWalkable(mapPos))
-			ret = true;
-		break;
-	case enemyPathType::FLYING:
-		break;
+
+		if (App->pathfinding->CreatePathAStar(pos, target, walkableAccounts) != 0)
+		{
+			pathToFollow = *App->pathfinding->GetLastPath();
+			if (pathToFollow.size() > 0)
+				pathToFollow.erase(pathToFollow.begin());		// Enemy doesnt go to the center of his initial tile
+
+			success = (pathToFollow.size() > 1);
+		}
+		else LOG("Could not create path correctly");
+
 
 	}
 
-	return ret; 
+
 }
+
+
+
 
 void j1Enemy::SolveMove(fPoint Direction, float dt)
 {

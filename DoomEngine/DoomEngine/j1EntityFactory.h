@@ -13,6 +13,7 @@
 #include "j1Scene.h"
 #include "j1EntityLoot.h"
 #include "j1EntityLootWeapon.h"
+#include <map>
 
 enum damage_Frame_Type
 {
@@ -55,11 +56,10 @@ public:
 
 
 public:
-	SDL_Texture*			playerTexture = nullptr;
-	SDL_Texture*			impTexture = nullptr;
 
 	//std::vector<GroupInfo> spawngroups;
 	std::list<j1Entity*>	entities;
+	std::map<std::string, SDL_Texture*> entityTextureMap; 
 	j1EntityPlayer* player = nullptr; 
 
 	

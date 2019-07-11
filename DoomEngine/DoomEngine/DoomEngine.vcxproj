@@ -147,6 +147,7 @@
     <ClCompile Include="j1BloodManager.cpp" />
     <ClCompile Include="j1Collision.cpp" />
     <ClCompile Include="j1Enemy.cpp" />
+    <ClCompile Include="j1EnemyCacodemon.cpp" />
     <ClCompile Include="j1EnemyIMP.cpp" />
     <ClCompile Include="j1Entity.cpp" />
     <ClCompile Include="j1EntityBloodDrop.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="j1BloodManager.h" />
     <ClInclude Include="j1Collision.h" />
     <ClInclude Include="j1Enemy.h" />
+    <ClInclude Include="j1EnemyCacodemon.h" />
     <ClInclude Include="j1EnemyIMP.h" />
     <ClInclude Include="j1Entity.h" />
     <ClInclude Include="j1EntityBloodDrop.h" />

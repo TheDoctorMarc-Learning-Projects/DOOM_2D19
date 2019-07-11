@@ -54,10 +54,8 @@ bool j1EntityFactory::Start()
 
 	// TODO: textures
 
-
-
-	playerTexture = App->tex->Load("textures/player/player.png");
-	impTexture = App->tex->Load("textures/enemies/IMP/IMP.png");
+	entityTextureMap.insert(std::pair("player", App->tex->Load("textures/player/player.png")));
+	entityTextureMap.insert(std::pair("EnemyIMP", App->tex->Load("textures/enemies/IMP/IMP.png")));
 	
 	// for the moment, create player here 
 	player = (j1EntityPlayer*)CreateEntity(PLAYER, 0, 0, "player"); 
@@ -174,8 +172,10 @@ bool j1EntityFactory::CleanUp()
 
 	// TODO: unload Atlas texture
 
-	App->tex->UnLoad(playerTexture);
-	App->tex->UnLoad(impTexture);
+	for (auto tex : entityTextureMap)
+		App->tex->UnLoad(tex.second); 
+	entityTextureMap.clear(); 
+
 
 	return ret;
 }

@@ -36,10 +36,15 @@ j1EntityPlatformDynamic::j1EntityPlatformDynamic(SDL_Rect placing, int heightLev
 
 
 	if (level == SceneState::LEVEL1)
-		entityTex = App->map->platfTexture; 
+	{
+		name = "platform1"; 
+	}
+		 
 	/*else if (level == SceneState::LEVEL2)
 		entityTex = App->tex->Load(); */
 
+
+	entityTex = App->map->entityTextureMap.at(name);
 }
 
 j1EntityPlatformDynamic::~j1EntityPlatformDynamic()

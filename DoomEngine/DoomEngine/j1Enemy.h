@@ -92,8 +92,6 @@ public:
 	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
-	//bool CleanUp();  // not yey, only is we have an extra texture or something
-
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 	// functionality ------
@@ -103,7 +101,7 @@ public:
 	void WarnOtherModules();
 	void VerticalMovement(float dt); 
 	bool FollowPath(float dt); 
-	bool IsWalkableForMe(iPoint mapPos); 
+	void CallPathCreation(iPoint pos, iPoint target, bool& success); 
 	void SolveMove(fPoint direction, float dt); 
 	void AssignDirectionWithSpeed(); 
 	virtual void ResolvePathDeviation() {};
@@ -130,7 +128,9 @@ public:
 		if (currentAnimation->Finished())
 		{
 			state.combat = eCombatState::DEAD;
-			to_delete = true;
+			
+			
+			to_delete = true;   // to do: create the corpse here 
 
 		}
 	}

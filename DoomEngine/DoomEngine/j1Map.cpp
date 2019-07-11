@@ -214,10 +214,9 @@ bool j1Map::CleanUp()
 
 
 
-
-	App->tex->UnLoad(lootTexture);
-	App->tex->UnLoad(platfTexture);
-
+	for (auto tex : entityTextureMap)
+		App->tex->UnLoad(tex.second);
+	entityTextureMap.clear();
 
 
 
@@ -238,8 +237,9 @@ bool j1Map::Load(const char* file_name)
 {
 	
 	// object textures
-	lootTexture = App->tex->Load("textures/loot/loot.png");
-	platfTexture = App->tex->Load("maps/textures/plat1.png");
+	entityTextureMap.insert(std::pair("loot", App->tex->Load("textures/loot/loot.png")));
+	entityTextureMap.insert(std::pair("platform1", App->tex->Load("maps/textures/plat1.png")));  
+
 
 
 

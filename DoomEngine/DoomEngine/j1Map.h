@@ -6,7 +6,7 @@
 #include "p2Point.h"
 #include "j1Module.h"
 #include "SDL/include/SDL.h"
-
+#include <map>
 
 struct SDL_Rect; 
 struct SDL_Texture; 
@@ -162,9 +162,10 @@ public:
 
 	bool mapDebug = false; 
 
+	std::map<std::string, SDL_Texture*> entityTextureMap;
 
-	SDL_Texture*			lootTexture = nullptr;
-	SDL_Texture*			platfTexture = nullptr;   // needed to be created here, because they are loaded in xml before entityfactory loads textures 
+
+
 
 	//iPoint pixelTileOffset; // mesures the height between the end of y sprite texture to start of the paint(draw) itself (displacement)
 private:

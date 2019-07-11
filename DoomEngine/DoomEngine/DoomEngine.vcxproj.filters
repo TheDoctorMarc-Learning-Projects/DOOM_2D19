@@ -52,10 +52,10 @@
     <Filter Include="Code\Core\In-Game\Entities\inanimated\loot\help">
       <UniqueIdentifier>{f25ecf02-da7c-4d75-a3b0-9c6f834b3345}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Code\Core\In-Game\Entities\animated\Other">
+    <Filter Include="Code\Core\In-Game\Entities\animated\Enemies\Other">
       <UniqueIdentifier>{48324be5-d791-46dc-b24f-ee8230c94577}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Code\Core\In-Game\Entities\animated\Other\Blood">
+    <Filter Include="Code\Core\In-Game\Entities\animated\Enemies\Other\Blood">
       <UniqueIdentifier>{e910ef1e-2b39-4df0-be03-44de79bb5cc2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -139,10 +139,13 @@
       <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
     </ClCompile>
     <ClCompile Include="j1BloodManager.cpp">
-      <Filter>Code\Core\In-Game\Entities\animated\Other\Blood</Filter>
+      <Filter>Code\Core\In-Game\Entities\animated\Enemies\Other\Blood</Filter>
     </ClCompile>
     <ClCompile Include="j1EntityBloodDrop.cpp">
-      <Filter>Code\Core\In-Game\Entities\animated\Other\Blood</Filter>
+      <Filter>Code\Core\In-Game\Entities\animated\Enemies\Other\Blood</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EnemyCacodemon.cpp">
+      <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -249,10 +252,13 @@
       <Filter>Code\Core\In-Game</Filter>
     </ClInclude>
     <ClInclude Include="j1BloodManager.h">
-      <Filter>Code\Core\In-Game\Entities\animated\Other\Blood</Filter>
+      <Filter>Code\Core\In-Game\Entities\animated\Enemies\Other\Blood</Filter>
     </ClInclude>
     <ClInclude Include="j1EntityBloodDrop.h">
-      <Filter>Code\Core\In-Game\Entities\animated\Other\Blood</Filter>
+      <Filter>Code\Core\In-Game\Entities\animated\Enemies\Other\Blood</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EnemyCacodemon.h">
+      <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

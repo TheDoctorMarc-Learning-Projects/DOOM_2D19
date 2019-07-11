@@ -31,8 +31,26 @@ bool j1PathFinding::PostUpdate()
 		debug = !debug;
 
 	if (debug)
+	{
 		DebugDraw();
+	}
+		
 
+
+
+	/*static char title[120];
+	sprintf_s(title, 120, " Closed Nodes: %i, Open Nodes: %i, Visited Nodes: %i", closed.pathNodeList.size(), open.pathNodeList.size(), visited.pathNodeList.size());
+
+	App->win->AddStringToTitle(title);*/
+
+	// We draw the grid in front of all the Quads
+	//DrawGrid();
+
+	return true;
+}
+
+void j1PathFinding::DebugDraw()
+{
 	iPoint pos = { 0,0 };
 	// Draw Start Point
 	pos = App->map->MapToWorld(origin.x, origin.y);
@@ -42,20 +60,7 @@ bool j1PathFinding::PostUpdate()
 	pos = App->map->MapToWorld(goal.x, goal.y);
 	App->render->DrawQuad({ pos.x,pos.y,App->map->data.tile_width, App->map->data.tile_height }, 0, 0, 255, 255);
 
-	/*static char title[120];
-	sprintf_s(title, 120, " Closed Nodes: %i, Open Nodes: %i, Visited Nodes: %i", closed.pathNodeList.size(), open.pathNodeList.size(), visited.pathNodeList.size());
 
-	App->win->AddStringToTitle(title);*/
-
-	// We draw the grid in front of all the Quads
-	DrawGrid();
-
-	return true;
-}
-
-void j1PathFinding::DebugDraw()
-{
-	iPoint pos = { 0,0 };
 
 	std::list<PathNode>::iterator iterator = visited.pathNodeList.begin();
 

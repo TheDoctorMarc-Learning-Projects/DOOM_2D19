@@ -289,7 +289,9 @@ bool j1Enemy::FollowPath(float dt)
 			WorldTargetPos.x = (float)(App->map->MapToWorld(pathToFollow.at(1).x, 0).x);
 			WorldTargetPos.y = (float)(App->map->MapToWorld(0, pathToFollow.at(1).y).y);
 
-			fPoint direction = WorldTargetPos - position;
+			iPoint WorldPosTileAdjusted = App->map->MapToWorld(tilePos.x, tilePos.y); 
+
+			fPoint direction = fPoint(WorldTargetPos.x - (float)WorldPosTileAdjusted.x, WorldTargetPos.y - (float)WorldPosTileAdjusted.y); 
 
 			SolveMove(direction, dt);
 				
@@ -341,10 +343,10 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 
 	// if too small, set to 0 so that enemy is idle
 
-	if (abs(Direction.x) < 0.1f)
+	/*if (abs(Direction.x) < 0.1f)
 		Direction.x = 0.f; 
 	if (abs(Direction.y) < 0.1f)
-		Direction.y = 0.f; 
+		Direction.y = 0.f; */
 
 	// - - - - - - - - - - - - - - - - - -  X Axis
 

@@ -38,7 +38,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	death1.PushBack({ 365, 645, size.x + 5, size.y + 10});
 	death1.PushBack({ 476, 645, size.x + 7, size.y - 1});
 	death1.PushBack({ 589, 645, size.x + 13, size.y - 18});
-	death1.speed = 1.3f;
+	death1.speed = 4.7f;
 	death1.loop = false;
 
 
@@ -51,7 +51,11 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	attack.loop = false;
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - collider
 	collider = App->collision->AddCollider({ (int)position.x, (int)position.y, (int)((float)size.x * spriteScale),(int)((float)size.y * spriteScale) }, COLLIDER_TYPE::COLLIDER_ENEMY, this);
-
+	
+	shieldAreaCollider = App->collision->AddCollider({ (int)position.x - shieldExtraSideSize / 2, 
+		(int)position.y - shieldExtraSideSize / 2, 
+		(int)((float)size.x * spriteScale) + shieldExtraSideSize,
+		(int)((float)size.y * spriteScale) + shieldExtraSideSize }, COLLIDER_TYPE::COLLIDER_WALL_DETECTION, this);
 }
 
 j1EnemyCacodemon::~j1EnemyCacodemon()
@@ -63,9 +67,33 @@ bool j1EnemyCacodemon::Move(float dt)
 {
 	if (j1Enemy::Move(dt))
 	{
+		shieldAreaCollider->SetPos(position.x - shieldExtraSideSize / 2, position.y - shieldExtraSideSize / 2); 
 	}
 
 
 
 	return true;
 }
+
+bool j1EnemyCacodemon::CleanUp()
+{
+	j1Entity::CleanUp(); 
+
+	// clean the area collider: 
+	shieldAreaCollider->to_delete = true; 
+
+	return true; 
+}
+
+
+void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
+{
+
+}
+
+void j1EnemyCacodemon::OnCollisionExit(Collider* c1, Collider* c2)
+{
+
+}
+
+

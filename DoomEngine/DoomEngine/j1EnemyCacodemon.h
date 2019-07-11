@@ -25,13 +25,16 @@ public:
 
 	bool Move(float dt) override;  // call parent function, then if enemy does enaything extra, do it after call 
 
-	//void OnCollision(Collider* c1, Collider* c2) override;        // TODO: cacodemon ignores jump, fall, onplatform etc
-	//void OnCollisionExit(Collider* c1, Collider* c2) override;    
+	void OnCollision(Collider* c1, Collider* c2) override;        // TODO: cacodemon ignores jump, fall, onplatform etc
+    void OnCollisionExit(Collider* c1, Collider* c2) override;    
+
+	bool CleanUp() override; 
 
 private:
+	int shieldExtraSideSize = 30;
 	uint stopNearPlayerRange = 10; 
-
 	CACODEMON_ATTACK_TYPE currentAttackType = CACODEMON_ATTACK_TYPE::NO_ATTACK_TYPE;
+	Collider* shieldAreaCollider = nullptr; 
 };
 
 #endif 

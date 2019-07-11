@@ -145,6 +145,7 @@ void j1Enemy::SetPath(float dt, bool& success)
 	}
 	else if (state.path == ePathState::TEMPORAL_DEVIATION)
 	{
+		FollowPath(dt); 
 		success = true;
 	}
 	
@@ -260,18 +261,20 @@ bool j1Enemy::FollowPath(float dt)
 	pathToFollow.clear();
 	iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
 	iPoint targetTilePos = iPoint(0, 0);
+	iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y);
 
 	if (state.path == ePathState::FOLLOW_PLAYER)
 	{
 		targetPos.value = App->entityFactory->player->position;
-		targetTilePos = App->map->WorldToMap(targetPos.value.x, targetPos.value.y) + iPoint(0, 1);
+		targetTilePos = App->map->WorldToMap(targetPos.value.x, targetPos.value.y);
 	}
 	else if (state.path == ePathState::TEMPORAL_DEVIATION)
 	{
 		targetTilePos.x = targetPos.value.x;
 		targetTilePos.y = targetPos.value.y;
 
-		if (tilePos.DistanceManhattan(targetTilePos) <= 1)
+		if (HasArrivedToTarget(tilePos, targetTilePos)
+			|| tilePos.DistanceManhattan(playerTilePos) <= 1)   // cehck this out, with cacodemon it needs 2 units 
 		{
 			state.path = ePathState::FOLLOW_PLAYER;
 			ResolvePathDeviation();
@@ -305,6 +308,29 @@ bool j1Enemy::FollowPath(float dt)
 
 	return ret; 
 
+}
+
+
+bool j1Enemy::HasArrivedToTarget(iPoint tilePos, iPoint targetTilePos)
+{
+
+	if (targetPos.type == TargetPos::targetPosType::XY)
+	{
+		if (tilePos.DistanceManhattan(targetTilePos) <= 1)
+			return true; 
+	}
+	else if (targetPos.type == TargetPos::targetPosType::X)
+	{
+		if (abs(targetTilePos.x - tilePos.x) <= 1)
+			return true;
+	}
+	else if (targetPos.type == TargetPos::targetPosType::Y)
+	{
+		if (abs(targetTilePos.y - tilePos.y) <= 1)
+			return true;
+	}
+
+	return false; 
 }
 
 void j1Enemy::CallPathCreation(iPoint pos, iPoint target, bool& success)

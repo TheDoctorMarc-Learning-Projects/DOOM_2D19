@@ -67,7 +67,7 @@ bool j1Audio::Start()
 	LoadFx("sound/fx/dssawhit.wav", "chainsawHit");
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - enemies
-	LoadFx("sound/fx/dsclaw.wav", "EnemyImpAttack");
+	LoadFx("sound/fx/dsclaw.wav", "EnemyIMPAttack");
 	LoadFx("sound/fx/dsbgdth1.wav", "EnemyIMPDeath");
 	LoadFx("sound/fx/dsbgdth2.wav", "EnemyIMPDeath2");
 	LoadFx("sound/fx/dspopain.wav", "EnemyIMPInjured");

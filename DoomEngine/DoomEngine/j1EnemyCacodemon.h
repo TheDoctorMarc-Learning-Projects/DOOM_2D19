@@ -29,6 +29,20 @@ public:
     void OnCollisionExit(Collider* c1, Collider* c2) override;    
 
 	bool CleanUp() override; 
+	void SetDeviation(bool horizontal, Collider* c2);
+
+
+	iPoint GetShieldPos() { return iPoint(position.x - shieldExtraSideSize / 2, position.y - shieldExtraSideSize / 2); };
+	iPoint GetLastShieldPos() { return iPoint(lastAirPos.x - shieldExtraSideSize / 2, lastAirPos.y - shieldExtraSideSize / 2); };
+
+	SDL_Rect GetShieldRect() {
+		return { collider->rect.x - shieldExtraSideSize / 2, collider->rect.y - shieldExtraSideSize / 2,
+				 collider->rect.w + shieldExtraSideSize, collider->rect.h + shieldExtraSideSize };
+	};
+	SDL_Rect GetLastShieldRect() {
+		return { lastPosCollider.x - shieldExtraSideSize / 2, lastPosCollider.y - shieldExtraSideSize / 2,
+                 lastPosCollider.w + shieldExtraSideSize, lastPosCollider.h + shieldExtraSideSize }; 
+	}; 
 
 private:
 	int shieldExtraSideSize = 30;

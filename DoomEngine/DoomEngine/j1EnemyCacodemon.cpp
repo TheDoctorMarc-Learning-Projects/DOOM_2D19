@@ -68,6 +68,7 @@ bool j1EnemyCacodemon::Move(float dt)
 	if (j1Enemy::Move(dt))
 	{
 		shieldAreaCollider->SetPos(position.x - shieldExtraSideSize / 2, position.y - shieldExtraSideSize / 2); 
+
 	}
 
 
@@ -88,7 +89,118 @@ bool j1EnemyCacodemon::CleanUp()
 
 void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 {
+	if (c1->type == COLLIDER_WALL_DETECTION)
+	{
+		if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_WALL)
+		{
+			iPoint shieldPos = GetShieldPos(); 
+			iPoint lastShieldPos = GetLastShieldPos(); 
+			SDL_Rect shieldRect = GetShieldRect(); 
+			SDL_Rect lastShieldRect = GetLastShieldRect(); 
 
+			if (shieldPos.y + shieldRect.h >= c2->callback->position.y)    // top 
+			{
+				if (lastShieldPos.y + lastShieldRect.h < c2->callback->position.y)
+				{
+					SetDeviation(true, c2); 
+					LOG("TOP collision !!"); 
+				}
+
+			}
+
+
+			if (shieldPos.y <= c2->callback->position.y + c2->rect.h)    // bottom 
+			{
+				if (lastShieldPos.y > c2->callback->position.y + c2->rect.h)
+				{
+					SetDeviation(true, c2);
+					LOG("BOTTOM collision !!");
+				}
+
+			}
+
+			if (shieldPos.x + shieldRect.w >= c2->callback->position.x)    // left 
+			{
+				if (lastShieldPos.x + lastShieldRect.w < c2->callback->position.x)
+				{
+					if (lastShieldPos.y + lastShieldRect.h > c2->callback->position.y && lastShieldPos.y < c2->callback->position.y + c2->rect.h)
+					{
+						SetDeviation(false, c2);
+						LOG("LEFT collision !!");
+					}
+				}
+
+			}
+
+
+			if (shieldPos.x <= c2->callback->position.x + c2->rect.w)    // right 
+			{
+				if (lastShieldPos.x > c2->callback->position.x + c2->rect.w)
+				{
+					if (lastShieldPos.y + lastShieldRect.h > c2->callback->position.y && lastShieldPos.y < c2->callback->position.y + c2->rect.h)
+					{
+						SetDeviation(false, c2);
+						LOG("RIGHT collision !!");
+					}
+				}
+
+			}
+		}
+		
+	}
+
+
+}
+
+void j1EnemyCacodemon::SetDeviation(bool horizontal, Collider* c2)
+{
+	int offset = 3; 
+	int yOffset = 5; 
+
+	if (horizontal)
+	{
+
+		if (c2->callback->collider->rect.w > 8000)  // TODO: quickly just ignore base floor 
+		{
+			/*position.y = c2->callback->collider->rect.y - GetShieldRect().h;
+			collider->SetPos(position.x, position.y);
+
+			shieldAreaCollider->SetPos(position.x - shieldExtraSideSize / 2, position.y - shieldExtraSideSize / 2);*/
+			return; 
+		}
+
+
+		if (App->entityFactory->player->position.x + App->entityFactory->player->collider->rect.w / 2 >= position.x + collider->rect.w / 2)
+		{
+			targetPos.value.x = App->map->WorldToMap(c2->callback->position.x + c2->callback->collider->rect.w, 0).x + offset; 
+		}
+		else
+		{
+			targetPos.value.x = App->map->WorldToMap(c2->callback->position.x, 0).x - offset;
+		}
+		targetPos.value.y = App->map->WorldToMap(0, position.y).y;
+
+		targetPos.type = TargetPos::targetPosType::X; 
+	}
+	else
+	{
+		if (App->entityFactory->player->position.y + App->entityFactory->player->collider->rect.h / 2 >= position.y + collider->rect.h / 2)
+		{
+			targetPos.value.y = App->map->WorldToMap(0, c2->callback->position.y + c2->callback->collider->rect.h).y + yOffset;
+		}
+		else
+		{
+			targetPos.value.y = App->map->WorldToMap(0, c2->callback->position.y).y - yOffset;
+		}
+		targetPos.value.x = App->map->WorldToMap(position.x, 0).x;
+
+
+		targetPos.type = TargetPos::targetPosType::Y; 
+	}
+
+
+
+	state.path = ePathState::TEMPORAL_DEVIATION;
 }
 
 void j1EnemyCacodemon::OnCollisionExit(Collider* c1, Collider* c2)

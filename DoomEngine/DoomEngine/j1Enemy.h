@@ -112,6 +112,7 @@ public:
 	virtual void ResolvePathDeviation() {};
 	
 	void SetPath(float dt, bool& moveSuccess); 
+	bool HasArrivedToTarget(iPoint tilePos, iPoint targetTilePos); 
 	void SetPreviousFrameData();
 	void SetCollider();
 	void DieLogic(float dt); 
@@ -146,10 +147,9 @@ public:
 
 	virtual void CheckDeathFinished() override
 	{
-		if (currentAnimation->Finished())
+		if (currentAnimation->Finished() == true)
 		{
 			state.combat = eCombatState::DEAD;
-			
 			
 			to_delete = true;   // TODO: create the corpse here 
 

@@ -10,6 +10,13 @@ enum class CACODEMON_ATTACK_TYPE
 	NO_ATTACK_TYPE
 };
 
+struct actualCollisionType
+{
+	bool top = false; 
+	bool bottom = false; 
+	bool right = false; 
+	bool left = true; 
+};
 
 class j1Enemy;
 
@@ -30,6 +37,14 @@ public:
 
 	bool CleanUp() override; 
 	void SetDeviation(bool horizontal, Collider* c2);
+	void KeepMovingTendency(); 
+
+	void ResetPlatformState() {
+		onPlatFormType.bottom = false; 
+		onPlatFormType.left = false; 
+		onPlatFormType.right = false; 
+		onPlatFormType.top = false; 
+	}
 
 
 	iPoint GetShieldPos() { return iPoint(position.x - shieldExtraSideSize / 2, position.y - shieldExtraSideSize / 2); };
@@ -45,7 +60,9 @@ public:
 	}; 
 
 private:
-	int shieldExtraSideSize = 30;
+	int shieldExtraSideSize = 30; 
+	bool keepMovingAfterPlatform = false; 
+	actualCollisionType onPlatFormType; 
 	uint stopNearPlayerRange = 10; 
 	CACODEMON_ATTACK_TYPE currentAttackType = CACODEMON_ATTACK_TYPE::NO_ATTACK_TYPE;
 	Collider* shieldAreaCollider = nullptr; 

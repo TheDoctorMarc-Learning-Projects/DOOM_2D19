@@ -174,6 +174,7 @@ public:
 	fPoint deathPosGround = fPoint(0, 0);
 	fPoint currentTarget = fPoint(0, 0); 
 	SDL_Rect deathColllider = { 0, 0, 0, 0 }; 
+	iPoint specificDir = iPoint(0, 0); 
 	uint tileDetectionRange = 0; 
 	SDL_Rect lastPosCollider;
 	bool doJump = false;

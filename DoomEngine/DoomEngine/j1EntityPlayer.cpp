@@ -7,6 +7,7 @@
 #include "j1Window.h"
 #include "j1Scene.h"
 #include "j1EntityFactory.h" // needed for some functions
+#include "j1Enemy.h"
 
 #include <math.h>
 
@@ -571,6 +572,16 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 	switch (c2->type)
 	{
+
+
+	case COLLIDER_TYPE::COLLIDER_ENEMY:
+
+		if (dynamic_cast<j1Enemy*>(c2->callback)->state.path != ePathState::FOLLOW_PLAYER)
+			dynamic_cast<j1Enemy*>(c2->callback)->state.path = ePathState::FOLLOW_PLAYER; 
+
+			break; 
+		
+
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
 
 		if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)

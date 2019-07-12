@@ -273,32 +273,48 @@ bool j1Enemy::FollowPath(float dt)
 		targetTilePos.x = targetPos.value.x;
 		targetTilePos.y = targetPos.value.y;
 
-		if (HasArrivedToTarget(tilePos, targetTilePos)
-			|| tilePos.DistanceManhattan(playerTilePos) <= 1)   // cehck this out, with cacodemon it needs 2 units 
+		if (specificDir.IsZero() == true)
 		{
-			state.path = ePathState::FOLLOW_PLAYER;
-			ResolvePathDeviation();
+			if (HasArrivedToTarget(tilePos, targetTilePos)
+				|| tilePos.DistanceManhattan(playerTilePos) <= 1)   // cehck this out, with cacodemon it needs 2 units 
+			{
+				state.path = ePathState::FOLLOW_PLAYER;
+				ResolvePathDeviation();
+			}
 		}
 
 	}
 
-	
-	CallPathCreation(tilePos + iPoint(0, 1), targetTilePos + iPoint(0, 1), ret);
+	fPoint direction = fPoint(0, 0);
 
-	
-	if (ret)
+	if (specificDir.IsZero() == true)
 	{
+		CallPathCreation(tilePos + iPoint(0, 1), targetTilePos + iPoint(0, 1), ret);
+		if (ret)
+		{
+
+
 			fPoint WorldTargetPos = fPoint(0, 0);
 			WorldTargetPos.x = (float)(App->map->MapToWorld(pathToFollow.at(1).x, 0).x);
 			WorldTargetPos.y = (float)(App->map->MapToWorld(0, pathToFollow.at(1).y).y);
 
-			iPoint WorldPosTileAdjusted = App->map->MapToWorld(tilePos.x, tilePos.y); 
+			iPoint WorldPosTileAdjusted = App->map->MapToWorld(tilePos.x, tilePos.y);
 
-			fPoint direction = fPoint(WorldTargetPos.x - (float)WorldPosTileAdjusted.x, WorldTargetPos.y - (float)WorldPosTileAdjusted.y); 
+			direction = fPoint(WorldTargetPos.x - (float)WorldPosTileAdjusted.x, WorldTargetPos.y - (float)WorldPosTileAdjusted.y);
 
-			SolveMove(direction, dt);
-				
+
+
+		}
+
 	}
+	else
+		direction = fPoint((int)specificDir.x, (int)specificDir.y);
+
+	SolveMove(direction, dt);
+	
+
+			
+		
 
 
 

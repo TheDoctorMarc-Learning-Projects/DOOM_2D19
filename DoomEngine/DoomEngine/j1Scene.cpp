@@ -89,25 +89,26 @@ bool j1Scene::Update(float dt)
 		App->map->Draw();
 
 
-	
+	int x, y;
+	x = y = 0;
+	App->input->GetMousePosition(x, y);
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	uint wX, wY;
+
+	App->win->GetWindowSize(wX, wY);
+
+	if (App->render->camera.x < 0)
+		x += -App->render->camera.x;
+
+		
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
-		int x, y;
-		x = y = 0; 
-		App->input->GetMousePosition(x, y);
-
-		uint wX, wY; 
-
-		App->win->GetWindowSize(wX, wY); 
-
-		if (App->render->camera.x < 0)
-			x += -App->render->camera.x; 
-
 		App->entityFactory->CreateEntity(ENEMY_IMP, x, y, "EnemyIMP");
 	}
-		
-
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	{
+		App->entityFactory->CreateEntity(ENEMY_CACODEMON, x, y, "EnemyCacodemon");
+	}
 	
 
 	return true;

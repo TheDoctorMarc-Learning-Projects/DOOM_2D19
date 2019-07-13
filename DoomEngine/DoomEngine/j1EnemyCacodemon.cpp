@@ -14,7 +14,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	life = (float)maxLife;
 	size.create(62, 67);
 	speed = 50.75f;
-	mass = 11.f;
+	mass = 1.f;
 	gravityFactor = DEFAULT_GRAV * mass;  // TODO: just prevent Y movement by gravity
 	tileDetectionRange = 15;
 	cadenceValues.melee = 1200;
@@ -38,7 +38,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	death1.PushBack({ 365, 645, size.x + 5, size.y + 10});
 	death1.PushBack({ 476, 645, size.x + 7, size.y - 1});
 	death1.PushBack({ 589, 645, size.x + 13, size.y - 18});
-	death1.speed = 4.7f;
+	death1.speed = 3.7f;
 	death1.loop = false;
 
 
@@ -80,7 +80,7 @@ bool j1EnemyCacodemon::Move(float dt)
 
 void j1EnemyCacodemon::KeepMovingTendency()
 {
-	  // if pos has advanced some units, stop moving tendency
+	// if pos has advanced some units, stop moving tendency
 	bool tendencyOver = false; 
 
 	if (specificDir.x == 0)

@@ -163,8 +163,17 @@ void j1Enemy::SetPath(float dt, bool& success)
 
 void j1Enemy::DieLogic(float dt)
 {
+   
+
 	if (!onPlatform)
+	{
+		if (pathType == enemyPathType::FLYING)                         // flying enemy is able to fall only when dying 
+			if (state.movement.at(1) != eMovementState::FALL)
+				state.movement.at(1) = eMovementState::FALL;
+
 		VerticalMovement(dt);
+	}
+		
 
 	if (onPlatform && deathPosGround.IsZero())
 	{
@@ -229,7 +238,7 @@ void j1Enemy::VerticalMovement(float dt)
 
 	if (!onPlatform)
 	{
-		if (state.movement.at(1) == eMovementState::FALL)                // cacodemon already ignores this, cannot be in these states
+		if (state.movement.at(1) == eMovementState::FALL)                // cacodemon already ignores this except when dying
 		{
 			lastSpeed.y = GravityCalc(gravityFactor, mass) * dt;
 			position.y += lastSpeed.y;

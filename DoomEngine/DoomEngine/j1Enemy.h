@@ -106,7 +106,7 @@ public:
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
 	void VerticalMovement(float dt); 
 	bool FollowPath(float dt); 
-	void CheckPathState(); 
+	bool CheckPathState(iPoint pos, iPoint& target, bool& success); 
 	void CallPathCreation(iPoint pos, iPoint target, bool& success); 
 	void SolveMove(fPoint direction, float dt); 
 	void AssignDirectionWithSpeed(); 

@@ -269,49 +269,14 @@ bool j1Enemy::FollowPath(float dt)
 	BROFILER_CATEGORY("Enemy Follow Path", Profiler::Color::Azure);
 
 	pathToFollow.clear();
+
 	iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
 	iPoint targetTilePos = iPoint(0, 0);
 	iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y);
 
-	CheckPathState(); 
+	if (CheckPathState(tilePos, targetTilePos, ret) == false)
+		return ret; 
 
-	if (tilePos.DistanceManhattan(playerTilePos) <= 1)   // use the function for this, already contain the comprobation 
-	{
-		state.path = ePathState::AWAIT;
-	}
-
-	if (state.path == ePathState::AWAIT)
-	{
-		if (tilePos.DistanceManhattan(playerTilePos) > 1)
-			state.path = ePathState::FOLLOW_PLAYER;
-		else
-			return false; 
-
-	}
-
-	if (state.path == ePathState::FOLLOW_PLAYER)
-	{
-		targetPos.value = App->entityFactory->player->position;
-		targetTilePos = App->map->WorldToMap(targetPos.value.x, targetPos.value.y);
-
-
-		
-	}
-	else if (state.path == ePathState::TEMPORAL_DEVIATION)
-	{
-		targetTilePos.x = targetPos.value.x;
-		targetTilePos.y = targetPos.value.y;
-
-			if (HasArrivedToTarget(tilePos, targetTilePos))   
-			{
-				if (specificDir.IsZero() == false)
-					specificDir = iPoint(0, 0); 
-
-				state.path = ePathState::FOLLOW_PLAYER;
-				ResolvePathDeviation();
-			}
-	
-	}
 
 	fPoint direction = fPoint(0, 0);
 
@@ -353,6 +318,53 @@ bool j1Enemy::FollowPath(float dt)
 }
 
 
+bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& success)
+{
+
+	if (isPlayerOnMeleeRange() == true)    
+	{
+		if (specificDir.IsZero() == false)
+			specificDir = iPoint(0, 0);
+
+		state.path = ePathState::AWAIT;
+		return success = false;
+	}
+
+	if (state.path == ePathState::AWAIT)
+	{
+		if (isPlayerOnMeleeRange() == false)
+			state.path = ePathState::FOLLOW_PLAYER;
+		else
+			return success = false;
+
+	}
+
+	else if (state.path == ePathState::FOLLOW_PLAYER)
+	{
+		targetPos.value = App->entityFactory->player->position;
+		targetTilePos = App->map->WorldToMap(targetPos.value.x, targetPos.value.y);
+
+	}
+	else if (state.path == ePathState::TEMPORAL_DEVIATION)
+	{
+		targetTilePos.x = targetPos.value.x;
+		targetTilePos.y = targetPos.value.y;
+
+		if (HasArrivedToTarget(tilePos, targetTilePos))
+		{
+			if (specificDir.IsZero() == false)
+				specificDir = iPoint(0, 0);
+
+			state.path = ePathState::FOLLOW_PLAYER;
+			ResolvePathDeviation();
+		}
+
+	}
+
+
+	return success = true; 
+}
+
 bool j1Enemy::HasArrivedToTarget(iPoint tilePos, iPoint targetTilePos)
 {
 
@@ -377,6 +389,8 @@ bool j1Enemy::HasArrivedToTarget(iPoint tilePos, iPoint targetTilePos)
 
 void j1Enemy::CallPathCreation(iPoint pos, iPoint target, bool& success)
 {
+	success = false; 
+
 	bool walkableAccounts = false; 
 
 	if (pathType == enemyPathType::A_TO_B)

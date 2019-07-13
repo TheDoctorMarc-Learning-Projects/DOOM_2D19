@@ -15,7 +15,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	size.create(62, 67);
 	speed = 50.75f;
 	mass = 1.f;
-	gravityFactor = DEFAULT_GRAV * mass;  // TODO: just prevent Y movement by gravity
+	gravityFactor = DEFAULT_GRAV / mass;  // TODO: just prevent Y movement by gravity
 	tileDetectionRange = 15;
 	cadenceValues.melee = 1200;
 	cadenceValues.longRange = 1000; 
@@ -38,7 +38,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	death1.PushBack({ 365, 645, size.x + 5, size.y + 10});
 	death1.PushBack({ 476, 645, size.x + 7, size.y - 1});
 	death1.PushBack({ 589, 645, size.x + 13, size.y - 18});
-	death1.speed = 3.7f;
+	death1.speed = 1.7f;
 	death1.loop = false;
 
 
@@ -118,6 +118,22 @@ bool j1EnemyCacodemon::CleanUp()
 
 void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 {
+
+	if (c1->type == COLLIDER_ENEMY)
+	{
+		if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_WALL)
+		{
+			if (state.combat == eCombatState::DYING)
+			{
+				float offset = collider->rect.y + collider->rect.h - c2->callback->position.y;    // put it back a bit
+				position.y = c2->callback->position.y - collider->rect.h - offset;    
+			}
+		}
+
+	}
+
+
+
 	if (c1->type == COLLIDER_WALL_DETECTION)
 	{
 		if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_WALL)

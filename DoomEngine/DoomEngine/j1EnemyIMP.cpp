@@ -92,6 +92,9 @@ bool j1EnemyIMP::Move(float dt)
 		DoAttack(false); 
 	}
 		
+	if (isPlayerOnMeleeRange())   
+		DoAttack(true);
+
 
 
 	return true; 

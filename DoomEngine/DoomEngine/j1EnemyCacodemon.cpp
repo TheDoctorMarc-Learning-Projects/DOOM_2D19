@@ -134,7 +134,7 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 					ResetPlatformState();
 					onPlatFormType.top = true; 
 					SetDeviation(true, c2); 
-					LOG("TOP collision !!"); 
+					//LOG("TOP collision !!"); 
 				}
 
 			}
@@ -147,7 +147,7 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 					ResetPlatformState();
 					onPlatFormType.bottom = true;
 					SetDeviation(true, c2);
-					LOG("BOTTOM collision !!");
+					//LOG("BOTTOM collision !!");
 				}
 
 			}
@@ -164,7 +164,7 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 						ResetPlatformState();
 						onPlatFormType.left = true;
 						SetDeviation(false, c2);
-						LOG("LEFT collision !!");
+						//LOG("LEFT collision !!");
 					}
 				}
 
@@ -180,7 +180,7 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 						ResetPlatformState();
 						onPlatFormType.right = true;
 						SetDeviation(false, c2);
-						LOG("RIGHT collision !!");
+						//LOG("RIGHT collision !!");
 					}
 				}
 

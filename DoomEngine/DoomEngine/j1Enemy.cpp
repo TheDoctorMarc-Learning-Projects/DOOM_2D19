@@ -309,9 +309,7 @@ bool j1Enemy::FollowPath(float dt)
 
 
 
-	if (isPlayerOnMeleeRange())   // do it even if stunned depending on enemy, maybe some enemies cancel attacks etc 
-		DoAttack(true); 
-
+	
 
 	return ret; 
 

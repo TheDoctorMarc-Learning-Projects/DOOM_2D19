@@ -3,7 +3,7 @@
 
 #include "j1Enemy.h"
 
-#define extraPlatformTendencyOffset 10 
+#define extraPlatformTendencyOffset 5
 
 enum class CACODEMON_ATTACK_TYPE
 {

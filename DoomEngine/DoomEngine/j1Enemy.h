@@ -25,7 +25,7 @@ enum class ePathState
 {
 	FOLLOW_PLAYER,
 	TEMPORAL_DEVIATION,
-	LOOP_DEVIATION
+	AWAIT,
 };
 
 enum class eMovementState
@@ -106,6 +106,7 @@ public:
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
 	void VerticalMovement(float dt); 
 	bool FollowPath(float dt); 
+	void CheckPathState(); 
 	void CallPathCreation(iPoint pos, iPoint target, bool& success); 
 	void SolveMove(fPoint direction, float dt); 
 	void AssignDirectionWithSpeed(); 

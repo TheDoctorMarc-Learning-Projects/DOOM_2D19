@@ -3,6 +3,8 @@
 
 #include "j1Enemy.h"
 
+#define extraPlatformTendencyOffset 10 
+
 enum class CACODEMON_ATTACK_TYPE
 {
 	MELEE,
@@ -47,20 +49,21 @@ public:
 	}
 
 
-	iPoint GetShieldPos() { return iPoint(position.x - shieldExtraSideSize / 2, position.y - shieldExtraSideSize / 2); };
-	iPoint GetLastShieldPos() { return iPoint(lastAirPos.x - shieldExtraSideSize / 2, lastAirPos.y - shieldExtraSideSize / 2); };
+	iPoint GetShieldPos() const { return iPoint(position.x - shieldExtraSideSize / 2, position.y - shieldExtraSideSize / 2); };
+	iPoint GetLastShieldPos() const { return iPoint(lastAirPos.x - shieldExtraSideSize / 2, lastAirPos.y - shieldExtraSideSize / 2); };
 
-	SDL_Rect GetShieldRect() {
+	SDL_Rect GetShieldRect() const {
 		return { collider->rect.x - shieldExtraSideSize / 2, collider->rect.y - shieldExtraSideSize / 2,
 				 collider->rect.w + shieldExtraSideSize, collider->rect.h + shieldExtraSideSize };
 	};
-	SDL_Rect GetLastShieldRect() {
+	SDL_Rect GetLastShieldRect() const {
 		return { lastPosCollider.x - shieldExtraSideSize / 2, lastPosCollider.y - shieldExtraSideSize / 2,
                  lastPosCollider.w + shieldExtraSideSize, lastPosCollider.h + shieldExtraSideSize }; 
 	}; 
 
 private:
 	int shieldExtraSideSize = 30; 
+	fPoint offPlatformPos = fPoint(0, 0); 
 	bool keepMovingAfterPlatform = false; 
 	actualCollisionType onPlatFormType; 
 	uint stopNearPlayerRange = 10; 

@@ -80,7 +80,8 @@ bool j1Enemy::Save(pugi::xml_node &) const
 
 bool j1Enemy::Move(float dt)
 {
-
+	
+	
 
 	BROFILER_CATEGORY("Enemy Move", Profiler::Color::AliceBlue); 
 
@@ -91,13 +92,16 @@ bool j1Enemy::Move(float dt)
 	if (state.combat != eCombatState::DYING)
 	{
 		SetPath(dt, ret);
-		VerticalMovement(dt);
-		SetCollider(); 
+
+		if(pathType != enemyPathType::FLYING)
+			VerticalMovement(dt);
+	
+		//SetCollider(); 
 	}
 	else
 		DieLogic(dt);
 
-	
+	SetCollider();   // TODO: check this out, check commits if when it was here it was ok 
 
 	
 	
@@ -130,7 +134,13 @@ void j1Enemy::SetPreviousFrameData()
 void j1Enemy::SetPath(float dt, bool& success)
 {
 
-	if (state.path == ePathState::FOLLOW_PLAYER)
+	if (state.path == ePathState::AWAIT)
+	{
+		if (FollowPath(dt))
+			success = true;
+	}
+
+	else if (state.path == ePathState::FOLLOW_PLAYER)
 	{
 		iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
 		iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y) + iPoint(0, 1);
@@ -263,26 +273,44 @@ bool j1Enemy::FollowPath(float dt)
 	iPoint targetTilePos = iPoint(0, 0);
 	iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y);
 
+	CheckPathState(); 
+
+	if (tilePos.DistanceManhattan(playerTilePos) <= 1)   // use the function for this, already contain the comprobation 
+	{
+		state.path = ePathState::AWAIT;
+	}
+
+	if (state.path == ePathState::AWAIT)
+	{
+		if (tilePos.DistanceManhattan(playerTilePos) > 1)
+			state.path = ePathState::FOLLOW_PLAYER;
+		else
+			return false; 
+
+	}
+
 	if (state.path == ePathState::FOLLOW_PLAYER)
 	{
 		targetPos.value = App->entityFactory->player->position;
 		targetTilePos = App->map->WorldToMap(targetPos.value.x, targetPos.value.y);
+
+
+		
 	}
 	else if (state.path == ePathState::TEMPORAL_DEVIATION)
 	{
 		targetTilePos.x = targetPos.value.x;
 		targetTilePos.y = targetPos.value.y;
 
-		if (specificDir.IsZero() == true)
-		{
-			if (HasArrivedToTarget(tilePos, targetTilePos)
-				|| tilePos.DistanceManhattan(playerTilePos) <= 1)   // cehck this out, with cacodemon it needs 2 units 
+			if (HasArrivedToTarget(tilePos, targetTilePos))   
 			{
+				if (specificDir.IsZero() == false)
+					specificDir = iPoint(0, 0); 
+
 				state.path = ePathState::FOLLOW_PLAYER;
 				ResolvePathDeviation();
 			}
-		}
-
+	
 	}
 
 	fPoint direction = fPoint(0, 0);
@@ -290,19 +318,18 @@ bool j1Enemy::FollowPath(float dt)
 	if (specificDir.IsZero() == true)
 	{
 		CallPathCreation(tilePos + iPoint(0, 1), targetTilePos + iPoint(0, 1), ret);
+
 		if (ret)
 		{
-
-
 			fPoint WorldTargetPos = fPoint(0, 0);
 			WorldTargetPos.x = (float)(App->map->MapToWorld(pathToFollow.at(1).x, 0).x);
 			WorldTargetPos.y = (float)(App->map->MapToWorld(0, pathToFollow.at(1).y).y);
-
 			iPoint WorldPosTileAdjusted = App->map->MapToWorld(tilePos.x, tilePos.y);
 
 			direction = fPoint(WorldTargetPos.x - (float)WorldPosTileAdjusted.x, WorldTargetPos.y - (float)WorldPosTileAdjusted.y);
 
 
+		
 
 		}
 
@@ -313,7 +340,6 @@ bool j1Enemy::FollowPath(float dt)
 	SolveMove(direction, dt);
 	
 
-			
 		
 
 
@@ -356,12 +382,13 @@ void j1Enemy::CallPathCreation(iPoint pos, iPoint target, bool& success)
 	if (pathType == enemyPathType::A_TO_B)
 		walkableAccounts = true; 
 
-	if (pos.DistanceManhattan(target) > 0)       // The enemy doesnt collapse with the player
+	if (pos.DistanceManhattan(target) > 1)       // The enemy doesnt collapse with the player
 	{
 
 		if (App->pathfinding->CreatePathAStar(pos, target, walkableAccounts) != 0)
 		{
 			pathToFollow = *App->pathfinding->GetLastPath();
+
 			if (pathToFollow.size() > 0)
 				pathToFollow.erase(pathToFollow.begin());		// Enemy doesnt go to the center of his initial tile
 
@@ -381,14 +408,14 @@ void j1Enemy::CallPathCreation(iPoint pos, iPoint target, bool& success)
 void j1Enemy::SolveMove(fPoint Direction, float dt)
 {
 
-	Direction.Normalize(); 
+	fPoint initialDirection = Direction; 
 
-	// if too small, set to 0 so that enemy is idle
+	if(Direction.IsZero() == false)
+		Direction.Normalize();
+	
+	if (isnan(Direction.x) == true || isnan(Direction.y) == true)
+		LOG("Something went wrong with enemy!! Outside map");
 
-	/*if (abs(Direction.x) < 0.1f)
-		Direction.x = 0.f; 
-	if (abs(Direction.y) < 0.1f)
-		Direction.y = 0.f; */
 
 	// - - - - - - - - - - - - - - - - - -  X Axis
 
@@ -437,7 +464,6 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 		}
 		
 	
-
 	
 }
 
@@ -452,9 +478,8 @@ bool j1Enemy::isPlayerOnMeleeRange()
 {
 	iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
 	iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y) + iPoint(0, 1);
-	if (tilePos.DistanceManhattan(playerTilePos) <= 1)
-		return true;
-	return false;
+	return tilePos.DistanceManhattan(playerTilePos) <= 1; 
+	
 }
 
 

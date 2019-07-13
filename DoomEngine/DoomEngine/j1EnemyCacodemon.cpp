@@ -81,9 +81,27 @@ bool j1EnemyCacodemon::Move(float dt)
 void j1EnemyCacodemon::KeepMovingTendency()
 {
 	  // if pos has advanced some units, stop moving tendency
-	    specificDir = iPoint(0, 0); 
+	bool tendencyOver = false; 
+
+	if (specificDir.x == 0)
+	{
+		if (abs(offPlatformPos.y - position.y) >= extraPlatformTendencyOffset)
+			tendencyOver = true; 
+	}
+	else if (specificDir.y == 0)
+	{
+		if (abs(offPlatformPos.x - position.x) >= extraPlatformTendencyOffset)
+			tendencyOver = true;
+	}
+
+	if (tendencyOver == true)
+	{
+		offPlatformPos = fPoint(0, 0); 
+		specificDir = iPoint(0, 0);
 		state.path = ePathState::FOLLOW_PLAYER;
-		keepMovingAfterPlatform = false; 
+		keepMovingAfterPlatform = false;
+	}
+	   
 }
 
 
@@ -135,7 +153,7 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 			}
 
 			if (c2->callback->collider->rect.w > 8000)  // base floor just fucks up next cases
-				return; 
+				return;
 
 			if (shieldPos.x + shieldRect.w >= c2->callback->position.x)    // left 
 			{
@@ -184,49 +202,27 @@ void j1EnemyCacodemon::SetDeviation(bool horizontal, Collider* c2)
 		if (horizontal)
 		{
 
-			/*if (c2->callback->collider->rect.w > 8000)  // TODO: quickly just ignore base floor 
-			{*/
-				/*position.y = c2->callback->collider->rect.y - GetShieldRect().h;
-				collider->SetPos(position.x, position.y);
-
-				shieldAreaCollider->SetPos(position.x - shieldExtraSideSize / 2, position.y - shieldExtraSideSize / 2);*/
-			/*	return;
-			}*/
+			if (c2->callback->collider->rect.w > 8000)  // TODO: quickly just ignore base floor 
+				return;
+			
 
 
-			if (App->entityFactory->player->position.x + App->entityFactory->player->collider->rect.w / 2 >= position.x + collider->rect.w / 2)   // GO right 
-			{
-				//targetPos.value.x = App->map->WorldToMap(c2->callback->position.x + c2->callback->collider->rect.w, 0).x + offset;
-				specificDir = iPoint(1, 0); 
-			}
+			if (App->entityFactory->player->position.x + App->entityFactory->player->collider->rect.w / 2 >= position.x + collider->rect.w / 2)   // GO right
+				specificDir = iPoint(1, 0);
+			
 			else
-			{
-				//targetPos.value.x = App->map->WorldToMap(c2->callback->position.x - this->collider->rect.w, 0).x - offset;    // GO left
 				specificDir = iPoint(-1, 0);
-			}
-			/*targetPos.value.y = App->map->WorldToMap(0, position.y).y;
-
-			targetPos.type = TargetPos::targetPosType::X;*/
+		
+	
 		}
 		else
 		{
-			if (App->entityFactory->player->position.y + App->entityFactory->player->collider->rect.h / 2 >= position.y + collider->rect.h / 2)
-			{
-				//targetPos.value.y = App->map->WorldToMap(0, c2->callback->position.y + c2->callback->collider->rect.h).y + yOffset;    // GO down 
+			if (App->entityFactory->player->position.y + App->entityFactory->player->collider->rect.h / 2 >= position.y + collider->rect.h / 2)   // GO bottom
 				specificDir = iPoint(0, 1);
-			}
-			else
-			{
-				//targetPos.value.y = App->map->WorldToMap(0, c2->callback->position.y).y - yOffset;    // GO top
-				specificDir = iPoint(0, -1);
-			}
-
-				//targetPos.value.x = App->map->WorldToMap(position.x, 0).x; 
+		
+			else 
+				specificDir = iPoint(0, -1);   // GO top
 			
-			
-
-
-			//targetPos.type = TargetPos::targetPosType::Y;
 		}
 
 
@@ -244,6 +240,7 @@ void j1EnemyCacodemon::OnCollisionExit(Collider* c1, Collider* c2)
 		{
 			if (keepMovingAfterPlatform == false)
 			{
+				offPlatformPos = position; 
 				keepMovingAfterPlatform = true;
 				ResetPlatformState();
 			}

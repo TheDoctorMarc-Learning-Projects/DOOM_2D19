@@ -134,10 +134,13 @@ void j1Enemy::SetPreviousFrameData()
 void j1Enemy::SetPath(float dt, bool& success)
 {
 
-	if (state.path == ePathState::AWAIT)
+	if (state.path == ePathState::AWAIT || state.path == ePathState::TEMPORAL_DEVIATION)
 	{
 		if (FollowPath(dt))
 			success = true;
+		else
+			success = false;
+		
 	}
 
 	else if (state.path == ePathState::FOLLOW_PLAYER)
@@ -150,14 +153,12 @@ void j1Enemy::SetPath(float dt, bool& success)
 		{
 			if (FollowPath(dt))
 				success = true;
+			else
+				success = false;
 
 		}
 	}
-	else if (state.path == ePathState::TEMPORAL_DEVIATION)
-	{
-		FollowPath(dt); 
-		success = true;
-	}
+	
 	
 }
 
@@ -333,13 +334,13 @@ bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& succes
 		if (specificDir.IsZero() == false)
 			specificDir = iPoint(0, 0);
 
-		state.path = ePathState::AWAIT;
+		state.path = ePathState::AWAIT;             // on melee range = 1 tile: wait 
 		return success = false;
 	}
 
 	if (state.path == ePathState::AWAIT)
 	{
-		if (isPlayerOnMeleeRange() == false)
+		if (isPlayerOnMeleeRange() == false)           // when exiting melee range, set to follow player
 			state.path = ePathState::FOLLOW_PLAYER;
 		else
 			return success = false;
@@ -357,14 +358,23 @@ bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& succes
 		targetTilePos.x = targetPos.value.x;
 		targetTilePos.y = targetPos.value.y;
 
-		if (HasArrivedToTarget(tilePos, targetTilePos))
-		{
+		bool c1 = HasArrivedToTarget(tilePos, targetTilePos);
+		bool c2 = isPlayerOnMeleeRange();
+		 
+		if (c1 == true || c2 == true)                   
+		{                                                     
+			if(c1 == true)   
+				state.path = ePathState::FOLLOW_PLAYER;   // when exiting melee deviation, set to follow player...
+			if(c2 == true)
+				state.path = ePathState::AWAIT;      // ... or rather set or overwrite to await if on melee range
+
 			if (specificDir.IsZero() == false)
 				specificDir = iPoint(0, 0);
-
-			state.path = ePathState::FOLLOW_PLAYER;
+	
 			ResolvePathDeviation();
 		}
+
+		 
 
 	}
 
@@ -456,6 +466,7 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 
 		if (pathType == enemyPathType::FLYING)
 			lastSpeed.y = (Direction.y * speed) * dt;
+
 
 	// - - - - - - - - - - - - - - - - - -  Assign Direction
 

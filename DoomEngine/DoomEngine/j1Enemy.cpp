@@ -175,23 +175,27 @@ void j1Enemy::DieLogic(float dt)
 		VerticalMovement(dt);
 	}
 		
+	 
 
-	if (onPlatform && deathPosGround.IsZero())
-	{
-		deathPosGround.y = position.y + collider->rect.h;         // make so when enemy dies and anim changes, he visually stays inmovile in platform 
-		deathColllider = collider->rect;
 
-	}
-	else if (!deathPosGround.IsZero())
-	{
-		float offset = deathColllider.h - collider->rect.h;
+		if (onPlatform && deathPosGround.IsZero())
+		{
+			deathPosGround.y = position.y + collider->rect.h;         // make so when enemy dies and anim changes, he visually stays inmovile in platform 
+			deathColllider = collider->rect;
 
-		if (!onDynamicplatform)
-			position.y = deathPosGround.y - deathColllider.h + offset;
+		}
+		else if (!deathPosGround.IsZero())
+		{
+			float offset = deathColllider.h - collider->rect.h;
 
-		collider->SetPos(position.x, position.y);
-		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);  
-	}
+			if (!onDynamicplatform)
+				position.y = deathPosGround.y - deathColllider.h + offset;
+
+			collider->SetPos(position.x, position.y);
+			collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+		}
+
+
 
 
 	CheckDeathFinished();
@@ -448,7 +452,11 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 		Direction.Normalize();
 	
 	if (isnan(Direction.x) == true || isnan(Direction.y) == true)
+	{
 		LOG("Something went wrong with enemy!! Outside map");
+		return; 
+	}
+		
 
 
 	// - - - - - - - - - - - - - - - - - -  X Axis
@@ -652,9 +660,9 @@ void j1Enemy::SpawnShotParticle()
 
 	targetPos.y = position.y + longRangeShootData.relativeOffsetPos.y; 
 
-	if (pointingDir == LEFT)
+	if (GetDirection() == LEFT)
 		targetPos.x = position.x + longRangeShootData.relativeOffsetPos.x;
-	else if(pointingDir == RIGHT)
+	else if(GetDirection() == RIGHT)
 		targetPos.x = position.x + collider->rect.w - longRangeShootData.relativeOffsetPos.x;
  
 
@@ -989,16 +997,11 @@ void j1Enemy::OnCollisionExit(Collider* c1, Collider* c2)
 POINTING_DIR j1Enemy::GetDirection()
 {
 
-	// TODO: only do this with player and enemies  AND REWORK IT 
+	bool justMovement = false; 
 
 	if (state.combat != eCombatState::SHOOT)
 	{
-		if (state.movement.at(0) == eMovementState::INPUT_LEFT)
-			return pointingDir = POINTING_DIR::LEFT;
-		else if (state.movement.at(0) == eMovementState::INPUT_RIGHT)
-			return pointingDir = POINTING_DIR::RIGHT;
-
-		return pointingDir;    // no change in speed results in same pointing dir
+		justMovement = true;
 	}
 	else
 	{
@@ -1009,15 +1012,28 @@ POINTING_DIR j1Enemy::GetDirection()
 
 			if (c1 == true && c2 == true)                                  // hit is over 
 			{
-				if(lastShotDir == POINTING_DIR::LEFT)
+				if (lastShotDir == POINTING_DIR::LEFT)
 					return pointingDir = POINTING_DIR::LEFT;
-				else if(lastShotDir == POINTING_DIR::RIGHT)
+				else if (lastShotDir == POINTING_DIR::RIGHT)
 					return pointingDir = POINTING_DIR::RIGHT;
 
 			}
 		}
+		else if(currentAttackType == ATTACK_TYPE::MELEE)
+			justMovement = true; 
+
 	}
 
+
+	if (justMovement)
+	{
+		if (lastSpeed.x < 0)
+			return pointingDir = POINTING_DIR::LEFT;
+		else if (lastSpeed.x > 0)
+			return pointingDir = POINTING_DIR::RIGHT;
+
+		return pointingDir;    // no change in speed results in same pointing dir
+	}
 
 }
 

@@ -10,7 +10,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	adaptativeColliderMovement = false; 
 	type = ENEMY_CACODEMON;
 	this->name = name;
-	maxLife = 550;
+	maxLife = 480;
 	life = (float)maxLife;
 	size.create(62, 67);
 	speed = 50.75f;
@@ -139,8 +139,7 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 		{
 			if (state.combat == eCombatState::DYING)
 			{
-				float offset = collider->rect.y + collider->rect.h - c2->callback->position.y;    // put it back a bit
-				position.y = c2->callback->position.y - collider->rect.h - offset;    
+				onPlatform = true;      // finally put general enemy on platform to true, for die logic purposes
 			}
 		}
 

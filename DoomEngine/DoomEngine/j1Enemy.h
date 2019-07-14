@@ -139,6 +139,9 @@ public:
 	virtual bool DoMeleeAttack();
 	virtual bool DoLongRangeAttack();
 
+
+	virtual POINTING_DIR GetDirection(); 
+
 	virtual void SetDyingState(bool brutal = false)
 	{
 		state.combat = eCombatState::DYING; 
@@ -198,11 +201,13 @@ public:
 	TargetPos targetPos; 
 	fPoint deathPosGround = fPoint(0, 0);
 	fPoint currentTarget = fPoint(0, 0); 
+	POINTING_DIR lastShotDir = POINTING_DIR::RIGHT; 
 	SDL_Rect deathColllider = { 0, 0, 0, 0 }; 
 	iPoint specificDir = iPoint(0, 0); 
 	uint tileDetectionRange = 0; 
 	SDL_Rect lastPosCollider;
 	bool doJump = false;
+	bool adaptativeColliderMovement = true; 
 	POINTING_DIR lastPointingDir; 
 	ejumpData jumpInfo;
 	j1EntityPlatform* lastPlatform = nullptr; 

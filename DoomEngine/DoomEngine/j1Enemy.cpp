@@ -190,7 +190,7 @@ void j1Enemy::DieLogic(float dt)
 			position.y = deathPosGround.y - deathColllider.h + offset;
 
 		collider->SetPos(position.x, position.y);
-		//collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);  
 	}
 
 
@@ -205,14 +205,17 @@ void j1Enemy::SetCollider()
 			position.x = 0;
 
 		collider->SetPos(position.x, position.y);
-		//collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+		if(adaptativeColliderMovement)
+			collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
 
 		if (collider->rect.h != lastPosCollider.h)
 		{
 			float yOffset = collider->rect.h - lastPosCollider.h;
 			position.y -= yOffset;
 			collider->SetPos(position.x, position.y);
-		//	collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h, position.x, position.y);
+
+			if(adaptativeColliderMovement)
+				collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h, position.x, position.y);
 		}
 
 
@@ -584,6 +587,7 @@ bool j1Enemy::DoMeleeAttack()
 bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long range attack anim or audio ???? 
 {
 	static uint lastTimeAttack = 0;
+	static bool lastShooted = false; 
 
 	uint now = SDL_GetTicks();
 
@@ -591,6 +595,14 @@ bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long r
 	{
 		bool c1 = (currentAnimation == &attack) ? true : false; 
 		bool c2 = (currentAnimation->Finished()) ? true : false;
+
+		// take into account a possible delay 
+		if (now > lastTimeAttack + longRangeShootData.msWaitFromAnimStartToShot && lastShooted == false)
+		{
+			lastShooted = true; 
+			SpawnShotParticle();
+		}
+			
 
 		if (c1 == true && c2 == true)                                  // hit is over 
 		{
@@ -619,13 +631,14 @@ bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long r
 		{
 			if (now >= lastTimeAttack + cadenceValues.longRange)
 			{
+				lastShooted = false; 
 				currentAttackType = ATTACK_TYPE::LONG_RANGE;
 				state.combat = eCombatState::SHOOT;
 				currentAnimation = &attack;
 				currentAnimation->Reset();
 				lastTimeAttack = now;
 
-				SpawnShotParticle();    // create projectile the first frame
+				 
 
 				return true;
 			}
@@ -641,7 +654,6 @@ bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long r
 
 void j1Enemy::SpawnShotParticle()
 {
-	App->audio->PlayFx(name + "Attack");
 
 	fPoint dir = GetShotDir();
 	fPoint speed = fPoint(dir.x * longRangeShootData.shotSpeed, dir.y * longRangeShootData.shotSpeed);
@@ -653,12 +665,12 @@ void j1Enemy::SpawnShotParticle()
 		targetPos.x = position.x + longRangeShootData.relativeOffsetPos.x;
 	else if(pointingDir == RIGHT)
 		targetPos.x = position.x + collider->rect.w - longRangeShootData.relativeOffsetPos.x;
+ 
 
-
-	uint delay = longRangeShootData.msWaitFromAnimStartToShot;   // some delay needed to look more realistic 
-
-	Particle* shot = App->particles->AddParticleRet(name + "Shot", (int)targetPos.x, (int)targetPos.y, this, true, COLLIDER_ENEMY_SHOT, speed, delay,
+	Particle* shot = App->particles->AddParticleRet(name + "Shot", (int)targetPos.x, (int)targetPos.y, this, true, COLLIDER_ENEMY_SHOT, speed, 0U,
 		flip);
+
+	shot->fx = name + "Attack";  // it will be played only when the particle is spawned (synchro with delay) 
 }
 
 fPoint j1Enemy::GetShotDir()
@@ -668,6 +680,13 @@ fPoint j1Enemy::GetShotDir()
 
 	if(Dir.IsZero() == false)
 		Dir.Normalize();
+
+
+	if (Dir.x > 0)
+		lastShotDir = POINTING_DIR::RIGHT; 
+	else if (Dir.x < 0)
+		lastShotDir = POINTING_DIR::LEFT;
+
 
 	return Dir; 
 
@@ -973,6 +992,43 @@ void j1Enemy::OnCollisionExit(Collider* c1, Collider* c2)
 
 }
 
+
+
+
+POINTING_DIR j1Enemy::GetDirection()
+{
+
+	// TODO: only do this with player and enemies  AND REWORK IT 
+
+	if (state.combat != eCombatState::SHOOT)
+	{
+		if (lastSpeed.x < 0)
+			return pointingDir = POINTING_DIR::LEFT;
+		else if (lastSpeed.x > 0)
+			return pointingDir = POINTING_DIR::RIGHT;
+
+		return pointingDir;    // no change in speed results in same pointing dir
+	}
+	else
+	{
+		if (currentAttackType == ATTACK_TYPE::LONG_RANGE)
+		{
+			bool c1 = (currentAnimation == &attack == true) ? true : false;
+			bool c2 = (currentAnimation->Finished() == false) ? true : false;
+
+			if (c1 == true && c2 == true)                                  // hit is over 
+			{
+				if(lastShotDir == POINTING_DIR::LEFT)
+					return pointingDir = POINTING_DIR::LEFT;
+				else if(lastShotDir == POINTING_DIR::RIGHT)
+					return pointingDir = POINTING_DIR::RIGHT;
+
+			}
+		}
+	}
+
+
+}
 
 
 

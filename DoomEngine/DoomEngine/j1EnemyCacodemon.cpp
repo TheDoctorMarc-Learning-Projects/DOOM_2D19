@@ -7,6 +7,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	entityTex = App->entityFactory->entityTextureMap.at(name);
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
+	adaptativeColliderMovement = false; 
 	type = ENEMY_CACODEMON;
 	this->name = name;
 	maxLife = 550;
@@ -20,8 +21,8 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	cadenceValues.longRange = 3000; 
 	damageValues.melee = 120;
 	damageValues.longRange = 50; 
-	longRangeShootData.msWaitFromAnimStartToShot = 500;
-	longRangeShootData.relativeOffsetPos.create(0, size.y / 2); // assuming spritescale is 1.0f
+	longRangeShootData.msWaitFromAnimStartToShot = 800;
+	longRangeShootData.relativeOffsetPos.create(20, size.y / 2); // assuming spritescale is 1.0f
 	longRangeShootData.shotSpeed = 200;
 	pathType = enemyPathType::FLYING;
 	deathDataAnimFx.hasSecondDeathAnim = false;
@@ -51,7 +52,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	attack.PushBack({ 34, 328, size.x, size.y + 8});
 	attack.PushBack({ 35, 436, size.x, size.y + 1});
 	attack.PushBack({ 35, 537, size.x, size.y + 1});
-	attack.speed = 2.5f;
+	attack.speed = 3.f;
 	attack.loop = false;
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - collider
 	collider = App->collision->AddCollider({ (int)position.x, (int)position.y, (int)((float)size.x * spriteScale),(int)((float)size.y * spriteScale) }, COLLIDER_TYPE::COLLIDER_ENEMY, this);
@@ -71,7 +72,6 @@ bool j1EnemyCacodemon::Move(float dt)
 {
 	if (j1Enemy::Move(dt))
 	{
-		SetPosOnPlatform(); 
 
 		shieldAreaCollider->SetPos(position.x - shieldExtraSideSize / 2, position.y - shieldExtraSideSize / 2); 
 
@@ -91,15 +91,6 @@ bool j1EnemyCacodemon::Move(float dt)
 	return true;
 }
 
-void j1EnemyCacodemon::SetPosOnPlatform()
-{
-	if (onPlatFormType.top == true)
-	{
-		position.y = lastPlatform->position.y - collider->rect.h - shieldExtraSideSize / 2; 
-		collider->SetPos(position.x, position.y); 
-		shieldAreaCollider->SetPos(position.x - shieldExtraSideSize / 2, position.y - shieldExtraSideSize / 2);
-	}
-}
 
 void j1EnemyCacodemon::KeepMovingTendency()
 {

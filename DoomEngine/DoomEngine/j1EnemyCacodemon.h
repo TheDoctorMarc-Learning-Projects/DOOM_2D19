@@ -49,8 +49,6 @@ public:
 		onPlatFormType.top = false; 
 	}
 
-	void SetPosOnPlatform(); 
-
 	iPoint GetShieldPos() const { return iPoint(position.x - shieldExtraSideSize / 2, position.y - shieldExtraSideSize / 2); };
 	iPoint GetLastShieldPos() const { return iPoint(lastAirPos.x - shieldExtraSideSize / 2, lastAirPos.y - shieldExtraSideSize / 2); };
 

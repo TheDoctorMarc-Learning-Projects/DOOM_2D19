@@ -685,24 +685,6 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 	switch (c2->type)
 	{
 
-	case COLLIDER_TYPE::COLLIDER_PLAYER:       // long range shots are detected here 
-
-		if (c1->type == COLLIDER_ENEMY_SHOT)
-		{
-			c1->owner->to_delete = true;   // delete the shot particle AND  // create the explosion particle
-			
-			/*Particle* explosion = App->particles->AddParticleRet(name + "ShotExplosion", c1->callback->position.x, c1->callback->position.y, this, COLLIDER_PRESENTIAL, { 0,0 }, 0U,
-				flip);   */
-
-			                                                                      
-			float ShotsPerSec = 1.f / (cadenceValues.longRange / 1000.f);
-			App->entityFactory->DoDamagetoEntity(App->entityFactory->player, damageValues.longRange, ShotsPerSec, c1->speed);
-
-		}
-
-		break; 
-
-
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
 
 		if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)

@@ -69,9 +69,9 @@ bool j1Particles::Start()
 	EnemyCacodemonShot.name = "EnemyCacodemonShot";
 	EnemyCacodemonShot.anim.PushBack({ 1, 129, 23, 23 });  
 	EnemyCacodemonShot.anim.PushBack({ 25, 129, 23, 23 });
-	EnemyCacodemonShot.anim.speed = 0.3;
-	EnemyCacodemonShot.anim.loop = true;
-	
+	EnemyCacodemonShot.anim.speed = 5.3;
+	EnemyCacodemonShot.anim.loop = true; 
+
 	particleMap.insert(std::pair(EnemyCacodemonShot.name, EnemyCacodemonShot));
 
 	Particle EnemyCacodemonShotExplosion;                                   // the other data is defined in enemy shoot function 
@@ -79,9 +79,9 @@ bool j1Particles::Start()
 	EnemyCacodemonShotExplosion.anim.PushBack({ 49, 112, 41, 40 });
 	EnemyCacodemonShotExplosion.anim.PushBack({ 91, 109, 50, 43 });
 	EnemyCacodemonShotExplosion.anim.PushBack({ 142, 106, 53, 46 });
-	EnemyCacodemonShotExplosion.life = 40;
+	EnemyCacodemonShotExplosion.life = 1000;
 	EnemyCacodemonShotExplosion.speed.create(0, 0);
-	EnemyCacodemonShotExplosion.anim.speed = 0.5;
+	EnemyCacodemonShotExplosion.anim.speed = 12.6;
 	EnemyCacodemonShotExplosion.anim.loop = false;
 
 	particleMap.insert(std::pair(EnemyCacodemonShotExplosion.name, EnemyCacodemonShotExplosion));

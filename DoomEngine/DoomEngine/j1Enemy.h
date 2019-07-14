@@ -102,6 +102,14 @@ struct longShotData
 	iPoint relativeOffsetPos = iPoint(0,0); 
 	uint shotSpeed = 0U; 
 };
+
+struct AttackData
+{
+	uint lastTimeMeleeAttack = 0U; 
+	uint lastTimeLongRangeAttack = 0U;
+	bool lastShooted = false; 
+};
+
 class j1Entity;
 
 class j1Enemy : public j1Entity
@@ -127,7 +135,6 @@ public:
 	bool CheckPathState(iPoint pos, iPoint& target, bool& success); 
 	void CallPathCreation(iPoint pos, iPoint target, bool& success); 
 	void SolveMove(fPoint direction, float dt); 
-	void AssignDirectionWithSpeed(); 
 	virtual void ResolvePathDeviation() {};
 	
 	void SetPath(float dt, bool& moveSuccess); 
@@ -187,6 +194,7 @@ public:
 public:
 
 	ATTACK_TYPE currentAttackType; 
+	AttackData currentAttackData; 
 	longShotData longRangeShootData;
 	deathData deathDataAnimFx; 
 	enemyPathType pathType; 

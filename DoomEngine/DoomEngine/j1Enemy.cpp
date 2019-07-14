@@ -473,8 +473,7 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 
 	// - - - - - - - - - - - - - - - - - -  Assign Direction
 
-		AssignDirectionWithSpeed(); 
-
+		GetDirection(); 
 	// - - - - - - - - - - - - - - - - - -  Assign Position and Animation
 
 
@@ -510,12 +509,7 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 	
 }
 
-void j1Enemy::AssignDirectionWithSpeed()
-{
-	state.movement.at(0) = (lastSpeed.x < 0) ? eMovementState::INPUT_LEFT : state.movement.at(0);
-	state.movement.at(0) = (lastSpeed.x > 0) ? eMovementState::INPUT_RIGHT : state.movement.at(0);
-	state.movement.at(0) = (lastSpeed.x == 0) ? eMovementState::IDLE : state.movement.at(0);
-}
+
 
 bool j1Enemy::isPlayerOnMeleeRange()
 {
@@ -529,7 +523,6 @@ bool j1Enemy::isPlayerOnMeleeRange()
 
 bool j1Enemy::DoMeleeAttack()
 {
-	static uint lastTimeAttack = 0;
 
 	uint now = SDL_GetTicks();
 
@@ -565,13 +558,13 @@ bool j1Enemy::DoMeleeAttack()
 		}
 		else if (state.combat == eCombatState::IDLE)
 		{
-			if (now >= lastTimeAttack + cadenceValues.melee)
+			if (now >= currentAttackData.lastTimeMeleeAttack + cadenceValues.melee)
 			{
 				currentAttackType = ATTACK_TYPE::MELEE;
 				state.combat = eCombatState::SHOOT;
 				currentAnimation = &attack;
 				currentAnimation->Reset();
-				lastTimeAttack = now;
+				currentAttackData.lastTimeMeleeAttack = now;
 
 				return true; 
 			}
@@ -586,8 +579,6 @@ bool j1Enemy::DoMeleeAttack()
 
 bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long range attack anim or audio ???? 
 {
-	static uint lastTimeAttack = 0;
-	static bool lastShooted = false; 
 
 	uint now = SDL_GetTicks();
 
@@ -597,9 +588,9 @@ bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long r
 		bool c2 = (currentAnimation->Finished()) ? true : false;
 
 		// take into account a possible delay 
-		if (now > lastTimeAttack + longRangeShootData.msWaitFromAnimStartToShot && lastShooted == false)
+		if (now > currentAttackData.lastTimeLongRangeAttack + longRangeShootData.msWaitFromAnimStartToShot && currentAttackData.lastShooted == false)
 		{
-			lastShooted = true; 
+			currentAttackData.lastShooted = true;
 			SpawnShotParticle();
 		}
 			
@@ -629,14 +620,14 @@ bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long r
 		}
 		else
 		{
-			if (now >= lastTimeAttack + cadenceValues.longRange)
+			if (now >= currentAttackData.lastTimeLongRangeAttack + cadenceValues.longRange)
 			{
-				lastShooted = false; 
+				currentAttackData.lastShooted = false;
 				currentAttackType = ATTACK_TYPE::LONG_RANGE;
 				state.combat = eCombatState::SHOOT;
 				currentAnimation = &attack;
 				currentAnimation->Reset();
-				lastTimeAttack = now;
+				currentAttackData.lastTimeLongRangeAttack = now;
 
 				 
 
@@ -1002,9 +993,9 @@ POINTING_DIR j1Enemy::GetDirection()
 
 	if (state.combat != eCombatState::SHOOT)
 	{
-		if (lastSpeed.x < 0)
+		if (state.movement.at(0) == eMovementState::INPUT_LEFT)
 			return pointingDir = POINTING_DIR::LEFT;
-		else if (lastSpeed.x > 0)
+		else if (state.movement.at(0) == eMovementState::INPUT_RIGHT)
 			return pointingDir = POINTING_DIR::RIGHT;
 
 		return pointingDir;    // no change in speed results in same pointing dir

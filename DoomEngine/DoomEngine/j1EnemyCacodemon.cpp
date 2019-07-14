@@ -17,9 +17,12 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	gravityFactor = DEFAULT_GRAV / mass;  // TODO: just prevent Y movement by gravity
 	tileDetectionRange = 15;
 	cadenceValues.melee = 3000;
-	cadenceValues.longRange = 1000; 
+	cadenceValues.longRange = 15000; 
 	damageValues.melee = 120;
 	damageValues.longRange = 50; 
+	longRangeShootData.msWaitFromAnimStartToShot = 100;
+	longRangeShootData.relativeOffsetPos.create(0, size.y / 2); // assuming spritescale is 1.0f
+	longRangeShootData.shotSpeed = 200;
 	pathType = enemyPathType::FLYING;
 	deathDataAnimFx.hasSecondDeathAnim = false;
 	deathDataAnimFx.hasSecondDeathFx = false;
@@ -74,8 +77,13 @@ bool j1EnemyCacodemon::Move(float dt)
 			KeepMovingTendency(); 
 	}
 
-	if (isPlayerOnMeleeRange() == true)
+	if (App->entityFactory->isDistanceToManhattan(GetTilePosition(), App->entityFactory->GetPlayerPosition(), 2) == true)
 		DoMeleeAttack(); 
+	else
+	{
+		DoLongRangeAttack();
+	}
+  
 
 
 	return true;

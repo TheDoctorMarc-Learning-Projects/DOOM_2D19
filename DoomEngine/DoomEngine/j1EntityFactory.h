@@ -46,7 +46,14 @@ public:
 		int levelsUp = 0, int LevelsDown = 0, SceneState level = SceneState::LEVEL1, AXIS_Movement movementType = AXIS_Movement::HORIZONTAL);
 	j1Entity* CreateWeapon(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type, weaponInfo weaponData);
 
-
+	bool isDistanceToManhattan(iPoint tilePos, iPoint targetTilePos, int distance)
+	{
+		int distanceManh = tilePos.DistanceManhattan(targetTilePos); 
+		return distanceManh <= distance;
+	}
+	iPoint GetPlayerPosition() const {
+		return iPoint(App->map->WorldToMap((int)player->position.x, (int)player->position.y)) + iPoint(0, 1);
+	}
 
 	/*Enemy* CreateEnemy(EnemyType etype, iPoint pos, bool dummy = false);                            // TODO: rework this when enemies available
 	std::vector<j1Entity*> CreateEnemiesGroup(std::vector<EnemyType> enemyTypes, SDL_Rect zone, uint minNum, uint maxNum, uint groupLevel = 0);*/

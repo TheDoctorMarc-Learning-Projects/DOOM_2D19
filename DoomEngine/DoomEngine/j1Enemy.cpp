@@ -479,7 +479,11 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 		{
 			if (lastSpeed.x != 0)
 			{
-				currentAnimation = &run;
+				if (state.combat == eCombatState::IDLE)
+				{
+					currentAnimation = &run;
+				}
+				
 				position.x += lastSpeed.x;
 			}
 
@@ -488,7 +492,11 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 		{
 			if (lastSpeed.x != 0 || lastSpeed.y != 0)
 			{
-				currentAnimation = &run;
+				if (state.combat == eCombatState::IDLE)
+				{
+					currentAnimation = &run;
+				}
+
 				position.x += lastSpeed.x;
 				position.y += lastSpeed.y;
 			}
@@ -573,11 +581,87 @@ bool j1Enemy::DoMeleeAttack()
 }
 
 
-bool j1Enemy::DoLongRangeAttack()
+bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long range attack anim or audio ???? 
 {
+	static uint lastTimeAttack = 0;
+
+	uint now = SDL_GetTicks();
+
+	if (state.combat == eCombatState::SHOOT)
+	{
+		bool c1 = (currentAnimation == &attack) ? true : false; 
+		bool c2 = (currentAnimation->Finished()) ? true : false;
+
+		if (c1 == true && c2 == true)                                  // hit is over 
+		{
+			currentAttackType = ATTACK_TYPE::NO_ATTACK_TYPE;     // retreat 
+			state.combat = eCombatState::IDLE;
+
+			if (lastSpeed.IsZero())
+				currentAnimation = &idle;   // go back to default anim depending on enemy speed
+			else
+				currentAnimation = &run;
+
+		}
+		else
+			return true;
+
+	}
+	else if (state.combat == eCombatState::IDLE)
+	{
+		if (now >= lastTimeAttack + cadenceValues.longRange)
+		{
+			currentAttackType = ATTACK_TYPE::LONG_RANGE;
+			state.combat = eCombatState::SHOOT;
+			currentAnimation = &attack;
+			currentAnimation->Reset();
+
+			SpawnShotParticle();    // create projectile the first frame
+
+			return true;
+		}
+
+	}
+	
 
 
 	return false; 
+}
+
+void j1Enemy::SpawnShotParticle()
+{
+	App->audio->PlayFx(name + "Attack");
+
+	fPoint dir = GetShotDir();
+	fPoint speed = fPoint(dir.x * longRangeShootData.shotSpeed, dir.y * longRangeShootData.shotSpeed);
+	fPoint targetPos = fPoint(0, 0); 
+
+	targetPos.y = position.y + longRangeShootData.relativeOffsetPos.y; 
+
+	if (pointingDir == LEFT)
+		targetPos.x = position.x + longRangeShootData.relativeOffsetPos.x;
+	else if(pointingDir == RIGHT)
+		targetPos.x = position.x + collider->rect.w - longRangeShootData.relativeOffsetPos.x;
+
+
+	uint delay = longRangeShootData.msWaitFromAnimStartToShot;   // some delay needed to look more realistic 
+
+	Particle* shot = App->particles->AddParticleRet(name + "Shot", (int)targetPos.x, (int)targetPos.y, this, true, COLLIDER_ENEMY_SHOT, speed, delay,
+		flip);
+
+}
+
+fPoint j1Enemy::GetShotDir()
+{
+	fPoint playerPos = App->entityFactory->player->position; 
+	fPoint Dir = playerPos - position; 
+
+	if(Dir.IsZero() == false)
+		Dir.Normalize();
+
+	return Dir; 
+
+
 }
 
 
@@ -590,6 +674,25 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 
 	switch (c2->type)
 	{
+
+	case COLLIDER_TYPE::COLLIDER_PLAYER:       // long range shots are detected here 
+
+		if (c1->type == COLLIDER_ENEMY_SHOT)
+		{
+			c1->owner->to_delete = true;   // delete the shot particle AND  // create the explosion particle
+			
+			/*Particle* explosion = App->particles->AddParticleRet(name + "ShotExplosion", c1->callback->position.x, c1->callback->position.y, this, COLLIDER_PRESENTIAL, { 0,0 }, 0U,
+				flip);   */
+
+			                                                                      
+			float ShotsPerSec = 1.f / (cadenceValues.longRange / 1000.f);
+			App->entityFactory->DoDamagetoEntity(App->entityFactory->player, damageValues.longRange, ShotsPerSec, c1->speed);
+
+		}
+
+		break; 
+
+
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
 
 		if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)

@@ -37,7 +37,9 @@ bool j1Particles::Start()
 
 	texture = App->tex->Load("textures/particles/particles.png"); 
 
+	// - - - - - - - - - - - - - - - - - - - - - - - WEAPONS
 	// shotgun shot fire 
+	Particle shotgunShotFire;
 	shotgunShotFire.name = "shotgunShotFire";
 	shotgunShotFire.anim.PushBack({0, 298, 7, 6});
 	shotgunShotFire.life = 75;
@@ -50,6 +52,7 @@ bool j1Particles::Start()
 
 
 	// machine gun shot fire 
+	Particle machineGunShotFire;
 	machineGunShotFire.name = "machineGunShotFire";
 	machineGunShotFire.anim.PushBack({ 0, 307, 7, 6 });
 	machineGunShotFire.life = 20;
@@ -59,6 +62,30 @@ bool j1Particles::Start()
 	machineGunShotFire.fx = "machineGunShotFire";
 
 	particleMap.insert(std::pair(machineGunShotFire.name, machineGunShotFire));
+
+	// - - - - - - - - - - - - - - - - - - - - - - - ENEMIES
+	// Cacodemon
+	Particle EnemyCacodemonShot;                                   // the other data is defined in enemy shoot function 
+	EnemyCacodemonShot.name = "EnemyCacodemonShot";
+	EnemyCacodemonShot.anim.PushBack({ 1, 129, 23, 23 });  
+	EnemyCacodemonShot.anim.PushBack({ 25, 129, 23, 23 });
+	EnemyCacodemonShot.anim.speed = 0.3;
+	EnemyCacodemonShot.anim.loop = true;
+	
+	particleMap.insert(std::pair(EnemyCacodemonShot.name, EnemyCacodemonShot));
+
+	Particle EnemyCacodemonShotExplosion;                                   // the other data is defined in enemy shoot function 
+	EnemyCacodemonShotExplosion.name = "EnemyCacodemonShotExplosion";
+	EnemyCacodemonShotExplosion.anim.PushBack({ 49, 112, 41, 40 });
+	EnemyCacodemonShotExplosion.anim.PushBack({ 91, 109, 50, 43 });
+	EnemyCacodemonShotExplosion.anim.PushBack({ 142, 106, 53, 46 });
+	EnemyCacodemonShotExplosion.life = 40;
+	EnemyCacodemonShotExplosion.speed.create(0, 0);
+	EnemyCacodemonShotExplosion.anim.speed = 0.5;
+	EnemyCacodemonShotExplosion.anim.loop = false;
+
+	particleMap.insert(std::pair(EnemyCacodemonShotExplosion.name, EnemyCacodemonShotExplosion));
+
 
 
 	
@@ -145,7 +172,7 @@ bool j1Particles::PostUpdate()//float dt)
 }
 
 //void ModuleParticles::AddParticle(const Particle& particle, Animation& sourceAnim, int x, int y, Uint32 delay, iPoint speed, Uint32 life, char* name)
-void j1Particles::AddParticle(std::string nameAtMap, int x, int y, j1Entity* callback, COLLIDER_TYPE coltype, iPoint speed, Uint32 delay, SDL_RendererFlip rFlip, double angle, int pivotx, int pivoty, float scale, float parallaxSpeed, bool useCameraScale, bool onScreen)
+void j1Particles::AddParticle(std::string nameAtMap, int x, int y, j1Entity* callback, bool assignToCollider, COLLIDER_TYPE coltype, fPoint speed, Uint32 delay, SDL_RendererFlip rFlip, double angle, int pivotx, int pivoty, float scale, float parallaxSpeed, bool useCameraScale, bool onScreen)
 {
 	Particle* p = DBG_NEW Particle(particleMap.at(nameAtMap));
 
@@ -154,6 +181,10 @@ void j1Particles::AddParticle(std::string nameAtMap, int x, int y, j1Entity* cal
 		p->hasCollider = true; 
 		p->collider = App->collision->AddCollider(p->anim.GetCurrentFrame(), coltype, callback);   // TODO: like player, update the collider rect according to frame ??? or is it overkill ???
 		p->collider->SetPos(p->position.x, p->position.y);
+
+
+		if (assignToCollider)
+			p->collider->owner = p;
 	}
 		
 	
@@ -170,7 +201,8 @@ void j1Particles::AddParticle(std::string nameAtMap, int x, int y, j1Entity* cal
 	{
 		p->pivot.x = pivotx;
 		p->pivot.y = pivoty;
-		p->position -= p->pivot;
+		p->position.x -= p->pivot.x; 
+		p->position.y -= p->pivot.y; 
 	}
 
 	p->scale = scale; 
@@ -184,7 +216,7 @@ void j1Particles::AddParticle(std::string nameAtMap, int x, int y, j1Entity* cal
 }
 
 
-Particle* j1Particles::AddParticleRet(std::string nameAtMap, int x, int y, j1Entity* callback, COLLIDER_TYPE coltype, iPoint speed, Uint32 delay, SDL_RendererFlip rFlip, double angle, int pivotx, int pivoty, float scale, float parallaxSpeed, bool useCameraScale, bool onScreen)
+Particle* j1Particles::AddParticleRet(std::string nameAtMap, int x, int y, j1Entity* callback, bool assignToCollider, COLLIDER_TYPE coltype, fPoint speed, Uint32 delay, SDL_RendererFlip rFlip, double angle, int pivotx, int pivoty, float scale, float parallaxSpeed, bool useCameraScale, bool onScreen)
 {
 	Particle* p = DBG_NEW Particle(particleMap.at(nameAtMap));
 
@@ -193,6 +225,10 @@ Particle* j1Particles::AddParticleRet(std::string nameAtMap, int x, int y, j1Ent
 		p->hasCollider = true;
 		p->collider = App->collision->AddCollider(p->anim.GetCurrentFrame(), coltype, callback);   // TODO: like player, update the collider rect according to frame ??? or is it overkill ???
 		p->collider->SetPos(p->position.x, p->position.y);
+
+
+		if (assignToCollider)
+			p->collider->owner = p;
 	}
 
 
@@ -201,7 +237,7 @@ Particle* j1Particles::AddParticleRet(std::string nameAtMap, int x, int y, j1Ent
 	p->position.y = y;
 	if (speed.x != 0 || speed.y != 0)
 	{
-		p->speed = speed;
+		p->speed = speed; 
 	}
 	p->renderFlip = rFlip;
 	p->angle = angle;
@@ -209,7 +245,8 @@ Particle* j1Particles::AddParticleRet(std::string nameAtMap, int x, int y, j1Ent
 	{
 		p->pivot.x = pivotx;
 		p->pivot.y = pivoty;
-		p->position -= p->pivot;
+		p->position.x -= p->pivot.x;
+		p->position.y -= p->pivot.y;
 	}
 
 	p->scale = scale;
@@ -253,15 +290,13 @@ bool Particle::Update(float dt)
 			ret = false;
 	}
 
-	//destroy particles respect camera position margins // TODO PARTICLES
-	/*if (position.x > (abs(App->render->camera.x) / SCREEN_SIZE) + SCREEN_WIDTH - MARGIN)
-		ret = false;
-	else if (position.x < (abs(App->render->camera.x) / SCREEN_SIZE) - MARGIN - 150)
-		ret = false;*/
 
-		// destroy particle when animation is finished
+	// destroy particle when animation is finished
 	if (!anim.loop && anim.Finished())
 		ret = false;
+
+	if (to_delete)
+		ret = false; 
 
 	position.x += speed.x * dt;
 	position.y += speed.y * dt;

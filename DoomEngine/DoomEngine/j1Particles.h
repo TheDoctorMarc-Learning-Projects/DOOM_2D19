@@ -28,16 +28,16 @@ struct Particle // only dumb visual class
 	iPoint pivot = { (int)INT_MAX, (int)INT_MAX };
 	Animation anim;
 	std::string fx = ""; 
-	iPoint position;
-	iPoint speed;
+	fPoint position;
+	fPoint speed;
 	Uint32 born = 0;
 	Uint32 life = 0;
 	//Uint32 damage = 0;
 	bool fx_played = false;
 	float parallaxSpeed = 1.0;
 	bool useCameraScale = true; 
-	
 	bool onScreen = false; 
+	bool to_delete = false; 
 
 	Particle();
 	Particle(const Particle& p);
@@ -60,8 +60,8 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	void AddParticle(std::string nameAtMap, int x, int y, j1Entity* callback = nullptr, COLLIDER_TYPE colType = COLLIDER_NONE, iPoint speed = { 0,0 }, Uint32 delay = 0, SDL_RendererFlip rFlip = SDL_RendererFlip::SDL_FLIP_NONE, double angle = 0, int pivotx = INT_MAX, int pivoty = INT_MAX, float scale = 1.0F, float parallaxSpeed = 1.0F, bool useCameraScale = true, bool onSceen = false);
-	Particle* AddParticleRet(std::string nameAtMap, int x, int y, j1Entity* callback = nullptr, COLLIDER_TYPE colType = COLLIDER_NONE, iPoint speed = { 0,0 }, Uint32 delay = 0, SDL_RendererFlip rFlip = SDL_RendererFlip::SDL_FLIP_NONE, double angle = 0, int pivotx = INT_MAX, int pivoty = INT_MAX, float scale = 1.0F, float parallaxSpeed = 1.0F, bool useCameraScale = true, bool onSceen = false);
+	void AddParticle(std::string nameAtMap, int x, int y, j1Entity* callback = nullptr, bool assignToCollider = false, COLLIDER_TYPE colType = COLLIDER_NONE, fPoint speed = { 0,0 }, Uint32 delay = 0, SDL_RendererFlip rFlip = SDL_RendererFlip::SDL_FLIP_NONE, double angle = 0, int pivotx = INT_MAX, int pivoty = INT_MAX, float scale = 1.0F, float parallaxSpeed = 1.0F, bool useCameraScale = true, bool onSceen = false);
+	Particle* AddParticleRet(std::string nameAtMap, int x, int y, j1Entity* callback = nullptr, bool assignToCollider = false, COLLIDER_TYPE colType = COLLIDER_NONE, fPoint speed = { 0,0 }, Uint32 delay = 0, SDL_RendererFlip rFlip = SDL_RendererFlip::SDL_FLIP_NONE, double angle = 0, int pivotx = INT_MAX, int pivoty = INT_MAX, float scale = 1.0F, float parallaxSpeed = 1.0F, bool useCameraScale = true, bool onSceen = false);
 
 private:
 
@@ -74,8 +74,7 @@ private:
 	std::map<std::string, Particle> particleMap;
 
 
-	Particle shotgunShotFire;
-	Particle machineGunShotFire; 
+
 
 public:
 	

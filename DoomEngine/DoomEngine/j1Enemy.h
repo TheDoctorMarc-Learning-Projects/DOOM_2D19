@@ -96,6 +96,12 @@ struct deathData
 	bool hasSecondDeathFx = false; 
 };
 
+struct longShotData
+{
+	uint msWaitFromAnimStartToShot = 0U; 
+	iPoint relativeOffsetPos = iPoint(0,0); 
+	uint shotSpeed = 0U; 
+};
 class j1Entity;
 
 class j1Enemy : public j1Entity
@@ -171,10 +177,14 @@ public:
 	}
 
 	bool isPlayerOnMeleeRange(); 
+	void SpawnShotParticle(); 
+
+	fPoint GetShotDir(); 
 
 public:
 
 	ATTACK_TYPE currentAttackType; 
+	longShotData longRangeShootData;
 	deathData deathDataAnimFx; 
 	enemyPathType pathType; 
 	baseDamageValues damageValues; 

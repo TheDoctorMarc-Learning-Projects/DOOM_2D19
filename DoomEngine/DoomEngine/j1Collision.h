@@ -11,6 +11,7 @@
 enum COLLIDER_TYPE
 {
 	COLLIDER_NONE = -1,
+	COLLIDER_PRESENTIAL,
 	COLLIDER_WALL,
 	COLLIDER_FLOOR,
 	COLLIDER_PLAYER, 
@@ -19,6 +20,7 @@ enum COLLIDER_TYPE
 	COLLIDER_WIN,
 	COLLIDER_ENEMY,
 	COLLIDER_SHOT,
+	COLLIDER_ENEMY_SHOT,
 	COLLIDER_LOOT,
 	COLLIDER_BLOOD,
 	COLLIDER_WALL_DETECTION,
@@ -28,12 +30,15 @@ enum COLLIDER_TYPE
 struct SDL_Rect; 
 class j1Entity; 
 
+struct Particle; 
+
 struct Collider
 {
 	SDL_Rect rect;
 	bool to_delete = false;
 	COLLIDER_TYPE type;
 	j1Entity* callback = nullptr;
+	Particle* owner = nullptr; // eg shot creates collider, but callback is instead the enemy
 	bool hasCallback = false; 
 	bool hasSpeed = false; 
 	bool volatileOutOfScreen = false; 

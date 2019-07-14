@@ -261,7 +261,7 @@ fPoint j1BloodManager::GenerateRandomSpeedForBloodDrop()
 {
 	fPoint speed = fPoint(0, 0); 
 
-	speed.x = GetRandomValue(-bloodModuleSpeed, bloodModuleSpeed);  // between negative max and positive max
+	speed.x = GetRandomValue(-bloodModuleSpeed * randomBloodSpeedXFactor, bloodModuleSpeed * randomBloodSpeedXFactor);  // between negative max and positive max
 	speed.y = sqrt(pow(bloodModuleSpeed, 2.f) - pow(speed.x, 2.f));  // this calculus is always positive
 
 	/*float speedYSign = GetRandomIntValue(0, 1);    // give the last calculus a proper sign

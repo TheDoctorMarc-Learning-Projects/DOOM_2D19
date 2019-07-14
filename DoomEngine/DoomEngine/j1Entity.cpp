@@ -104,11 +104,6 @@ void j1Entity::Draw()
 
 }
 
-fPoint j1Entity::GetPosition()
-{
-	return position;
-}
-
 POINTING_DIR j1Entity::GetDirection()
 {
 

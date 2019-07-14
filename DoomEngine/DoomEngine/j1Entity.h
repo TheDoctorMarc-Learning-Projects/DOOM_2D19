@@ -10,6 +10,7 @@
 #include "j1Collision.h"
 #include "j1Render.h"
 #include "j1Audio.h"
+#include "j1Map.h"
 #include <array>
 #include <math.h>
 
@@ -83,7 +84,10 @@ public:
 
 	virtual void OnCollisionExit(Collider* c1, Collider* c2) {};
 //	iPoint GetTilePos() const;
-	fPoint GetPosition();
+	iPoint GetTilePosition() const {
+		return iPoint(App->map->WorldToMap((int)position.x, (int)position.y)) + iPoint(0, 1); 
+	}
+
 //	bool ChangedTile() const; 
 	virtual POINTING_DIR GetDirection(); 
 	//virtual void LoadEntitydata(pugi::xml_node&);

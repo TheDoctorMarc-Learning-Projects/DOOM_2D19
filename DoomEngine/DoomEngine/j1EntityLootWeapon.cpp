@@ -203,7 +203,7 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 
 
 
-			Particle* shotFire = App->particles->AddParticleRet(name + "ShotFire", weaponTipPos.x, weaponTipPos.y, this, COLLIDER_SHOT, { 0,0 }, 0U,
+			Particle* shotFire = App->particles->AddParticleRet(name + "ShotFire", weaponTipPos.x, weaponTipPos.y, this, false, COLLIDER_PRESENTIAL, { 0,0 }, 0U,
 				flip, spriteRotation);   // just visual 
 
 
@@ -219,7 +219,7 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 			weaponTipPos = iPoint(position.x, position.y);
 
 
-			Particle * shotFire = App->particles->AddParticleRet(name + "ShotFire", weaponTipPos.x, weaponTipPos.y, this, COLLIDER_SHOT, { 0,0 }, 0U,
+			Particle * shotFire = App->particles->AddParticleRet(name + "ShotFire", weaponTipPos.x, weaponTipPos.y, this, false, COLLIDER_PRESENTIAL, { 0,0 }, 0U,
 				flip, alpha);   // just visual 
 
 
@@ -253,7 +253,7 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 				}
 			}
 
-			shotFire->position = weaponTipPos;
+			shotFire->position = fPoint((int)weaponTipPos.x, (int)weaponTipPos.y);
 
 
 		}

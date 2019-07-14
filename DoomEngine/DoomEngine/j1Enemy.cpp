@@ -659,7 +659,6 @@ void j1Enemy::SpawnShotParticle()
 
 	Particle* shot = App->particles->AddParticleRet(name + "Shot", (int)targetPos.x, (int)targetPos.y, this, true, COLLIDER_ENEMY_SHOT, speed, delay,
 		flip);
-
 }
 
 fPoint j1Enemy::GetShotDir()

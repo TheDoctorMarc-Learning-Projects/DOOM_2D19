@@ -570,9 +570,27 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 {
 	bool lastOnplatform = onPlatform;
 
+	float ShotsPerSec = 0.0f;
 	switch (c2->type)
 	{
 		
+
+	case COLLIDER_TYPE::COLLIDER_ENEMY_SHOT:       // long range shots are detected here 
+
+	
+			c2->owner->to_delete = true;   // delete the shot particle AND  // create the explosion particle
+
+			/*Particle* explosion = App->particles->AddParticleRet(name + "ShotExplosion", c1->callback->position.x, c1->callback->position.y, this, COLLIDER_PRESENTIAL, { 0,0 }, 0U,
+				flip);   */
+
+
+			ShotsPerSec = 1.f / (dynamic_cast<j1Enemy*>(c2->callback)->cadenceValues.longRange / 1000.f);
+			App->entityFactory->DoDamagetoEntity(this, dynamic_cast<j1Enemy*>(c2->callback)->damageValues.longRange, ShotsPerSec, c1->speed);
+
+
+		break;
+
+
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
 
 		if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)

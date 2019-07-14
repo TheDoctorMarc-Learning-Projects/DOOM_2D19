@@ -120,13 +120,13 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_GOD] = false;
 	matrix[COLLIDER_PLAYER][COLLIDER_WIN] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY] = true;
-	matrix[COLLIDER_PLAYER][COLLIDER_SHOT] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_SHOT] = false;
 	matrix[COLLIDER_PLAYER][COLLIDER_FLOOR] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_LOOT] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_BLOOD] = false;
 	matrix[COLLIDER_PLAYER][COLLIDER_WALL_DETECTION] = false;
-	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY_SHOT] = true;
-	matrix[COLLIDER_PLAYER][COLLIDER_PRESENTIAL] = false;
+	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY_SHOT] = true;     
+ 	matrix[COLLIDER_PLAYER][COLLIDER_PRESENTIAL] = false;
 
 	matrix[COLLIDER_DEATH][COLLIDER_DEATH] = false;
 	matrix[COLLIDER_DEATH][COLLIDER_PLAYER] = true;
@@ -186,7 +186,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_ENEMY][COLLIDER_PRESENTIAL] = false;
 
 	matrix[COLLIDER_SHOT][COLLIDER_SHOT] = false;
-	matrix[COLLIDER_SHOT][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_SHOT][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_SHOT][COLLIDER_WIN] = false;
 	matrix[COLLIDER_SHOT][COLLIDER_DEATH] = false;
 	matrix[COLLIDER_SHOT][COLLIDER_GOD] = true;
@@ -404,13 +404,6 @@ bool j1Collision::Update(float dt)
 void j1Collision::DebugDraw()
 {
 	BROFILER_CATEGORY("Collision DebugDraw", Profiler::Color::DarkSlateGray);
-	/*if (App->input->keyboard[SDL_SCANCODE_1] == KEY_DOWN) {
-		if (debug == false) debug = true;
-		else debug = false;
-	}
-
-	if (debug == false)
-		return;*/
 	
 	Uint8 alpha = 80;
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)

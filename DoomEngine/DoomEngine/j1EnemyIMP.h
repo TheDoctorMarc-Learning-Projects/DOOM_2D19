@@ -3,12 +3,7 @@
 
 #include "j1Enemy.h"
 
-enum IMP_ATTACK_TYPE
-{
-	MELEE,
-	MELEE_RAMPAGE,
-	NO_ATTACK_TYPE
-};
+
 
 
 class j1Enemy;
@@ -26,7 +21,6 @@ public:
 
 	bool Move(float dt) override;  // call parent function, then if enemy does enaything extra, do it after call 
 
-	void DoAttack(bool meleeRange) override; 
 
 private: 
 	//float jumpAngle = 45; 
@@ -36,7 +30,6 @@ private:
 	float RampageDamageMultiplier = 3.f; 
 	float defaultSpeed = 0.f; 
 
-	IMP_ATTACK_TYPE currentAttackType = IMP_ATTACK_TYPE::NO_ATTACK_TYPE;
 };
 
 #endif 

@@ -515,6 +515,75 @@ bool j1Enemy::isPlayerOnMeleeRange()
 }
 
 
+
+bool j1Enemy::DoMeleeAttack()
+{
+	static uint lastTimeAttack = 0;
+
+	uint now = SDL_GetTicks();
+
+	if (pathType == enemyPathType::FLYING || (pathType != enemyPathType::FLYING && onPlatform))  // land enemeies check they are on ground to attack
+	{
+		if (state.combat == eCombatState::SHOOT)
+		{
+			if (currentAnimation != &attack)
+				currentAnimation = &attack;
+
+			if (currentAnimation == &attack && currentAnimation->Finished() == true)  // hit is over 
+			{
+				if (isPlayerOnMeleeRange() == true)   // do damage 
+				{
+					float ShotsPerSec = 1.f / (cadenceValues.melee / 1000.f);
+					App->entityFactory->DoDamagetoEntity(App->entityFactory->player, damageValues.melee, ShotsPerSec);
+					App->audio->PlayFx(name + "Attack");
+
+				}
+
+				currentAttackType = ATTACK_TYPE::NO_ATTACK_TYPE;     // retreat 
+				state.combat = eCombatState::IDLE;
+
+				if (lastSpeed.IsZero())
+					currentAnimation = &idle;   // go back to default anim depending on enemy speed
+				else
+					currentAnimation = &run;
+
+			}
+			else
+				return true; 
+
+		}
+		else if (state.combat == eCombatState::IDLE)
+		{
+			if (now >= lastTimeAttack + cadenceValues.melee)
+			{
+				currentAttackType = ATTACK_TYPE::MELEE;
+				state.combat = eCombatState::SHOOT;
+				currentAnimation = &attack;
+				currentAnimation->Reset();
+				lastTimeAttack = now;
+
+				return true; 
+			}
+
+		}
+	}
+
+	return false; 
+
+}
+
+
+bool j1Enemy::DoLongRangeAttack()
+{
+
+
+	return false; 
+}
+
+
+
+
+
 void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 {
 	bool lastOnplatform = onPlatform;

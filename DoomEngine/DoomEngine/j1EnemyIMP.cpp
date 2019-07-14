@@ -11,7 +11,6 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY, std::string name) : j1Enemy(posX, pos
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = ENEMY_IMP;
 	this->name = name; 
-	damage = 50; 
 	maxLife = 50; 
 	life = (float)maxLife;
 	size.create(36, 49);
@@ -20,6 +19,7 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY, std::string name) : j1Enemy(posX, pos
 	mass = 0.6f;
 	gravityFactor = DEFAULT_GRAV / mass;
 	tileDetectionRange = 10;
+	damageValues.melee = 50;
 	cadenceValues.melee = 1200; 
 	pathType = enemyPathType::ALL_ROUND; 
 	deathDataAnimFx.hasSecondDeathAnim = true; 
@@ -89,11 +89,10 @@ bool j1EnemyIMP::Move(float dt)
 	if (j1Enemy::Move(dt))
 	{
 		Jump();
-		DoAttack(false); 
 	}
 		
 	if (isPlayerOnMeleeRange())   
-		DoAttack(true);
+		DoMeleeAttack();
 
 
 
@@ -200,65 +199,4 @@ void j1EnemyIMP::ResolvePathDeviation()
 {
 	doJump = true; 
 }
-
-
-void j1EnemyIMP::DoAttack(bool meleeRange)
-{
-	static uint lastTimeAttack = 0; 
-
-	uint now = SDL_GetTicks();
-	
-	if (onPlatform)
-	{
-		if (state.combat == eCombatState::SHOOT)
-		{
-			if (currentAnimation != &attack)
-				currentAnimation = &attack; 
-
-			if (currentAnimation == &attack && currentAnimation->Finished() == true)  // hit is over 
-			{
-				if (isPlayerOnMeleeRange())   // do damage 
-				{
-					float ShotsPerSec = 1 / (cadenceValues.melee / 1000);
-					App->entityFactory->DoDamagetoEntity(App->entityFactory->player, damage, ShotsPerSec);
-					App->audio->PlayFx(name + "Attack"); 
-
-				}
-
-				
-					currentAttackType = IMP_ATTACK_TYPE::NO_ATTACK_TYPE;     // retreat 
-					state.combat = eCombatState::IDLE;
-					speed = defaultSpeed;
-			
-				if (lastSpeed.IsZero())
-					currentAnimation = &idle;   // go back to default anim depending on enemy speed
-				else
-					currentAnimation = &run;
-
-			}
-
-		}
-		else if (state.combat == eCombatState::IDLE)
-		{
-			if (now >= lastTimeAttack + cadenceValues.melee)
-			{
-				if (meleeRange)
-				{
-
-					currentAttackType = IMP_ATTACK_TYPE::MELEE;
-					state.combat = eCombatState::SHOOT;
-					currentAnimation = &attack;
-					currentAnimation->Reset();
-					lastTimeAttack = now;
-
-				}
-		
-			}
-			
-		}
-	}
-	
-
-}
-
 

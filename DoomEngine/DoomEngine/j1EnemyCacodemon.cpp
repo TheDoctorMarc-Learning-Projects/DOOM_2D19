@@ -9,7 +9,6 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = ENEMY_CACODEMON;
 	this->name = name;
-	damage = 50;
 	maxLife = 300;
 	life = (float)maxLife;
 	size.create(62, 67);
@@ -17,8 +16,10 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	mass = 1.f;
 	gravityFactor = DEFAULT_GRAV / mass;  // TODO: just prevent Y movement by gravity
 	tileDetectionRange = 15;
-	cadenceValues.melee = 1200;
+	cadenceValues.melee = 3000;
 	cadenceValues.longRange = 1000; 
+	damageValues.melee = 120;
+	damageValues.longRange = 50; 
 	pathType = enemyPathType::FLYING;
 	deathDataAnimFx.hasSecondDeathAnim = false;
 	deathDataAnimFx.hasSecondDeathFx = false;
@@ -73,6 +74,8 @@ bool j1EnemyCacodemon::Move(float dt)
 			KeepMovingTendency(); 
 	}
 
+	if (isPlayerOnMeleeRange() == true)
+		DoMeleeAttack(); 
 
 
 	return true;

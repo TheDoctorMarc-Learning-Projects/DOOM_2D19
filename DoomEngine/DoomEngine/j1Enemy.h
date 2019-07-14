@@ -47,6 +47,12 @@ struct myEnemyState
 
 };
 
+enum ATTACK_TYPE
+{
+	MELEE,
+	LONG_RANGE,
+	NO_ATTACK_TYPE
+};
 
 struct TargetPos
 {
@@ -73,6 +79,12 @@ struct ejumpData
 
 
 struct baseCadenceValues
+{
+	uint melee = 0U; 
+	uint longRange = 0U; 
+};
+
+struct baseDamageValues
 {
 	uint melee = 0U; 
 	uint longRange = 0U; 
@@ -118,7 +130,8 @@ public:
 	void SetCollider();
 	void DieLogic(float dt); 
 
-	virtual void DoAttack(bool meleeRange) {};
+	virtual bool DoMeleeAttack();
+	virtual bool DoLongRangeAttack();
 
 	virtual void SetDyingState(bool brutal = false)
 	{
@@ -161,9 +174,10 @@ public:
 
 public:
 
-	int damage = INT_MAX; 
+	ATTACK_TYPE currentAttackType; 
 	deathData deathDataAnimFx; 
 	enemyPathType pathType; 
+	baseDamageValues damageValues; 
 	baseCadenceValues cadenceValues; 
 	Animation run;
 	Animation attack; 

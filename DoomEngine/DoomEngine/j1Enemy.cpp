@@ -609,17 +609,28 @@ bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long r
 	}
 	else if (state.combat == eCombatState::IDLE)
 	{
-		if (now >= lastTimeAttack + cadenceValues.longRange)
+
+		if (now < cadenceValues.longRange)   // at the start of the app, it is possible that now is less than cadence, so it won't shoot
 		{
-			currentAttackType = ATTACK_TYPE::LONG_RANGE;
-			state.combat = eCombatState::SHOOT;
-			currentAnimation = &attack;
-			currentAnimation->Reset();
-
-			SpawnShotParticle();    // create projectile the first frame
-
-			return true;
+			uint capture = now; 
+			now += cadenceValues.longRange - capture;
 		}
+		else
+		{
+			if (now >= lastTimeAttack + cadenceValues.longRange)
+			{
+				currentAttackType = ATTACK_TYPE::LONG_RANGE;
+				state.combat = eCombatState::SHOOT;
+				currentAnimation = &attack;
+				currentAnimation->Reset();
+				lastTimeAttack = now;
+
+				SpawnShotParticle();    // create projectile the first frame
+
+				return true;
+			}
+		}
+		
 
 	}
 	

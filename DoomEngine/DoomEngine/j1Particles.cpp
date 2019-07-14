@@ -179,7 +179,7 @@ void j1Particles::AddParticle(std::string nameAtMap, int x, int y, j1Entity* cal
 	if (coltype != COLLIDER_TYPE::COLLIDER_NONE)
 	{
 		p->hasCollider = true; 
-		p->collider = App->collision->AddCollider(p->anim.GetCurrentFrame(), coltype, callback);   // TODO: like player, update the collider rect according to frame ??? or is it overkill ???
+		p->collider = App->collision->AddCollider(p->anim.GetCurrentFrame(), coltype, callback, { 0,0 }, true);   // TODO: like player, update the collider rect according to frame ??? or is it overkill ???
 		p->collider->SetPos(p->position.x, p->position.y);
 
 
@@ -223,7 +223,7 @@ Particle* j1Particles::AddParticleRet(std::string nameAtMap, int x, int y, j1Ent
 	if (coltype != COLLIDER_TYPE::COLLIDER_NONE)
 	{
 		p->hasCollider = true;
-		p->collider = App->collision->AddCollider(p->anim.GetCurrentFrame(), coltype, callback);   // TODO: like player, update the collider rect according to frame ??? or is it overkill ???
+		p->collider = App->collision->AddCollider(p->anim.GetCurrentFrame(), coltype, callback, { 0,0 }, true);   // TODO: like player, update the collider rect according to frame ??? or is it overkill ???
 		p->collider->SetPos(p->position.x, p->position.y);
 
 

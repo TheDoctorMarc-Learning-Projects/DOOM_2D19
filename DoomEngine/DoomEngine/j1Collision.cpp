@@ -3,6 +3,7 @@
 #include "j1Render.h"
 #include "j1Collision.h"
 #include "p2Log.h"
+#include "j1Particles.h"
 #include "Brofiler/Brofiler.h"
 #include "Color.h"
 #include "j1Entity.h"
@@ -261,7 +262,14 @@ bool j1Collision::PreUpdate()
 			else
 			{
 				if (colliders[i]->volatileOutOfScreen)  // delete whe out of camera limits 
-					colliders[i]->to_delete = true; 
+				{
+					if (colliders[i]->owner != nullptr)
+						colliders[i]->owner->to_delete = true;   // if it has an owner, delete the owner too
+					else
+						colliders[i]->to_delete = true;
+				}
+				
+				
 			}
 
 

@@ -71,6 +71,8 @@ bool j1EnemyCacodemon::Move(float dt)
 {
 	if (j1Enemy::Move(dt))
 	{
+		SetPosOnPlatform(); 
+
 		shieldAreaCollider->SetPos(position.x - shieldExtraSideSize / 2, position.y - shieldExtraSideSize / 2); 
 
 		if (keepMovingAfterPlatform)
@@ -87,6 +89,16 @@ bool j1EnemyCacodemon::Move(float dt)
 
 
 	return true;
+}
+
+void j1EnemyCacodemon::SetPosOnPlatform()
+{
+	if (onPlatFormType.top == true)
+	{
+		position.y = lastPlatform->position.y - collider->rect.h - shieldExtraSideSize / 2; 
+		collider->SetPos(position.x, position.y); 
+		shieldAreaCollider->SetPos(position.x - shieldExtraSideSize / 2, position.y - shieldExtraSideSize / 2);
+	}
 }
 
 void j1EnemyCacodemon::KeepMovingTendency()
@@ -149,6 +161,10 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 	{
 		if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_WALL)
 		{
+			lastPlatform = dynamic_cast<j1EntityPlatform*>(c2->callback); 
+
+			float offset; 
+
 			iPoint shieldPos = GetShieldPos(); 
 			iPoint lastShieldPos = GetLastShieldPos(); 
 			SDL_Rect shieldRect = GetShieldRect(); 
@@ -156,6 +172,7 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 
 			if (shieldPos.y + shieldRect.h >= c2->callback->position.y)    // top 
 			{
+				
 				if ((lastShieldPos.y + lastShieldRect.h < c2->callback->position.y) || onPlatFormType.top)
 				{
 					ResetPlatformState();
@@ -163,6 +180,7 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 					SetDeviation(true, c2); 
 					//LOG("TOP collision !!"); 
 				}
+	
 
 			}
 
@@ -267,6 +285,7 @@ void j1EnemyCacodemon::OnCollisionExit(Collider* c1, Collider* c2)
 		{
 			if (keepMovingAfterPlatform == false)
 			{
+				lastPlatform = nullptr; 
 				offPlatformPos = position; 
 				keepMovingAfterPlatform = true;
 				ResetPlatformState();

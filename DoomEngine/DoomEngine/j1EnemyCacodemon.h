@@ -2,6 +2,7 @@
 #define _J1ENEMYCACODEMON_H__
 
 #include "j1Enemy.h"
+#include "j1EntityPlatform.h"
 
 #define extraPlatformTendencyOffset 5
 
@@ -48,6 +49,7 @@ public:
 		onPlatFormType.top = false; 
 	}
 
+	void SetPosOnPlatform(); 
 
 	iPoint GetShieldPos() const { return iPoint(position.x - shieldExtraSideSize / 2, position.y - shieldExtraSideSize / 2); };
 	iPoint GetLastShieldPos() const { return iPoint(lastAirPos.x - shieldExtraSideSize / 2, lastAirPos.y - shieldExtraSideSize / 2); };
@@ -69,6 +71,7 @@ private:
 	uint stopNearPlayerRange = 10; 
 	CACODEMON_ATTACK_TYPE currentAttackType = CACODEMON_ATTACK_TYPE::NO_ATTACK_TYPE;
 	Collider* shieldAreaCollider = nullptr; 
+	j1EntityPlatform* lastPlatform = nullptr;
 };
 
 #endif 

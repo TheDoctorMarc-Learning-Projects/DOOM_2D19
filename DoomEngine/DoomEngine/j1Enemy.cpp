@@ -190,7 +190,7 @@ void j1Enemy::DieLogic(float dt)
 			position.y = deathPosGround.y - deathColllider.h + offset;
 
 		collider->SetPos(position.x, position.y);
-		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+		//collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
 	}
 
 
@@ -205,14 +205,14 @@ void j1Enemy::SetCollider()
 			position.x = 0;
 
 		collider->SetPos(position.x, position.y);
-		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+		//collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
 
 		if (collider->rect.h != lastPosCollider.h)
 		{
 			float yOffset = collider->rect.h - lastPosCollider.h;
 			position.y -= yOffset;
 			collider->SetPos(position.x, position.y);
-			collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h, position.x, position.y);
+		//	collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h, position.x, position.y);
 		}
 
 
@@ -539,13 +539,13 @@ bool j1Enemy::DoMeleeAttack()
 
 			if (currentAnimation == &attack && currentAnimation->Finished() == true)  // hit is over 
 			{
-				if (isPlayerOnMeleeRange() == true)   // do damage 
-				{
+				/*if (isPlayerOnMeleeRange() == true)   // do damage --> with cacodemon does not work, he is 2 tiles away
+				{*/
 					float ShotsPerSec = 1.f / (cadenceValues.melee / 1000.f);
 					App->entityFactory->DoDamagetoEntity(App->entityFactory->player, damageValues.melee, ShotsPerSec);
 					App->audio->PlayFx(name + "Attack");
 
-				}
+				//}
 
 				currentAttackType = ATTACK_TYPE::NO_ATTACK_TYPE;     // retreat 
 				state.combat = eCombatState::IDLE;

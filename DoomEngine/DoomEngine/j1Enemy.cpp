@@ -1013,9 +1013,9 @@ POINTING_DIR j1Enemy::GetDirection()
 			if (c1 == true && c2 == true)                                  // hit is over 
 			{
 				if (lastShotDir == POINTING_DIR::LEFT)
-					return pointingDir = POINTING_DIR::LEFT;
+				     pointingDir = POINTING_DIR::LEFT;
 				else if (lastShotDir == POINTING_DIR::RIGHT)
-					return pointingDir = POINTING_DIR::RIGHT;
+					 pointingDir = POINTING_DIR::RIGHT;
 
 			}
 		}
@@ -1028,13 +1028,21 @@ POINTING_DIR j1Enemy::GetDirection()
 	if (justMovement)
 	{
 		if (lastSpeed.x < 0)
-			return pointingDir = POINTING_DIR::LEFT;
+			 pointingDir = POINTING_DIR::LEFT;
 		else if (lastSpeed.x > 0)
-			return pointingDir = POINTING_DIR::RIGHT;
+			 pointingDir = POINTING_DIR::RIGHT;
 
-		return pointingDir;    // no change in speed results in same pointing dir
+		     pointingDir;    // no change in speed results in same pointing dir
 	}
 
+
+
+	if (pointingDir == POINTING_DIR::LEFT)
+		state.movement.at(0) = eMovementState::INPUT_LEFT; 
+	else if (pointingDir == POINTING_DIR::RIGHT)
+		state.movement.at(0) = eMovementState::INPUT_RIGHT;
+	
+	return pointingDir; 
 }
 
 

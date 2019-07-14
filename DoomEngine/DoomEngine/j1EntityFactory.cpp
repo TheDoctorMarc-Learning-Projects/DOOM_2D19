@@ -66,6 +66,7 @@ bool j1EntityFactory::Start()
 	// and test enemies
 	CreateEntity(ENEMY_CACODEMON, 150, 100, "EnemyCacodemon"); 
 
+	CreateEntity(ENEMY_IMP, 300, 100, "EnemyIMP");
 
 
 	return true;

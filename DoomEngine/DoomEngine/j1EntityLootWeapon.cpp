@@ -431,6 +431,8 @@ void j1EntityLootWeapon::FallToTheFloor(float dt)
 		position.y += lastSpeed.y;
 		collider->SetPos(position.x, position.y);
 	}
+	else
+		collider->to_delete = true; 
 }
 
 

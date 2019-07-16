@@ -77,20 +77,6 @@ public:
 		return loops > 0;
 	}
 
-	bool ActuallyFinished() 
-	{
-		if (GetCurrentFrame().w == 0)
-		{
-			Reset(); 
-			return true; 
-		}
-		else
-			return loops > 0;
-
-		return false; 
-			
-	}
-
 	void Reset()
 	{
 		loops = 0;

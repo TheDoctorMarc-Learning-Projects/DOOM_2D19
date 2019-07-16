@@ -16,6 +16,7 @@ j1Enemy::j1Enemy(int posX, int posY) : j1Entity(ENEMY_STATIC, posX, posY, "enemy
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	position = previousPosition = fPoint(posX, posY);
+	originTilePos = App->map->WorldToMap(posX, posY); 
 	pointingDir = LEFT;
 	state.combat = eCombatState::IDLE;
 	state.movement.at(0) = eMovementState::IDLE;
@@ -145,18 +146,18 @@ void j1Enemy::SetPath(float dt, bool& success)
 
 	else if (state.path == ePathState::FOLLOW_PLAYER)
 	{
-		iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
+		/*iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
 		iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y) + iPoint(0, 1);
 
 		uint Distance = (uint)(int)(float)abs(hypot(playerTilePos.x - tilePos.x, playerTilePos.y - tilePos.y));
 		if (Distance <= tileDetectionRange)
-		{
+		{*/
 			if (FollowPath(dt))
 				success = true;
 			else
 				success = false;
 
-		}
+		//}
 	}
 	
 	
@@ -291,7 +292,8 @@ bool j1Enemy::FollowPath(float dt)
 	iPoint targetTilePos = iPoint(0, 0);
 	iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y);
 
-	if (CheckPathState(tilePos, targetTilePos, ret) == false)
+	CheckPathState(tilePos, targetTilePos, ret); 
+	if (state.path == ePathState::AWAIT && ret == false)
 		return ret; 
 
 
@@ -348,9 +350,12 @@ bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& succes
 	if (state.path == ePathState::AWAIT)
 	{
 		if (isPlayerOnMeleeRange() == false)           // when exiting melee range, set to follow player
-			state.path = ePathState::FOLLOW_PLAYER;
-		else
-			return success = false;
+		{
+			if (this->returnsToArea == false || (this->returnsToArea == true && isPlayerOnDetectionRange() == true))
+				state.path = ePathState::FOLLOW_PLAYER;
+		}
+	
+		return success = false;
 
 	}
 
@@ -370,13 +375,23 @@ bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& succes
 		 
 		if (c1 == true || c2 == true)                   
 		{                                                     
-			if(c1 == true)   
-				state.path = ePathState::FOLLOW_PLAYER;   // when exiting melee deviation, set to follow player...
+			if (c1 == true)
+			{
+				if (returningToArea == false)
+					state.path = ePathState::FOLLOW_PLAYER;   // when exiting melee deviation, set to follow player...
+				else
+					state.path = ePathState::AWAIT; 
+				
+			}
+				
 			if(c2 == true)
 				state.path = ePathState::AWAIT;      // ... or rather set or overwrite to await if on melee range
 
 			if (specificDir.IsZero() == false)
 				specificDir = iPoint(0, 0);
+
+			if (this->returningToArea == true)
+				this->returningToArea = false; 
 	
 			ResolvePathDeviation();
 		}
@@ -391,20 +406,21 @@ bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& succes
 
 bool j1Enemy::HasArrivedToTarget(iPoint tilePos, iPoint targetTilePos)
 {
+     
 
 	if (targetPos.type == TargetPos::targetPosType::XY)
 	{
-		if (tilePos.DistanceManhattan(targetTilePos) <= 1)
+		if (tilePos.DistanceManhattan(targetTilePos) <= meleeRange)
 			return true; 
 	}
 	else if (targetPos.type == TargetPos::targetPosType::X)
 	{
-		if (abs(targetTilePos.x - tilePos.x) <= 1)
+		if (abs(targetTilePos.x - tilePos.x) <= meleeRange)
 			return true;
 	}
 	else if (targetPos.type == TargetPos::targetPosType::Y)
 	{
-		if (abs(targetTilePos.y - tilePos.y) <= 1)
+		if (abs(targetTilePos.y - tilePos.y) <= meleeRange)
 			return true;
 	}
 
@@ -484,7 +500,13 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 		GetDirection(); 
 	// - - - - - - - - - - - - - - - - - -  Assign Position and Animation
 
+		bool returnToOrigin = false; 
 
+		fPoint tempPos = fPoint(0, 0);
+		iPoint tempTilePos = iPoint(0, 0); 
+		uint distanceToOrigin = 0; 
+
+		
 		if (pathType != enemyPathType::FLYING)
 		{
 			if (lastSpeed.x != 0)
@@ -493,8 +515,34 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 				{
 					currentAnimation = &run;
 				}
-				
-				position.x += lastSpeed.x;
+				if (this->returnsToArea == true)
+				{
+					tempPos = fPoint(position.x, position.y) + fPoint(lastSpeed.x, 0);
+					tempTilePos = App->map->WorldToMap((int)tempPos.x, (int)tempPos.y) + iPoint(0, 1);
+
+					distanceToOrigin = (uint)(int)(float)abs(hypot(tempTilePos.x - originTilePos.x, tempTilePos.y - originTilePos.y));
+
+
+					if (state.path != ePathState::TEMPORAL_DEVIATION)
+					{
+
+						if (distanceToOrigin <= tileDetectionRange)
+							position.x += lastSpeed.x;
+						else
+							returnToOrigin = true;
+					}
+					else
+						position.x += lastSpeed.x;
+
+
+				}
+				else
+					position.x += lastSpeed.x;
+			
+
+			 
+					
+			
 			}
 
 		}
@@ -507,11 +555,55 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 					currentAnimation = &run;
 				}
 
-				position.x += lastSpeed.x;
-				position.y += lastSpeed.y;
+				if (this->returnsToArea == true)
+				{
+					tempPos = fPoint(position.x, position.y) + fPoint(lastSpeed.x, lastSpeed.y);
+					tempTilePos = App->map->WorldToMap((int)tempPos.x, (int)tempPos.y) + iPoint(0, 1);
+
+					distanceToOrigin = (uint)(int)(float)abs(hypot(tempTilePos.x - originTilePos.x, tempTilePos.y - originTilePos.y));
+
+					if (state.path != ePathState::TEMPORAL_DEVIATION)
+					{
+						if (distanceToOrigin <= tileDetectionRange)
+						{
+							position.x += lastSpeed.x;
+							position.y += lastSpeed.y;
+						}
+
+						else
+							returnToOrigin = true;
+					}
+					else
+					{
+						position.x += lastSpeed.x;
+						position.y += lastSpeed.y;
+					}
+			
+
+
+				}
+				else
+				{
+					position.x += lastSpeed.x;
+					position.y += lastSpeed.y;
+				}
+			
 			}
 
 		}
+		
+		// go back to initial position 
+
+		if (returnToOrigin)
+		{
+			this->returningToArea = true; 
+
+			state.path = ePathState::TEMPORAL_DEVIATION; 
+			targetPos.value.x = originTilePos.x;
+			targetPos.value.y = originTilePos.y;
+			targetPos.type = TargetPos::targetPosType::XY;
+		}
+			
 		
 	
 	
@@ -519,14 +611,19 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 
 
 
-bool j1Enemy::isPlayerOnMeleeRange()
+bool j1Enemy::isPlayerOnMeleeRange() const
 {
 	iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
 	iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y) + iPoint(0, 1);
-	return tilePos.DistanceManhattan(playerTilePos) <= 1; 
+	return tilePos.DistanceManhattan(playerTilePos) <= meleeRange;
 	
 }
 
+bool j1Enemy::isPlayerOnDetectionRange() const
+{
+	bool ret = App->entityFactory->isDistanceInTileModule(App->entityFactory->player->GetTilePosition(), GetTilePosition(), tileDetectionRange);
+	return ret; 
+}
 
 
 bool j1Enemy::DoMeleeAttack()
@@ -621,13 +718,13 @@ bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long r
 	else if (state.combat == eCombatState::IDLE)
 	{
 
-		if (now < cadenceValues.longRange)   // at the start of the app, it is possible that now is less than cadence, so it won't shoot
+		/*if (now < cadenceValues.longRange)   // at the start of the app, it is possible that now is less than cadence, so it won't shoot
 		{
 			uint capture = now; 
 			now += cadenceValues.longRange - capture;
 		}
 		else
-		{
+		{*/
 			if (now >= currentAttackData.lastTimeLongRangeAttack + cadenceValues.longRange)
 			{
 				currentAttackData.lastShooted = false;
@@ -641,7 +738,7 @@ bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long r
 
 				return true;
 			}
-		}
+		//}
 		
 
 	}

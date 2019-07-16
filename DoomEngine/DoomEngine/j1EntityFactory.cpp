@@ -64,9 +64,9 @@ bool j1EntityFactory::Start()
 	player = (j1EntityPlayer*)CreateEntity(PLAYER, 0, 0, "player"); 
 
 	// and test enemies
-	CreateEntity(ENEMY_CACODEMON, 150, 100, "EnemyCacodemon"); 
+	CreateEntity(ENEMY_CACODEMON, 350, 150, "EnemyCacodemon"); 
 
-	CreateEntity(ENEMY_IMP, 300, 100, "EnemyIMP");
+//	CreateEntity(ENEMY_IMP, 300, 100, "EnemyIMP");
 
 
 	return true;

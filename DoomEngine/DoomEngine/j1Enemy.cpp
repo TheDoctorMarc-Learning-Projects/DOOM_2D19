@@ -625,7 +625,6 @@ bool j1Enemy::isPlayerOnDetectionRange() const
 	return ret; 
 }
 
-
 bool j1Enemy::DoMeleeAttack()
 {
 
@@ -642,9 +641,9 @@ bool j1Enemy::DoMeleeAttack()
 			{
 				/*if (isPlayerOnMeleeRange() == true)   // do damage --> with cacodemon does not work, he is 2 tiles away
 				{*/
-					float ShotsPerSec = 1.f / (cadenceValues.melee / 1000.f);
-					App->entityFactory->DoDamagetoEntity(App->entityFactory->player, damageValues.melee, ShotsPerSec);
-					App->audio->PlayFx(name + "Attack");
+				float ShotsPerSec = 1.f / (cadenceValues.melee / 1000.f);
+				App->entityFactory->DoDamagetoEntity(App->entityFactory->player, damageValues.melee, ShotsPerSec);
+				App->audio->PlayFx(name + "Attack");
 
 				//}
 
@@ -658,7 +657,7 @@ bool j1Enemy::DoMeleeAttack()
 
 			}
 			else
-				return true; 
+				return true;
 
 		}
 		else if (state.combat == eCombatState::IDLE)
@@ -671,13 +670,13 @@ bool j1Enemy::DoMeleeAttack()
 				currentAnimation->Reset();
 				currentAttackData.lastTimeMeleeAttack = now;
 
-				return true; 
+				return true;
 			}
 
 		}
 	}
 
-	return false; 
+	return false;
 
 }
 
@@ -689,7 +688,7 @@ bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long r
 
 	if (state.combat == eCombatState::SHOOT)
 	{
-		bool c1 = (currentAnimation == &attack) ? true : false; 
+		bool c1 = (currentAnimation == &attack) ? true : false;
 		bool c2 = (currentAnimation->Finished()) ? true : false;
 
 		// take into account a possible delay 
@@ -698,7 +697,7 @@ bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long r
 			currentAttackData.lastShooted = true;
 			SpawnShotParticle();
 		}
-			
+
 
 		if (c1 == true && c2 == true)                                  // hit is over 
 		{
@@ -718,13 +717,13 @@ bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long r
 	else if (state.combat == eCombatState::IDLE)
 	{
 
-		/*if (now < cadenceValues.longRange)   // at the start of the app, it is possible that now is less than cadence, so it won't shoot
+		if (now < cadenceValues.longRange)   // at the start of the app, it is possible that now is less than cadence, so it won't shoot
 		{
-			uint capture = now; 
+			uint capture = now;
 			now += cadenceValues.longRange - capture;
 		}
 		else
-		{*/
+		{
 			if (now >= currentAttackData.lastTimeLongRangeAttack + cadenceValues.longRange)
 			{
 				currentAttackData.lastShooted = false;
@@ -734,19 +733,20 @@ bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long r
 				currentAnimation->Reset();
 				currentAttackData.lastTimeLongRangeAttack = now;
 
-				 
+
 
 				return true;
 			}
-		//}
-		
+		}
+
 
 	}
-	
 
 
-	return false; 
+
+	return false;
 }
+
 
 void j1Enemy::SpawnShotParticle()
 {

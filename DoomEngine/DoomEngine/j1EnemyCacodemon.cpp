@@ -84,12 +84,15 @@ bool j1EnemyCacodemon::Move(float dt)
 
 	if (returningToArea == false)
 	{
-		if (App->entityFactory->isDistanceInTileModule(App->entityFactory->player->GetTilePosition(), GetTilePosition(), 2) == true)
-			DoMeleeAttack();
-		else if(state.path == ePathState::FOLLOW_PLAYER)
-		{
-			DoLongRangeAttack();
-		}
+	           // it should actually check for same attack type to not be active 
+		
+			if (App->entityFactory->isDistanceInTileModule(App->entityFactory->player->GetTilePosition(), GetTilePosition(), 2) == true)
+				DoMeleeAttack();
+			else if (state.path == ePathState::FOLLOW_PLAYER)
+			{
+				DoLongRangeAttack();
+			}
+		
 
 	}
 	

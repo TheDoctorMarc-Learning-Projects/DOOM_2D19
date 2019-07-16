@@ -55,6 +55,11 @@ public:
 		return iPoint(App->map->WorldToMap((int)player->position.x, (int)player->position.y)) + iPoint(0, 1);
 	}
 
+	bool isInDistanceModule(iPoint pos1, iPoint pos2, uint distance)
+	{
+		uint ret = (uint)(int)(float)abs(hypot(pos1.x - pos2.x, pos1.y - pos2.y));
+		return ret <= distance; 
+	}
 	/*Enemy* CreateEnemy(EnemyType etype, iPoint pos, bool dummy = false);                            // TODO: rework this when enemies available
 	std::vector<j1Entity*> CreateEnemiesGroup(std::vector<EnemyType> enemyTypes, SDL_Rect zone, uint minNum, uint maxNum, uint groupLevel = 0);*/
 	//void LoadSpawnGroups();

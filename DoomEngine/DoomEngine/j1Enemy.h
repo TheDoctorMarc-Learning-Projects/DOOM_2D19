@@ -189,6 +189,7 @@ public:
 	bool isPlayerOnMeleeRange(); 
 	void SpawnShotParticle(); 
 
+
 	fPoint GetShotDir(); 
 
 public:
@@ -207,14 +208,18 @@ public:
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0);
 	TargetPos targetPos; 
+	iPoint originTilePos = iPoint(0, 0); 
 	fPoint deathPosGround = fPoint(0, 0);
 	fPoint currentTarget = fPoint(0, 0); 
 	POINTING_DIR lastShotDir = POINTING_DIR::RIGHT; 
 	SDL_Rect deathColllider = { 0, 0, 0, 0 }; 
 	iPoint specificDir = iPoint(0, 0); 
-	uint tileDetectionRange = 0; 
+	uint myMeleeRange = 1U; 
+	uint tileDetectionRange = 0U;
+	uint maxDistFromOrigin = 0U;
 	SDL_Rect lastPosCollider;
 	bool doJump = false;
+	bool hasMaxDistanceFromOrigin = false; 
 	bool adaptativeColliderMovement = true; 
 	POINTING_DIR lastPointingDir; 
 	ejumpData jumpInfo;

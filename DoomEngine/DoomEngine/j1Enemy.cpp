@@ -16,6 +16,7 @@ j1Enemy::j1Enemy(int posX, int posY) : j1Entity(ENEMY_STATIC, posX, posY, "enemy
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	position = previousPosition = fPoint(posX, posY);
+	originTilePos = App->map->WorldToMap(posX, posY); 
 	pointingDir = LEFT;
 	state.combat = eCombatState::IDLE;
 	state.movement.at(0) = eMovementState::IDLE;
@@ -133,13 +134,36 @@ void j1Enemy::SetPreviousFrameData()
 
 void j1Enemy::SetPath(float dt, bool& success)
 {
+	bool doIt = false;
 
 	if (state.path == ePathState::AWAIT || state.path == ePathState::TEMPORAL_DEVIATION)
 	{
-		if (FollowPath(dt))
-			success = true;
+
+
+		if (hasMaxDistanceFromOrigin == true)
+		{
+			if (App->entityFactory->isInDistanceModule(originTilePos, GetTilePosition(), maxDistFromOrigin) == true)
+			{
+				doIt = true;
+			}
+			else if (App->entityFactory->isInDistanceModule(originTilePos, App->entityFactory->player->GetTilePosition(), maxDistFromOrigin) == true)
+			{
+				doIt = true;
+			}
+		}
+		else
+			doIt = true; 
+
+		if (doIt)
+		{
+			if (FollowPath(dt))
+				success = true;
+			else
+				success = false;
+		}
 		else
 			success = false;
+		
 		
 	}
 
@@ -151,14 +175,39 @@ void j1Enemy::SetPath(float dt, bool& success)
 		uint Distance = (uint)(int)(float)abs(hypot(playerTilePos.x - tilePos.x, playerTilePos.y - tilePos.y));
 		if (Distance <= tileDetectionRange)
 		{
-			if (FollowPath(dt))
-				success = true;
+
+			if (hasMaxDistanceFromOrigin == true)
+			{
+				if (App->entityFactory->isInDistanceModule(originTilePos, GetTilePosition(), maxDistFromOrigin) == true)
+				{
+					doIt = true;
+				}
+				else if (App->entityFactory->isInDistanceModule(originTilePos, App->entityFactory->player->GetTilePosition(), maxDistFromOrigin) == true)
+				{
+					doIt = true;
+				}
+			}
+			else
+				doIt = true; 
+
+			if (doIt)
+			{
+				if (FollowPath(dt))
+					success = true; 
+			}
 			else
 				success = false;
 
 		}
+		else
+			success = false;
+
 	}
 	
+
+	if (success == false)
+		state.path = ePathState::AWAIT; 
+
 	
 }
 
@@ -394,17 +443,17 @@ bool j1Enemy::HasArrivedToTarget(iPoint tilePos, iPoint targetTilePos)
 
 	if (targetPos.type == TargetPos::targetPosType::XY)
 	{
-		if (tilePos.DistanceManhattan(targetTilePos) <= 1)
+		if (tilePos.DistanceManhattan(targetTilePos) <= myMeleeRange)
 			return true; 
 	}
 	else if (targetPos.type == TargetPos::targetPosType::X)
 	{
-		if (abs(targetTilePos.x - tilePos.x) <= 1)
+		if (abs(targetTilePos.x - tilePos.x) <= myMeleeRange)
 			return true;
 	}
 	else if (targetPos.type == TargetPos::targetPosType::Y)
 	{
-		if (abs(targetTilePos.y - tilePos.y) <= 1)
+		if (abs(targetTilePos.y - tilePos.y) <= myMeleeRange)
 			return true;
 	}
 
@@ -513,7 +562,7 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 
 		}
 		
-	
+
 	
 }
 

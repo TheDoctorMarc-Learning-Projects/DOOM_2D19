@@ -27,6 +27,9 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	pathType = enemyPathType::FLYING;
 	deathDataAnimFx.hasSecondDeathAnim = false;
 	deathDataAnimFx.hasSecondDeathFx = false;
+	hasMaxDistanceFromOrigin = true; 
+	maxDistFromOrigin = 10U; 
+	myMeleeRange = 2U; 
 
 	state.movement.at(1) = eMovementState::NOT_ACTIVE;   // NEVER to jump or fall 
 

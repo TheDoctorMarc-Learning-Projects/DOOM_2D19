@@ -46,18 +46,13 @@ public:
 		int levelsUp = 0, int LevelsDown = 0, SceneState level = SceneState::LEVEL1, AXIS_Movement movementType = AXIS_Movement::HORIZONTAL);
 	j1Entity* CreateWeapon(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type, weaponInfo weaponData);
 
-	bool isDistanceToManhattan(iPoint tilePos, iPoint targetTilePos, int distance) const
+	bool isDistanceToManhattan(iPoint tilePos, iPoint targetTilePos, int distance)
 	{
 		int distanceManh = tilePos.DistanceManhattan(targetTilePos); 
 		return distanceManh <= distance;
 	}
 	iPoint GetPlayerPosition() const {
 		return iPoint(App->map->WorldToMap((int)player->position.x, (int)player->position.y)) + iPoint(0, 1);
-	}
-
-	bool isDistanceInTileModule(iPoint Pos, iPoint Pos2, uint wantedDistance) const {
-		uint distance = (uint)(int)(float)abs(hypot(Pos.x - Pos2.x, Pos.y - Pos2.y));
-		return distance <= wantedDistance; 
 	}
 
 	/*Enemy* CreateEnemy(EnemyType etype, iPoint pos, bool dummy = false);                            // TODO: rework this when enemies available

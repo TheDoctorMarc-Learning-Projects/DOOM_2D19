@@ -186,8 +186,7 @@ public:
 		}
 	}
 
-	bool isPlayerOnMeleeRange() const; 
-	bool isPlayerOnDetectionRange() const; 
+	bool isPlayerOnMeleeRange(); 
 	void SpawnShotParticle(); 
 
 	fPoint GetShotDir(); 
@@ -207,20 +206,16 @@ public:
 	Animation death2;
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0);
-	iPoint originTilePos = iPoint(0, 0); 
 	TargetPos targetPos; 
 	fPoint deathPosGround = fPoint(0, 0);
 	fPoint currentTarget = fPoint(0, 0); 
 	POINTING_DIR lastShotDir = POINTING_DIR::RIGHT; 
 	SDL_Rect deathColllider = { 0, 0, 0, 0 }; 
 	iPoint specificDir = iPoint(0, 0); 
-	uint tileDetectionRange = 0U;
-	uint meleeRange = 1U; 
+	uint tileDetectionRange = 0; 
 	SDL_Rect lastPosCollider;
 	bool doJump = false;
 	bool adaptativeColliderMovement = true; 
-	bool returnsToArea = false; 
-	bool returningToArea = false; 
 	POINTING_DIR lastPointingDir; 
 	ejumpData jumpInfo;
 	j1EntityPlatform* lastPlatform = nullptr; 

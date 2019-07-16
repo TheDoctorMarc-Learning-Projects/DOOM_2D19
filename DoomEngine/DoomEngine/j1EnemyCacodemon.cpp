@@ -7,10 +7,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	entityTex = App->entityFactory->entityTextureMap.at(name);
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
-	state.path = ePathState::AWAIT; 
-	meleeRange = 2U; 
 	adaptativeColliderMovement = false; 
-	returnsToArea = true; 
 	type = ENEMY_CACODEMON;
 	this->name = name;
 	maxLife = 480;
@@ -19,7 +16,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	speed = 50.75f;
 	mass = 1.f;
 	gravityFactor = DEFAULT_GRAV / mass;  // TODO: just prevent Y movement by gravity
-	tileDetectionRange = 8;
+	tileDetectionRange = 15;
 	cadenceValues.melee = 3000;
 	cadenceValues.longRange = 3000; 
 	damageValues.melee = 120;
@@ -82,18 +79,13 @@ bool j1EnemyCacodemon::Move(float dt)
 			KeepMovingTendency(); 
 	}
 
-	if (returningToArea == false)
+	if (App->entityFactory->isDistanceToManhattan(GetTilePosition(), App->entityFactory->GetPlayerPosition(), 2) == true)
+		DoMeleeAttack(); 
+	else
 	{
-		if (App->entityFactory->isDistanceInTileModule(App->entityFactory->player->GetTilePosition(), GetTilePosition(), 2) == true)
-			DoMeleeAttack();
-		else if(state.path == ePathState::FOLLOW_PLAYER)
-		{
-			DoLongRangeAttack();
-		}
-
+		DoLongRangeAttack();
 	}
-	
-
+  
 
 
 	return true;
@@ -120,23 +112,8 @@ void j1EnemyCacodemon::KeepMovingTendency()
 	{
 		offPlatformPos = fPoint(0, 0); 
 		specificDir = iPoint(0, 0);
+		state.path = ePathState::FOLLOW_PLAYER;
 		keepMovingAfterPlatform = false;
-
-		if (this->returningToArea == true)     // if it is returning to origin, do not put it to follow player
-		{
-			state.path = ePathState::TEMPORAL_DEVIATION;
-			targetPos.value.x = originTilePos.x;
-			targetPos.value.y = originTilePos.y;
-			targetPos.type = TargetPos::targetPosType::XY;
-		}
-		else
-		{
-			state.path = ePathState::FOLLOW_PLAYER;
-			this->returningToArea = false; 
-		}
-		
-
-	
 	}
 	   
 }
@@ -155,6 +132,7 @@ bool j1EnemyCacodemon::CleanUp()
 
 void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 {
+
 	if (c1->type == COLLIDER_ENEMY)
 	{
 		if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_WALL)
@@ -173,9 +151,7 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 	{
 		if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_WALL)
 		{
-
-			
-			actualPlatform = dynamic_cast<j1EntityPlatform*>(c2->callback);
+			lastPlatform = dynamic_cast<j1EntityPlatform*>(c2->callback); 
 
 			float offset; 
 
@@ -244,9 +220,6 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 				}
 
 			}
-
-
-			lastPlatform = actualPlatform;
 		}
 		
 	}
@@ -256,7 +229,7 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 
 void j1EnemyCacodemon::SetDeviation(bool horizontal, Collider* c2)
 {
-	if ((state.path != ePathState::TEMPORAL_DEVIATION && state.path != ePathState::AWAIT))
+	if (state.path != ePathState::TEMPORAL_DEVIATION && state.path != ePathState::AWAIT)
 	{
 		int offset = 3;
 		int yOffset = 5;
@@ -273,7 +246,7 @@ void j1EnemyCacodemon::SetDeviation(bool horizontal, Collider* c2)
 				specificDir = iPoint(1, 0);
 			
 			else
-				specificDir = iPoint(-1, 0);   // GO left
+				specificDir = iPoint(-1, 0);
 		
 	
 		}
@@ -291,38 +264,6 @@ void j1EnemyCacodemon::SetDeviation(bool horizontal, Collider* c2)
 
 		state.path = ePathState::TEMPORAL_DEVIATION;
 	}
-	else if (state.path == ePathState::TEMPORAL_DEVIATION && returningToArea == true)
-	{
-		if (lastPlatform != actualPlatform)
-		{
-			if (horizontal)
-			{
-
-				if (c2->callback->collider->rect.w > 8000)  // TODO: quickly just ignore base floor 
-					return;
-
-
-
-				if (originTilePos.x > GetTilePosition().x)   // GO right
-					specificDir = iPoint(1, 0);
-
-				else if (originTilePos.x < GetTilePosition().y)   // GO left
-					specificDir = iPoint(-1, 0);
-
-
-			}
-			else
-			{
-				if (originTilePos.y > GetTilePosition().y)   // GO bottom
-					specificDir = iPoint(0, 1);
-
-				else if (originTilePos.y < GetTilePosition().y)
-					specificDir = iPoint(0, -1);   // GO top
-
-			}
-		}
-		
-	}
 	
 }
 
@@ -334,7 +275,6 @@ void j1EnemyCacodemon::OnCollisionExit(Collider* c1, Collider* c2)
 		{
 			if (keepMovingAfterPlatform == false)
 			{
-				actualPlatform = nullptr; 
 				lastPlatform = nullptr; 
 				offPlatformPos = position; 
 				keepMovingAfterPlatform = true;

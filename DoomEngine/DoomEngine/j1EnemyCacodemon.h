@@ -70,7 +70,6 @@ private:
 	CACODEMON_ATTACK_TYPE currentAttackType = CACODEMON_ATTACK_TYPE::NO_ATTACK_TYPE;
 	Collider* shieldAreaCollider = nullptr; 
 	j1EntityPlatform* lastPlatform = nullptr;
-	j1EntityPlatform* actualPlatform = nullptr; 
 };
 
 #endif 

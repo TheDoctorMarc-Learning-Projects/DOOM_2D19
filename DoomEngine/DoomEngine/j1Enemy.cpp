@@ -568,11 +568,11 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 
 
 
-bool j1Enemy::isPlayerOnMeleeRange()
+bool j1Enemy::isPlayerOnMeleeRange() const 
 {
 	iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
 	iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y) + iPoint(0, 1);
-	return tilePos.DistanceManhattan(playerTilePos) <= 1; 
+	return tilePos.DistanceManhattan(playerTilePos) <= myMeleeRange; 
 	
 }
 
@@ -582,6 +582,9 @@ bool j1Enemy::isPlayerOnMeleeRange()
 bool j1Enemy::DoMeleeAttack()
 {
 	// RESET MELEE ATTACK 
+
+	if (currentAttackType == ATTACK_TYPE::LONG_RANGE)
+		return false; 
 
 	if (state.combat == eCombatState::SHOOT && isPlayerOnMeleeRange() == false)     // prevent bugged attack anim when player leaves enemy behind 
 	{
@@ -613,7 +616,10 @@ bool j1Enemy::DoMeleeAttack()
 				{*/
 					float ShotsPerSec = 1.f / (cadenceValues.melee / 1000.f);
 					App->entityFactory->DoDamagetoEntity(App->entityFactory->player, damageValues.melee, ShotsPerSec);
-					App->audio->PlayFx(name + "Attack");
+
+					if(dataAnimFx.firstAttackFxIsMelee == true)
+						App->audio->PlayFx(name + "Attack");
+					
 
 				//}
 
@@ -653,6 +659,15 @@ bool j1Enemy::DoMeleeAttack()
 
 bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long range attack anim or audio ???? 
 {
+	if (currentAttackType == ATTACK_TYPE::MELEE)
+		return false;
+
+	if (isPlayerOnMeleeRange() == true)
+	{
+		currentAttackType = ATTACK_TYPE::MELEE; 
+		return false;
+	}
+
 
 	uint now = SDL_GetTicks();
 
@@ -735,7 +750,13 @@ void j1Enemy::SpawnShotParticle()
 	Particle* shot = App->particles->AddParticleRet(name + "Shot", (int)targetPos.x, (int)targetPos.y, this, true, COLLIDER_ENEMY_SHOT, speed, 0U,
 		flip);
 
-	shot->fx = name + "Attack";  // it will be played only when the particle is spawned (synchro with delay) 
+	std::string fxname = ""; 
+	if (dataAnimFx.hasSecondAttackFx == true)
+		fxname = name + "Attack2"; 
+	else
+		fxname = name + "Attack";
+
+	shot->fx = fxname;  // it will be played only when the particle is spawned (synchro with delay) 
 }
 
 fPoint j1Enemy::GetShotDir()

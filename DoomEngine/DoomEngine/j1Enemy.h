@@ -90,10 +90,12 @@ struct baseDamageValues
 	uint longRange = 0U; 
 };
 
-struct deathData
+struct fxAndAnimData
 {
 	bool hasSecondDeathAnim = false; 
 	bool hasSecondDeathFx = false; 
+	bool hasSecondAttackFx = false; 
+	bool firstAttackFxIsMelee = true; 
 };
 
 struct longShotData
@@ -143,8 +145,6 @@ public:
 	void SetCollider();
 	void DieLogic(float dt); 
 
-	void ResetAttack(); 
-
 	virtual bool DoMeleeAttack();
 	virtual bool DoLongRangeAttack();
 
@@ -157,7 +157,7 @@ public:
 
 		App->audio->StopSpecificFx(name + "Injured");   // so that death is audible 
 
-		if (!brutal || deathDataAnimFx.hasSecondDeathAnim == false)   // check this out (for the ones that only have one death anim) 
+		if (!brutal || dataAnimFx.hasSecondDeathAnim == false)   // check this out (for the ones that only have one death anim) 
 		{
 			currentAnimation = &death1;
 			App->audio->PlayFx(this->name + "Death");  // TODO: if two deaths sounds, play one or another
@@ -167,7 +167,7 @@ public:
 		{
 			currentAnimation = &death2;
 
-			if(deathDataAnimFx.hasSecondDeathFx)
+			if(dataAnimFx.hasSecondDeathFx)
 				App->audio->PlayFx(this->name + "Death2");  // TODO: if two deaths sounds, play one or another
 			else
 				App->audio->PlayFx(this->name + "Death");  // TODO: if two deaths sounds, play one or another
@@ -188,7 +188,7 @@ public:
 		}
 	}
 
-	bool isPlayerOnMeleeRange(); 
+	bool isPlayerOnMeleeRange() const; 
 	void SpawnShotParticle(); 
 
 
@@ -196,10 +196,10 @@ public:
 
 public:
 
-	ATTACK_TYPE currentAttackType; 
+	ATTACK_TYPE currentAttackType = ATTACK_TYPE::NO_ATTACK_TYPE; 
 	AttackData currentAttackData; 
 	longShotData longRangeShootData;
-	deathData deathDataAnimFx; 
+	fxAndAnimData dataAnimFx;
 	enemyPathType pathType; 
 	baseDamageValues damageValues; 
 	baseCadenceValues cadenceValues; 

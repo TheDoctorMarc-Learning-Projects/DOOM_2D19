@@ -22,8 +22,8 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY, std::string name) : j1Enemy(posX, pos
 	damageValues.melee = 50;
 	cadenceValues.melee = 1200; 
 	pathType = enemyPathType::ALL_ROUND; 
-	deathDataAnimFx.hasSecondDeathAnim = true; 
-	deathDataAnimFx.hasSecondDeathFx = false; 
+	dataAnimFx.hasSecondDeathAnim = true; 
+	dataAnimFx.hasSecondDeathFx = false; 
 
 	// jumpdata
 

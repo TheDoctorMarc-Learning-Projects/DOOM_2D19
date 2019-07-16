@@ -25,8 +25,9 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	longRangeShootData.relativeOffsetPos.create(20, size.y / 2); // assuming spritescale is 1.0f
 	longRangeShootData.shotSpeed = 200;
 	pathType = enemyPathType::FLYING;
-	deathDataAnimFx.hasSecondDeathAnim = false;
-	deathDataAnimFx.hasSecondDeathFx = false;
+	dataAnimFx.hasSecondDeathAnim = false;
+	dataAnimFx.hasSecondDeathFx = false;
+	dataAnimFx.firstAttackFxIsMelee = false; 
 	hasMaxDistanceFromOrigin = true; 
 	maxDistFromOrigin = 10U; 
 	myMeleeRange = 2U; 
@@ -82,13 +83,11 @@ bool j1EnemyCacodemon::Move(float dt)
 			KeepMovingTendency(); 
 	}
 
-	if (App->entityFactory->isDistanceToManhattan(GetTilePosition(), App->entityFactory->GetPlayerPosition(), 2) == true)
-		DoMeleeAttack(); 
-	else
-	{
-		DoLongRangeAttack();
-	}
-  
+	DoMeleeAttack(); 
+	DoLongRangeAttack();
+
+	
+	
 
 
 	return true;

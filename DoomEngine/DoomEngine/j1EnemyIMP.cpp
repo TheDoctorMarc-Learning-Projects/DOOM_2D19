@@ -14,7 +14,7 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY, std::string name) : j1Enemy(posX, pos
 	maxLife = 50; 
 	life = (float)maxLife;
 	size.create(36, 49);
-	speed = 150.75f;
+	speed = 100.75f;
 	defaultSpeed = speed; 
 	mass = 0.6f;
 	gravityFactor = DEFAULT_GRAV / mass;

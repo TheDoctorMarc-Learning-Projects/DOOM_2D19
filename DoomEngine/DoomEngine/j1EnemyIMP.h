@@ -25,7 +25,7 @@ public:
 private: 
 	//float jumpAngle = 45; 
 	uint jumpTriggerTileRange = 2; 
-	uint extraJumpOffset = 3; 
+	uint extraJumpOffset = 4; 
 	float speedMultiplierRampageAttack = 1.5f; 
 	float RampageDamageMultiplier = 3.f; 
 	float defaultSpeed = 0.f; 

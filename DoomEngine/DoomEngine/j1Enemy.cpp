@@ -144,17 +144,17 @@ void j1Enemy::SetPath(float dt, bool& success)
 		{
 			if (App->entityFactory->isInDistanceModule(originTilePos, GetTilePosition(), maxDistFromOrigin) == true)
 			{
-				doIt = true;
+				playerInsideZone = true;
 			}
 			else if (App->entityFactory->isInDistanceModule(originTilePos, App->entityFactory->player->GetTilePosition(), maxDistFromOrigin) == true)
 			{
-				doIt = true;
+				playerInsideZone = true;
 			}
 		}
 		else
-			doIt = true; 
+			playerInsideZone = true;
 
-		if (doIt)
+		if (playerInsideZone)
 		{
 			if (FollowPath(dt))
 				success = true;
@@ -180,18 +180,19 @@ void j1Enemy::SetPath(float dt, bool& success)
 			{
 				if (App->entityFactory->isInDistanceModule(originTilePos, GetTilePosition(), maxDistFromOrigin) == true)
 				{
-					doIt = true;
+					playerInsideZone = true;
 				}
 				else if (App->entityFactory->isInDistanceModule(originTilePos, App->entityFactory->player->GetTilePosition(), maxDistFromOrigin) == true)
 				{
-					doIt = true;
+					playerInsideZone = true;
 				}
 			}
 			else
-				doIt = true; 
+				playerInsideZone = true;
 
-			if (doIt)
+			if (playerInsideZone)
 			{
+
 				if (FollowPath(dt))
 					success = true; 
 			}
@@ -204,6 +205,7 @@ void j1Enemy::SetPath(float dt, bool& success)
 
 	}
 	
+	playerInsideZone = success; 
 
 	if (success == false)
 		state.path = ePathState::AWAIT; 
@@ -332,6 +334,8 @@ bool j1Enemy::FollowPath(float dt)
 	
 	bool ret = false;
 
+
+
 	BROFILER_CATEGORY("Enemy Follow Path", Profiler::Color::Azure);
 
 	pathToFollow.clear();
@@ -368,7 +372,10 @@ bool j1Enemy::FollowPath(float dt)
 	else
 		direction = fPoint((int)specificDir.x, (int)specificDir.y);
 
-	SolveMove(direction, dt);
+
+	if(state.path != ePathState::AWAIT)
+		SolveMove(direction, dt);
+	
 	
 
 		
@@ -390,21 +397,26 @@ bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& succes
 		if (specificDir.IsZero() == false)
 			specificDir = iPoint(0, 0);
 
-		state.path = ePathState::AWAIT;             // on melee range = 1 tile: wait 
+		state.path = ePathState::AWAIT;              
 		return success = false;
 	}
 
 	if (state.path == ePathState::AWAIT)
 	{
-		if (isPlayerOnMeleeRange() == false)           // when exiting melee range, set to follow player
+		currentAnimation = &idle; 
+		state.movement.at(0) = eMovementState::IDLE; 
+
+		if (isPlayerOnMeleeRange() == false && isPlayerOnMyZone() == true)           // when exiting melee range, set to follow player
 			state.path = ePathState::FOLLOW_PLAYER;
 		else
 			return success = false;
-
 	}
 
-	else if (state.path == ePathState::FOLLOW_PLAYER)
+	if (state.path == ePathState::FOLLOW_PLAYER)
 	{
+		if (isPlayerOnMyZone() == false)           // when exiting melee range, set to follow player
+			state.path = ePathState::AWAIT;
+
 		targetPos.value = App->entityFactory->player->position;
 		targetTilePos = App->map->WorldToMap(targetPos.value.x, targetPos.value.y);
 
@@ -574,6 +586,17 @@ bool j1Enemy::isPlayerOnMeleeRange() const
 	iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y) + iPoint(0, 1);
 	return tilePos.DistanceManhattan(playerTilePos) <= myMeleeRange; 
 	
+}
+
+bool j1Enemy::isPlayerOnMyZone() const
+{
+
+	if (hasMaxDistanceFromOrigin == false)
+		return true; 
+
+	iPoint playerTilePos = App->entityFactory->player->GetTilePosition();
+	return  App->entityFactory->isInDistanceModule(playerTilePos, originTilePos, maxDistFromOrigin);
+
 }
 
 
@@ -1119,7 +1142,12 @@ POINTING_DIR j1Enemy::GetDirection()
 		else if (lastSpeed.x > 0)
 			 pointingDir = POINTING_DIR::RIGHT;
 
-		     pointingDir;    // no change in speed results in same pointing dir
+		  
+		if (state.movement.at(0) == eMovementState::IDLE)
+			if (App->entityFactory->player->position.x + App->entityFactory->player->collider->rect.w / 2 >= position.x + collider->rect.w / 2)
+				pointingDir = POINTING_DIR::RIGHT;
+			else
+				pointingDir = POINTING_DIR::LEFT; 
 	}
 
 

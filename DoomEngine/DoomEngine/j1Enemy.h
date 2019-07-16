@@ -189,6 +189,8 @@ public:
 	}
 
 	bool isPlayerOnMeleeRange() const; 
+	bool isPlayerOnMyZone() const; 
+
 	void SpawnShotParticle(); 
 
 
@@ -222,6 +224,7 @@ public:
 	SDL_Rect lastPosCollider;
 	bool doJump = false;
 	bool hasMaxDistanceFromOrigin = false; 
+	bool playerInsideZone = false; 
 	bool adaptativeColliderMovement = true; 
 	POINTING_DIR lastPointingDir; 
 	ejumpData jumpInfo;

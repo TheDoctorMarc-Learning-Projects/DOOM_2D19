@@ -143,6 +143,8 @@ public:
 	void SetCollider();
 	void DieLogic(float dt); 
 
+	void ResetAttack(); 
+
 	virtual bool DoMeleeAttack();
 	virtual bool DoLongRangeAttack();
 

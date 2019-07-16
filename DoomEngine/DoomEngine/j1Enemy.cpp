@@ -578,8 +578,25 @@ bool j1Enemy::isPlayerOnMeleeRange()
 
 
 
+
 bool j1Enemy::DoMeleeAttack()
 {
+	// RESET MELEE ATTACK 
+
+	if (state.combat == eCombatState::SHOOT && isPlayerOnMeleeRange() == false)     // prevent bugged attack anim when player leaves enemy behind 
+	{
+		currentAttackType = ATTACK_TYPE::NO_ATTACK_TYPE;     // retreat 
+		state.combat = eCombatState::IDLE;
+
+		if (lastSpeed.IsZero())
+			currentAnimation = &idle;   // go back to default anim depending on enemy speed
+		else
+			currentAnimation = &run;
+
+		return false; 
+	}
+
+
 
 	uint now = SDL_GetTicks();
 

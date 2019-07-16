@@ -91,8 +91,9 @@ bool j1EnemyIMP::Move(float dt)
 		Jump();
 	}
 		
-	if (isPlayerOnMeleeRange())   
-		DoMeleeAttack();
+
+	DoMeleeAttack();  // already has some preventions, just call it
+	
 
 
 

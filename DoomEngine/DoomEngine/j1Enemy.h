@@ -149,7 +149,7 @@ public:
 	virtual bool DoLongRangeAttack();
 
 
-	virtual POINTING_DIR GetDirection(); 
+	virtual POINTING_DIR GetDirection() override; 
 
 	virtual void SetDyingState(bool brutal = false)
 	{
@@ -190,6 +190,24 @@ public:
 
 	bool isPlayerOnMeleeRange() const; 
 	bool isPlayerOnMyZone() const; 
+
+	bool isAiming() const
+	{
+		if (state.combat == eCombatState::SHOOT)
+		{
+			if (currentAttackType == ATTACK_TYPE::LONG_RANGE)
+			{
+				// take into account a possible delay 
+				if (SDL_GetTicks() < currentAttackData.lastTimeLongRangeAttack + longRangeShootData.msWaitFromAnimStartToShot && currentAttackData.lastShooted == false)
+				{
+					return true;
+				}
+
+			}
+		}
+
+		return false;
+	}
 
 	void SpawnShotParticle(); 
 

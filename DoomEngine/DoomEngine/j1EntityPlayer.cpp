@@ -509,7 +509,7 @@ void j1EntityPlayer::AimWeapon()
 
 			// then alter the player animation according to axis thresholds and then alter the current weapon sprite rotation
 
-			int partition = MAX_CONTROLLER_AXIS / 3;  // devide positive Y positive axis in 3 partitions, as well as another 3 for the negative 
+			int partition = MAX_CONTROLLER_AXIS / 3;  // divide positive Y positive axis in 3 partitions, as well as another 3 for the negative 
 
 			if (yAxis < -MAX_CONTROLLER_AXIS + 2 * partition)
 			{

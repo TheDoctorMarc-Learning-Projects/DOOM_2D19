@@ -100,34 +100,16 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	// Choses algorithm to work with
-	void CreatePath(const iPoint& origin, const iPoint& destination, bool usingJps = true, bool stepByStep = false);
-
 	// Main function to request a path from A to B
 	int CreatePathAStar(const iPoint& origin, const iPoint& destination, bool walkableAccounts = true);
-	int CreatePathJPS(const iPoint& origin, const iPoint& destination);
-
-	// Main function to cycle the algorythm, choses which one
-	void CyclePathfinding(bool usingJps);
 
 	// Step by step methods
 	PathState StartAStar(const iPoint& origin, const iPoint& destination);
 	PathState CycleAStar();
 
-	PathState StartJPS(const iPoint& origin, const iPoint& destination);
-	PathState CycleJPS();
-
-
-	// JPS functionality
-	void HorizontalJump(const PathNode& node, PathList& listToFill, const PathNode* parent);
-	void VerticalJump(const PathNode& node, PathList& listToFill, const PathNode* parent);
-	void DiagonalJump(const PathNode& node, PathList& listToFill, const PathNode* parent);
-
-	void PruneAdjacents(const PathNode& node, PathList& listToFill, const PathNode* parent);
 
 	// To request all tiles involved in the last generated path
 	const std::vector<iPoint>* GetLastPath() const;
-
 
 	// Walkability Map Functions
 

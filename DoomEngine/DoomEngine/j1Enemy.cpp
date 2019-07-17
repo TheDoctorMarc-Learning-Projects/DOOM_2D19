@@ -706,7 +706,7 @@ bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long r
 		bool c2 = (currentAnimation->Finished()) ? true : false;
 
 		// take into account a possible delay 
-		if (now > currentAttackData.lastTimeLongRangeAttack + longRangeShootData.msWaitFromAnimStartToShot && currentAttackData.lastShooted == false)
+		if (now >= currentAttackData.lastTimeLongRangeAttack + longRangeShootData.msWaitFromAnimStartToShot && currentAttackData.lastShooted == false)
 		{
 			currentAttackData.lastShooted = true;
 			SpawnShotParticle();
@@ -1123,17 +1123,28 @@ POINTING_DIR j1Enemy::GetDirection()
 	{
 		if (currentAttackType == ATTACK_TYPE::LONG_RANGE)
 		{
-			bool c1 = (currentAnimation == &attack == true) ? true : false;
-			bool c2 = (currentAnimation->Finished() == false) ? true : false;
 
-			if (c1 == true && c2 == true)                                  // hit is over 
+			if (isAiming() == true)
 			{
-				if (lastShotDir == POINTING_DIR::LEFT)
-				     pointingDir = POINTING_DIR::LEFT;
-				else if (lastShotDir == POINTING_DIR::RIGHT)
-					 pointingDir = POINTING_DIR::RIGHT;
-
+				justMovement = true;
 			}
+			else
+			{
+				bool c1 = (currentAnimation == &attack == true) ? true : false;
+				bool c2 = (currentAnimation->Finished() == false) ? true : false;
+
+				if ((c1 == true && c2 == true))                                  // hit is over 
+				{
+					if (lastShotDir == POINTING_DIR::LEFT)
+						pointingDir = POINTING_DIR::LEFT;
+					else if (lastShotDir == POINTING_DIR::RIGHT)
+						pointingDir = POINTING_DIR::RIGHT;
+
+				}
+			}
+			
+			
+		
 		}
 		else if(currentAttackType == ATTACK_TYPE::MELEE)
 			justMovement = true; 
@@ -1149,7 +1160,7 @@ POINTING_DIR j1Enemy::GetDirection()
 			 pointingDir = POINTING_DIR::RIGHT;
 
 		  
-		if (state.movement.at(0) == eMovementState::IDLE)
+		if (state.movement.at(0) == eMovementState::IDLE || isAiming() == true)
 			if (App->entityFactory->player->position.x + App->entityFactory->player->collider->rect.w / 2 >= position.x + collider->rect.w / 2)
 				pointingDir = POINTING_DIR::RIGHT;
 			else

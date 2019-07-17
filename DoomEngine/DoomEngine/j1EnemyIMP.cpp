@@ -16,7 +16,7 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY, std::string name) : j1Enemy(posX, pos
 	size.create(36, 49);
 	speed = 100.75f;
 	defaultSpeed = speed; 
-	mass = 0.6f;
+	mass = 1.f;
 	gravityFactor = DEFAULT_GRAV / mass;
 	tileDetectionRange = 10;
 	damageValues.melee = 50;

@@ -337,9 +337,12 @@ void j1EntityPlayer::SetCollider()
 		{
 			float xOffset = collider->rect.w - lastPosCollider.w;
 
-			if (pointingDir == POINTING_DIR::LEFT)           // do corrections when changing anim to aim, so player stays visually in the same pos 
-				position.x -= xOffset;
-
+			if (pointingDir == POINTING_DIR::RIGHT)  // do corrections when changing anim to aim, so player stays visually in the same pos 
+			{
+					position.x -= xOffset;
+			}
+				
+				
 
 			collider->SetPos(position.x, position.y);
 			collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h, position.x, position.y);

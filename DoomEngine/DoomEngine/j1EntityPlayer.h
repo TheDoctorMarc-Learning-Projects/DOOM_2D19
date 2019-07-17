@@ -48,7 +48,7 @@ struct jumpData
 	float jumpIncrementFactor = .9f;
 	float speedXIncrementJump = 1.7f; 
 	float speedXIncrementFall = 1.2f;
-	float verticalIncrementFactor = 1.02f;    // jumpincrement reduces jump power in time, but vertical increment counteracts it a bit 
+	float verticalIncrementFactor = 1.005f;    // jumpincrement reduces jump power in time, but vertical increment counteracts it a bit 
 };
 
 class j1Entity; 

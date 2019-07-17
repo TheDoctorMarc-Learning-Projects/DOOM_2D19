@@ -28,7 +28,7 @@
 
 inline float GravityCalc(float& gm, float& m)  // g  and mass inline calc container
 {
-	(gm < MAX_GRAV / m) ? gm *= 1.05f : gm = MAX_GRAV * m;
+	(gm < MAX_GRAV / m) ? gm *= 1.03f : gm = MAX_GRAV * m;
 
 	return gm;
 }

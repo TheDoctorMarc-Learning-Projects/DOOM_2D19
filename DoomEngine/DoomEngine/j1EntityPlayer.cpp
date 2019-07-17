@@ -596,7 +596,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 	
 			c2->owner->to_delete = true;   // delete the shot particle AND  // create the explosion particle
 
-			App->particles->AddParticle(dynamic_cast<j1Enemy*>(c2->callback)->name + "ShotExplosion", c2->owner->position.x, c2->owner->position.y, this, false, COLLIDER_PRESENTIAL, { 0,0 }, 0U,
+			App->particles->AddParticle(dynamic_cast<j1Enemy*>(c2->callback)->name + "ShotExplosion", c2->owner->position.x, c2->owner->position.y, this, false, COLLIDER_NONE, { 0,0 }, 0U,
 				flip);   
 
 

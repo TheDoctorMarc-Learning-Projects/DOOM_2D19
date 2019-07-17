@@ -403,7 +403,6 @@ bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& succes
 
 	if (state.path == ePathState::AWAIT)
 	{
-		currentAnimation = &idle; 
 		state.movement.at(0) = eMovementState::IDLE; 
 
 		if (isPlayerOnMeleeRange() == false && isPlayerOnMyZone() == true)           // when exiting melee range, set to follow player
@@ -546,35 +545,42 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 	// - - - - - - - - - - - - - - - - - -  Assign Position and Animation
 
 
-		if (pathType != enemyPathType::FLYING)
-		{
-			if (lastSpeed.x != 0)
-			{
-				if (state.combat == eCombatState::IDLE)
-				{
-					currentAnimation = &run;
-				}
-				
-				position.x += lastSpeed.x;
-			}
-
-		}
-		else
-		{
-			if (lastSpeed.x != 0 || lastSpeed.y != 0)
-			{
-				if (state.combat == eCombatState::IDLE)
-				{
-					currentAnimation = &run;
-				}
-
-				position.x += lastSpeed.x;
-				position.y += lastSpeed.y;
-			}
-
-		}
 		
+			if (pathType != enemyPathType::FLYING)
+			{
+				if (lastSpeed.x != 0)
+				{
+					if (state.combat == eCombatState::IDLE)
+					{
+						currentAnimation = &run;
+					}
 
+					position.x += lastSpeed.x;
+				}
+
+			}
+			else
+			{
+				if (lastSpeed.x != 0 || lastSpeed.y != 0)
+				{
+					if (state.combat == eCombatState::IDLE)
+					{
+						currentAnimation = &run;
+					}
+
+					position.x += lastSpeed.x;
+					position.y += lastSpeed.y;
+				}
+
+			}
+
+			if (state.combat == eCombatState::SHOOT)
+				currentAnimation = &attack;
+			else
+				if (state.path == ePathState::AWAIT)
+					currentAnimation = &idle; 
+
+			
 	
 }
 
@@ -707,7 +713,7 @@ bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long r
 		}
 			
 
-		if (c1 == true && c2 == true)                                  // hit is over 
+		if ((c1 == true && c2 == true) || c1 == false)                                  // hit is over 
 		{
 			currentAttackType = ATTACK_TYPE::NO_ATTACK_TYPE;     // retreat 
 			state.combat = eCombatState::IDLE;

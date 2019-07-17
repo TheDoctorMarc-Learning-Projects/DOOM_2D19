@@ -321,46 +321,61 @@ void j1EntityLootWeapon::CalculateStrike()
 void j1EntityLootWeapon::OnCollision(Collider* c1, Collider* c2)
 {
 
-	if (c2->type == COLLIDER_ENEMY && c1->type == COLLIDER_SHOT)
+	if (c1->type == COLLIDER_SHOT)
 	{
-
-		if (weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
+		if (c2->type == COLLIDER_ENEMY || c2->type == COLLIDER_WALL || c2->type == COLLIDER_FLOOR)
 		{
-			if (!firing)
-				return;
-			else
+
+			if (c2->type == COLLIDER_ENEMY)
 			{
-				/*App->audio->SetSpecificFxVolume(name + "Idle", 0.0f);    // cancel idle and shot fxs so that only hit is played
-				App->audio->SetSpecificFxVolume(name + "ShotFire", 0.f);*/
+			if (weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
+			{
+				if (!firing)
+					return;
+				else
+				{
+					/*App->audio->SetSpecificFxVolume(name + "Idle", 0.0f);    // cancel idle and shot fxs so that only hit is played
+					App->audio->SetSpecificFxVolume(name + "ShotFire", 0.f);*/
 
-				App->audio->PauseSpecificFx(name + "ShotFire");
+					App->audio->PauseSpecificFx(name + "ShotFire");
 
-				if (App->audio->isPlayingFx(name + "Hit") == false)
-					App->audio->PlayFx(name + "Hit");
-			
+					if (App->audio->isPlayingFx(name + "Hit") == false)
+						App->audio->PlayFx(name + "Hit");
+
+				}
+
 			}
-				
+			else
+				c1->to_delete = true;  // do not delete chainsaw hotspot, but do delete shot 
+
+
+				float ShotsPerSec = (float)weaponData.cadence / 60.f;  // shot per minute / 60 seconds 
+
+				fPoint shotTravel = fPoint((float)c1->rect.x, (float)c1->rect.y) - c1->initialPos;
+				shotTravel = fPoint(abs(shotTravel.x), abs(shotTravel.y));
+
+				float realDamage = CalculateRealDamage(shotTravel);
+
+				App->entityFactory->DoDamagetoEntity(c2->callback, realDamage, ShotsPerSec, c1->speed);
+			}
+			else
+				if (weaponData.weaponType != WEAPON_TYPE::CHAINSAW)             // walls and floor
+				{
+					c1->to_delete = true;
+				}
 		}
-		else
-			c1->to_delete = true;  // do not delete chainsaw hotspot, but do delete shot 
 
 
-		float ShotsPerSec = (float)weaponData.cadence / 60.f;  // shot per minute / 60 seconds 
+	}
+	else
+		if (c2->type == COLLIDER_FLOOR && playerKO)
+		{
+			arrivedFloor = true;
+
+		}
+
 	
-		fPoint shotTravel = fPoint((float)c1->rect.x, (float)c1->rect.y) - c1->initialPos;
-		shotTravel = fPoint(abs(shotTravel.x), abs(shotTravel.y)); 
-
-		float realDamage = CalculateRealDamage(shotTravel);
-
-		App->entityFactory->DoDamagetoEntity(c2->callback, realDamage, ShotsPerSec, c1->speed);
-
-		
-	}
-	if (c2->type == COLLIDER_FLOOR && playerKO)
-	{
-		arrivedFloor = true; 
-
-	}
+	
 }
 
 

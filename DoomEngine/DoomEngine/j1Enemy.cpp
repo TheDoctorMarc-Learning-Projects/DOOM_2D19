@@ -840,8 +840,30 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 {
 	bool lastOnplatform = onPlatform;
 
+
 	switch (c2->type)
 	{
+
+		if (c1->type == COLLIDER_ENEMY_SHOT)
+		{
+			if (c2->type == COLLIDER_PLAYER || c2->type == COLLIDER_WALL || c2->type == COLLIDER_FLOOR)
+			{
+				if (c2->type == COLLIDER_PLAYER)
+				{
+
+					float ShotsPerSec = 1.f / cadenceValues.longRange / 1000.f;
+					App->entityFactory->DoDamagetoEntity(App->entityFactory->player, damageValues.longRange, ShotsPerSec, c1->speed);
+				}
+
+				c1->owner->to_delete = true;   // delete the shot particle AND  // create the explosion particle
+				App->particles->AddParticle(dynamic_cast<j1Enemy*>(c2->callback)->name + "ShotExplosion", c1->owner->position.x, c1->owner->position.y, this, false, COLLIDER_NONE, { 0,0 }, 0U,
+					flip);
+
+			}
+		}
+	
+
+
 
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
 
@@ -1027,6 +1049,17 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 
 
 	case COLLIDER_TYPE::COLLIDER_WALL:
+
+
+		if (c1->type == COLLIDER_ENEMY_SHOT)
+		{
+			c1->owner->to_delete = true;
+
+			App->particles->AddParticle(name + "ShotExplosion", c1->owner->position.x, c1->owner->position.y, this, false, COLLIDER_NONE, { 0,0 }, 0U,
+				flip);
+			return;
+		}
+
 
 		float offset;
 

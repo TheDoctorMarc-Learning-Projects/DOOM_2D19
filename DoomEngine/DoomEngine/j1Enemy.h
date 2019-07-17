@@ -125,6 +125,7 @@ public:
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);
+	virtual bool DoDie() { return true; };       // not a cleanup, because texture is still there, its just to delete anything extra
 	bool PostUpdate();
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
@@ -183,8 +184,10 @@ public:
 		{
 			state.combat = eCombatState::DEAD;
 			
-			to_delete = true;   // TODO: create the corpse here 
-
+			//to_delete = true;   // TODO: create the corpse here 
+			DoDie(); 
+			colliderActive = false; 
+			collider->to_delete = true; 
 		}
 	}
 

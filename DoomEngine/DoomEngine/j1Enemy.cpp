@@ -82,6 +82,8 @@ bool j1Enemy::Save(pugi::xml_node &) const
 bool j1Enemy::Move(float dt)
 {
 	
+	if (state.combat == eCombatState::DEAD)
+		return false; 
 	
 
 	BROFILER_CATEGORY("Enemy Move", Profiler::Color::AliceBlue); 
@@ -352,16 +354,38 @@ bool j1Enemy::FollowPath(float dt)
 
 	if (specificDir.IsZero() == true)
 	{
-		CallPathCreation(tilePos + iPoint(0, 1), targetTilePos + iPoint(0, 1), ret);
+		if(pathType == enemyPathType::A_TO_B)
+			CallPathCreation(tilePos + iPoint(0, 1), targetTilePos + iPoint(0, 2), ret);
+		else
+			CallPathCreation(tilePos + iPoint(0, 1), targetTilePos + iPoint(0, 1), ret);
+	
 
 		if (ret)
 		{
 			fPoint WorldTargetPos = fPoint(0, 0);
-			WorldTargetPos.x = (float)(App->map->MapToWorld(pathToFollow.at(1).x, 0).x);
+			if (pathType == enemyPathType::A_TO_B)
+			{
+				if (pointingDir == RIGHT)
+					WorldTargetPos.x = (float)(App->map->MapToWorld(pathToFollow.at(1).x, 0).x);
+				else
+					WorldTargetPos.x = (float)(App->map->MapToWorld(pathToFollow.at(1).x + 1, 0).x);
+			}
+			else
+				WorldTargetPos.x = (float)(App->map->MapToWorld(pathToFollow.at(1).x, 0).x);
+			
+		
 			WorldTargetPos.y = (float)(App->map->MapToWorld(0, pathToFollow.at(1).y).y);
+			iPoint tileTargetPos = App->map->WorldToMap(WorldTargetPos.x, WorldTargetPos.y); 
+
 			iPoint WorldPosTileAdjusted = App->map->MapToWorld(tilePos.x, tilePos.y);
 
-			direction = fPoint(WorldTargetPos.x - (float)WorldPosTileAdjusted.x, WorldTargetPos.y - (float)WorldPosTileAdjusted.y);
+
+			if(pathType != enemyPathType::A_TO_B || (pathType == enemyPathType::A_TO_B && App->pathfinding->IsWalkable(tileTargetPos + iPoint(0,1))))
+				direction = fPoint(WorldTargetPos.x - (float)WorldPosTileAdjusted.x, WorldTargetPos.y - (float)WorldPosTileAdjusted.y);
+			else 
+				return ret = false; 
+
+		
 
 
 		

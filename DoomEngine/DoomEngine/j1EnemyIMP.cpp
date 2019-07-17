@@ -86,7 +86,7 @@ j1EnemyIMP::~j1EnemyIMP()
 
 bool j1EnemyIMP::Move(float dt)
 {
-	if (j1Enemy::Move(dt))
+	if (j1Enemy::Move(dt) == false)
 	{
 		Jump();
 	}

@@ -66,7 +66,7 @@ bool j1EntityFactory::Start()
 	// and test enemies
 	CreateEntity(ENEMY_CACODEMON, 150, 100, "EnemyCacodemon"); 
 
-	//CreateEntity(ENEMY_IMP, 300, 100, "EnemyIMP");
+	CreateEntity(ENEMY_IMP, 300, 100, "EnemyIMP");
 
 
 	return true;
@@ -260,12 +260,14 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage, float cadence
 
 	if (ent->type == PLAYER)   // second line prevention
 	{
-		if (dynamic_cast<j1EntityPlayer*>(ent)->state.combat == combatState::DYING || dynamic_cast<j1EntityPlayer*>(ent)->godMode)
+		if (dynamic_cast<j1EntityPlayer*>(ent)->state.combat == combatState::DYING ||
+			dynamic_cast<j1EntityPlayer*>(ent)->state.combat == combatState::DEAD ||  dynamic_cast<j1EntityPlayer*>(ent)->godMode)
 			return;
 	}
 	else
 	{
-		if (dynamic_cast<j1Enemy*>(ent)->state.combat == eCombatState::DYING)
+
+		if (dynamic_cast<j1Enemy*>(ent)->state.combat == eCombatState::DYING || dynamic_cast<j1Enemy*>(ent)->state.combat == eCombatState::DEAD)
 		{
 			return;
 		}
@@ -273,7 +275,14 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage, float cadence
 		
 	uint previousLife = ent->life; 
 
-	ent->life -= damage; 
+	if (ent->type != PLAYER)
+	{
+		if (player->godMode == true)
+			ent->life = 0;
+		else
+			ent->life -= damage;
+	}
+
 	
 	if (ent->life <= 0)
 	{
@@ -287,10 +296,8 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage, float cadence
 	else
 		App->audio->PlayFx(ent->name + "Injured");
 
-
 	uint bloodDropAmount = App->bloodManager->CalculateNumberOfBloodDropsToBeSpawned(damage, cadence);   // TODO: damage in weapon is affected by scope, so calculate it accordingly
 
-	//App->bloodManager->CreateRandomBloodStream(ent->collider->rect, 0.5f, bloodDropAmount);    // change this for targeted, only random for chainsaw??? 
 	App->bloodManager->CreateTargetedBloodSteam(ent->collider->rect, 0.5f, bloodDropAmount, shotSpeed);
 }
 

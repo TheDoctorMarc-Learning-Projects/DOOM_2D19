@@ -121,12 +121,26 @@ void j1EnemyCacodemon::KeepMovingTendency()
 }
 
 
-bool j1EnemyCacodemon::CleanUp()
+bool j1EnemyCacodemon::CleanUp()    // called when exiting, or when switching levels etc 
 {
 	j1Entity::CleanUp(); 
 
 	// clean the area collider: 
-	shieldAreaCollider->to_delete = true; 
+
+	if(shieldActive == true)
+		shieldAreaCollider->to_delete = true;
+
+
+
+	return true; 
+}
+
+bool j1EnemyCacodemon::DoDie()
+{
+	// the other colldier is deleted in enemy checkdeath
+	// clean the area collider: 
+	shieldAreaCollider->to_delete = true;
+	shieldActive = false;
 
 	return true; 
 }

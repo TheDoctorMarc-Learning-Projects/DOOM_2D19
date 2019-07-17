@@ -39,6 +39,8 @@ public:
     void OnCollisionExit(Collider* c1, Collider* c2) override;    
 
 	bool CleanUp() override; 
+	bool DoDie() override; 
+
 	void SetDeviation(bool horizontal, Collider* c2);
 	void KeepMovingTendency(); 
 
@@ -65,6 +67,7 @@ private:
 	int shieldExtraSideSize = 30; 
 	fPoint offPlatformPos = fPoint(0, 0); 
 	bool keepMovingAfterPlatform = false; 
+	bool shieldActive = true; 
 	actualCollisionType onPlatFormType; 
 	uint stopNearPlayerRange = 10; 
 	CACODEMON_ATTACK_TYPE currentAttackType = CACODEMON_ATTACK_TYPE::NO_ATTACK_TYPE;

@@ -313,7 +313,7 @@ fPoint j1BloodManager::GenerateTargetedSpeedForBloodDrop(fPoint shotSpeed)
 uint j1BloodManager::CalculateNumberOfBloodDropsToBeSpawned(float damage, float shotsPerSec)
 {
 	float drops = 0; 
-	
+
 	// if it shots like chainsaw, that means that each frame blood is generated, so there would be 60+ blood drops per second
 
 

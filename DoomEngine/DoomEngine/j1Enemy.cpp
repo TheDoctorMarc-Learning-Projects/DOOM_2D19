@@ -746,14 +746,17 @@ bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long r
 		return false; 
 
 
-	if (currentAttackType == ATTACK_TYPE::MELEE)
+	if (currentAttackType == ATTACK_TYPE::MELEE)   // do not attack if melee is already active 
 		return false;
-
-	if (isPlayerOnMeleeRange() == true)
+	  
+	if (isPlayerOnMeleeRange() == true)   // when player is on melle range, switch instantly to melee attack
 	{
 		currentAttackType = ATTACK_TYPE::MELEE; 
 		return false;
 	}
+
+	if (App->render->isRectOnCamera(collider->rect) == false)   // do not shoot when camera leaves me behind etc 
+		return false; 
 
 
 	uint now = SDL_GetTicks();

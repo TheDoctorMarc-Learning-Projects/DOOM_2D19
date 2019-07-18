@@ -104,27 +104,30 @@ bool j1EnemyBaronOfHell::Move(float dt)
 
 bool j1EnemyBaronOfHell::Go_A_to_B()
 {
-	if (lastPlatform != App->entityFactory->player->lastPlatform)
+	if (onPlatform == true)
 	{
-		if (state.path != ePathState::TEMPORAL_DEVIATION)
+		if (App->entityFactory->player->onPlatform == false|| (App->entityFactory->player->onPlatform == true && lastPlatform != App->entityFactory->player->lastPlatform))
 		{
-			speed = platFormSpeed; 
-
-			if (pointingDir == LEFT)
-				targetPos.value = fPoint(App->map->WorldToMap(lastPlatform->collider->rect.x, 0));
-		
-			else if (pointingDir == RIGHT)
+			if (state.path != ePathState::TEMPORAL_DEVIATION)
 			{
-				targetPos.value = fPoint(App->map->WorldToMap(lastPlatform->collider->rect.x + lastPlatform->collider->rect.w, 0));
-				targetPos.value.x -= 2; 
-			}
-			
+				speed = platFormSpeed;
 
-		
-			targetPos.value.y = GetTilePosition().y;
-			targetPos.type = TargetPos::targetPosType::X;
-			state.path = ePathState::TEMPORAL_DEVIATION; 
+				if (pointingDir == LEFT)
+					targetPos.value = fPoint(App->map->WorldToMap(lastPlatform->collider->rect.x, 0));
+
+				else if (pointingDir == RIGHT)
+				{
+					targetPos.value = fPoint(App->map->WorldToMap(lastPlatform->collider->rect.x + lastPlatform->collider->rect.w, 0));
+					targetPos.value.x -= 2;
+				}
+
+
+				targetPos.value.y = GetTilePosition().y;
+				targetPos.type = TargetPos::targetPosType::X;
+				state.path = ePathState::TEMPORAL_DEVIATION;
+			}
 		}
+
 	}
 	
 

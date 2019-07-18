@@ -27,6 +27,7 @@ enum class direction
 
 class j1Entity; 
 
+
 class j1Render : public j1Module
 {
 public:
@@ -61,6 +62,7 @@ public:
 	iPoint WorldToScreen(int x, int y, bool descriptions = false) const;
 
 	bool IsOnCamera(const int&x, const int&y, const int&w, const int& h) const;
+	bool isRectOnCamera(const SDL_Rect& dimensions ) const; 
 
 	void DoCameraScroll(cameraScrollType scrollType, direction dir, j1Entity* callback);
 

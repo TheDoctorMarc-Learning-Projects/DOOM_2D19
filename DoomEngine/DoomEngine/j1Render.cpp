@@ -193,6 +193,20 @@ bool j1Render::IsOnCamera(const int & x, const int & y, const int & w, const int
 	return SDL_HasIntersection(&r, &cam);
 }
 
+
+bool j1Render::isRectOnCamera(const SDL_Rect& dimensions) const
+{
+	int scale = App->win->GetScale();
+
+	SDL_Rect r = { dimensions.x*scale,dimensions.y*scale,dimensions.w*scale,dimensions.h*scale };
+	SDL_Rect cam = { -camera.x,-camera.y,camera.w,camera.h };
+
+	return SDL_HasIntersection(&r, &cam);
+}
+
+
+
+
 bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, SDL_RendererFlip flip, float spriteScale, double angle, int pivot_x, int pivot_y, bool useWindowScale) const
 {
 	bool ret = true;

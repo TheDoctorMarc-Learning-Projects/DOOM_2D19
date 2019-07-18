@@ -256,7 +256,7 @@ void j1EntityPlayer::VerticalMovement(float dt)
 	Sint16 yAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY);
 
 	if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		if (yAxis <= 0)
+		//if (yAxis <= 0)
 			if (onPlatform)
 			{
 				state.movement.at(1) = MovementState::JUMP;

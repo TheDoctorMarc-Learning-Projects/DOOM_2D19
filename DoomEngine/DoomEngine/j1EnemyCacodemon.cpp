@@ -83,9 +83,13 @@ bool j1EnemyCacodemon::Move(float dt)
 			KeepMovingTendency(); 
 	}
 
-	DoMeleeAttack(); 
-	DoLongRangeAttack();
-
+	if (state.combat != eCombatState::DYING && state.combat != eCombatState::DEAD)
+	{
+		DoMeleeAttack();
+		DoLongRangeAttack();
+	}
+	/*else
+		return false; */
 	
 	
 

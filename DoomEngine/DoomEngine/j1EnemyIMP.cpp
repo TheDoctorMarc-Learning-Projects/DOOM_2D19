@@ -86,14 +86,17 @@ j1EnemyIMP::~j1EnemyIMP()
 
 bool j1EnemyIMP::Move(float dt)
 {
-	if (j1Enemy::Move(dt) == false)
+	if (j1Enemy::Move(dt))
 	{
 		Jump();
 	}
 		
-
-	DoMeleeAttack();  // already has some preventions, just call it
-	
+	if (state.combat != eCombatState::DYING && state.combat != eCombatState::DEAD)
+	{
+		DoMeleeAttack();  // already has some preventions, just call it
+	}
+	/*else
+		return false; */
 
 
 

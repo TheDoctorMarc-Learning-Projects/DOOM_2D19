@@ -388,15 +388,17 @@ bool j1Enemy::FollowPath(float dt)
 			iPoint WorldPosTileAdjusted = App->map->MapToWorld(tilePos.x, tilePos.y);
 
 
-			if(pathType != enemyPathType::A_TO_B || (pathType == enemyPathType::A_TO_B && App->pathfinding->IsWalkable(tileTargetPos)))
+			if(pathType != enemyPathType::A_TO_B)
 				direction = fPoint(WorldTargetPos.x - (float)WorldPosTileAdjusted.x, WorldTargetPos.y - (float)WorldPosTileAdjusted.y);
-			else 
+			else if (pathType == enemyPathType::A_TO_B)
+			{
+				if (App->pathfinding->IsWalkable(tileTargetPos))
+				{
+					direction = fPoint(WorldTargetPos.x - (float)WorldPosTileAdjusted.x, WorldTargetPos.y - (float)WorldPosTileAdjusted.y);
+				}
+			}
+			else
 				return ret = false; 
-
-		
-
-
-		
 
 		}
 
@@ -419,6 +421,7 @@ bool j1Enemy::FollowPath(float dt)
 	return ret; 
 
 }
+
 
 
 bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& success)
@@ -491,6 +494,10 @@ bool j1Enemy::HasArrivedToTarget(iPoint tilePos, iPoint targetTilePos)
 	}
 	else if (targetPos.type == TargetPos::targetPosType::X)
 	{
+		if (pathType == enemyPathType::A_TO_B)
+			if (pointingDir == LEFT)
+				targetTilePos.x -= 1; 
+
 		if (abs(targetTilePos.x - tilePos.x) <= myMeleeRange)
 			return true;
 	}
@@ -653,6 +660,11 @@ bool j1Enemy::DoMeleeAttack()
 {
 	// RESET MELEE ATTACK 
 
+
+	if (state.combat == eCombatState::DYING)
+		return false;
+
+
 	if (currentAttackType == ATTACK_TYPE::LONG_RANGE)
 		return false; 
 
@@ -729,6 +741,11 @@ bool j1Enemy::DoMeleeAttack()
 
 bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long range attack anim or audio ???? 
 {
+
+	if (state.combat == eCombatState::DYING)
+		return false; 
+
+
 	if (currentAttackType == ATTACK_TYPE::MELEE)
 		return false;
 

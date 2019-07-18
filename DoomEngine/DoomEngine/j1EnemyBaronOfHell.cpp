@@ -13,6 +13,7 @@ j1EnemyBaronOfHell::j1EnemyBaronOfHell(int posX, int posY, std::string name) : j
 	life = (float)maxLife;
 	size.create(44, 70);
 	speed = 80.33f;
+	defaultSpeed = speed; 
 	mass = 1.3f;
 	gravityFactor = DEFAULT_GRAV / mass;  // TODO: just prevent Y movement by gravity
 	tileDetectionRange = 15;
@@ -49,7 +50,7 @@ j1EnemyBaronOfHell::j1EnemyBaronOfHell(int posX, int posY, std::string name) : j
 	death1.PushBack({ 438, 878, size.x + 16, size.y - 40});
 	death1.PushBack({ 542, 878, size.x + 16, size.y - 40});
 	death1.PushBack({ 646, 878, size.x + 16, size.y - 40});
-	death1.speed = 1.7f;
+	death1.speed = 2.2f;
 	death1.loop = false;
 
 
@@ -74,7 +75,22 @@ bool j1EnemyBaronOfHell::Move(float dt)
 	{
 	}
 
-	DoMeleeAttack();
+	if (state.combat != eCombatState::DYING && state.combat != eCombatState::DEAD)
+	{
+		if (isPlayerOnMeleeRange() == true && state.combat != eCombatState::SHOOT)
+			currentAnimation = &idle;
+
+		Go_A_to_B(); 
+
+		DoMeleeAttack();
+	}
+
+/*	else
+		return false;*/
+		
+
+
+	
 //	DoLongRangeAttack();
 
 
@@ -83,4 +99,46 @@ bool j1EnemyBaronOfHell::Move(float dt)
 
 
 	return true;
+}
+
+
+bool j1EnemyBaronOfHell::Go_A_to_B()
+{
+	if (lastPlatform != App->entityFactory->player->lastPlatform)
+	{
+		if (state.path != ePathState::TEMPORAL_DEVIATION)
+		{
+			speed = platFormSpeed; 
+
+			if (pointingDir == LEFT)
+				targetPos.value = fPoint(App->map->WorldToMap(lastPlatform->collider->rect.x, 0));
+		
+			else if (pointingDir == RIGHT)
+			{
+				targetPos.value = fPoint(App->map->WorldToMap(lastPlatform->collider->rect.x + lastPlatform->collider->rect.w, 0));
+				targetPos.value.x -= 2; 
+			}
+			
+
+		
+			targetPos.value.y = GetTilePosition().y;
+			targetPos.type = TargetPos::targetPosType::X;
+			state.path = ePathState::TEMPORAL_DEVIATION; 
+		}
+	}
+	
+
+	return true; 
+}
+
+
+void j1EnemyBaronOfHell::ResolvePathDeviation()
+{
+	if (pointingDir == LEFT)
+		pointingDir = RIGHT;
+	else if (pointingDir == RIGHT)
+		pointingDir = LEFT; 
+
+
+	speed = defaultSpeed; 
 }

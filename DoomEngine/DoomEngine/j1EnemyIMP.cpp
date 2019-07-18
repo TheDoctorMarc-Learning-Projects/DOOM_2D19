@@ -19,7 +19,7 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY, std::string name) : j1Enemy(posX, pos
 	mass = 1.f;
 	gravityFactor = DEFAULT_GRAV / mass;
 	tileDetectionRange = 10;
-	damageValues.melee = 50;
+	damageValues.melee = 30;
 	cadenceValues.melee = 1200; 
 	pathType = enemyPathType::ALL_ROUND; 
 	dataAnimFx.hasSecondDeathAnim = true; 

@@ -354,8 +354,16 @@ bool j1Enemy::FollowPath(float dt)
 
 	if (specificDir.IsZero() == true)
 	{
-		if(pathType == enemyPathType::A_TO_B)
-			CallPathCreation(tilePos + iPoint(0, 1), targetTilePos + iPoint(0, 2), ret);
+		if (pathType == enemyPathType::A_TO_B)
+		{
+			if(targetTilePos.x < tilePos.x)
+				CallPathCreation(tilePos + iPoint(1, 3), targetTilePos + iPoint(1, 3), ret);
+			else
+				CallPathCreation(tilePos + iPoint(0, 3), targetTilePos + iPoint(0, 3), ret);
+
+			
+		}
+			
 		else
 			CallPathCreation(tilePos + iPoint(0, 1), targetTilePos + iPoint(0, 1), ret);
 	
@@ -368,7 +376,7 @@ bool j1Enemy::FollowPath(float dt)
 				if (pointingDir == RIGHT)
 					WorldTargetPos.x = (float)(App->map->MapToWorld(pathToFollow.at(1).x, 0).x);
 				else
-					WorldTargetPos.x = (float)(App->map->MapToWorld(pathToFollow.at(1).x + 1, 0).x);
+					WorldTargetPos.x = (float)(App->map->MapToWorld(pathToFollow.at(1).x, 0).x);
 			}
 			else
 				WorldTargetPos.x = (float)(App->map->MapToWorld(pathToFollow.at(1).x, 0).x);
@@ -380,7 +388,7 @@ bool j1Enemy::FollowPath(float dt)
 			iPoint WorldPosTileAdjusted = App->map->MapToWorld(tilePos.x, tilePos.y);
 
 
-			if(pathType != enemyPathType::A_TO_B || (pathType == enemyPathType::A_TO_B && App->pathfinding->IsWalkable(tileTargetPos + iPoint(0,1))))
+			if(pathType != enemyPathType::A_TO_B || (pathType == enemyPathType::A_TO_B && App->pathfinding->IsWalkable(tileTargetPos)))
 				direction = fPoint(WorldTargetPos.x - (float)WorldPosTileAdjusted.x, WorldTargetPos.y - (float)WorldPosTileAdjusted.y);
 			else 
 				return ret = false; 
@@ -534,6 +542,15 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 
 	if(Direction.IsZero() == false)
 		Direction.Normalize();
+
+
+	if (pathType != enemyPathType::FLYING)
+	{
+		if (Direction.x > 0)
+			Direction.x = 1;
+		else if (Direction.x < 0)
+			Direction.x = -1; 
+	}
 	
 	if (isnan(Direction.x) == true || isnan(Direction.y) == true)
 	{
@@ -639,7 +656,7 @@ bool j1Enemy::DoMeleeAttack()
 	if (currentAttackType == ATTACK_TYPE::LONG_RANGE)
 		return false; 
 
-	if (state.combat == eCombatState::SHOOT && isPlayerOnMeleeRange() == false)     // prevent bugged attack anim when player leaves enemy behind 
+	if (isPlayerOnMeleeRange() == false)     // prevent bugged attack anim when player leaves enemy behind 
 	{
 		currentAttackType = ATTACK_TYPE::NO_ATTACK_TYPE;     // retreat 
 		state.combat = eCombatState::IDLE;

@@ -87,6 +87,7 @@ bool j1Particles::Start()
 	particleMap.insert(std::pair(EnemyCacodemonShotExplosion.name, EnemyCacodemonShotExplosion));
 
 
+	// TODO: Baron of Hell
 
 	
 	return true;

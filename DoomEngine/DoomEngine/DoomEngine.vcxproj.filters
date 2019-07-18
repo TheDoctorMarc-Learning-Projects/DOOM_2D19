@@ -147,6 +147,9 @@
     <ClCompile Include="j1EnemyCacodemon.cpp">
       <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="j1EnemyBaronOfHell.cpp">
+      <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h">
@@ -259,6 +262,9 @@
     </ClInclude>
     <ClInclude Include="j1EntityBloodDrop.h">
       <Filter>Code\Core\In-Game\Entities\animated\Other\Blood</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EnemyBaronOfHell.h">
+      <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

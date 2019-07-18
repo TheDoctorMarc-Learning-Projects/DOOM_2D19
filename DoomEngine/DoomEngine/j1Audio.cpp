@@ -66,7 +66,7 @@ bool j1Audio::Start()
 	LoadFx("sound/fx/dssawful.wav", "chainsawShotFire");
 	LoadFx("sound/fx/dssawhit.wav", "chainsawHit");
 
-	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - enemies
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - enemies =========> TODO: "Detection" fx
 	LoadFx("sound/fx/dsclaw.wav", "EnemyIMPAttack");
 	LoadFx("sound/fx/dsbgdth1.wav", "EnemyIMPDeath");
 	LoadFx("sound/fx/dsbgdth2.wav", "EnemyIMPDeath2");
@@ -75,6 +75,13 @@ bool j1Audio::Start()
 	LoadFx("sound/fx/dsfirsht.wav", "EnemyCacodemonAttack"); // long range 
 	LoadFx("sound/fx/dssgtdth.wav", "EnemyCacodemonDeath");
 	LoadFx("sound/fx/dsdmpain.wav", "EnemyCacodemonInjured");
+
+
+	LoadFx("sound/fx/dsclaw.wav", "EnemyBaronOfHellAttack"); // melee 
+	LoadFx("sound/fx/dsfirsht.wav", "EnemyBaronOfHellAttack2"); // long range 
+	LoadFx("sound/fx/dsbrsdth.wav", "EnemyBaronOfHellDeath");
+	LoadFx("sound/fx/dsdmpain.wav", "EnemyBaronOfHellInjured");
+
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - player
 	LoadFx("sound/fx/dsoof.wav", "fall");

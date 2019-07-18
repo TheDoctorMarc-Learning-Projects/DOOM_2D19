@@ -43,6 +43,8 @@ enum ENTITY_TYPE  // todo, pass to class
 		ENEMY_STATIC,
 		ENEMY_IMP,
 		ENEMY_CACODEMON,
+		ENEMY_BARON_OF_HELL,
+		ENEMY_HELL_KNIGHT,
 		LOOT,
 		BLOOD,
 };

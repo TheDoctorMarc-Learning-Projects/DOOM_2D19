@@ -21,9 +21,9 @@ j1EnemyBaronOfHell::j1EnemyBaronOfHell(int posX, int posY, std::string name) : j
 	cadenceValues.longRange = 2500;
 	damageValues.melee = 120;
 	damageValues.longRange = 40;
-	longRangeShootData.msWaitFromAnimStartToShot = 300;
+	longRangeShootData.msWaitFromAnimStartToShot = 350;
 	longRangeShootData.relativeOffsetPos.create(0, 26); // assuming spritescale is 1.0f
-	longRangeShootData.shotSpeed = 250;
+	longRangeShootData.shotSpeed = 500;
 	pathType = enemyPathType::A_TO_B;
 	dataAnimFx.hasSecondDeathAnim = false;
 	dataAnimFx.hasSecondDeathFx = false;
@@ -83,13 +83,44 @@ bool j1EnemyBaronOfHell::Move(float dt)
 		Go_A_to_B(); 
 
 		DoMeleeAttack();
-		DoLongRangeAttack(); 
+
+		if (LongRangeConditions() == true)
+			DoLongRangeAttack();
+		else
+			if(state.combat == eCombatState::SHOOT && currentAttackType == ATTACK_TYPE::LONG_RANGE)     // if conditions are not met, reset attack data
+				if(currentAnimation->Finished() == true)
+					PutCombatStateToIdle();
+			              
+			
+
 	}
 
+	/*if (state.combat == eCombatState::SHOOT && currentAttackType == ATTACK_TYPE::LONG_RANGE)
+		state.movement.at(0) = eMovementState::IDLE;*/
 
 	return true;
 }
 
+bool j1EnemyBaronOfHell::LongRangeConditions()
+{
+	if (App->entityFactory->player->collider->rect.y + App->entityFactory->player->collider->rect.h < position.y)
+		return false; 
+	if (App->entityFactory->player->collider->rect.y > position.y + collider->rect.h)
+		return false; 
+
+	return true; 
+}
+
+fPoint j1EnemyBaronOfHell::GetShotSpeed(fPoint dir) const
+{
+	fPoint speed = fPoint(0, 0); 
+	speed.x = longRangeShootData.shotSpeed;
+
+	if(dir.x < 0)
+		speed.x = -speed.x; 
+		
+	return speed; 
+}
 
 bool j1EnemyBaronOfHell::Go_A_to_B()
 {

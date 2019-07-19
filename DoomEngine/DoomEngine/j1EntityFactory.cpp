@@ -69,7 +69,7 @@ bool j1EntityFactory::Start()
 
 	//CreateEntity(ENEMY_IMP, 300, 100, "EnemyIMP");
 
-	CreateEntity(ENEMY_BARON_OF_HELL, 300, 100, "EnemyBaronOfHell");
+	CreateEntity(ENEMY_BARON_OF_HELL, 230, 100, "EnemyBaronOfHell");
 
 
 	return true;

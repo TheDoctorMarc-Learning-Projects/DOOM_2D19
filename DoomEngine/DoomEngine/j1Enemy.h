@@ -213,11 +213,23 @@ public:
 	}
 
 	void SpawnShotParticle(); 
+	void PutCombatStateToIdle()
+	{
+		
+			currentAttackType = ATTACK_TYPE::NO_ATTACK_TYPE;
+			state.combat = eCombatState::IDLE;
+
+			if (lastSpeed.IsZero())
+				currentAnimation = &idle;
+			else
+				currentAnimation = &run;
+
+	}
 
 
-	fPoint GetShotDir(); 
-
-	double GetShotFlippingAngle(fPoint shotDir) const; 
+	virtual fPoint GetShotDir(); 
+	virtual fPoint GetShotSpeed(fPoint dir) const { return fPoint(dir.x * longRangeShootData.shotSpeed, dir.y * longRangeShootData.shotSpeed);
+	}
 
 public:
 

@@ -544,6 +544,8 @@ void j1Enemy::CallPathCreation(iPoint pos, iPoint target, bool& success)
 
 void j1Enemy::SolveMove(fPoint Direction, float dt)
 {
+	if (state.movement.at(0) == eMovementState::IDLE)   // first line prevention: useful when enemies stop to attack
+		return; 
 
 	fPoint initialDirection = Direction; 
 
@@ -705,11 +707,19 @@ bool j1Enemy::DoMeleeAttack()
 
 				//}
 
-				currentAttackType = ATTACK_TYPE::NO_ATTACK_TYPE;     // retreat 
+					// retreat 
+
+				currentAttackType = ATTACK_TYPE::NO_ATTACK_TYPE;     
 				state.combat = eCombatState::IDLE;
 
+				// go back to default anim depending on enemy speed
+
 				if (lastSpeed.IsZero())
-					currentAnimation = &idle;   // go back to default anim depending on enemy speed
+				{
+					state.movement.at(0) = eMovementState::IDLE; 
+					currentAnimation = &idle;   
+				}
+					
 				else
 					currentAnimation = &run;
 
@@ -826,21 +836,22 @@ void j1Enemy::SpawnShotParticle()
 {
 
 	fPoint dir = GetShotDir();
-	fPoint speed = fPoint(dir.x * longRangeShootData.shotSpeed, dir.y * longRangeShootData.shotSpeed);
+	fPoint speed = GetShotSpeed(dir);
 	fPoint targetPos = fPoint(0, 0); 
 
 	targetPos.y = position.y + longRangeShootData.relativeOffsetPos.y; 
-	SDL_RendererFlip shotFlip; 
+	SDL_RendererFlip shotFlip = SDL_FLIP_NONE; 
+
+	if(speed.x < 0)
+		shotFlip = SDL_FLIP_HORIZONTAL;
 
 	if (GetDirection() == LEFT)
 	{
-		shotFlip = SDL_FLIP_HORIZONTAL; 
 		targetPos.x = position.x + longRangeShootData.relativeOffsetPos.x;
 	}
 
 	else if (GetDirection() == RIGHT)
 	{
-
 		targetPos.x = position.x + collider->rect.w - longRangeShootData.relativeOffsetPos.x;
 	}
  
@@ -848,8 +859,6 @@ void j1Enemy::SpawnShotParticle()
 
 	Particle* shot = App->particles->AddParticleRet(name + "Shot", (int)targetPos.x, (int)targetPos.y, this, true, COLLIDER_ENEMY_SHOT, speed, 0U,
 		shotFlip);
-
-	shot->angle = GetShotFlippingAngle(dir); 
 
 	std::string fxname = ""; 
 	if (dataAnimFx.hasSecondAttackFx == true)
@@ -880,10 +889,6 @@ fPoint j1Enemy::GetShotDir()
 
 }
 
-double j1Enemy::GetShotFlippingAngle(fPoint shotDir) const
-{
-
-}
 
 void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 {
@@ -1236,7 +1241,7 @@ POINTING_DIR j1Enemy::GetDirection()
 			}
 			else
 			{
-				bool c1 = (currentAnimation == &attack == true) ? true : false;
+				bool c1 = (currentAnimation == &attack) ? true : false;
 				bool c2 = (currentAnimation->Finished() == false) ? true : false;
 
 				if ((c1 == true && c2 == true))                                  // hit is over 

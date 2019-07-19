@@ -18,6 +18,7 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY, std::string name) : j1Entity(
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - texture
 	entityTex = App->entityFactory->entityTextureMap.at(name); 
 	useRenderFlip = true; 
+	blitOrder = 2U; 
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = PLAYER; 

@@ -215,7 +215,10 @@ bool j1Map::CleanUp()
 
 
 	for (auto tex : entityTextureMap)
+	{
 		App->tex->UnLoad(tex.second);
+		tex.second = nullptr; 
+	}
 	entityTextureMap.clear();
 
 

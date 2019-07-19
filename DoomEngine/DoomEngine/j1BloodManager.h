@@ -42,7 +42,7 @@ public:
 	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
-	void Draw(); 
+	bool Draw(); 
 	bool CleanUp();     // blood are just quads drawn in render, no texture indeed
 
 public: 

@@ -41,10 +41,10 @@ public:
 
 
 	// entities constructors -------
-	j1Entity* CreateEntity(ENTITY_TYPE type, int positionX, int positionY, std::string name);
-	j1Entity* CreatePlatform(ENTITY_TYPE type, SDL_Rect placing, int heightLevel, std::string name,
+	 j1Entity* CreateEntity(ENTITY_TYPE type, int positionX, int positionY, std::string name);
+	 j1Entity* CreatePlatform(ENTITY_TYPE type, SDL_Rect placing, int heightLevel, std::string name,
 		int levelsUp = 0, int LevelsDown = 0, SceneState level = SceneState::LEVEL1, AXIS_Movement movementType = AXIS_Movement::HORIZONTAL);
-	j1Entity* CreateWeapon(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type, weaponInfo weaponData);
+	 j1Entity* CreateWeapon(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type, weaponInfo weaponData);
 
 	bool isDistanceToManhattan(iPoint tilePos, iPoint targetTilePos, int distance)
 	{
@@ -60,6 +60,11 @@ public:
 		uint ret = (uint)(int)(float)abs(hypot(pos1.x - pos2.x, pos1.y - pos2.y));
 		return ret <= distance; 
 	}
+
+private: 
+
+	static bool isBlitOrderHigherThanPreviousEntity(const j1Entity* ent1, const j1Entity* ent2); 
+
 	/*Enemy* CreateEnemy(EnemyType etype, iPoint pos, bool dummy = false);                            // TODO: rework this when enemies available
 	std::vector<j1Entity*> CreateEnemiesGroup(std::vector<EnemyType> enemyTypes, SDL_Rect zone, uint minNum, uint maxNum, uint groupLevel = 0);*/
 	//void LoadSpawnGroups();
@@ -69,7 +74,7 @@ public:
 
 public:
 
-	//std::vector<GroupInfo> spawngroups;
+
 	std::list<j1Entity*>	entities;
 	std::map<std::string, SDL_Texture*> entityTextureMap; 
 	j1EntityPlayer* player = nullptr; 

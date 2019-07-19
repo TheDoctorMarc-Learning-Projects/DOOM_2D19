@@ -29,7 +29,7 @@ public:
 	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
 
-public: 
+private: 
        // new collider in collision cpp, than can collide with floor, but ignores entitites for the mom
 	Color c;
 	fPoint initialSpeed = fPoint(0, 0); 

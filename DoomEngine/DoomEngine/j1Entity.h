@@ -126,7 +126,7 @@ public:
 	double                  spriteRotation = 0; 
 	iPoint                  rotationPivots = iPoint(INT_MAX, INT_MAX); 
 	bool                    colliderActive = true; 
-	//uint                    blitOrder = 0; 
+	uint                    blitOrder = 0U; 
 };
 
 #endif

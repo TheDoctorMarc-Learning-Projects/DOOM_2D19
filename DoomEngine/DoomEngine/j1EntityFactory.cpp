@@ -9,7 +9,6 @@
 
 #include "Brofiler/Brofiler.h"
 
-#include <ctime>
 #include <algorithm>
 
 #include "j1EntityPlayer.h"
@@ -151,12 +150,27 @@ bool j1EntityFactory::PostUpdate()
 {
 	BROFILER_CATEGORY("Entities PostUpdate", Profiler::Color::BurlyWood);
 
-	for (auto entity : entities)
+	std::vector<j1Entity*> blitOrderEntities{ std::begin(entities), std::end(entities) };
+
+	std::sort(blitOrderEntities.begin(), blitOrderEntities.end(), j1EntityFactory::isBlitOrderHigherThanPreviousEntity);
+
+	for (auto entity : blitOrderEntities)
 		if (!entity->to_delete)
 			if (App->render->IsOnCamera(entity->position.x, entity->position.y, entity->size.x, entity->size.y))
-				entity->Draw(); 
+				entity->Draw();
+		
+
+	blitOrderEntities.clear(); 
+
+	 
+				 
 				
 	return true;
+}
+
+bool j1EntityFactory::isBlitOrderHigherThanPreviousEntity(const j1Entity* ent1, const j1Entity* ent2)
+{
+	return ent2->blitOrder > ent1->blitOrder;
 }
 
 bool j1EntityFactory::CleanUp()
@@ -181,7 +195,11 @@ bool j1EntityFactory::CleanUp()
 	// TODO: unload Atlas texture
 
 	for (auto tex : entityTextureMap)
-		App->tex->UnLoad(tex.second); 
+	{
+		App->tex->UnLoad(tex.second);
+		tex.second = nullptr; 
+	}
+	
 	entityTextureMap.clear(); 
 
 

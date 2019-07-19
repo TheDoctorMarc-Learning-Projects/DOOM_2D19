@@ -169,7 +169,7 @@ void j1EnemyIMP::Jump()
 							if (!enoughOffset)   // repath to a position where the enemy would have enough ofsset to jump
 							{
 								if (position.x + collider->rect.w / 2 > col->rect.x + col->rect.w / 2)  
-									targetPos.value.x = platfTilePos.x + App->map->WorldToMap(col->rect.w, 0).x + jumpTriggerTileRange + extraJumpOffset;
+									targetPos.value.x = platfTilePos.x + App->map->WorldToMap(col->rect.w, 0).x + jumpTriggerTileRange + extraJumpOffset - 2;
 								else
 									targetPos.value.x = platfTilePos.x - jumpTriggerTileRange - extraJumpOffset;
 							

@@ -79,7 +79,6 @@ bool j1Particles::Start()
 	EnemyCacodemonShotExplosion.anim.PushBack({ 49, 112, 41, 40 });
 	EnemyCacodemonShotExplosion.anim.PushBack({ 91, 109, 50, 43 });
 	EnemyCacodemonShotExplosion.anim.PushBack({ 142, 106, 53, 46 });
-	EnemyCacodemonShotExplosion.life = 1000;
 	EnemyCacodemonShotExplosion.speed.create(0, 0);
 	EnemyCacodemonShotExplosion.anim.speed = 12.6;
 	EnemyCacodemonShotExplosion.anim.loop = false;
@@ -88,29 +87,33 @@ bool j1Particles::Start()
 
 
 
-	/*
+	
 	// Baron Of Hell
 	Particle EnemyBaronOfHellShot;                                   // the other data is defined in enemy shoot function 
 	EnemyBaronOfHellShot.name = "EnemyBaronOfHellShot";
-	EnemyBaronOfHellShot.anim.PushBack({ 1, 129, 23, 23 });
-	EnemyBaronOfHellShot.anim.PushBack({ 25, 129, 23, 23 });
+	EnemyBaronOfHellShot.anim.PushBack({ 5, 225, 35, 10 });
+	EnemyBaronOfHellShot.anim.PushBack({ 3, 242, 33, 10 });
+	EnemyBaronOfHellShot.anim.PushBack({ 41, 223, 48, 12 });
+	EnemyBaronOfHellShot.anim.PushBack({ 37, 240, 49, 12 });
+	EnemyBaronOfHellShot.anim.PushBack({ 90, 222, 33, 13 });
+	EnemyBaronOfHellShot.anim.PushBack({ 87, 239, 35, 13 });
+	EnemyBaronOfHellShot.life = (uint32)(uint)INT_MAX;      // if the anim does not have loop, keep it alive unless out of camera
 	EnemyBaronOfHellShot.anim.speed = 5.3;
-	EnemyBaronOfHellShot.anim.loop = true;
+	EnemyBaronOfHellShot.anim.loop = false;
 
 	particleMap.insert(std::pair(EnemyBaronOfHellShot.name, EnemyBaronOfHellShot));
 
 	Particle EnemyBaronOfHellShotExplosion;                                   // the other data is defined in enemy shoot function 
 	EnemyBaronOfHellShotExplosion.name = "EnemyBaronOfHellShotExplosion";
-	EnemyBaronOfHellShotExplosion.anim.PushBack({ 49, 112, 41, 40 });
-	EnemyBaronOfHellShotExplosion.anim.PushBack({ 91, 109, 50, 43 });
-	EnemyBaronOfHellShotExplosion.anim.PushBack({ 142, 106, 53, 46 });
-	EnemyBaronOfHellShotExplosion.life = 1000;
+	EnemyBaronOfHellShotExplosion.anim.PushBack({ 1, 260, 33, 33 });
+	EnemyBaronOfHellShotExplosion.anim.PushBack({ 35, 257, 41, 36 });
+	EnemyBaronOfHellShotExplosion.anim.PushBack({ 77, 253, 45, 40 });
 	EnemyBaronOfHellShotExplosion.speed.create(0, 0);
 	EnemyBaronOfHellShotExplosion.anim.speed = 12.6;
 	EnemyBaronOfHellShotExplosion.anim.loop = false;
 
 	particleMap.insert(std::pair(EnemyBaronOfHellShotExplosion.name, EnemyBaronOfHellShotExplosion));
-	*/
+	
 
 	
 
@@ -317,8 +320,8 @@ bool Particle::Update(float dt)
 	}
 
 
-	// destroy particle when animation is finished
-	if (!anim.loop && anim.Finished())
+	// destroy particle when animation is finished ----> only if you do not define max life 
+	if (!anim.loop && anim.Finished() && life == 0)
 		ret = false;
 
 	if (to_delete)

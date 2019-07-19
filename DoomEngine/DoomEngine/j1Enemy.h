@@ -217,6 +217,8 @@ public:
 
 	fPoint GetShotDir(); 
 
+	double GetShotFlippingAngle(fPoint shotDir) const; 
+
 public:
 
 	ATTACK_TYPE currentAttackType = ATTACK_TYPE::NO_ATTACK_TYPE; 

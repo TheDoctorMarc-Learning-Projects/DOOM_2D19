@@ -830,15 +830,26 @@ void j1Enemy::SpawnShotParticle()
 	fPoint targetPos = fPoint(0, 0); 
 
 	targetPos.y = position.y + longRangeShootData.relativeOffsetPos.y; 
+	SDL_RendererFlip shotFlip; 
 
 	if (GetDirection() == LEFT)
+	{
+		shotFlip = SDL_FLIP_HORIZONTAL; 
 		targetPos.x = position.x + longRangeShootData.relativeOffsetPos.x;
-	else if(GetDirection() == RIGHT)
+	}
+
+	else if (GetDirection() == RIGHT)
+	{
+
 		targetPos.x = position.x + collider->rect.w - longRangeShootData.relativeOffsetPos.x;
+	}
  
+	
 
 	Particle* shot = App->particles->AddParticleRet(name + "Shot", (int)targetPos.x, (int)targetPos.y, this, true, COLLIDER_ENEMY_SHOT, speed, 0U,
-		flip);
+		shotFlip);
+
+	shot->angle = GetShotFlippingAngle(dir); 
 
 	std::string fxname = ""; 
 	if (dataAnimFx.hasSecondAttackFx == true)
@@ -869,12 +880,31 @@ fPoint j1Enemy::GetShotDir()
 
 }
 
+double j1Enemy::GetShotFlippingAngle(fPoint shotDir) const
+{
 
-
-
+}
 
 void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 {
+	if (c1->type == COLLIDER_ENEMY_SHOT)
+	{
+		if (c2->type == COLLIDER_PLAYER || c2->type == COLLIDER_WALL || c2->type == COLLIDER_FLOOR)
+		{
+			if (c2->type == COLLIDER_PLAYER)
+			{
+
+				float ShotsPerSec = 1.f / (cadenceValues.longRange / 1000.f);
+				App->entityFactory->DoDamagetoEntity(App->entityFactory->player, damageValues.longRange, ShotsPerSec, c1->speed);
+			}
+
+			c1->owner->to_delete = true;   // delete the shot particle AND  // create the explosion particle
+			App->particles->AddParticle(name + "ShotExplosion", c1->owner->position.x, c1->owner->position.y, this, false, COLLIDER_NONE, { 0,0 }, 0U,
+				flip);
+
+		}
+	}
+
 	
 
 	if (state.combat != eCombatState::DYING)
@@ -884,26 +914,6 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 
 	switch (c2->type)
 	{
-
-		if (c1->type == COLLIDER_ENEMY_SHOT)
-		{
-			if (c2->type == COLLIDER_PLAYER || c2->type == COLLIDER_WALL || c2->type == COLLIDER_FLOOR)
-			{
-				if (c2->type == COLLIDER_PLAYER)
-				{
-
-					float ShotsPerSec = 1.f / cadenceValues.longRange / 1000.f;
-					App->entityFactory->DoDamagetoEntity(App->entityFactory->player, damageValues.longRange, ShotsPerSec, c1->speed);
-				}
-
-				c1->owner->to_delete = true;   // delete the shot particle AND  // create the explosion particle
-				App->particles->AddParticle(dynamic_cast<j1Enemy*>(c2->callback)->name + "ShotExplosion", c1->owner->position.x, c1->owner->position.y, this, false, COLLIDER_NONE, { 0,0 }, 0U,
-					flip);
-
-			}
-		}
-
-
 
 
 	case COLLIDER_TYPE::COLLIDER_FLOOR:

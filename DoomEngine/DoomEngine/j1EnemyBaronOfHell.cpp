@@ -83,19 +83,8 @@ bool j1EnemyBaronOfHell::Move(float dt)
 		Go_A_to_B(); 
 
 		DoMeleeAttack();
+		DoLongRangeAttack(); 
 	}
-
-/*	else
-		return false;*/
-		
-
-
-	
-//	DoLongRangeAttack();
-
-
-	// todo: when shooting, stop moving 
-	// todo: shoot only if i'm on camera (do it on cacodemon too) 
 
 
 	return true;

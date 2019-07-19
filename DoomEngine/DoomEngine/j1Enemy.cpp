@@ -15,6 +15,7 @@ j1Enemy::j1Enemy(int posX, int posY) : j1Entity(ENEMY_STATIC, posX, posY, "enemy
 	useRenderFlip = true; 
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
+
 	position = previousPosition = fPoint(posX, posY);
 	originTilePos = App->map->WorldToMap(posX, posY); 
 	pointingDir = LEFT;
@@ -22,8 +23,7 @@ j1Enemy::j1Enemy(int posX, int posY) : j1Entity(ENEMY_STATIC, posX, posY, "enemy
 	state.movement.at(0) = eMovementState::IDLE;
 	state.movement.at(1) = eMovementState::NOT_ACTIVE;
 	state.path = ePathState::FOLLOW_PLAYER; 
-	
-	
+
 	
 }	
 

@@ -1,5 +1,6 @@
 #include <map>
 #include "j1EntityLootWeapon.h"
+#include "j1Entity.h"
 
 const std::map<std::string, WEAPON_TYPE> weaponTypeMap =
 {
@@ -20,10 +21,12 @@ const std::map<std::string, firingType> weaponFiringTypeMap =
 };
 
 
+
 // TODO: audio and particle map according with weapon type ?
 
 static void CleanLootMaps() 
 {
 	const_cast<std::map<std::string, WEAPON_TYPE>&>(weaponTypeMap).clear();
 	const_cast<std::map<std::string, firingType>&>(weaponFiringTypeMap).clear();
+
 }

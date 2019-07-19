@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="278" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="121">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="278" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="122">
  <tileset firstgid="1" name="qzNJ1V6_3x (1)" tilewidth="32" tileheight="32" tilecount="2520" columns="140">
   <image source="textures/background_level1.png" width="4488" height="600"/>
  </tileset>
@@ -20285,6 +20285,11 @@
   <object id="116" name="wall" x="5824" y="288" width="32" height="96"/>
   <object id="119" name="wall" x="5984" y="288" width="32" height="96"/>
   <object id="120" name="wall" x="6336" y="288" width="32" height="96"/>
+  <object id="121" name="enemy" x="544" y="352" width="32" height="32">
+   <properties>
+    <property name="type" value="EnemyBaronOfHell"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer id="5" name="Floor" width="278" height="18" visible="0">
   <data>

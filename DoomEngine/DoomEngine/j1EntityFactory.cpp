@@ -33,25 +33,21 @@ j1EntityFactory::j1EntityFactory()
 j1EntityFactory::~j1EntityFactory()
 {
 	CleanLootMaps();    // they are defined it their header, but are useful until app closes
+
+	
 }
 
 bool j1EntityFactory::Awake(pugi::xml_node & node)
 {
 bool ret = true;
 
+
+
 return ret;
 }
 
 bool j1EntityFactory::Start()
 {
-
-
-	std::list<j1Entity*>::iterator item = entities.begin();
-	for (; item != entities.end(); ++item)
-	{
-		if ((*item) != nullptr)
-			(*item)->Start();
-	}
 
 	// TODO: textures
 
@@ -60,17 +56,33 @@ bool j1EntityFactory::Start()
 	entityTextureMap.insert(std::pair("EnemyCacodemon", App->tex->Load("textures/enemies/Cacodemon/Cacodemon.png")));
 	entityTextureMap.insert(std::pair("EnemyBaronOfHell", App->tex->Load("textures/enemies/BaronOfHell/BaronOfHell.png")));
 
+ 
+	enemyTypeMap.insert(std::pair("EnemyIMP", ENEMY_IMP)); 
+	enemyTypeMap.insert(std::pair("EnemyCacodemon", ENEMY_CACODEMON));
+	enemyTypeMap.insert(std::pair("EnemyBaronOfHell", ENEMY_BARON_OF_HELL));
+
+	// todo: KEEP UPDATING THIS with new types of enemies... 
+
+	// ENEMIES (tiled): 
+
+	for (auto enemyData : enemiesToBeSpawned)
+		CreateEntity(enemyTypeMap.at(enemyData->name), enemyData->position.x, enemyData->position.y, enemyData->name); 
+
+	for (auto enemyData = enemiesToBeSpawned.begin(); enemyData != enemiesToBeSpawned.end(); ++enemyData)
+		RELEASE(*enemyData); 
+	enemiesToBeSpawned.clear(); 
 	
 	// for the moment, create player here 
 	player = (j1EntityPlayer*)CreateEntity(PLAYER, 0, 300, "player"); 
-
-	// and test enemies
-	//CreateEntity(ENEMY_CACODEMON, 150, 100, "EnemyCacodemon"); 
-
-	//CreateEntity(ENEMY_IMP, 300, 100, "EnemyIMP");
-
 	CreateEntity(ENEMY_BARON_OF_HELL, 230, 100, "EnemyBaronOfHell");
 
+
+	std::list<j1Entity*>::iterator item = entities.begin();
+	for (; item != entities.end(); ++item)
+	{
+		if ((*item) != nullptr)
+			(*item)->Start();
+	}
 
 	return true;
 }
@@ -98,19 +110,6 @@ bool j1EntityFactory::Update(float dt)
 {
 	bool ret = true;
 	BROFILER_CATEGORY("Entities Update", Profiler::Color::Fuchsia);
-
-
-	/*// testinpurposes 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-	{
-		int x, y;
-		x = y = 0;
-		App->input->GetMousePosition(x, y);
-		CreateEntity(ENEMY_IMP, x, y, "imp");
-	}*/
-
-
-
 
 	std::list<j1Entity*>::iterator item = entities.begin();
 	for (; item != entities.end();)
@@ -200,8 +199,8 @@ bool j1EntityFactory::CleanUp()
 		tex.second = nullptr; 
 	}
 	
-	entityTextureMap.clear(); 
-
+	entityTextureMap.clear();
+	enemyTypeMap.clear(); 
 
 	return ret;
 }

@@ -21,6 +21,15 @@ enum damage_Frame_Type
 	EACH_FRAME
 };
 
+struct encapsulatedEnemyData  // needed to load enemies from tiled, because texture map is not available until Start() (cannot be defined in constructor because it needs other modules)
+{
+	iPoint position;
+	std::string name;  // we will comnvert it to a type with the type map easily 
+	explicit encapsulatedEnemyData(iPoint pos, std::string name) : position(pos), name(name) {};
+};
+
+
+
 class j1EntityFactory : public j1Module
 {
 public:
@@ -77,9 +86,10 @@ public:
 
 	std::list<j1Entity*>	entities;
 	std::map<std::string, SDL_Texture*> entityTextureMap; 
+	std::map<std::string, ENTITY_TYPE> enemyTypeMap; 
 	j1EntityPlayer* player = nullptr; 
 
-	
+	std::list<encapsulatedEnemyData*> enemiesToBeSpawned; 
 
 };
 

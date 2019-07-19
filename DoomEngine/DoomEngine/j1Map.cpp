@@ -659,6 +659,26 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 			}
 
 
+
+			if (ObjectName == "enemy")
+			{
+				std::string enemyName = ""; 
+
+				for (auto property = object.child("properties").child("property"); property; property = property.next_sibling("property"))
+				{
+					std::string propertyName = property.attribute("name").as_string();
+					if (propertyName == "type")
+						enemyName = property.attribute("value").as_string();;
+
+				}
+
+				encapsulatedEnemyData* enemyData = DBG_NEW encapsulatedEnemyData(iPoint(worldPos.x, worldPos.y), enemyName); 
+				App->entityFactory->enemiesToBeSpawned.push_back(enemyData);
+				
+
+			}
+
+
 		}
 
 	}

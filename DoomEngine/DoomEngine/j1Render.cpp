@@ -413,13 +413,18 @@ void j1Render::DoCameraScroll(cameraScrollType scrollType, direction dir, j1Enti
 			if (!callback->collider->onCollisionWithMe.empty())
 				for (auto& col : callback->collider->onCollisionWithMe)
 					if (col->hasCallback && col->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
-						Displacement = (int)col->callback->position.x - (int)col->callback->previousPosition.x;
+					{
+						Displacement = (int)callback->lastSpeed.x;
+						
+						if((dir == direction::LEFT && col->callback->pointingDir == LEFT) || (dir == direction::RIGHT && col->callback->pointingDir == RIGHT))
+							Displacement += col->callback->lastSpeed.x;
+						
+					}
+						
 
-
-			
 		}
 		else
-			Displacement = (int)callback->position.x - (int)callback->previousPosition.x;
+			Displacement = (int)callback->lastSpeed.x; 
 	
 
 		if (dir == direction::RIGHT)

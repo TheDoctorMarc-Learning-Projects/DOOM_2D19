@@ -43,7 +43,7 @@ struct myState
 
 struct jumpData
 {
-	float jumpPower = 16.5f; 
+	float jumpPower = 15.f; 
 	float currenJumpPower = jumpPower; 
 	float jumpIncrementFactor = .9f;
 	float speedXIncrementJump = 1.7f; 

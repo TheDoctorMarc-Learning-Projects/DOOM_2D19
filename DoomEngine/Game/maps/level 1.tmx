@@ -10066,7 +10066,7 @@
  </layer>
  <layer id="10" name="BackgroundMiddle" width="278" height="18">
   <properties>
-   <property name="parallaxSpeed" value="0,86"/>
+   <property name="parallaxSpeed" type="float" value="1.1"/>
   </properties>
   <data>
    <tile/>
@@ -12777,26 +12777,26 @@
    <tile gid="2613"/>
    <tile gid="2614"/>
    <tile gid="2615"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2624"/>
+   <tile gid="2625"/>
+   <tile gid="2626"/>
+   <tile gid="2627"/>
+   <tile gid="2612"/>
+   <tile gid="2613"/>
+   <tile gid="2614"/>
+   <tile gid="2615"/>
+   <tile gid="2624"/>
+   <tile gid="2625"/>
+   <tile gid="2626"/>
+   <tile gid="2627"/>
+   <tile gid="2612"/>
+   <tile gid="2613"/>
+   <tile gid="2614"/>
+   <tile gid="2615"/>
+   <tile gid="2624"/>
+   <tile gid="2625"/>
+   <tile gid="2626"/>
+   <tile gid="2627"/>
    <tile/>
    <tile/>
    <tile/>
@@ -13055,26 +13055,26 @@
    <tile gid="2617"/>
    <tile gid="2618"/>
    <tile gid="2619"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2628"/>
+   <tile gid="2629"/>
+   <tile gid="2630"/>
+   <tile gid="2631"/>
+   <tile gid="2616"/>
+   <tile gid="2617"/>
+   <tile gid="2618"/>
+   <tile gid="2619"/>
+   <tile gid="2628"/>
+   <tile gid="2629"/>
+   <tile gid="2630"/>
+   <tile gid="2631"/>
+   <tile gid="2616"/>
+   <tile gid="2617"/>
+   <tile gid="2618"/>
+   <tile gid="2619"/>
+   <tile gid="2628"/>
+   <tile gid="2629"/>
+   <tile gid="2630"/>
+   <tile gid="2631"/>
    <tile/>
    <tile/>
    <tile/>
@@ -13333,26 +13333,26 @@
    <tile gid="2621"/>
    <tile gid="2622"/>
    <tile gid="2623"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2632"/>
+   <tile gid="2633"/>
+   <tile gid="2634"/>
+   <tile gid="2635"/>
+   <tile gid="2620"/>
+   <tile gid="2621"/>
+   <tile gid="2622"/>
+   <tile gid="2623"/>
+   <tile gid="2632"/>
+   <tile gid="2633"/>
+   <tile gid="2634"/>
+   <tile gid="2635"/>
+   <tile gid="2620"/>
+   <tile gid="2621"/>
+   <tile gid="2622"/>
+   <tile gid="2623"/>
+   <tile gid="2632"/>
+   <tile gid="2633"/>
+   <tile gid="2634"/>
+   <tile gid="2635"/>
    <tile/>
    <tile/>
    <tile/>

@@ -332,14 +332,18 @@ uint j1BloodManager::CalculateNumberOfBloodDropsToBeSpawned(float damage, float 
 	if (drops < 1)
 	{
 		
-		int prop = GetRandomIntValue(0, (int)shotsPerSec);
+		int prop = GetRandomIntValue(1, (int)shotsPerSec);
 
 		if (!App->entityFactory->player->myWeapons.empty())
 			if (App->entityFactory->player->currentWeapon->GetWeaponType() == WEAPON_TYPE::CHAINSAW)   // cause why not?? (TODO: have a multiplier or smth) 
 				prop -= 20;
 
-		if (prop < 10)
-			return 1U; 
+		//if (prop <= 10)
+		uint calc = (uint)(int)(shotsPerSec / (float)prop);
+
+		if (calc <= 1U)
+			calc = 5U; 
+		return calc; 
 	}
 		
 	return (uint)(int)drops; 

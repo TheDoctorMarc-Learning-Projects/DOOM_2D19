@@ -500,6 +500,16 @@ void j1EntityPlayer::AimWeapon()
 			Sint16 yAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_RIGHTY);
 			Sint16 xAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_RIGHTX);
 
+			if (xAxis == 0 && yAxis == 0)    // prevention on release
+			{
+				currentAnimation = &idle; 
+				state.combat = combatState::IDLE;    
+				currentWeapon->ChangeRotation((double)0);
+				return; 
+			}
+			else
+				state.combat = combatState::AIM;
+ 
 			// first consider if player has to change pointing direction, so he can aim in any direction
 
 			if (xAxis > 0 && pointingDir == LEFT)
@@ -541,7 +551,7 @@ void j1EntityPlayer::AimWeapon()
 			}
 				
 
-			(xAxis == 0 && yAxis == 0) ? state.combat = combatState::IDLE : state.combat = combatState::AIM;  // when released, combat is idle again
+			
 
 			
 		}

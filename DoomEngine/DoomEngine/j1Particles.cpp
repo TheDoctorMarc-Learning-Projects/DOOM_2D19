@@ -87,7 +87,32 @@ bool j1Particles::Start()
 	particleMap.insert(std::pair(EnemyCacodemonShotExplosion.name, EnemyCacodemonShotExplosion));
 
 
-	// TODO: Baron of Hell
+
+	/*
+	// Baron Of Hell
+	Particle EnemyBaronOfHellShot;                                   // the other data is defined in enemy shoot function 
+	EnemyBaronOfHellShot.name = "EnemyBaronOfHellShot";
+	EnemyBaronOfHellShot.anim.PushBack({ 1, 129, 23, 23 });
+	EnemyBaronOfHellShot.anim.PushBack({ 25, 129, 23, 23 });
+	EnemyBaronOfHellShot.anim.speed = 5.3;
+	EnemyBaronOfHellShot.anim.loop = true;
+
+	particleMap.insert(std::pair(EnemyBaronOfHellShot.name, EnemyBaronOfHellShot));
+
+	Particle EnemyBaronOfHellShotExplosion;                                   // the other data is defined in enemy shoot function 
+	EnemyBaronOfHellShotExplosion.name = "EnemyBaronOfHellShotExplosion";
+	EnemyBaronOfHellShotExplosion.anim.PushBack({ 49, 112, 41, 40 });
+	EnemyBaronOfHellShotExplosion.anim.PushBack({ 91, 109, 50, 43 });
+	EnemyBaronOfHellShotExplosion.anim.PushBack({ 142, 106, 53, 46 });
+	EnemyBaronOfHellShotExplosion.life = 1000;
+	EnemyBaronOfHellShotExplosion.speed.create(0, 0);
+	EnemyBaronOfHellShotExplosion.anim.speed = 12.6;
+	EnemyBaronOfHellShotExplosion.anim.loop = false;
+
+	particleMap.insert(std::pair(EnemyBaronOfHellShotExplosion.name, EnemyBaronOfHellShotExplosion));
+	*/
+
+	
 
 	
 	return true;

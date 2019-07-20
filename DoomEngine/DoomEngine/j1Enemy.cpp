@@ -94,12 +94,15 @@ bool j1Enemy::Move(float dt)
 
 	if (state.combat != eCombatState::DYING)
 	{
-		SetPath(dt, ret);
+		if (App->render->isRectOnCamera(collider->rect))
+		{
+			SetPath(dt, ret);
 
-		if(pathType != enemyPathType::FLYING)
-			VerticalMovement(dt);
+			if (pathType != enemyPathType::FLYING)
+				VerticalMovement(dt);
+		}
+
 	
-		//SetCollider(); 
 	}
 	else
 		DieLogic(dt);

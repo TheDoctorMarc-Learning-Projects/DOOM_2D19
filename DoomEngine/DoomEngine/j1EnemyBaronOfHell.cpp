@@ -20,10 +20,10 @@ j1EnemyBaronOfHell::j1EnemyBaronOfHell(int posX, int posY, std::string name) : j
 	cadenceValues.melee = 2500;
 	cadenceValues.longRange = 2500;
 	damageValues.melee = 120;
-	damageValues.longRange = 40;
-	longRangeShootData.msWaitFromAnimStartToShot = 350;
+	damageValues.longRange = 60;
+	longRangeShootData.msWaitFromAnimStartToShot = 250;
 	longRangeShootData.relativeOffsetPos.create(0, 26); // assuming spritescale is 1.0f
-	longRangeShootData.shotSpeed = 500;
+	longRangeShootData.shotSpeed = 350;
 	pathType = enemyPathType::A_TO_B;
 	dataAnimFx.hasSecondDeathAnim = false;
 	dataAnimFx.hasSecondDeathFx = false;
@@ -58,7 +58,7 @@ j1EnemyBaronOfHell::j1EnemyBaronOfHell(int posX, int posY, std::string name) : j
 	attack.PushBack({ 29, 544, size.x + 7, size.y - 2});
 	attack.PushBack({ 36, 654, size.x + 5, size.y - 8});
 	attack.PushBack({ 35, 751, size.x + 3, size.y + 1});
-	attack.speed = 2.2f;
+	attack.speed = 2.7f;
 	attack.loop = false;
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - collider
 	collider = App->collision->AddCollider({ (int)position.x, (int)position.y, (int)((float)size.x * spriteScale),(int)((float)size.y * spriteScale) }, COLLIDER_TYPE::COLLIDER_ENEMY, this);
@@ -95,8 +95,6 @@ bool j1EnemyBaronOfHell::Move(float dt)
 
 	}
 
-	/*if (state.combat == eCombatState::SHOOT && currentAttackType == ATTACK_TYPE::LONG_RANGE)
-		state.movement.at(0) = eMovementState::IDLE;*/
 
 	return true;
 }

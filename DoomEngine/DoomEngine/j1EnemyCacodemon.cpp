@@ -20,7 +20,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	cadenceValues.melee = 3000;
 	cadenceValues.longRange = 3000; 
 	damageValues.melee = 120;
-	damageValues.longRange = 35; 
+	damageValues.longRange = 45; 
 	longRangeShootData.msWaitFromAnimStartToShot = 800;
 	longRangeShootData.relativeOffsetPos.create(20, size.y / 2); // assuming spritescale is 1.0f
 	longRangeShootData.shotSpeed = 200;

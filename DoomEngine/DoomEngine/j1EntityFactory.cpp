@@ -61,7 +61,7 @@ bool j1EntityFactory::Start()
 	enemyTypeMap.insert(std::pair("EnemyCacodemon", ENEMY_CACODEMON));
 	enemyTypeMap.insert(std::pair("EnemyBaronOfHell", ENEMY_BARON_OF_HELL));
 
-	// todo: KEEP UPDATING THIS with new types of enemies... 
+	// TODO: KEEP UPDATING THIS with new types of enemies... 
 
 	// ENEMIES (tiled): 
 
@@ -306,6 +306,8 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage, float cadence
 		else
 			ent->life -= damage;
 	}
+	else
+		ent->life -= damage;
 
 	
 	if (ent->life <= 0)

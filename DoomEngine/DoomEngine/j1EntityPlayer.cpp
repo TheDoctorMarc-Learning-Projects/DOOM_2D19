@@ -23,7 +23,7 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY, std::string name) : j1Entity(
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = PLAYER; 
 	this->name = name;
-	life = 300; 
+	life = 500;        // TODO: show life in percentatge UI, not this value 
 	position = previousPosition = fPoint(posX, posY); 
 	pointingDir = RIGHT;
 	size.create(34, 53);
@@ -132,14 +132,14 @@ bool j1EntityPlayer::Move(float dt)
 		HorizonatlMovement(dt);
 		VerticalMovement(dt);
 		WeaponLogic();
-		SetCollider();
+	
 		// - - - - - - - - - - - - - - - - - - warn other modules about the pos if needed
 		WarnOtherModules();
 	}
 	else
 		DieLogic(dt); 
 
-	
+	SetCollider();
 
 	return true;
 }
@@ -508,8 +508,8 @@ void j1EntityPlayer::AimWeapon()
 				currentWeapon->ChangeRotation((double)0);
 				return; 
 			}
-			else
-				state.combat = combatState::AIM;
+			
+			state.combat = combatState::AIM;
  
 			// first consider if player has to change pointing direction, so he can aim in any direction
 
@@ -627,110 +627,108 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 
 
-		if (state.movement.at(1) != MovementState::JUMP)
+		
+		if (!onPlatform)
 		{
-			if (!onPlatform)
+			if (c2->callback)    // platforms
 			{
-				if (c2->callback)    // platforms
+				if (collider->rect.y + collider->rect.h > c2->rect.y)
 				{
-					if (collider->rect.y + collider->rect.h > c2->rect.y)
+					if (lastSpeed.y > 0)
 					{
-						if (lastSpeed.y > 0)
+						if (lastPosCollider.y + lastPosCollider.h > c2->rect.y)    
 						{
-							if (lastAirPos.y + lastPosCollider.h - jumpComfortCornerThreshold > c2->rect.y)    //prevent the case when falling, and colliding laterally  
+							if ((lastPosCollider.x + lastPosCollider.w <= c2->rect.x && lastSpeed.x > 0)
+								|| (lastPosCollider.x >= c2->rect.x + c2->rect.w) && lastSpeed.x < 0)    // when last ground was to the left and you go right or it was in the right and you go left 
 							{
-								if ((lastGroundPos.x + lastPosCollider.w < c2->rect.x && lastSpeed.x > 0)
-									|| (lastGroundPos.x > c2->rect.x + c2->rect.w) && lastSpeed.x < 0)    // when last ground was to the left and you go right or it was in the right and you go left 
+								float offset = 0.f;
+								if (lastSpeed.x > 0)
 								{
-									float offset = 0.f;
-									if (lastSpeed.x > 0)
-									{
-										offset = collider->rect.x + collider->rect.w - c2->rect.x;
-										position.x -= offset;
-									}
-									else if (lastSpeed.x < 0)
-									{
+									offset = collider->rect.x + collider->rect.w - c2->rect.x;
+									position.x -= offset;
+								}
+								else if (lastSpeed.x < 0)
+								{
 
-										offset = c2->rect.x + c2->rect.w - collider->rect.x;
-										position.x += offset;
-									}
-
-									onPlatform = false;
-									if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
-										onDynamicplatform = false;
-									ResetGravity();
-
-									state.movement.at(1) = MovementState::FALL;
-
-									collider->SetPos(position.x, position.y);
+									offset = c2->rect.x + c2->rect.w - collider->rect.x;
+									position.x += offset;
 								}
 
+								onPlatform = false;
+								if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
+									onDynamicplatform = false;
+								ResetGravity();
+
+								state.movement.at(1) = MovementState::FALL;
+
+								collider->SetPos(position.x, position.y);
 							}
 							else
 							{
-								if (collider->rect.y + collider->rect.h > c2->rect.y)
-								{
 
-									if (lastSpeed.y > 0)
-									{
 
-										float offset = collider->rect.y + collider->rect.h - c2->rect.y;  // to put back player if it goes off a bit
-										position.y -= offset;   // TODO:  this is causing a bug when already in vertical platform 
+								if ((collider->rect.x + collider->rect.w <= c2->rect.x || position.x >= c2->rect.x + c2->rect.w) && lastSpeed.x == 0)
+									return; 
 
-										onPlatform = true;
-										if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
-											onDynamicplatform = true;
-										ResetGravity();
+								if (position.y + collider->rect.h > c2->rect.y + c2->rect.h)
+									return; 
+								
 
-										state.movement.at(0) = MovementState::IDLE;
-										state.movement.at(1) = MovementState::NOT_ACTIVE;   // jump or fall not active
+								float offset = collider->rect.y + collider->rect.h - c2->rect.y;  // to put back player if it goes off a bit
+								position.y -= offset;   // TODO:  this is causing a bug when already in vertical platform 
 
-										collider->SetPos(position.x, position.y);
-									}
-								}
+								onPlatform = true;
+								if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
+									onDynamicplatform = true;
+								ResetGravity();
+
+								state.movement.at(0) = MovementState::IDLE;
+								state.movement.at(1) = MovementState::NOT_ACTIVE;   // jump or fall not active
+
+								collider->SetPos(position.x, position.y);
+
+
 							}
-
 						}
-
 
 					}
 
+
 				}
-				else  // just for the base floor 
-				{
-					if (collider->rect.y + collider->rect.h > c2->rect.y)
-					{
-						if (lastSpeed.y > 0)
-						{
-							float offset = collider->rect.y + collider->rect.h - c2->rect.y;  // to put back player if it goes off a bit
-							position.y -= offset;
-
-							onPlatform = true;
-							if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
-								onDynamicplatform = true;
-							ResetGravity();
-
-							state.movement.at(0) = MovementState::IDLE;
-							state.movement.at(1) = MovementState::NOT_ACTIVE;   // jump or fall not active
-
-							collider->SetPos(position.x, position.y);
-						}
-					}
-				}
-
 
 			}
+			else  // just for the base floor 
+			{
+				if (collider->rect.y + collider->rect.h > c2->rect.y)
+				{
+					if (lastSpeed.y > 0)
+					{
+						float offset = collider->rect.y + collider->rect.h - c2->rect.y;  // to put back player if it goes off a bit
+						position.y -= offset;
 
-		}
-		else if (state.movement.at(1) == MovementState::JUMP)
-		{
+						onPlatform = true;
+						if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
+							onDynamicplatform = true;
+						ResetGravity();
+
+						state.movement.at(0) = MovementState::IDLE;
+						state.movement.at(1) = MovementState::NOT_ACTIVE;   // jump or fall not active
+
+						collider->SetPos(position.x, position.y);
+					}
+				}
+			}
+
+
+
+
 			// Y - bottom to top                                   
 			if (collider->rect.y < c2->rect.y + c2->rect.h)
 			{
 				if (lastSpeed.y < 0)
 				{
-					if ((lastGroundPos.x + lastPosCollider.w < c2->rect.x && lastSpeed.x > 0)
-						|| (lastGroundPos.x > c2->rect.x + c2->rect.w) && lastSpeed.x < 0)    // when last ground was to the left and you go right or it was in the right and you go left 
+					if ((lastPosCollider.x + lastPosCollider.w < c2->rect.x && lastSpeed.x > 0)
+						|| (lastPosCollider.x > c2->rect.x + c2->rect.w) && lastSpeed.x < 0)    // when last ground was to the left and you go right or it was in the right and you go left 
 					{
 						float offset = 0.f;
 						if (lastSpeed.x > 0)
@@ -758,6 +756,9 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 					else
 					{
 
+						if ((collider->rect.x + collider->rect.w <= c2->rect.x || position.x >= c2->rect.x + c2->rect.w) && lastSpeed.x == 0)
+							return;
+
 						float offset = c2->rect.y + c2->rect.h - collider->rect.y;   // to put back player if it goes off a bit
 						position.y += offset;
 
@@ -778,8 +779,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 			}
 
-
 		}
+
 
 		break;
 

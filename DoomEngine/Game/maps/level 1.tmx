@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="278" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="122">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="278" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="171">
  <tileset firstgid="1" name="qzNJ1V6_3x (1)" tilewidth="32" tileheight="32" tilecount="2520" columns="140">
   <image source="textures/background_level1.png" width="4488" height="600"/>
  </tileset>
@@ -41,6 +41,18 @@
  </tileset>
  <tileset firstgid="2624" name="thing1" tilewidth="32" tileheight="32" tilecount="12" columns="4">
   <image source="textures/thing1.png" width="128" height="96"/>
+ </tileset>
+ <tileset firstgid="2636" name="face" tilewidth="32" tileheight="32" tilecount="8" columns="2">
+  <image source="textures/face.png" width="64" height="128"/>
+ </tileset>
+ <tileset firstgid="2644" name="facecont" tilewidth="32" tileheight="32" tilecount="8" columns="2">
+  <image source="textures/facecont.png" width="64" height="128"/>
+ </tileset>
+ <tileset firstgid="2652" name="facecont2" tilewidth="32" tileheight="32" tilecount="8" columns="2">
+  <image source="textures/facecont2.png" width="64" height="128"/>
+ </tileset>
+ <tileset firstgid="2660" name="gate" tilewidth="32" tileheight="32" tilecount="16" columns="4">
+  <image source="textures/gate.png" width="128" height="128"/>
  </tileset>
  <layer id="7" name="Walkability" width="278" height="18">
   <properties>
@@ -5053,7 +5065,7 @@
    <tile gid="2589"/>
   </data>
  </layer>
- <layer id="4" name="BackgroundBack" width="278" height="18" visible="0">
+ <layer id="4" name="BackgroundBack" width="278" height="18">
   <properties>
    <property name="parallaxSpeed" type="float" value="0.75"/>
   </properties>
@@ -10064,7 +10076,7 @@
    <tile gid="2518"/>
   </data>
  </layer>
- <layer id="10" name="BackgroundMiddle" width="278" height="18" visible="0">
+ <layer id="10" name="BackgroundMiddle" width="278" height="18">
   <properties>
    <property name="parallaxSpeed" type="float" value="1.1"/>
   </properties>
@@ -15075,7 +15087,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="9" name="BackgroundFront" width="278" height="18" visible="0">
+ <layer id="9" name="BackgroundFront" width="278" height="18">
   <data>
    <tile/>
    <tile/>
@@ -18707,11 +18719,11 @@
    <tile gid="2534"/>
    <tile gid="2533"/>
    <tile gid="2534"/>
+   <tile gid="2533"/>
    <tile gid="2534"/>
+   <tile gid="2533"/>
    <tile gid="2534"/>
-   <tile gid="2534"/>
-   <tile gid="2534"/>
-   <tile gid="2534"/>
+   <tile gid="2533"/>
    <tile gid="2534"/>
    <tile gid="2533"/>
    <tile gid="2534"/>
@@ -18963,12 +18975,12 @@
    <tile gid="2534"/>
    <tile gid="2533"/>
    <tile gid="2534"/>
+   <tile gid="2660"/>
+   <tile gid="2661"/>
+   <tile gid="2662"/>
+   <tile gid="2663"/>
    <tile gid="2533"/>
    <tile gid="2534"/>
-   <tile gid="2533"/>
-   <tile gid="2534"/>
-   <tile gid="2533"/>
-   <tile gid="2534"/>
    <tile gid="2535"/>
    <tile gid="2536"/>
    <tile gid="2535"/>
@@ -18983,13 +18995,13 @@
    <tile gid="2536"/>
    <tile gid="2535"/>
    <tile gid="2536"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2535"/>
+   <tile gid="2536"/>
+   <tile gid="2535"/>
+   <tile gid="2536"/>
+   <tile gid="2535"/>
+   <tile gid="2536"/>
+   <tile gid="2535"/>
    <tile gid="2536"/>
    <tile gid="2535"/>
    <tile gid="2536"/>
@@ -19241,12 +19253,12 @@
    <tile gid="2536"/>
    <tile gid="2535"/>
    <tile gid="2536"/>
+   <tile gid="2664"/>
+   <tile gid="2665"/>
+   <tile gid="2666"/>
+   <tile gid="2667"/>
    <tile gid="2535"/>
    <tile gid="2536"/>
-   <tile gid="2535"/>
-   <tile gid="2536"/>
-   <tile gid="2535"/>
-   <tile gid="2536"/>
    <tile gid="2533"/>
    <tile gid="2534"/>
    <tile gid="2533"/>
@@ -19261,12 +19273,8 @@
    <tile gid="2534"/>
    <tile gid="2533"/>
    <tile gid="2534"/>
-   <tile gid="2533"/>
-   <tile gid="2533"/>
    <tile gid="2533"/>
-   <tile gid="2534"/>
    <tile gid="2533"/>
-   <tile gid="2534"/>
    <tile gid="2533"/>
    <tile gid="2534"/>
    <tile gid="2533"/>
@@ -19523,6 +19531,10 @@
    <tile gid="2534"/>
    <tile gid="2533"/>
    <tile gid="2534"/>
+   <tile gid="2668"/>
+   <tile gid="2669"/>
+   <tile gid="2670"/>
+   <tile gid="2671"/>
    <tile gid="2533"/>
    <tile gid="2534"/>
    <tile gid="2535"/>
@@ -19539,12 +19551,8 @@
    <tile gid="2536"/>
    <tile gid="2535"/>
    <tile gid="2536"/>
-   <tile gid="2535"/>
    <tile gid="2535"/>
    <tile gid="2535"/>
-   <tile gid="2536"/>
-   <tile gid="2535"/>
-   <tile gid="2536"/>
    <tile gid="2535"/>
    <tile gid="2536"/>
    <tile gid="2535"/>
@@ -19801,6 +19809,10 @@
    <tile gid="2536"/>
    <tile gid="2535"/>
    <tile gid="2536"/>
+   <tile gid="2672"/>
+   <tile gid="2673"/>
+   <tile gid="2674"/>
+   <tile gid="2675"/>
    <tile gid="2535"/>
    <tile gid="2536"/>
    <tile/>
@@ -20174,7 +20186,6 @@
     <property name="heightLevel" type="int" value="1"/>
    </properties>
   </object>
-  <object id="46" name="staticPlatform" x="1984" y="32" width="192" height="32"/>
   <object id="49" name="wall" x="2176" y="32" width="32" height="96"/>
   <object id="52" name="staticPlatform" x="1952" y="192" width="128" height="32">
    <properties>
@@ -20189,7 +20200,6 @@
    </properties>
   </object>
   <object id="67" name="wall" x="2528" y="480" width="32" height="64"/>
-  <object id="69" name="staticPlatform" x="0" y="128" width="1952" height="32"/>
   <object id="73" name="staticPlatform" x="2848" y="448" width="544" height="32">
    <properties>
     <property name="heightLevel" type="int" value="1"/>
@@ -20237,7 +20247,7 @@
    </properties>
   </object>
   <object id="103" name="wall" x="4288" y="384" width="32" height="96"/>
-  <object id="104" name="wall" x="4576" y="160" width="32" height="128"/>
+  <object id="104" name="wall" x="4576" y="160" width="32" height="96"/>
   <object id="106" name="dynamicPlatform" x="740.364" y="350.667" width="192" height="32">
    <properties>
     <property name="axis" value="vertical"/>
@@ -20261,7 +20271,7 @@
     <property name="heightLevel" type="int" value="1"/>
    </properties>
   </object>
-  <object id="110" name="staticPlatform" x="5312" y="256" width="544" height="32">
+  <object id="110" name="staticPlatform" x="5312" y="256" width="576" height="32">
    <properties>
     <property name="heightLevel" type="int" value="4"/>
    </properties>
@@ -20271,7 +20281,7 @@
     <property name="heightLevel" type="int" value="4"/>
    </properties>
   </object>
-  <object id="112" name="staticPlatform" x="5984" y="384" width="384" height="32">
+  <object id="112" name="staticPlatform" x="6016" y="384" width="608" height="32">
    <properties>
     <property name="heightLevel" type="int" value="2"/>
    </properties>
@@ -20283,15 +20293,103 @@
   </object>
   <object id="115" name="wall" x="5312" y="288" width="32" height="96"/>
   <object id="116" name="wall" x="5824" y="288" width="32" height="96"/>
-  <object id="119" name="wall" x="5984" y="288" width="32" height="96"/>
   <object id="120" name="wall" x="6336" y="288" width="32" height="96"/>
   <object id="121" name="enemy" x="544" y="352" width="32" height="32">
    <properties>
     <property name="type" value="EnemyBaronOfHell"/>
    </properties>
   </object>
+  <object id="122" name="enemy" x="128" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="EnemyCacodemon"/>
+   </properties>
+  </object>
+  <object id="123" name="enemy" x="704" y="480" width="32" height="32">
+   <properties>
+    <property name="type" value="EnemyIMP"/>
+   </properties>
+  </object>
+  <object id="124" name="enemy" x="512" y="480" width="32" height="32">
+   <properties>
+    <property name="type" value="EnemyIMP"/>
+   </properties>
+  </object>
+  <object id="125" name="enemy" x="608" y="480" width="32" height="32">
+   <properties>
+    <property name="type" value="EnemyIMP"/>
+   </properties>
+  </object>
+  <object id="127" name="wall" x="3712" y="480" width="32" height="64"/>
+  <object id="132" name="staticPlatform" x="5920" y="448" width="32" height="32">
+   <properties>
+    <property name="heightLevel" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="133" name="staticPlatform" x="5952" y="352" width="32" height="32">
+   <properties>
+    <property name="heightLevel" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="135" name="wall" x="5984" y="288" width="32" height="256"/>
+  <object id="136" name="wall" x="6464" y="160" width="32" height="96"/>
+  <object id="137" x="6629.33" y="314.667" width="0.666667" height="21.3333"/>
+  <object id="141" name="wall" x="6624" y="320" width="32" height="96"/>
+  <object id="145" name="staticPlatform" x="6624" y="288" width="128" height="32">
+   <properties>
+    <property name="heightLevel" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="150" name="staticPlatform" x="6752" y="352" width="320" height="32">
+   <properties>
+    <property name="heightLevel" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="151" name="staticPlatform" x="6880" y="448" width="544" height="32">
+   <properties>
+    <property name="heightLevel" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="152" name="staticPlatform" x="7200" y="352" width="320" height="32">
+   <properties>
+    <property name="heightLevel" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="153" name="wall" x="6720" y="320" width="32" height="64"/>
+  <object id="157" name="wall" x="7072" y="480" width="32" height="64"/>
+  <object id="159" name="wall" x="7168" y="480" width="32" height="64"/>
+  <object id="160" name="staticPlatform" x="7584" y="448" width="64" height="32">
+   <properties>
+    <property name="heightLevel" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="161" name="staticPlatform" x="8224" y="448" width="32" height="32">
+   <properties>
+    <property name="heightLevel" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="162" name="staticPlatform" x="7648" y="384" width="576" height="32">
+   <properties>
+    <property name="heightLevel" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="163" name="staticPlatform" x="8320" y="384" width="64" height="32">
+   <properties>
+    <property name="heightLevel" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="164" name="wall" x="7648" y="416" width="32" height="128"/>
+  <object id="165" name="wall" x="8192" y="416" width="32" height="128"/>
+  <object id="166" name="wall" x="8384" y="320" width="32" height="224"/>
+  <object id="167" name="staticPlatform" x="8384" y="288" width="32" height="32">
+   <properties>
+    <property name="heightLevel" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="168" name="staticPlatform" x="2176" y="128" width="32" height="32"/>
+  <object id="169" name="staticPlatform" x="4576" y="256" width="32" height="32"/>
+  <object id="170" name="staticPlatform" x="6464" y="256" width="32" height="32"/>
  </objectgroup>
- <layer id="5" name="Floor" width="278" height="18" visible="0">
+ <layer id="5" name="Floor" width="278" height="18">
   <data>
    <tile/>
    <tile/>
@@ -21885,7 +21983,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -22163,7 +22261,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -22441,7 +22539,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -22700,7 +22798,7 @@
    <tile gid="2543"/>
    <tile gid="2544"/>
    <tile gid="2543"/>
-   <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -22719,7 +22817,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -23002,6 +23100,10 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2541"/>
+   <tile gid="2542"/>
+   <tile gid="2543"/>
+   <tile gid="2544"/>
    <tile/>
    <tile/>
    <tile/>
@@ -23053,11 +23155,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -23280,6 +23378,10 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2541"/>
+   <tile/>
+   <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -23331,11 +23433,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -23537,7 +23635,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="2541"/>
    <tile gid="2543"/>
    <tile/>
    <tile/>
@@ -23558,6 +23656,34 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2541"/>
+   <tile/>
+   <tile/>
+   <tile gid="2541"/>
+   <tile gid="2541"/>
+   <tile gid="2542"/>
+   <tile gid="2543"/>
+   <tile gid="2544"/>
+   <tile gid="2541"/>
+   <tile gid="2542"/>
+   <tile gid="2541"/>
+   <tile gid="2542"/>
+   <tile gid="2543"/>
+   <tile gid="2544"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile gid="2545"/>
+   <tile gid="2546"/>
+   <tile gid="2547"/>
+   <tile gid="2548"/>
+   <tile gid="2545"/>
+   <tile gid="2546"/>
+   <tile gid="2545"/>
+   <tile gid="2546"/>
+   <tile gid="2547"/>
+   <tile gid="2548"/>
    <tile/>
    <tile/>
    <tile/>
@@ -23585,35 +23711,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -23828,6 +23926,15 @@
    <tile gid="2542"/>
    <tile gid="2543"/>
    <tile gid="2544"/>
+   <tile gid="2541"/>
+   <tile gid="2542"/>
+   <tile gid="2543"/>
+   <tile gid="2544"/>
+   <tile gid="2541"/>
+   <tile gid="2542"/>
+   <tile gid="2543"/>
+   <tile gid="2544"/>
+   <tile gid="2544"/>
    <tile/>
    <tile/>
    <tile/>
@@ -23859,39 +23966,30 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2541"/>
+   <tile gid="2542"/>
+   <tile gid="2543"/>
+   <tile gid="2544"/>
+   <tile gid="2541"/>
+   <tile gid="2542"/>
+   <tile gid="2543"/>
+   <tile gid="2544"/>
+   <tile gid="2541"/>
+   <tile gid="2542"/>
+   <tile gid="2543"/>
+   <tile gid="2544"/>
+   <tile gid="2541"/>
+   <tile gid="2542"/>
+   <tile gid="2541"/>
+   <tile gid="2542"/>
+   <tile gid="2543"/>
+   <tile gid="2544"/>
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2541"/>
+   <tile gid="2541"/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -24094,6 +24192,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -24145,31 +24244,30 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2543"/>
+   <tile gid="2652"/>
+   <tile gid="2653"/>
+   <tile gid="2636"/>
+   <tile gid="2637"/>
+   <tile gid="2644"/>
+   <tile gid="2645"/>
+   <tile gid="2652"/>
+   <tile gid="2653"/>
+   <tile gid="2636"/>
+   <tile gid="2637"/>
+   <tile gid="2644"/>
+   <tile gid="2645"/>
+   <tile gid="2652"/>
+   <tile gid="2653"/>
+   <tile gid="2636"/>
+   <tile gid="2637"/>
+   <tile gid="2543"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -24370,7 +24468,9 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2541"/>
    <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -24398,56 +24498,54 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2541"/>
+   <tile gid="2542"/>
+   <tile gid="2543"/>
+   <tile gid="2544"/>
+   <tile gid="2545"/>
+   <tile gid="2546"/>
+   <tile gid="2547"/>
+   <tile gid="2548"/>
+   <tile gid="2545"/>
+   <tile gid="2546"/>
+   <tile gid="2547"/>
+   <tile gid="2548"/>
+   <tile gid="2545"/>
+   <tile gid="2545"/>
+   <tile gid="2546"/>
+   <tile gid="2547"/>
+   <tile gid="2548"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2541"/>
+   <tile gid="2541"/>
+   <tile gid="2543"/>
+   <tile gid="2654"/>
+   <tile gid="2655"/>
+   <tile gid="2638"/>
+   <tile gid="2639"/>
+   <tile gid="2646"/>
+   <tile gid="2647"/>
+   <tile gid="2654"/>
+   <tile gid="2655"/>
+   <tile gid="2638"/>
+   <tile gid="2639"/>
+   <tile gid="2646"/>
+   <tile gid="2647"/>
+   <tile gid="2654"/>
+   <tile gid="2655"/>
+   <tile gid="2638"/>
+   <tile gid="2639"/>
+   <tile gid="2543"/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -24579,6 +24677,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -24649,6 +24748,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -24682,6 +24782,10 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2545"/>
+   <tile gid="2546"/>
+   <tile gid="2547"/>
+   <tile gid="2548"/>
    <tile/>
    <tile/>
    <tile/>
@@ -24696,36 +24800,30 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2543"/>
+   <tile gid="2656"/>
+   <tile gid="2657"/>
+   <tile gid="2640"/>
+   <tile gid="2641"/>
+   <tile gid="2648"/>
+   <tile gid="2649"/>
+   <tile gid="2656"/>
+   <tile gid="2657"/>
+   <tile gid="2640"/>
+   <tile gid="2641"/>
+   <tile gid="2648"/>
+   <tile gid="2649"/>
+   <tile gid="2656"/>
+   <tile gid="2657"/>
+   <tile gid="2640"/>
+   <tile gid="2641"/>
+   <tile gid="2543"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -24857,6 +24955,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -24927,6 +25026,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>
@@ -24960,6 +25060,10 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2545"/>
+   <tile gid="2546"/>
+   <tile gid="2547"/>
+   <tile gid="2548"/>
    <tile/>
    <tile/>
    <tile/>
@@ -24974,36 +25078,30 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2543"/>
+   <tile gid="2658"/>
+   <tile gid="2659"/>
+   <tile gid="2642"/>
+   <tile gid="2643"/>
+   <tile gid="2650"/>
+   <tile gid="2651"/>
+   <tile gid="2658"/>
+   <tile gid="2659"/>
+   <tile gid="2642"/>
+   <tile gid="2643"/>
+   <tile gid="2650"/>
+   <tile gid="2651"/>
+   <tile gid="2658"/>
+   <tile gid="2659"/>
+   <tile gid="2642"/>
+   <tile gid="2643"/>
+   <tile gid="2543"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2541"/>
    <tile/>
    <tile/>
    <tile/>

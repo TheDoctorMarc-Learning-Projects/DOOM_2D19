@@ -7,7 +7,7 @@
 j1EntityBloodDrop::j1EntityBloodDrop(int posX, int posY, fPoint Speed, Color c) : j1Entity(posX, posY)
 {
 	drawActive = false; 
-	mass = 0.5F; 
+	mass = 1.F; 
 	gravityFactor = DEFAULT_GRAV / mass;
 	initialSpeed = Speed; 
 	lastSpeed = Speed; 

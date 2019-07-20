@@ -672,8 +672,11 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 
 				}
 
-				encapsulatedEnemyData* enemyData = DBG_NEW encapsulatedEnemyData(iPoint(worldPos.x, worldPos.y), enemyName); 
-				App->entityFactory->enemiesToBeSpawned.push_back(enemyData);
+			
+					encapsulatedEnemyData* enemyData = DBG_NEW encapsulatedEnemyData(iPoint(worldPos.x, worldPos.y), enemyName);
+					App->entityFactory->enemiesToBeSpawned.push_back(enemyData);
+				
+			
 				
 
 			}

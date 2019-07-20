@@ -16,6 +16,7 @@
 #include "j1EnemyIMP.h"
 #include "j1EnemyCacodemon.h"
 #include "j1EnemyBaronOfHell.h"
+#include "j1EnemyHellKnight.h"
 
 #include "LootWeaponMaps.h"
 
@@ -55,11 +56,13 @@ bool j1EntityFactory::Start()
 	entityTextureMap.insert(std::pair("EnemyIMP", App->tex->Load("textures/enemies/IMP/IMP.png")));
 	entityTextureMap.insert(std::pair("EnemyCacodemon", App->tex->Load("textures/enemies/Cacodemon/Cacodemon.png")));
 	entityTextureMap.insert(std::pair("EnemyBaronOfHell", App->tex->Load("textures/enemies/BaronOfHell/BaronOfHell.png")));
+	entityTextureMap.insert(std::pair("EnemyHellKnight", App->tex->Load("textures/enemies/HellKnight/HellKnight.png")));
 
  
 	enemyTypeMap.insert(std::pair("EnemyIMP", ENEMY_IMP)); 
 	enemyTypeMap.insert(std::pair("EnemyCacodemon", ENEMY_CACODEMON));
 	enemyTypeMap.insert(std::pair("EnemyBaronOfHell", ENEMY_BARON_OF_HELL));
+	enemyTypeMap.insert(std::pair("EnemyHellKnight", ENEMY_HELL_KNIGHT));
 
 	// TODO: KEEP UPDATING THIS with new types of enemies... 
 
@@ -74,7 +77,6 @@ bool j1EntityFactory::Start()
 	
 	// for the moment, create player here 
 	player = (j1EntityPlayer*)CreateEntity(PLAYER, 0, 300, "player"); 
-	CreateEntity(ENEMY_BARON_OF_HELL, 230, 100, "EnemyBaronOfHell");
 
 
 	std::list<j1Entity*>::iterator item = entities.begin();
@@ -224,6 +226,9 @@ j1Entity* j1EntityFactory::CreateEntity(ENTITY_TYPE type, int positionX, int pos
 		break;
 	case ENEMY_BARON_OF_HELL:
 		ret = DBG_NEW j1EnemyBaronOfHell(positionX, positionY, name);
+		break;
+	case ENEMY_HELL_KNIGHT:
+		ret = DBG_NEW j1EnemyHellKnight(positionX, positionY, name);
 		break;
 
 

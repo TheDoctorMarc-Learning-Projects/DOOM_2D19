@@ -149,6 +149,7 @@ public:
 	virtual bool DoMeleeAttack();
 	virtual bool DoLongRangeAttack();
 
+	bool Go_A_to_B(); 
 
 	virtual POINTING_DIR GetDirection() override; 
 
@@ -257,6 +258,7 @@ public:
 	uint tileDetectionRange = 0U;
 	uint maxDistFromOrigin = 0U;
 	SDL_Rect lastPosCollider;
+	bool playerNearby = false; 
 	bool doJump = false;
 	bool hasMaxDistanceFromOrigin = false; 
 	bool playerInsideZone = false; 
@@ -264,6 +266,8 @@ public:
 	POINTING_DIR lastPointingDir; 
 	ejumpData jumpInfo;
 	j1EntityPlatform* lastPlatform = nullptr; 
+	float platFormSpeed = 60.f;
+
 private: 
 	float momentumFactor = 10.f;
 	float momentum(float speed) { return speed * momentumFactor; };

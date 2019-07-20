@@ -109,7 +109,16 @@ bool j1Scene::Update(float dt)
 	{
 		App->entityFactory->CreateEntity(ENEMY_CACODEMON, x, y, "EnemyCacodemon");
 	}
-	
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+	{
+		App->entityFactory->CreateEntity(ENEMY_BARON_OF_HELL, x, y, "EnemyBaronOfHell");
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+	{
+		App->entityFactory->CreateEntity(ENEMY_HELL_KNIGHT, x, y, "EnemyHellKnight");
+	}
+
 
 	return true;
 }
@@ -179,7 +188,7 @@ void j1Scene::UnLoadScene()
 
 	App->audio->CleanUp(); // scene already loads it in start 
 
-	// particles TODO 
+	// particles and EntityFactory TODO 
 
 
 }

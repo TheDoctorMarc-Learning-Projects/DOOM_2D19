@@ -42,6 +42,7 @@ j1EnemyBaronOfHell::j1EnemyBaronOfHell(int posX, int posY, std::string name) : j
 	run.PushBack({ 20, 114, size.x, size.y });
 	run.PushBack({ 23, 221, size.x + 6, size.y - 1});
 	run.PushBack({ 27, 328, size.x, size.y + 2});
+	// missing speed: Baron and Knight
 
 	death1.PushBack({ 44, 878, size.x + 4, size.y + 3});
 	death1.PushBack({ 136, 878, size.x + 11, size.y - 6});
@@ -71,16 +72,15 @@ j1EnemyBaronOfHell::~j1EnemyBaronOfHell()
 
 bool j1EnemyBaronOfHell::Move(float dt)
 {
-	if (j1Enemy::Move(dt))
-	{
-	}
-
+	j1Enemy::Move(dt); 
+	
 	if (state.combat != eCombatState::DYING && state.combat != eCombatState::DEAD)
 	{
-		if (isPlayerOnMeleeRange() == true && state.combat != eCombatState::SHOOT)
+		if (isPlayerOnMeleeRange() == true && state.combat != eCombatState::SHOOT && lastSpeed.IsZero() == true)
 			currentAnimation = &idle;
 
-		Go_A_to_B(); 
+		if(App->entityFactory->player->onPlatform == false || (App->entityFactory->player->onPlatform == true && lastPlatform != App->entityFactory->player->lastPlatform))
+			Go_A_to_B();
 
 		DoMeleeAttack();
 
@@ -120,37 +120,7 @@ fPoint j1EnemyBaronOfHell::GetShotSpeed(fPoint dir) const
 	return speed; 
 }
 
-bool j1EnemyBaronOfHell::Go_A_to_B()
-{
-	if (onPlatform == true)
-	{
-		if (App->entityFactory->player->onPlatform == false|| (App->entityFactory->player->onPlatform == true && lastPlatform != App->entityFactory->player->lastPlatform))
-		{
-			if (state.path != ePathState::TEMPORAL_DEVIATION)
-			{
-				speed = platFormSpeed;
 
-				if (pointingDir == LEFT)
-					targetPos.value = fPoint(App->map->WorldToMap(lastPlatform->collider->rect.x, 0));
-
-				else if (pointingDir == RIGHT)
-				{
-					targetPos.value = fPoint(App->map->WorldToMap(lastPlatform->collider->rect.x + lastPlatform->collider->rect.w, 0));
-					targetPos.value.x -= 2;
-				}
-
-
-				targetPos.value.y = GetTilePosition().y;
-				targetPos.type = TargetPos::targetPosType::X;
-				state.path = ePathState::TEMPORAL_DEVIATION;
-			}
-		}
-
-	}
-	
-
-	return true; 
-}
 
 
 void j1EnemyBaronOfHell::ResolvePathDeviation()

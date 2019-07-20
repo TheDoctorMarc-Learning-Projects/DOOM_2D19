@@ -429,6 +429,20 @@ bool j1Enemy::FollowPath(float dt)
 
 bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& success)
 {
+	// Play detection FX acording to player position
+
+	if (isPlayerOnMyZone() == false)
+		playerNearby = false; 
+	else
+	{
+		if (playerNearby == false)
+		{
+			App->audio->PlayFx(name + "Nearby");
+			playerNearby = true; 
+		}
+	}
+
+	// - - - - - - - - - - - - - - - - - - - Check Path State
 
 	if (isPlayerOnMeleeRange() == true)    
 	{
@@ -1291,5 +1305,38 @@ POINTING_DIR j1Enemy::GetDirection()
 	return pointingDir; 
 }
 
+
+bool j1Enemy::Go_A_to_B()
+{
+
+	if (onPlatform == true)
+	{
+		/*if (App->entityFactory->player->onPlatform == false || (App->entityFactory->player->onPlatform == true && lastPlatform != App->entityFactory->player->lastPlatform))
+		{*/
+			if (state.path != ePathState::TEMPORAL_DEVIATION)
+			{
+				speed = platFormSpeed;
+
+				if (pointingDir == LEFT)
+					targetPos.value = fPoint(App->map->WorldToMap(lastPlatform->collider->rect.x, 0));
+
+				else if (pointingDir == RIGHT)
+				{
+					targetPos.value = fPoint(App->map->WorldToMap(lastPlatform->collider->rect.x + lastPlatform->collider->rect.w, 0));
+					targetPos.value.x -= 2;
+				}
+
+
+				targetPos.value.y = GetTilePosition().y;
+				targetPos.type = TargetPos::targetPosType::X;
+				state.path = ePathState::TEMPORAL_DEVIATION;
+			}
+		//}
+
+	}
+
+
+	return true; 
+}
 
 

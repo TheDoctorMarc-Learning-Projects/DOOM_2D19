@@ -149,6 +149,7 @@
     <ClCompile Include="j1Enemy.cpp" />
     <ClCompile Include="j1EnemyBaronOfHell.cpp" />
     <ClCompile Include="j1EnemyCacodemon.cpp" />
+    <ClCompile Include="j1EnemyHellKnight.cpp" />
     <ClCompile Include="j1EnemyIMP.cpp" />
     <ClCompile Include="j1Entity.cpp" />
     <ClCompile Include="j1EntityBloodDrop.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="j1Enemy.h" />
     <ClInclude Include="j1EnemyBaronOfHell.h" />
     <ClInclude Include="j1EnemyCacodemon.h" />
+    <ClInclude Include="j1EnemyHellKnight.h" />
     <ClInclude Include="j1EnemyIMP.h" />
     <ClInclude Include="j1Entity.h" />
     <ClInclude Include="j1EntityBloodDrop.h" />

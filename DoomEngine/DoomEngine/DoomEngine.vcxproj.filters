@@ -49,14 +49,11 @@
     <Filter Include="Code\Core\In-Game\Entities\inanimated\loot">
       <UniqueIdentifier>{47371f93-e41b-41db-94b8-888ddf37cfe6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Core\In-Game\Entities\inanimated\Blood">
+      <UniqueIdentifier>{e910ef1e-2b39-4df0-be03-44de79bb5cc2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Code\Core\In-Game\Entities\inanimated\loot\help">
       <UniqueIdentifier>{f25ecf02-da7c-4d75-a3b0-9c6f834b3345}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Code\Core\In-Game\Entities\animated\Other">
-      <UniqueIdentifier>{48324be5-d791-46dc-b24f-ee8230c94577}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Code\Core\In-Game\Entities\animated\Other\Blood">
-      <UniqueIdentifier>{e910ef1e-2b39-4df0-be03-44de79bb5cc2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -111,12 +108,6 @@
     <ClCompile Include="j1Entity.cpp">
       <Filter>Code\Core\In-Game\Entities\core</Filter>
     </ClCompile>
-    <ClCompile Include="j1EntityFactory.cpp">
-      <Filter>Code\Core\In-Game\Entities\core</Filter>
-    </ClCompile>
-    <ClCompile Include="j1EntityPlayer.cpp">
-      <Filter>Code\Core\In-Game\Entities\animated</Filter>
-    </ClCompile>
     <ClCompile Include="j1Enemy.cpp">
       <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClCompile>
@@ -139,15 +130,24 @@
       <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
     </ClCompile>
     <ClCompile Include="j1BloodManager.cpp">
-      <Filter>Code\Core\In-Game\Entities\animated\Other\Blood</Filter>
+      <Filter>Code\Core\In-Game\Entities\inanimated\Blood</Filter>
     </ClCompile>
     <ClCompile Include="j1EntityBloodDrop.cpp">
-      <Filter>Code\Core\In-Game\Entities\animated\Other\Blood</Filter>
+      <Filter>Code\Core\In-Game\Entities\inanimated\Blood</Filter>
     </ClCompile>
     <ClCompile Include="j1EnemyCacodemon.cpp">
       <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="j1EnemyBaronOfHell.cpp">
+      <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EntityFactory.cpp">
+      <Filter>Code\Core\In-Game\Entities\core</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EntityPlayer.cpp">
+      <Filter>Code\Core\In-Game\Entities\core</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EnemyHellKnight.cpp">
       <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
@@ -224,9 +224,6 @@
     <ClInclude Include="j1EntityFactory.h">
       <Filter>Code\Core\In-Game\Entities\core</Filter>
     </ClInclude>
-    <ClInclude Include="j1EntityPlayer.h">
-      <Filter>Code\Core\In-Game\Entities\animated</Filter>
-    </ClInclude>
     <ClInclude Include="j1EnemyIMP.h">
       <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClInclude>
@@ -255,15 +252,21 @@
       <Filter>Code\Core\In-Game</Filter>
     </ClInclude>
     <ClInclude Include="j1BloodManager.h">
-      <Filter>Code\Core\In-Game\Entities\animated\Other\Blood</Filter>
+      <Filter>Code\Core\In-Game\Entities\inanimated\Blood</Filter>
     </ClInclude>
     <ClInclude Include="j1EnemyCacodemon.h">
       <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="j1EntityBloodDrop.h">
-      <Filter>Code\Core\In-Game\Entities\animated\Other\Blood</Filter>
+      <Filter>Code\Core\In-Game\Entities\inanimated\Blood</Filter>
     </ClInclude>
     <ClInclude Include="j1EnemyBaronOfHell.h">
+      <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityPlayer.h">
+      <Filter>Code\Core\In-Game\Entities\core</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EnemyHellKnight.h">
       <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClInclude>
   </ItemGroup>

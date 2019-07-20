@@ -17,11 +17,11 @@ public:
 	fPoint GetShotSpeed(fPoint dir) const override; 
 
 	bool Move(float dt) override;  // call parent function, then if enemy does enaything extra, do it after call 
-	bool Go_A_to_B(); 
+
 
 private:
 
-	float platFormSpeed = 60.f; 
+
 	float defaultSpeed = 0.f; 
 
 };

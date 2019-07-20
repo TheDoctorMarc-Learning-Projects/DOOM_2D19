@@ -14,8 +14,8 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	life = (float)maxLife;
 	size.create(62, 67);
 	speed = 50.75f;
-	mass = 1.f;
-	gravityFactor = DEFAULT_GRAV / mass;  // TODO: just prevent Y movement by gravity
+	mass = 1.8f;
+	gravityFactor = DEFAULT_GRAV / mass; 
 	tileDetectionRange = 20;
 	cadenceValues.melee = 3000;
 	cadenceValues.longRange = 3000; 

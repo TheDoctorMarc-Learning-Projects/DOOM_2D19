@@ -114,8 +114,8 @@ public:
 	POINTING_DIR            pointingDir = POINTING_DIR::LEFT; 
 	POINTING_DIR            defaultPointingDir = POINTING_DIR::LEFT; 
 	fPoint                  lastSpeed = fPoint(0, 0);
-	int				     	life = INT_MAX;
-	int					    maxLife = INT_MAX;
+	float				    life = (float)LONG_MAX;
+	float					maxLife = (float)LONG_MAX;
 	float					speed = (float)LONG_MAX;
 	float                   gravityFactor = (float)LONG_MAX; 
 	float                   mass = (float)LONG_MAX; 

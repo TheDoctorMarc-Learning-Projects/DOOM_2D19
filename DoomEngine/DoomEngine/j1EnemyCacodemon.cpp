@@ -191,7 +191,8 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 	{
 		if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_WALL)
 		{
-			lastPlatform = dynamic_cast<j1EntityPlatform*>(c2->callback); 
+			if(c2->hasCallback == true)
+				lastPlatform = dynamic_cast<j1EntityPlatform*>(c2->callback);
 
 			float offset; 
 
@@ -200,10 +201,10 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 			SDL_Rect shieldRect = GetShieldRect(); 
 			SDL_Rect lastShieldRect = GetLastShieldRect(); 
 
-			if (shieldPos.y + shieldRect.h >= c2->callback->position.y)    // top 
+			if (shieldPos.y + shieldRect.h >= c2->rect.y)    // top 
 			{
 				
-				if ((lastShieldPos.y + lastShieldRect.h < c2->callback->position.y) || onPlatFormType.top)
+				if ((lastShieldPos.y + lastShieldRect.h < c2->rect.y) || onPlatFormType.top)
 				{
 					ResetPlatformState();
 					onPlatFormType.top = true; 
@@ -215,9 +216,9 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 			}
 
 
-			if ((shieldPos.y <= c2->callback->position.y + c2->rect.h) || onPlatFormType.bottom)    // bottom 
+			if ((shieldPos.y <= c2->rect.y + c2->rect.h) || onPlatFormType.bottom)    // bottom 
 			{
-				if (lastShieldPos.y > c2->callback->position.y + c2->rect.h)
+				if (lastShieldPos.y > c2->rect.y + c2->rect.h)
 				{
 					ResetPlatformState();
 					onPlatFormType.bottom = true;
@@ -227,14 +228,14 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 
 			}
 
-			if (c2->callback->collider->rect.w > 8000)  // base floor just fucks up next cases
+			if (c2->rect.w > 8000)  // base floor just fucks up next cases
 				return;
 
-			if (shieldPos.x + shieldRect.w >= c2->callback->position.x)    // left 
+			if (shieldPos.x + shieldRect.w >= c2->rect.x)    // left 
 			{
-				if ((lastShieldPos.x + lastShieldRect.w < c2->callback->position.x) || onPlatFormType.left)
+				if ((lastShieldPos.x + lastShieldRect.w < c2->rect.x) || onPlatFormType.left)
 				{
-					if (lastShieldPos.y + lastShieldRect.h > c2->callback->position.y && lastShieldPos.y < c2->callback->position.y + c2->rect.h)
+					if (lastShieldPos.y + lastShieldRect.h > c2->rect.y && lastShieldPos.y < c2->rect.y + c2->rect.h)
 					{
 						ResetPlatformState();
 						onPlatFormType.left = true;
@@ -246,11 +247,11 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 			}
 
 
-			if (shieldPos.x <= c2->callback->position.x + c2->rect.w)    // right 
+			if (shieldPos.x <= c2->rect.x + c2->rect.w)    // right 
 			{
-				if ((lastShieldPos.x > c2->callback->position.x + c2->rect.w) || onPlatFormType.right)
+				if ((lastShieldPos.x > c2->rect.x + c2->rect.w) || onPlatFormType.right)
 				{
-					if (lastShieldPos.y + lastShieldRect.h > c2->callback->position.y && lastShieldPos.y < c2->callback->position.y + c2->rect.h)
+					if (lastShieldPos.y + lastShieldRect.h > c2->rect.y && lastShieldPos.y < c2->rect.y + c2->rect.h)
 					{
 						ResetPlatformState();
 						onPlatFormType.right = true;

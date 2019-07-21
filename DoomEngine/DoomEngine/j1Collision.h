@@ -58,6 +58,8 @@ struct Collider
 			initialPos = fPoint((float)rect.x, (float)rect.y); 
 		}
 			
+		if (callback != nullptr)
+			hasCallback = true; 
 	}
 
 	void SetPos(int x, int y)

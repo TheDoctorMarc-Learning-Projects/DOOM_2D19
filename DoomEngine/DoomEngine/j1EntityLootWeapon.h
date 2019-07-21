@@ -45,7 +45,7 @@ struct  weaponInfo
 	firingType FiringType;
 
 // - - - - - - - - - - - - stats 
-   int damage = 0;
+   float damage = 0;
    int cadence = 0;      // this is captured in shots per minute and then translated 
    int maxBullets = 0;
    float scope = 0.f;  // the further away, the less damage

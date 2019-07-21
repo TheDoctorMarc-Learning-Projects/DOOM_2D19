@@ -521,15 +521,14 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* 
 	BROFILER_CATEGORY("Collision AddCollider", Profiler::Color::DeepPink);
 	Collider* ret = nullptr;
 
+	if (type == COLLIDER_WALL)
+		LOG("No callback :/"); 
+
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
 		if (colliders[i] == nullptr)
 		{
 			ret = colliders[i] = new Collider(rect, type, callback, speed, volatileOutOfScreen);
-
-			if (callback)
-				ret->hasCallback = true; 
-
 			break;
 		}
 	}

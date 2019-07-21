@@ -18,7 +18,7 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY, std::string name) : j1Enemy(posX, pos
 	defaultSpeed = speed; 
 	mass = 1.f;
 	gravityFactor = DEFAULT_GRAV / mass;
-	tileDetectionRange = 10;
+	tileDetectionRange = 20;
 	damageValues.melee = 30;
 	cadenceValues.melee = 1200; 
 	pathType = enemyPathType::ALL_ROUND; 
@@ -130,7 +130,7 @@ void j1EnemyIMP::Jump()
 
 			for (const auto& col : App->entityFactory->player->collider->onCollisionWithMe)
 			{
-				if (col->hasCallback && col->callback->type == ENTITY_DYNAMIC || col->callback->type == ENTITY_STATIC)   // capture the platform player col  
+				if (col->hasCallback == true && (col->callback->type == ENTITY_DYNAMIC || col->callback->type == ENTITY_STATIC))   // capture the platform player col  
 				{
 
 					iPoint platfTilePos = App->map->WorldToMap((int)col->callback->position.x, (int)col->callback->position.y) + iPoint(0, 1);

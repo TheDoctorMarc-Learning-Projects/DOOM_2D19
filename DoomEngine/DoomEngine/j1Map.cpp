@@ -552,20 +552,17 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 		if (ObjectName == "floor")
 		{
 			
-			// TODO: just add a collider
 			App->collision->AddCollider(worldPos, COLLIDER_TYPE::COLLIDER_FLOOR); 
 		}
 
 		else if (ObjectName == "wall")
 		{
 
-			// TODO: just add a collider
 			App->collision->AddCollider(worldPos, COLLIDER_TYPE::COLLIDER_WALL);
 		}
 
 		else if (ObjectName == "staticPlatform")
 		{
-			// TODO: Create an static entity, no need for texture, map already prints it there      
 			int heighLevel = 0; 
 
 			for (auto property = object.child("properties").child("property"); property; property = property.next_sibling("property"))
@@ -641,7 +638,7 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 					else if (name == "firingType")
 						firingTypeName = property.attribute("value").as_string();
 					else if (name == "damage")
-					    weaponData.damage = property.attribute("value").as_int();  
+					    weaponData.damage = property.attribute("value").as_float();  
 					else if (name == "cadence")
 						weaponData.cadence = property.attribute("value").as_int();
 					else if (name == "maxBullets")

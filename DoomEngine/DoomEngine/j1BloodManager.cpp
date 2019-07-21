@@ -161,7 +161,6 @@ void j1BloodManager::CreateRandomBloodStream(SDL_Rect enemyRect, float centerAre
 
 void j1BloodManager::CreateTargetedBloodSteam(SDL_Rect enemyRect, float damage, uint numberOfBloodDrops, fPoint shotSpeed)
 {
-
 	if (shotSpeed.IsZero() == true)  // caution, when near (1 tile away from enemy) 
 	{
 		CreateRandomBloodStream(enemyRect, 0.5F, numberOfBloodDrops);
@@ -331,15 +330,17 @@ uint j1BloodManager::CalculateNumberOfBloodDropsToBeSpawned(float damage, float 
 
 	if (drops < 1)
 	{
-		
 		int prop = GetRandomIntValue(1, (int)shotsPerSec);
+		prop = abs(prop); 
 
 		if (!App->entityFactory->player->myWeapons.empty())
 			if (App->entityFactory->player->currentWeapon->GetWeaponType() == WEAPON_TYPE::CHAINSAW)   // cause why not?? (TODO: have a multiplier or smth) 
-				prop -= 20;
+				return 1U; 
 
 		//if (prop <= 10)
 		uint calc = (uint)(int)(shotsPerSec / (float)prop);
+
+		assert(calc < 1000 && "Too much blood drops!! Something went wrong :/");
 
 		if (calc <= 1U)
 			calc = 5U; 

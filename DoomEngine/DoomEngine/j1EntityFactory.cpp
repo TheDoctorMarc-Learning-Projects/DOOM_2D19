@@ -281,7 +281,7 @@ j1Entity* j1EntityFactory::CreateWeapon(ENTITY_TYPE type, int positionX, int pos
 }
 
 
-void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage, float cadence, fPoint shotSpeed)
+void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadence, fPoint shotSpeed)
 {
 
 	if (ent->to_delete)  // first line prevention 
@@ -302,12 +302,12 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage, float cadence
 		}
 	}
 		
-	uint previousLife = ent->life; 
+	float previousLife = ent->life;
 
 	if (ent->type != PLAYER)
 	{
 		if (player->godMode == true)
-			ent->life = 0;
+			ent->life = 0.f;
 		else
 			ent->life -= damage;
 	}
@@ -315,7 +315,7 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, uint damage, float cadence
 		ent->life -= damage;
 
 	
-	if (ent->life <= 0)
+	if (ent->life <= 0.f)
 	{
 		bool brutal = false; 
 

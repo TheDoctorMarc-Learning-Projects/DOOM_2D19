@@ -100,6 +100,8 @@ bool j1Enemy::Move(float dt)
 
 			if (pathType != enemyPathType::FLYING)
 				VerticalMovement(dt);
+
+			SetCollider();   // TODO: check this out, check commits if when it was here it was ok 
 		}
 
 	
@@ -107,7 +109,7 @@ bool j1Enemy::Move(float dt)
 	else
 		DieLogic(dt);
 
-	SetCollider();   // TODO: check this out, check commits if when it was here it was ok 
+	//SetCollider();   // TODO: check this out, check commits if when it was here it was ok 
 
 	
 	
@@ -234,7 +236,7 @@ void j1Enemy::DieLogic(float dt)
 	 
 
 
-		if (onPlatform && deathPosGround.IsZero())
+		if (onPlatform && deathPosGround.IsZero() == true)
 		{
 			deathPosGround.y = position.y + collider->rect.h;         // make so when enemy dies and anim changes, he visually stays inmovile in platform 
 		//	deathColllider = collider->rect;
@@ -242,16 +244,15 @@ void j1Enemy::DieLogic(float dt)
 		}
 		else if (!deathPosGround.IsZero())
 		{
-			float offset = lastPosCollider.h /* deathColllider.h*/ - collider->rect.h;
 
 			if (!onDynamicplatform)
-				position.y = deathPosGround.y - lastPosCollider.h /*deathColllider.h*/ + offset;
+				position.y = deathPosGround.y - lastPosCollider.h;
 
-			collider->SetPos(position.x, position.y);
-			collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+		
 		}
 
-
+		collider->SetPos(position.x, position.y);
+		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
 
 
 	CheckDeathFinished();
@@ -929,8 +930,8 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 
 	
 
-	if (state.combat != eCombatState::DYING)
-	{
+	/*if (state.combat != eCombatState::DYING)
+	{*/
 		bool lastOnplatform = onPlatform;
 
 
@@ -1167,7 +1168,7 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 			App->audio->PlayFx("fall");
 		}
 
-	}
+//	}
 		
 }
 

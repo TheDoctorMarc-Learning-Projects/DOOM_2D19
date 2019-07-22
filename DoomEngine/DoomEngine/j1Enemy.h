@@ -125,7 +125,19 @@ public:
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);
-	virtual bool DoDie() { return true; };       // not a cleanup, because texture is still there, its just to delete anything extra
+	virtual bool DoDie() {             // not a cleanup, because texture is still there, its just to delete anything extra
+
+		if (onDynamicplatform == false)  // we need to keep the colldier if the enemy dies in the dynamic platform
+		{
+			colliderActive = false;
+			collider->to_delete = true;
+		}
+	
+		
+		return true;
+	};
+	
+	                     
 	bool PostUpdate();
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
@@ -187,8 +199,6 @@ public:
 			
 			//to_delete = true;   // TODO: create the corpse here 
 			DoDie(); 
-			colliderActive = false; 
-			collider->to_delete = true; 
 		}
 	}
 

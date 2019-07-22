@@ -101,7 +101,7 @@ bool j1Enemy::Move(float dt)
 			if (pathType != enemyPathType::FLYING)
 				VerticalMovement(dt);
 
-			SetCollider();   // TODO: check this out, check commits if when it was here it was ok 
+			//SetCollider();   // TODO: check this out, check commits if when it was here it was ok 
 		}
 
 	
@@ -109,7 +109,7 @@ bool j1Enemy::Move(float dt)
 	else
 		DieLogic(dt);
 
-	//SetCollider();   // TODO: check this out, check commits if when it was here it was ok 
+	SetCollider();   // TODO: check this out, check commits if when it was here it was ok 
 
 	
 	
@@ -242,7 +242,7 @@ void j1Enemy::DieLogic(float dt)
 		//	deathColllider = collider->rect;
 
 		}
-		else if (!deathPosGround.IsZero())
+		else if (deathPosGround.IsZero() == false)
 		{
 
 			if (!onDynamicplatform)
@@ -910,6 +910,7 @@ fPoint j1Enemy::GetShotDir()
 
 void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 {
+
 	if (c1->type == COLLIDER_ENEMY_SHOT)
 	{
 		if (c2->type == COLLIDER_PLAYER || c2->type == COLLIDER_WALL || c2->type == COLLIDER_FLOOR)

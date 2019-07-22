@@ -29,7 +29,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	dataAnimFx.hasSecondDeathFx = false;
 	dataAnimFx.firstAttackFxIsMelee = false; 
 	hasMaxDistanceFromOrigin = true; 
-	maxDistFromOrigin = 10U; 
+	maxDistFromOrigin = 8U; 
 	myMeleeRange = 2U; 
 
 	state.movement.at(1) = eMovementState::NOT_ACTIVE;   // NEVER to jump or fall 

@@ -432,6 +432,7 @@ bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& succes
 {
 	// Play detection FX acording to player position
 
+
 	if (isPlayerOnMyZone() == false)
 		playerNearby = false; 
 	else
@@ -445,13 +446,15 @@ bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& succes
 
 	// - - - - - - - - - - - - - - - - - - - Check Path State
 
+	success = true;
+
 	if (isPlayerOnMeleeRange() == true)    
 	{
 		if (specificDir.IsZero() == false)
 			specificDir = iPoint(0, 0);
 
 		state.path = ePathState::AWAIT;              
-		return success = false;
+	    success = false;
 	}
 
 	if (state.path == ePathState::AWAIT)
@@ -461,12 +464,12 @@ bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& succes
 		if (isPlayerOnMeleeRange() == false && isPlayerOnMyZone() == true)           // when exiting melee range, set to follow player
 			state.path = ePathState::FOLLOW_PLAYER;
 		else
-			return success = false;
+		    success = false;
 	}
 
 	if (state.path == ePathState::FOLLOW_PLAYER)
 	{
-		if (isPlayerOnMyZone() == false)           // when exiting melee range, set to follow player
+		if (isPlayerOnMyZone() == false)           
 			state.path = ePathState::AWAIT;
 
 		targetPos.value = App->entityFactory->player->position;
@@ -475,6 +478,14 @@ bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& succes
 	}
 	else if (state.path == ePathState::TEMPORAL_DEVIATION)
 	{
+
+		if (isPlayerOnMyZone() == false)
+		{
+		 	state.path = ePathState::AWAIT;
+		    success = false; 
+		}
+			
+
 		targetTilePos.x = targetPos.value.x;
 		targetTilePos.y = targetPos.value.y;
 
@@ -485,9 +496,12 @@ bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& succes
 		{                                                     
 			if(c1 == true)   
 				state.path = ePathState::FOLLOW_PLAYER;   // when exiting melee deviation, set to follow player...
-			if(c2 == true)
+			if (c2 == true)
+			{
 				state.path = ePathState::AWAIT;      // ... or rather set or overwrite to await if on melee range
-
+			    success = false;
+			}
+				
 			if (specificDir.IsZero() == false)
 				specificDir = iPoint(0, 0);
 	
@@ -499,7 +513,7 @@ bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& succes
 	}
 
 
-	return success = true; 
+	return success; 
 }
 
 bool j1Enemy::HasArrivedToTarget(iPoint tilePos, iPoint targetTilePos)

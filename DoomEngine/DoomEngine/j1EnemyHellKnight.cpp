@@ -36,13 +36,13 @@ j1EnemyHellKnight::j1EnemyHellKnight(int posX, int posY, std::string name) : j1E
 	run.PushBack({ 25, 135, size.x, size.y });
 	// missing speed: Baron and Knight
 
-	death1.PushBack({ 44, 665, size.x + 4, size.y + 3 });
-	death1.PushBack({ 136, 665, size.x + 11, size.y - 6 });
-	death1.PushBack({ 235, 665, size.x + 12, size.y - 16 });
-	death1.PushBack({ 335, 665, size.x + 15, size.y - 34 });
-	death1.PushBack({ 438, 665, size.x + 16, size.y - 40 });
-	death1.PushBack({ 542, 665, size.x + 16, size.y - 40 });
-	death1.PushBack({ 646, 665, size.x + 16, size.y - 40 });
+	death1.PushBack({ 22, 675, size.x + 4, size.y + 3 });
+	death1.PushBack({ 114, 675, size.x + 11, size.y - 6 });
+	death1.PushBack({ 213, 675, size.x + 12, size.y - 16 });
+	death1.PushBack({ 313, 675, size.x + 15, size.y - 34 });
+	death1.PushBack({ 416, 675, size.x + 16, size.y - 40 });
+	death1.PushBack({ 520, 675, size.x + 16, size.y - 40 });
+	death1.PushBack({ 624, 675, size.x + 16, size.y - 40 });
 	death1.speed = 2.2f;
 	death1.loop = false;
 
@@ -94,9 +94,21 @@ void j1EnemyHellKnight::ChangeState()
 		{
 			myState = BEHAVIOUR_STATE::FOLLOW;
 			state.path = ePathState::FOLLOW_PLAYER; 
+			speed = defaultSpeed;
 		}
-			
 
+ 
+	if (state.path == ePathState::TEMPORAL_DEVIATION && onPlatform == true)
+	{
+		if (targetPlatform == nullptr)
+		{
+			if (App->entityFactory->player->onPlatform == true && onPlatform == true && App->entityFactory->player->lastPlatform != lastPlatform)
+			{
+				myState = BEHAVIOUR_STATE::A_TO_B;
+			}
+		}
+
+	}
 }
 
 
@@ -109,15 +121,19 @@ void j1EnemyHellKnight::FallToPlayer()
 	{
 		if (App->entityFactory->player->lastPlatform->heightLevel < lastPlatform->heightLevel && App->entityFactory->player->lastPlatform->heightLevel != 0)   // security: only fall, and not to base floor
 		{
-			if (App->entityFactory->player->position.x + App->entityFactory->player->collider->rect.w / 2 >= position.x + collider->rect.w / 2)
-				specificDir = iPoint(1, 0);
+			if (targetPlatform == nullptr)
+			{
+				if (App->entityFactory->player->position.x + App->entityFactory->player->collider->rect.w / 2 >= position.x + collider->rect.w / 2)
+					specificDir = iPoint(1, 0);
 
-			else
-				specificDir = iPoint(-1, 0);
+				else
+					specificDir = iPoint(-1, 0);
 
-			state.path = ePathState::TEMPORAL_DEVIATION;
+				state.path = ePathState::TEMPORAL_DEVIATION;
 
-			targetPlatform = App->entityFactory->player->lastPlatform;
+				targetPlatform = App->entityFactory->player->lastPlatform;
+			}
+			
 		}
 		else
 			myState = BEHAVIOUR_STATE::A_TO_B;
@@ -130,9 +146,10 @@ void j1EnemyHellKnight::FallToPlayer()
 	{
 		targetPlatform = nullptr; 
 		myState = BEHAVIOUR_STATE::A_TO_B;
-	}
-		
 
+		resetAtoB = true; 
+	}
+ 
 }
 
 
@@ -145,8 +162,6 @@ void j1EnemyHellKnight::ResolvePathDeviation()
 		else if (pointingDir == RIGHT)
 			pointingDir = LEFT;
 
-
-		speed = defaultSpeed;
 	}
  
 

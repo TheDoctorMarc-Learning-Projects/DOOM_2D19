@@ -549,7 +549,7 @@ void j1Enemy::CallPathCreation(iPoint pos, iPoint target, bool& success)
 
 			success = (pathToFollow.size() > 1);
 		}
-		else LOG("Could not create path correctly");
+		else LOG("Could not create path correctly");   // TODO: check why path is not created properly, maybe comment this
 
 
 	}
@@ -1313,9 +1313,7 @@ bool j1Enemy::Go_A_to_B()
 
 	if (onPlatform == true)
 	{
-		/*if (App->entityFactory->player->onPlatform == false || (App->entityFactory->player->onPlatform == true && lastPlatform != App->entityFactory->player->lastPlatform))
-		{*/
-			if (state.path != ePathState::TEMPORAL_DEVIATION)
+			if (state.path != ePathState::TEMPORAL_DEVIATION || resetAtoB == true)
 			{
 				speed = platFormSpeed;
 
@@ -1332,8 +1330,9 @@ bool j1Enemy::Go_A_to_B()
 				targetPos.value.y = GetTilePosition().y;
 				targetPos.type = TargetPos::targetPosType::X;
 				state.path = ePathState::TEMPORAL_DEVIATION;
+
+				resetAtoB = false; 
 			}
-		//}
 
 	}
 

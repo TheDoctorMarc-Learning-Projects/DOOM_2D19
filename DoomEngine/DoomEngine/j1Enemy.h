@@ -273,6 +273,7 @@ public:
 	bool hasMaxDistanceFromOrigin = false; 
 	bool playerInsideZone = false; 
 	bool adaptativeColliderMovement = true; 
+	bool resetAtoB = false; 
 	POINTING_DIR lastPointingDir; 
 	ejumpData jumpInfo;
 	j1EntityPlatform* lastPlatform = nullptr; 

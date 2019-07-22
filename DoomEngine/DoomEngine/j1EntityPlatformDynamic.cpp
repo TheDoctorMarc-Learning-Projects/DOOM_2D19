@@ -133,7 +133,7 @@ void j1EntityPlatformDynamic::UpdateEntitiesOnTopPositions(bool justOfsset, floa
 	{
 		if (col->type == COLLIDER_PLAYER || col->type == COLLIDER_ENEMY || col->type == COLLIDER_BLOOD)  // god also?? 
 		{
-			/*if (pointingDir == POINTING_DIR::UP)
+			if (pointingDir == POINTING_DIR::UP)
 			{
 				if (!justOfsset)
 					col->callback->position.y -= speed * App->GetDt();
@@ -148,9 +148,8 @@ void j1EntityPlatformDynamic::UpdateEntitiesOnTopPositions(bool justOfsset, floa
 					col->callback->position.y += speed * App->GetDt();
 				else
 					col->callback->position.y += offset;
-			}*/
-				
-			col->callback->position.y = position.y - col->callback->collider->rect.h; 
+			}
+
 
 			col->SetPos(position.x, position.y);
 		}

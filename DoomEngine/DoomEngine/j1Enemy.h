@@ -129,8 +129,12 @@ public:
 
 		if (onDynamicplatform == false)  // we need to keep the colldier if the enemy dies in the dynamic platform
 		{
-			colliderActive = false;
-			collider->to_delete = true;
+			if (deathPosGround.IsZero() == false)  // when dying in the air, keep the collider until it arrives to the ground
+			{
+				colliderActive = false;
+				collider->to_delete = true;
+			}
+			
 		}
 	
 		

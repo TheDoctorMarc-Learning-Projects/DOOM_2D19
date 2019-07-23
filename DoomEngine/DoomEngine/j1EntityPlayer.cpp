@@ -93,6 +93,8 @@ bool j1EntityPlayer::PreUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
 		godMode = !godMode; 
 
+ 
+
 	return true;
 }
 
@@ -125,21 +127,22 @@ bool j1EntityPlayer::Save(pugi::xml_node &) const
 bool j1EntityPlayer::Move(float dt)
 {
 	BROFILER_CATEGORY("Player Move", Profiler::Color::Aqua);
+	SetPreviousFrameData();
 
-	if (state.combat != combatState::DYING)
+	if (state.combat != combatState::DYING && state.combat != combatState::DEAD)
 	{
-		SetPreviousFrameData();
+		
 		HorizonatlMovement(dt);
 		VerticalMovement(dt);
 		WeaponLogic();
-	
+		SetCollider();
 		// - - - - - - - - - - - - - - - - - - warn other modules about the pos if needed
 		WarnOtherModules();
 	}
 	else
 		DieLogic(dt); 
 
-	SetCollider();
+	
 
 	return true;
 }
@@ -147,32 +150,38 @@ bool j1EntityPlayer::Move(float dt)
 void j1EntityPlayer::DieLogic(float dt)
 {
 	if (!onPlatform)
+	{
 		VerticalMovement(dt);
+	}
 
-	if (onPlatform && deathPosGround.IsZero())
+
+
+
+	if (onPlatform && deathPosGround.IsZero() == true)
 	{
 		deathPosGround.y = position.y + collider->rect.h;         // make so when enemy dies and anim changes, he visually stays inmovile in platform 
-		deathColllider = collider->rect;
+	//	deathColllider = collider->rect;
 
 	}
-	else if (!deathPosGround.IsZero())
+    if (deathPosGround.IsZero() == false)
 	{
-		float offset = deathColllider.h - collider->rect.h;
 
 		if (!onDynamicplatform)
-			position.y = deathPosGround.y - deathColllider.h + offset;
+			position.y = deathPosGround.y - lastPosCollider.h;
 
-		collider->SetPos(position.x, position.y);
-		collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+
 	}
+
+	collider->SetPos(position.x, position.y);
+	collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
 
 
 	if (!myWeapons.empty())
 	{
-		currentWeapon->playerKO = true; 
+		currentWeapon->playerKO = true;
 		currentWeapon->FallToTheFloor(dt);
 	}
-		
+
 
 
 	CheckDeathFinished();
@@ -311,7 +320,7 @@ void j1EntityPlayer::SetCollider()
 		position.x = 0;
 
 	/*else if (position.x > App->map->mapLimitXWorldPos)  // TODO: uncomment this
-		position.x = App->map->mapLimitXWorldPos; */
+		position.x = App->map->mapLimitXWorldPos;*/ 
 
 	collider->SetPos(position.x, position.y);
 	collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);

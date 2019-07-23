@@ -81,9 +81,7 @@ bool j1Enemy::Save(pugi::xml_node &) const
 
 bool j1Enemy::Move(float dt)
 {
-	
-	if (state.combat == eCombatState::DEAD)
-		return false; 
+
 	
 
 	BROFILER_CATEGORY("Enemy Move", Profiler::Color::AliceBlue); 
@@ -92,7 +90,7 @@ bool j1Enemy::Move(float dt)
 
 	SetPreviousFrameData(); 
 
-	if (state.combat != eCombatState::DYING)
+	if (state.combat != eCombatState::DYING && state.combat != eCombatState::DEAD)
 	{
 		if (App->render->isRectOnCamera(collider->rect))
 		{
@@ -100,8 +98,6 @@ bool j1Enemy::Move(float dt)
 
 			if (pathType != enemyPathType::FLYING)
 				VerticalMovement(dt);
-
-			//SetCollider();   // TODO: check this out, check commits if when it was here it was ok 
 		}
 
 	
@@ -109,7 +105,7 @@ bool j1Enemy::Move(float dt)
 	else
 		DieLogic(dt);
 
-	SetCollider();   // TODO: check this out, check commits if when it was here it was ok 
+	SetCollider();    
 
 	
 	
@@ -602,7 +598,7 @@ void j1Enemy::CallPathCreation(iPoint pos, iPoint target, bool& success)
 
 			success = (pathToFollow.size() > 1);
 		}
-		else LOG("Could not create path correctly, specific dir is: %i %i", specificDir.x, specificDir.y);   
+		else LOG("Could not create path correctly, enemy tried to go from (%i,%i) to (%i,%i)", pos.x, pos.y, target.x, target.y);   
 
 
 	}

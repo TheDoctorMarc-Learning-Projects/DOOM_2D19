@@ -83,24 +83,29 @@ j1EnemyIMP::~j1EnemyIMP()
 {
 }
 
-
 bool j1EnemyIMP::Move(float dt)
 {
 	if (j1Enemy::Move(dt))
 	{
-		Jump();
+		if (myState != JUMP_STATE::JUMP)
+			Jump();
+		else
+		{
+			if (state.movement.at(1) != eMovementState::FALL && state.movement.at(1) != eMovementState::JUMP)
+				myState = JUMP_STATE::DEFAULT;
+		}
+
 	}
-		
+
 	if (state.combat != eCombatState::DYING && state.combat != eCombatState::DEAD)
 	{
 		DoMeleeAttack();  // already has some preventions, just call it
 	}
-	/*else
-		return false; */
 
 
 
-	return true; 
+
+	return true;
 }
 
 
@@ -119,29 +124,26 @@ void j1EnemyIMP::Jump()
 	if (onPlatform && App->entityFactory->player->onPlatform)  // both on plat 
 	{
 		bool enoughOffset = false;
-		bool inSamePlatform = false; 
 
-		if (lastPlatform == App->entityFactory->player->lastPlatform)
-			inSamePlatform = true; 
-
-		if (!inSamePlatform) 
+		if ((lastPlatform != App->entityFactory->player->lastPlatform))
 		{
-
-
-			for (const auto& col : App->entityFactory->player->collider->onCollisionWithMe)
+			if (App->entityFactory->player->lastPlatform->heightLevel == lastPlatform->heightLevel
+				|| App->entityFactory->player->lastPlatform->heightLevel == lastPlatform->heightLevel + 1
+				|| App->entityFactory->player->lastPlatform->heightLevel == 4 && lastPlatform->heightLevel == 2)
 			{
-				if (col->hasCallback == true && (col->callback->type == ENTITY_DYNAMIC || col->callback->type == ENTITY_STATIC))   // capture the platform player col  
+				targetPlatform = App->entityFactory->player->lastPlatform;
+
+				iPoint platfTilePos = App->map->WorldToMap((int)targetPlatform->position.x, (int)targetPlatform->position.y) + iPoint(0, 1);
+
+				if (state.path != ePathState::TEMPORAL_DEVIATION)
 				{
-
-					iPoint platfTilePos = App->map->WorldToMap((int)col->callback->position.x, (int)col->callback->position.y) + iPoint(0, 1);
-
 					if (pointingDir == RIGHT)
 					{
 						if (tilePos.x + App->map->WorldToMap(collider->rect.w, 0).x >= platfTilePos.x - jumpTriggerTileRange)               // check I got enough offset to jump and not collide with players' dest platform 
 						{
 							// check I was coming from that direction 
 
-							if (lastTilePos.x < tilePos.x && lastTilePos.x + App->map->WorldToMap(collider->rect.w, 0).x  < platfTilePos.x - jumpTriggerTileRange)
+							if (lastSpeed.x > 0 /*&& lastTilePos.x + App->map->WorldToMap(collider->rect.w, 0).x < platfTilePos.x - jumpTriggerTileRange*/)
 							{
 								enoughOffset = true;
 							}
@@ -150,9 +152,11 @@ void j1EnemyIMP::Jump()
 					}
 					else if (pointingDir == LEFT)
 					{
-						if (tilePos.x <= platfTilePos.x + App->map->WorldToMap(col->rect.w, 0).x + jumpTriggerTileRange)               // check I got enough offset to jump and not collide with players' dest platform 
+						platfTilePos = App->map->WorldToMap((int)targetPlatform->position.x + targetPlatform->collider->rect.w, (int)targetPlatform->position.y) + iPoint(0, 1);
+
+						if (tilePos.x <= platfTilePos.x + jumpTriggerTileRange - 1)               // check I got enough offset to jump and not collide with players' dest platform 
 						{
-							if (lastTilePos.x > tilePos.x && lastTilePos.x > platfTilePos.x + App->map->WorldToMap(col->rect.w, 0).x + jumpTriggerTileRange)
+							if (lastSpeed.x < 0/* && lastTilePos.x >= platfTilePos.x + jumpTriggerTileRange - 1*/)
 							{
 								enoughOffset = true;
 							}
@@ -160,36 +164,48 @@ void j1EnemyIMP::Jump()
 
 					}
 
+					// check if it is under platform, then it needs to go outside to have offset
+					platfTilePos = App->map->WorldToMap((int)targetPlatform->position.x, (int)targetPlatform->position.y) + iPoint(0, 1);
 
-					if (App->entityFactory->player->collider->rect.y < collider->rect.y)    // player is above 
+					if (App->map->WorldToMap(position.x + collider->rect.w, 0).x >= platfTilePos.x - jumpTriggerTileRange + 1
+						&& GetTilePosition().x <= App->map->WorldToMap(targetPlatform->position.x + targetPlatform->collider->rect.w, 0).x + jumpTriggerTileRange - 2)
 					{
-						if (lastTilePos.x + App->map->WorldToMap(collider->rect.w, 0).x > platfTilePos.x - jumpTriggerTileRange - extraJumpOffset   // inside range, so it needs to go outside to have offset
-							&& lastTilePos.x < platfTilePos.x + App->map->WorldToMap(col->rect.w, 0).x + jumpTriggerTileRange + extraJumpOffset)
+						if (!enoughOffset)   // repath to a position where the enemy would have enough offset to jump
 						{
-							if (!enoughOffset)   // repath to a position where the enemy would have enough ofsset to jump
+							if (position.x + collider->rect.w / 2 > targetPlatform->collider->rect.x + targetPlatform->collider->rect.w / 2)
 							{
-								if (position.x + collider->rect.w / 2 > col->rect.x + col->rect.w / 2)  
-									targetPos.value.x = platfTilePos.x + App->map->WorldToMap(col->rect.w, 0).x + jumpTriggerTileRange + extraJumpOffset - 2;
-								else
-									targetPos.value.x = platfTilePos.x - jumpTriggerTileRange - extraJumpOffset;
-							
-								targetPos.value.y = tilePos.y; 
-								targetPos.type = TargetPos::targetPosType::X;
-								state.path = ePathState::TEMPORAL_DEVIATION;
+								platfTilePos = App->map->WorldToMap((int)targetPlatform->position.x + targetPlatform->collider->rect.w, (int)targetPlatform->position.y) + iPoint(0, 1);
+								targetPos.value.x = platfTilePos.x + jumpTriggerTileRange + extraJumpOffset - 2;
 							}
+					
+							else
+								targetPos.value.x = platfTilePos.x - jumpTriggerTileRange - extraJumpOffset;
+
+							targetPos.value.y = tilePos.y;
+							targetPos.type = TargetPos::targetPosType::X;
+							state.path = ePathState::TEMPORAL_DEVIATION;
 						}
 					}
-					
+				}
 				
 
-				}
+			
+
+
 			}
 
 
+
+
+
 			if (enoughOffset)
-				doJump = true; 
-		
-		
+			{
+				doJump = true;
+				//myState = JUMP_STATE::JUMP;
+			}
+
+
+
 
 
 		}
@@ -201,6 +217,7 @@ void j1EnemyIMP::Jump()
 
 void j1EnemyIMP::ResolvePathDeviation()
 {
-	doJump = true; 
+	doJump = true;
+	myState = JUMP_STATE::JUMP;
 }
 

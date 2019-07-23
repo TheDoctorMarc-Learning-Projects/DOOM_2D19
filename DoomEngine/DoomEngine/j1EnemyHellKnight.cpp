@@ -25,6 +25,7 @@ j1EnemyHellKnight::j1EnemyHellKnight(int posX, int posY, std::string name) : j1E
 	hasMaxDistanceFromOrigin = true;
 	maxDistFromOrigin = 15U;
 	myMeleeRange = 2U;
+	hasMaxDistanceFromOrigin = false;   
 
 	state.movement.at(1) = eMovementState::FALL;    // check this out: when TODO: load enemies in map, it should no longer be fall  
 
@@ -144,12 +145,12 @@ void j1EnemyHellKnight::FallToPlayer()
 
 	if (onPlatform == true && targetPlatform != nullptr && lastPlatform == targetPlatform)   // when falling to another platform, set back to A to B
 	{
-		targetPlatform = nullptr; 
+		targetPlatform = nullptr;
 		myState = BEHAVIOUR_STATE::A_TO_B;
 
-		resetAtoB = true; 
+		resetAtoB = true;
 	}
- 
+	 
 }
 
 

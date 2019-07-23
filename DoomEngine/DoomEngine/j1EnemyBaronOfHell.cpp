@@ -31,6 +31,7 @@ j1EnemyBaronOfHell::j1EnemyBaronOfHell(int posX, int posY, std::string name) : j
 	hasMaxDistanceFromOrigin = true;
 	maxDistFromOrigin = 10U;
 	myMeleeRange = 2U;
+	hasMaxDistanceFromOrigin = false;
 
 	state.movement.at(1) = eMovementState::FALL;    // check this out: when TODO: load enemies in map, it should no longer be fall  
 

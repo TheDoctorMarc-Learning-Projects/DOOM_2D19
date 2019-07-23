@@ -78,8 +78,8 @@ bool j1Render::PreUpdate()
 
 bool j1Render::Update(float dt)
 {
-
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	// TODO: use arrows, WASD is for movement in keyboard
+	/*if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		camera.x += 10;
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
@@ -90,7 +90,7 @@ bool j1Render::Update(float dt)
 		camera.y -= 10;
 
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-		camera.y += 10;
+		camera.y += 10;*/
 
 
 

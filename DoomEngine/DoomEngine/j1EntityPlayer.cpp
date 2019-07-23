@@ -219,6 +219,12 @@ void j1EntityPlayer::HorizonatlMovement(float dt)
 	{
 		Sint16 xAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
 
+
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			xAxis = SDL_JOYSTICK_AXIS_MAX; 
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			xAxis = -SDL_JOYSTICK_AXIS_MAX;
+
 		// - - - - - - - - - - - - - - - - - - horizontal movement
 		if (xAxis > 0 || xAxis < 0)
 		{
@@ -264,9 +270,9 @@ void j1EntityPlayer::HorizonatlMovement(float dt)
 void j1EntityPlayer::VerticalMovement(float dt)
 {
 	// - - - - - - - - - - - - - - - - - - vertical movement
-	Sint16 yAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY);
 
-	if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+
+	if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 		//if (yAxis <= 0)
 			if (onPlatform)
 			{
@@ -385,12 +391,12 @@ void j1EntityPlayer::WeaponLogic()
 	{
 
 		// capture input 
-		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == KEY_DOWN) 
+		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
 		{
 			ChangeWeapon(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
 		}
 
-		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == KEY_DOWN)
+		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
 		{
 			ChangeWeapon(SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
 		}
@@ -398,6 +404,9 @@ void j1EntityPlayer::WeaponLogic()
 		AimWeapon(); 
 
 		j1KeyState shootButtonState = App->input->GetControllerAxisPulsation(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+
+		if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
+			shootButtonState = KEY_DOWN; 
 	
 		if(shootButtonState != KEY_IDLE)
 			ShootWeapon(shootButtonState);

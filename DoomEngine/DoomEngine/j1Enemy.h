@@ -280,6 +280,7 @@ public:
 	bool playerInsideZone = false; 
 	bool adaptativeColliderMovement = true; 
 	bool resetAtoB = false; 
+	bool stopLogic = false; 
 	POINTING_DIR lastPointingDir; 
 	ejumpData jumpInfo;
 	j1EntityPlatform* lastPlatform = nullptr; 

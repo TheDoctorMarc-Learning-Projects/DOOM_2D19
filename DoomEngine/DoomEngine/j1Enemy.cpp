@@ -82,6 +82,12 @@ bool j1Enemy::Save(pugi::xml_node &) const
 bool j1Enemy::Move(float dt)
 {
 
+	if (App->entityFactory->player->state.combat == combatState::DYING || stopLogic == true)
+	{
+		stopLogic = true; 
+		return false;
+	}
+		
 	
 
 	BROFILER_CATEGORY("Enemy Move", Profiler::Color::AliceBlue); 
@@ -588,6 +594,12 @@ void j1Enemy::CallPathCreation(iPoint pos, iPoint target, bool& success)
 
 	if (pos.DistanceManhattan(target) > 1)       // The enemy doesnt collapse with the player
 	{
+
+		if (pos.DistanceManhattan(target) > 200)
+		{
+			success = false; 
+			return; 
+		}
 
 		if (App->pathfinding->CreatePathAStar(pos, target, walkableAccounts) != 0)
 		{

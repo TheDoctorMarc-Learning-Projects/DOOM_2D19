@@ -43,7 +43,7 @@ bool j1EntityBloodDrop::Update(float dt)
 	{
 		if (!roofReached)
 		{
-			static float decrementY = 0.7f;
+			static float decrementY = 0.8f;
 			static float decrementX = 0.97f;
 
 			float v1 = initialSpeed.y *= decrementY;

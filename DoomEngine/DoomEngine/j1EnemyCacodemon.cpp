@@ -16,7 +16,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	speed = 50.75f;
 	mass = 1.8f;
 	gravityFactor = DEFAULT_GRAV / mass; 
-	tileDetectionRange = 6;
+	tileDetectionRange = 8;
 	cadenceValues.melee = 3000;
 	cadenceValues.longRange = 3000; 
 	damageValues.melee = 120;
@@ -29,7 +29,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	dataAnimFx.hasSecondDeathFx = false;
 	dataAnimFx.firstAttackFxIsMelee = false; 
 	hasMaxDistanceFromOrigin = true; 
-	maxDistFromOrigin = 6U; 
+	maxDistFromOrigin = 8U; 
 	myMeleeRange = 2U; 
 
 	state.movement.at(1) = eMovementState::NOT_ACTIVE;   // NEVER to jump or fall 

@@ -31,8 +31,7 @@ public:
 		type = LOOT;
 		this->loot_type = loot_type; 
 
-		entityTex = App->map->entityTextureMap.at("loot");
-		blitOrder = 1U; 
+		entityTex = App->map->entityTextureMap.at("loot"); 
 	};
 
 	j1EntityLoot() {};

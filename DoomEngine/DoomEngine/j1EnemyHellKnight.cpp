@@ -28,6 +28,7 @@ j1EnemyHellKnight::j1EnemyHellKnight(int posX, int posY, std::string name) : j1E
 	hasMaxDistanceFromOrigin = false;   
 
 	state.movement.at(1) = eMovementState::FALL;    // check this out: when TODO: load enemies in map, it should no longer be fall  
+	state.path = ePathState::AWAIT; 
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - anims
 	currentAnimation = &idle;
@@ -78,7 +79,8 @@ bool j1EnemyHellKnight::Move(float dt)
 		else if(myState == BEHAVIOUR_STATE::FOLLOW)
 			FallToPlayer(); 
 		
-		DoMeleeAttack();
+		if(isPlayerOnSamePlatform() == true)
+			DoMeleeAttack();
 
 	}
 
@@ -115,7 +117,8 @@ void j1EnemyHellKnight::ChangeState()
 
 void j1EnemyHellKnight::FallToPlayer()
 {
-
+ 
+ 
 	// player not in same platform, follow him and fall
 
 	if (App->entityFactory->player->onPlatform == true && onPlatform == true && App->entityFactory->player->lastPlatform != lastPlatform)

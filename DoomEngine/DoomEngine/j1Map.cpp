@@ -240,8 +240,8 @@ bool j1Map::Load(const char* file_name)
 {
 	
 	// object textures
-	entityTextureMap.insert(std::pair("loot", App->tex->Load("textures/loot/loot.png")));
-	entityTextureMap.insert(std::pair("platform1", App->tex->Load("maps/textures/plat1.png")));  
+	entityTextureMap.insert(std::make_pair("loot", App->tex->Load("textures/loot/loot.png")));
+	entityTextureMap.insert(std::make_pair("platform1", App->tex->Load("maps/textures/plat1.png")));  
 
 
 

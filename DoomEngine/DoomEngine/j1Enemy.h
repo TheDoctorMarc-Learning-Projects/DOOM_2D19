@@ -160,6 +160,7 @@ public:
 
 	virtual bool DoMeleeAttack();
 	virtual bool DoLongRangeAttack();
+	
 
 	bool Go_A_to_B(); 
 
@@ -204,6 +205,7 @@ public:
 
 	bool isPlayerOnMeleeRange() const; 
 	bool isPlayerOnMyZone() const; 
+	bool isPlayerOnSamePlatform() const; 
 
 	bool isAiming() const
 	{

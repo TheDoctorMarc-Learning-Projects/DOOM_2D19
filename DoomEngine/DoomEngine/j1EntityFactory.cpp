@@ -52,17 +52,17 @@ bool j1EntityFactory::Start()
 
 	// TODO: textures
 
-	entityTextureMap.insert(std::pair("player", App->tex->Load("textures/player/player.png")));
-	entityTextureMap.insert(std::pair("EnemyIMP", App->tex->Load("textures/enemies/IMP/IMP.png")));
-	entityTextureMap.insert(std::pair("EnemyCacodemon", App->tex->Load("textures/enemies/Cacodemon/Cacodemon.png")));
-	entityTextureMap.insert(std::pair("EnemyBaronOfHell", App->tex->Load("textures/enemies/BaronOfHell/BaronOfHell.png")));
-	entityTextureMap.insert(std::pair("EnemyHellKnight", App->tex->Load("textures/enemies/HellKnight/HellKnight.png")));
+	entityTextureMap.insert(std::make_pair("player", App->tex->Load("textures/player/player.png")));
+	entityTextureMap.insert(std::make_pair("EnemyIMP", App->tex->Load("textures/enemies/IMP/IMP.png")));
+	entityTextureMap.insert(std::make_pair("EnemyCacodemon", App->tex->Load("textures/enemies/Cacodemon/Cacodemon.png")));
+	entityTextureMap.insert(std::make_pair("EnemyBaronOfHell", App->tex->Load("textures/enemies/BaronOfHell/BaronOfHell.png")));
+	entityTextureMap.insert(std::make_pair("EnemyHellKnight", App->tex->Load("textures/enemies/HellKnight/HellKnight.png")));
 
  
-	enemyTypeMap.insert(std::pair("EnemyIMP", ENEMY_IMP)); 
-	enemyTypeMap.insert(std::pair("EnemyCacodemon", ENEMY_CACODEMON));
-	enemyTypeMap.insert(std::pair("EnemyBaronOfHell", ENEMY_BARON_OF_HELL));
-	enemyTypeMap.insert(std::pair("EnemyHellKnight", ENEMY_HELL_KNIGHT));
+	enemyTypeMap.insert(std::make_pair("EnemyIMP", ENEMY_IMP)); 
+	enemyTypeMap.insert(std::make_pair("EnemyCacodemon", ENEMY_CACODEMON));
+	enemyTypeMap.insert(std::make_pair("EnemyBaronOfHell", ENEMY_BARON_OF_HELL));
+	enemyTypeMap.insert(std::make_pair("EnemyHellKnight", ENEMY_HELL_KNIGHT));
 
 	// TODO: KEEP UPDATING THIS with new types of enemies... 
 

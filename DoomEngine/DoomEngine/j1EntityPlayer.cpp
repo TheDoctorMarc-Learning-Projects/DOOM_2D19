@@ -310,8 +310,8 @@ void j1EntityPlayer::SetCollider()
 	if (position.x < 0)    
 		position.x = 0;
 
-	else if (position.x > App->map->mapLimitXWorldPos)
-		position.x = App->map->mapLimitXWorldPos; 
+	/*else if (position.x > App->map->mapLimitXWorldPos)  // TODO: uncomment this
+		position.x = App->map->mapLimitXWorldPos; */
 
 	collider->SetPos(position.x, position.y);
 	collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
@@ -857,7 +857,7 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
 		if (c2->hasCallback && c2->callback->type != ENTITY_TYPE::ENTITY_DYNAMIC)
 		{
-			if (state.movement.at(1) != MovementState::JUMP && state.movement.at(0) != MovementState::IDLE)
+			if (state.movement.at(1) != MovementState::JUMP)
 			{
 				if (onPlatform)
 				{

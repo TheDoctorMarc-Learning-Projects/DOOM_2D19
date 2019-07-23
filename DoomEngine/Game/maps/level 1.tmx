@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="330" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="26" nextobjectid="211">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="330" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="26" nextobjectid="218">
  <tileset firstgid="1" name="qzNJ1V6_3x (1)" tilewidth="32" tileheight="32" tilecount="2520" columns="140">
   <image source="textures/background_level1.png" width="4488" height="600"/>
  </tileset>
@@ -24047,16 +24047,6 @@
     <property name="type" value="EnemyIMP"/>
    </properties>
   </object>
-  <object id="124" name="enemy" x="1152" y="480" width="32" height="32">
-   <properties>
-    <property name="type" value="EnemyIMP"/>
-   </properties>
-  </object>
-  <object id="125" name="enemy" x="1248" y="480" width="32" height="32">
-   <properties>
-    <property name="type" value="EnemyIMP"/>
-   </properties>
-  </object>
   <object id="127" name="wall" x="3712" y="480" width="32" height="64"/>
   <object id="132" name="staticPlatform" x="5920" y="448" width="32" height="32">
    <properties>
@@ -24130,16 +24120,6 @@
     <property name="type" value="EnemyHellKnight"/>
    </properties>
   </object>
-  <object id="172" name="enemy" x="1184" y="352" width="32" height="32">
-   <properties>
-    <property name="type" value="EnemyIMP"/>
-   </properties>
-  </object>
-  <object id="173" name="enemy" x="1024" y="352" width="32" height="32">
-   <properties>
-    <property name="type" value="EnemyIMP"/>
-   </properties>
-  </object>
   <object id="174" name="enemy" x="7744" y="288" width="32" height="32">
    <properties>
     <property name="type" value="EnemyBaronOfHell"/>
@@ -24160,12 +24140,7 @@
     <property name="type" value="EnemyCacodemon"/>
    </properties>
   </object>
-  <object id="178" name="enemy" x="1506" y="476" width="32" height="32">
-   <properties>
-    <property name="type" value="EnemyIMP"/>
-   </properties>
-  </object>
-  <object id="179" name="enemy" x="1696" y="224" width="32" height="32">
+  <object id="179" name="enemy" x="1038.67" y="494.667" width="32" height="32">
    <properties>
     <property name="type" value="EnemyIMP"/>
    </properties>
@@ -24191,11 +24166,6 @@
    </properties>
   </object>
   <object id="185" name="enemy" x="3392" y="192" width="32" height="32">
-   <properties>
-    <property name="type" value="EnemyHellKnight"/>
-   </properties>
-  </object>
-  <object id="187" name="enemy" x="4384" y="480" width="32" height="32">
    <properties>
     <property name="type" value="EnemyHellKnight"/>
    </properties>
@@ -24267,17 +24237,12 @@
   </object>
   <object id="201" name="enemy" x="4320" y="288" width="32" height="32">
    <properties>
-    <property name="type" value="EnemyIMP"/>
+    <property name="type" value="EnemyHellKnight"/>
    </properties>
   </object>
   <object id="202" name="enemy" x="4480" y="288" width="32" height="32">
    <properties>
     <property name="type" value="EnemyIMP"/>
-   </properties>
-  </object>
-  <object id="203" name="enemy" x="5792" y="480" width="32" height="32">
-   <properties>
-    <property name="type" value="EnemyHellKnight"/>
    </properties>
   </object>
   <object id="204" name="enemy" x="5696" y="480" width="32" height="32">
@@ -24308,6 +24273,36 @@
   <object id="209" name="wall" x="8896" y="128" width="32" height="448">
    <properties>
     <property name="mapLimitX" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="211" name="enemy" x="5824" y="480" width="32" height="32">
+   <properties>
+    <property name="type" value="EnemyIMP"/>
+   </properties>
+  </object>
+  <object id="212" name="enemy" x="2784" y="480" width="32" height="32">
+   <properties>
+    <property name="type" value="EnemyIMP"/>
+   </properties>
+  </object>
+  <object id="213" name="enemy" x="2016" y="480" width="32" height="32">
+   <properties>
+    <property name="type" value="EnemyIMP"/>
+   </properties>
+  </object>
+  <object id="214" name="enemy" x="6208" y="192" width="32" height="32">
+   <properties>
+    <property name="type" value="EnemyHellKnight"/>
+   </properties>
+  </object>
+  <object id="215" name="enemy" x="1702.67" y="214.667" width="32" height="32">
+   <properties>
+    <property name="type" value="EnemyIMP"/>
+   </properties>
+  </object>
+  <object id="217" name="enemy" x="1024" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="EnemyIMP"/>
    </properties>
   </object>
  </objectgroup>

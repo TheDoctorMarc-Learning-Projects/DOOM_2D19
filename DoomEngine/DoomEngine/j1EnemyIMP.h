@@ -3,13 +3,6 @@
 
 #include "j1Enemy.h"
 
-enum class JUMP_STATE
-{
-	DEFAULT,  
-	JUMP,
-};
-
-
 class j1Enemy;
 
 class j1EnemyIMP : public j1Enemy
@@ -33,7 +26,6 @@ private:
 	float RampageDamageMultiplier = 3.f; 
 	float defaultSpeed = 0.f; 
 	j1EntityPlatform* targetPlatform = nullptr;
-	JUMP_STATE myState = JUMP_STATE::DEFAULT;
 };
 
 #endif 

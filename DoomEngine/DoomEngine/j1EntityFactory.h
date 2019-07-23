@@ -64,7 +64,7 @@ public:
 		return iPoint(App->map->WorldToMap((int)player->position.x, (int)player->position.y)) + iPoint(0, 1);
 	}
 
-	bool isInDistanceModule(iPoint pos1, iPoint pos2, uint distance)
+	bool isInDistanceModule(iPoint pos1, iPoint pos2, uint distance)  // tile coords
 	{
 		uint ret = (uint)(int)(float)abs(hypot(pos1.x - pos2.x, pos1.y - pos2.y));
 		return ret <= distance; 

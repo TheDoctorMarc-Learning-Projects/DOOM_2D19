@@ -10,7 +10,6 @@
 #include <string>
 #include "j1Collision.h"
 #include "j1Entity.h"
-
 #define MAX_ACTIVE_PARTICLES 500
 
 struct SDL_Texture;

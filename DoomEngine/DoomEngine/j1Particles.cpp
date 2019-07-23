@@ -48,7 +48,7 @@ bool j1Particles::Start()
 	shotgunShotFire.anim.loop = false;
 	shotgunShotFire.fx = "shotgunShotFire"; 
 
-	particleMap.insert(std::pair(shotgunShotFire.name, shotgunShotFire));
+	particleMap.insert(std::make_pair(shotgunShotFire.name, shotgunShotFire));
 
 
 	// machine gun shot fire 
@@ -61,7 +61,7 @@ bool j1Particles::Start()
 	machineGunShotFire.anim.loop = false;
 	machineGunShotFire.fx = "machineGunShotFire";
 
-	particleMap.insert(std::pair(machineGunShotFire.name, machineGunShotFire));
+	particleMap.insert(std::make_pair(machineGunShotFire.name, machineGunShotFire));
 
 	// - - - - - - - - - - - - - - - - - - - - - - - ENEMIES
 	// Cacodemon
@@ -72,7 +72,7 @@ bool j1Particles::Start()
 	EnemyCacodemonShot.anim.speed = 5.3;
 	EnemyCacodemonShot.anim.loop = true; 
 
-	particleMap.insert(std::pair(EnemyCacodemonShot.name, EnemyCacodemonShot));
+	particleMap.insert(std::make_pair(EnemyCacodemonShot.name, EnemyCacodemonShot));
 
 	Particle EnemyCacodemonShotExplosion;                                   // the other data is defined in enemy shoot function 
 	EnemyCacodemonShotExplosion.name = "EnemyCacodemonShotExplosion";
@@ -83,7 +83,7 @@ bool j1Particles::Start()
 	EnemyCacodemonShotExplosion.anim.speed = 12.6;
 	EnemyCacodemonShotExplosion.anim.loop = false;
 
-	particleMap.insert(std::pair(EnemyCacodemonShotExplosion.name, EnemyCacodemonShotExplosion));
+	particleMap.insert(std::make_pair(EnemyCacodemonShotExplosion.name, EnemyCacodemonShotExplosion));
 
 
 
@@ -101,7 +101,7 @@ bool j1Particles::Start()
 	EnemyBaronOfHellShot.anim.speed = 5.3;
 	EnemyBaronOfHellShot.anim.loop = false;
 
-	particleMap.insert(std::pair(EnemyBaronOfHellShot.name, EnemyBaronOfHellShot));
+	particleMap.insert(std::make_pair(EnemyBaronOfHellShot.name, EnemyBaronOfHellShot));
 
 	Particle EnemyBaronOfHellShotExplosion;                                   // the other data is defined in enemy shoot function 
 	EnemyBaronOfHellShotExplosion.name = "EnemyBaronOfHellShotExplosion";
@@ -112,7 +112,7 @@ bool j1Particles::Start()
 	EnemyBaronOfHellShotExplosion.anim.speed = 12.6;
 	EnemyBaronOfHellShotExplosion.anim.loop = false;
 
-	particleMap.insert(std::pair(EnemyBaronOfHellShotExplosion.name, EnemyBaronOfHellShotExplosion));
+	particleMap.insert(std::make_pair(EnemyBaronOfHellShotExplosion.name, EnemyBaronOfHellShotExplosion));
 	
 
 	

@@ -450,11 +450,28 @@ bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& succes
 
 	if (isPlayerOnMeleeRange() == true)    
 	{
-		if (specificDir.IsZero() == false)
-			specificDir = iPoint(0, 0);
+		if (pathType == enemyPathType::A_TO_B)
+		{
 
-		state.path = ePathState::AWAIT;              
-	    success = false;
+			if (isPlayerOnSamePlatform() == true)    // if player is on melee range, but on another platform, ignore him
+			{
+				if (specificDir.IsZero() == false)
+					specificDir = iPoint(0, 0);
+
+				state.path = ePathState::AWAIT;
+				success = false;
+
+			}
+		}
+		else
+		{
+			if (specificDir.IsZero() == false)
+				specificDir = iPoint(0, 0);
+
+			state.path = ePathState::AWAIT;
+			success = false;
+		}
+		
 	}
 
 	if (state.path == ePathState::AWAIT)
@@ -498,8 +515,23 @@ bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& succes
 				state.path = ePathState::FOLLOW_PLAYER;   // when exiting melee deviation, set to follow player...
 			if (c2 == true)
 			{
-				state.path = ePathState::AWAIT;      // ... or rather set or overwrite to await if on melee range
-			    success = false;
+				if (pathType == enemyPathType::A_TO_B)
+				{
+
+					if (isPlayerOnSamePlatform() == true)
+					{
+						state.path = ePathState::AWAIT;
+						success = false;
+					}
+						 
+					
+				}
+				else
+				{
+					state.path = ePathState::AWAIT;      
+					success = false;
+				}
+				
 			}
 				
 			if (specificDir.IsZero() == false)
@@ -549,7 +581,14 @@ void j1Enemy::CallPathCreation(iPoint pos, iPoint target, bool& success)
 	bool walkableAccounts = false; 
 
 	if (pathType == enemyPathType::A_TO_B)
-		walkableAccounts = true; 
+	{
+		if (onPlatform == false)
+			return; 
+		walkableAccounts = true;
+	}
+		
+
+	
 
 	if (pos.DistanceManhattan(target) > 1)       // The enemy doesnt collapse with the player
 	{
@@ -563,7 +602,7 @@ void j1Enemy::CallPathCreation(iPoint pos, iPoint target, bool& success)
 
 			success = (pathToFollow.size() > 1);
 		}
-		else LOG("Could not create path correctly");   // TODO: check why path is not created properly, maybe comment this
+		else LOG("Could not create path correctly, specific dir is: %i %i", specificDir.x, specificDir.y);   
 
 
 	}
@@ -685,6 +724,11 @@ bool j1Enemy::isPlayerOnMyZone() const
 	iPoint playerTilePos = App->entityFactory->player->GetTilePosition();
 	return  App->entityFactory->isInDistanceModule(playerTilePos, originTilePos, maxDistFromOrigin);
 
+}
+
+bool j1Enemy::isPlayerOnSamePlatform() const
+{
+	return onPlatform == true && App->entityFactory->player->onPlatform == true && lastPlatform == App->entityFactory->player->lastPlatform; 
 }
 
 
@@ -1178,9 +1222,11 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 
 		if (!lastOnplatform && onPlatform && state.combat != eCombatState::DYING)   // TODO: same with player code 
 		{
-			lastPlatform = dynamic_cast<j1EntityPlatform*>(c2->callback);
 
-			App->audio->PlayFx("fall");
+				lastPlatform = dynamic_cast<j1EntityPlatform*>(c2->callback);
+				App->audio->PlayFx("fall");
+			
+
 		}
 
 //	}

@@ -85,15 +85,12 @@ j1EnemyIMP::~j1EnemyIMP()
 
 bool j1EnemyIMP::Move(float dt)
 {
+	 
+
 	if (j1Enemy::Move(dt))
 	{
-		if (myState != JUMP_STATE::JUMP)
+		if (state.movement.at(1) != eMovementState::JUMP)
 			Jump();
-		else
-		{
-			if (state.movement.at(1) != eMovementState::FALL && state.movement.at(1) != eMovementState::JUMP)
-				myState = JUMP_STATE::DEFAULT;
-		}
 
 	}
 
@@ -125,10 +122,8 @@ void j1EnemyIMP::Jump()
 	{
 		bool enoughOffset = false;
 
-		if ((lastPlatform != App->entityFactory->player->lastPlatform))
-		{
-			if (App->entityFactory->player->lastPlatform->heightLevel == lastPlatform->heightLevel
-				|| App->entityFactory->player->lastPlatform->heightLevel == lastPlatform->heightLevel + 1
+		
+			if (App->entityFactory->player->lastPlatform->heightLevel == lastPlatform->heightLevel + 1
 				|| App->entityFactory->player->lastPlatform->heightLevel == 4 && lastPlatform->heightLevel == 2)
 			{
 				targetPlatform = App->entityFactory->player->lastPlatform;
@@ -156,7 +151,7 @@ void j1EnemyIMP::Jump()
 
 						if (tilePos.x <= platfTilePos.x + jumpTriggerTileRange - 1)               // check I got enough offset to jump and not collide with players' dest platform 
 						{
-							if (lastSpeed.x < 0/* && lastTilePos.x >= platfTilePos.x + jumpTriggerTileRange - 1*/)
+							if (lastSpeed.x < 0 /*&& lastTilePos.x >= platfTilePos.x + jumpTriggerTileRange - 1*/)
 							{
 								enoughOffset = true;
 							}
@@ -195,20 +190,12 @@ void j1EnemyIMP::Jump()
 			}
 
 
-
-
-
 			if (enoughOffset)
 			{
 				doJump = true;
-				//myState = JUMP_STATE::JUMP;
+				
 			}
 
-
-
-
-
-		}
 	}
 
 }
@@ -218,6 +205,5 @@ void j1EnemyIMP::Jump()
 void j1EnemyIMP::ResolvePathDeviation()
 {
 	doJump = true;
-	myState = JUMP_STATE::JUMP;
 }
 

@@ -391,12 +391,12 @@ void j1EntityPlayer::WeaponLogic()
 	{
 
 		// capture input 
-		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
+		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		{
 			ChangeWeapon(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
 		}
 
-		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
 		{
 			ChangeWeapon(SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
 		}
@@ -405,8 +405,8 @@ void j1EntityPlayer::WeaponLogic()
 
 		j1KeyState shootButtonState = App->input->GetControllerAxisPulsation(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
 
-		if (App->input->GetKey(SDL_SCANCODE_J) != KEY_IDLE)
-			shootButtonState = App->input->GetKey(SDL_SCANCODE_J);
+		if (App->input->GetKey(SDL_SCANCODE_K) != KEY_IDLE)
+			shootButtonState = App->input->GetKey(SDL_SCANCODE_K);
 	
 		if(shootButtonState != KEY_IDLE)
 			ShootWeapon(shootButtonState);

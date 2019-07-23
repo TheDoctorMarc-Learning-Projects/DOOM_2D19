@@ -120,6 +120,7 @@ void j1EnemyHellKnight::FallToPlayer()
  
  
 	// player not in same platform, follow him and fall
+	bool doIt = false; 
 
 	if (App->entityFactory->player->onPlatform == true && onPlatform == true && App->entityFactory->player->lastPlatform != lastPlatform)
 	{
@@ -127,20 +128,27 @@ void j1EnemyHellKnight::FallToPlayer()
 		{
 			if (targetPlatform == nullptr)
 			{
-				if (App->entityFactory->player->position.x + App->entityFactory->player->collider->rect.w / 2 >= position.x + collider->rect.w / 2)
-					specificDir = iPoint(1, 0);
+				if (App->entityFactory->player->lastPlatform->type == ENTITY_STATIC)
+				{
+					doIt = true;
 
-				else
-					specificDir = iPoint(-1, 0);
+					if (App->entityFactory->player->position.x + App->entityFactory->player->collider->rect.w / 2 >= position.x + collider->rect.w / 2)
+						specificDir = iPoint(1, 0);
 
-				state.path = ePathState::TEMPORAL_DEVIATION;
+					else
+						specificDir = iPoint(-1, 0);
 
-				targetPlatform = App->entityFactory->player->lastPlatform;
+					state.path = ePathState::TEMPORAL_DEVIATION;
+
+					targetPlatform = App->entityFactory->player->lastPlatform;
+				}
+
 			}
-			
 		}
-		else
-			myState = BEHAVIOUR_STATE::A_TO_B;
+
+
+			if(doIt == false)
+				myState = BEHAVIOUR_STATE::A_TO_B;
 
 	
 	}

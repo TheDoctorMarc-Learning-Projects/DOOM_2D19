@@ -112,13 +112,13 @@ bool j1EntityPlatformDynamic::Update(float dt)
 			
 
 
-		if(!collider->onCollisionWithMe.empty())
-			UpdateEntitiesOnTopPositions();
-	
+		
 
 		break;
 
 	}
+	if (!collider->onCollisionWithMe.empty())
+		UpdateEntitiesOnTopPositions();
 
 	collider->SetPos(position.x, position.y);
 
@@ -133,23 +133,44 @@ void j1EntityPlatformDynamic::UpdateEntitiesOnTopPositions(bool justOfsset, floa
 	{
 		if (col->type == COLLIDER_PLAYER || col->type == COLLIDER_ENEMY || col->type == COLLIDER_BLOOD)  // god also?? 
 		{
-			if (pointingDir == POINTING_DIR::UP)
+			if (movementType == AXIS_Movement::VERTICAL)
 			{
-				if (!justOfsset)
-					col->callback->position.y -= speed * App->GetDt();
-				else
-					col->callback->position.y -= offset; 
-				
-			}
-				
-			else if (pointingDir == POINTING_DIR::DOWN)
-			{
-				if (!justOfsset)
-					col->callback->position.y += speed * App->GetDt();
-				else
-					col->callback->position.y += offset;
-			}
+				if (pointingDir == POINTING_DIR::UP)
+				{
+					if (!justOfsset)
+						col->callback->position.y -= speed * App->GetDt();
+					else
+						col->callback->position.y -= offset;
 
+				}
+
+				else if (pointingDir == POINTING_DIR::DOWN)
+				{
+					if (!justOfsset)
+						col->callback->position.y += speed * App->GetDt();
+					else
+						col->callback->position.y += offset;
+				}
+
+			}
+			else if(movementType == AXIS_Movement::HORIZONTAL)
+				if (col->type == COLLIDER_BLOOD)
+				{
+					if (pointingDir == POINTING_DIR::RIGHT)
+					{
+					
+						col->callback->position.x += speed * App->GetDt();
+					
+					}
+
+					else if (pointingDir == POINTING_DIR::LEFT)
+					{
+					
+						col->callback->position.x -= speed * App->GetDt();
+					
+					}
+				}
+		
 
 			col->SetPos(position.x, position.y);
 		}

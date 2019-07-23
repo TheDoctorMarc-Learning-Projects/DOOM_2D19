@@ -16,6 +16,13 @@ struct Viscosity
 	uint frameCounter = 0U; 
 };
 
+struct sideDynFloorType
+{
+	bool left = false; 
+	bool right = false; 
+	float sideOffset = 0.f; 
+};
+
 class j1EntityBloodDrop : public j1Entity
 {
 public:
@@ -35,12 +42,17 @@ private:
 	fPoint initialSpeed = fPoint(0, 0); 
 	bool floorReached = false; 
 	bool roofReached = false; 
-	bool collidedWithVerticalWall = false; 
+	bool collidedWithVerticalWall = false;
+	sideDynFloorType sideDynPlatfColType;
 	SDL_Rect lastPosCollider = { 0,0,0,0 }; 
 	Viscosity viscosityData; 
 	j1EntityPlatformDynamic* dynGroundCallback = nullptr; 
+	j1EntityPlatformDynamic* lastDynPlatf = nullptr; 
 
 	friend class j1BloodManager;
+
+
+	bool otherBloodDropInFloor = false; 
 
 
 };

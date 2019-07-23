@@ -405,8 +405,8 @@ void j1EntityPlayer::WeaponLogic()
 
 		j1KeyState shootButtonState = App->input->GetControllerAxisPulsation(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
 
-		if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
-			shootButtonState = KEY_DOWN; 
+		if (App->input->GetKey(SDL_SCANCODE_J) != KEY_IDLE)
+			shootButtonState = App->input->GetKey(SDL_SCANCODE_J);
 	
 		if(shootButtonState != KEY_IDLE)
 			ShootWeapon(shootButtonState);

@@ -157,8 +157,8 @@ private:
 
 public:
 	MapData data;
-	bool				map_loaded;
-	bool				showNavLayer = false;
+	bool map_loaded;
+	int mapLimitXWorldPos = 0; 
 
 	bool mapDebug = false; 
 

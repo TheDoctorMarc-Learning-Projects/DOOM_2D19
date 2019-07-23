@@ -559,6 +559,13 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 		{
 
 			App->collision->AddCollider(worldPos, COLLIDER_TYPE::COLLIDER_WALL);
+			for (auto property = object.child("properties").child("property"); property; property = property.next_sibling("property"))
+			{
+				std::string name = property.attribute("name").as_string();
+				if (name == "mapLimitX")
+					mapLimitXWorldPos = worldPos.x; 
+			}
+
 		}
 
 		else if (ObjectName == "staticPlatform")

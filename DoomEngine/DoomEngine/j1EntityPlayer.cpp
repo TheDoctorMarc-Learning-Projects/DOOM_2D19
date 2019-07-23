@@ -307,8 +307,11 @@ void j1EntityPlayer::VerticalMovement(float dt)
 
 void j1EntityPlayer::SetCollider()
 {
-	if (position.x < 0)   // TODO: Add right map limit blocking
+	if (position.x < 0)    
 		position.x = 0;
+
+	else if (position.x > App->map->mapLimitXWorldPos)
+		position.x = App->map->mapLimitXWorldPos; 
 
 	collider->SetPos(position.x, position.y);
 	collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
@@ -601,8 +604,8 @@ void j1EntityPlayer::WarnOtherModules()
 void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 {
 	bool lastOnplatform = onPlatform;
-
 	float ShotsPerSec = 0.0f;
+
 	switch (c2->type)
 	{
 		

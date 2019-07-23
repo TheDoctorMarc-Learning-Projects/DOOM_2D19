@@ -422,7 +422,7 @@ void j1Render::DoScroll()
 
 	captureX += scrollValues.speed; 
 
-	if (captureX > 0)    // TODO: add right limit too
+	if (captureX > 0 || captureX < -App->map->mapLimitXWorldPos + camera.w)    // TODO: add right limit too
 	{
 		scrollState = cameraScrollState::AVAILABLE;
 		return; 

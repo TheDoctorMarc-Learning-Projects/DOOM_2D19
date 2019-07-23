@@ -12,9 +12,17 @@ enum cameraScrollType
 	GRADUAL
 };
 
+
+enum cameraScrollState
+{
+	AVAILABLE,
+	SCROLLING
+};
+
+
 struct targetedScrollScreenLimits
 {
-	uint lateralValue = 400; 
+	uint lateralValue = 200; 
 };
 
 enum class direction
@@ -23,6 +31,12 @@ enum class direction
 	LEFT
 };
 
+struct lastScrollValues
+{
+	int speed = 0; 
+	float worldDistance = 0.f;
+	int originPos = 0.f; 
+};
 
 
 class j1Entity; 
@@ -64,8 +78,8 @@ public:
 	bool IsOnCamera(const int&x, const int&y, const int&w, const int& h) const;
 	bool isRectOnCamera(const SDL_Rect& dimensions ) const; 
 
-	void DoCameraScroll(cameraScrollType scrollType, direction dir, j1Entity* callback);
-
+	void SetCameraScroll(cameraScrollType scrollType, direction dir, int speed, int worldDistance);
+	void DoScroll(); 
 	// Draw & Blit
 	/*bool Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float speed = 1.0f, SDL_RendererFlip flip = SDL_FLIP_NONE, float spriteScale = 1.f, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX) const;
 	bool BlitGui(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float speed = 1.0f, float scaleFactor = 1.0f, float flippingAngle = 0.0f, SDL_Rect wantedRect = { 0, 0, 0, 0 }) const;*/
@@ -88,7 +102,8 @@ public:
 	SDL_Color		background;
 
 	targetedScrollScreenLimits screenDivisions; 
-
+	cameraScrollState scrollState; 
+	lastScrollValues scrollValues; 
 
 	bool doingScroll = false;
 

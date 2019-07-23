@@ -95,8 +95,9 @@ bool j1Render::Update(float dt)
 
 
 
-	//LOG("Camera x = %i and y = %i", camera.x, camera.y); 
-
+	if (scrollState == cameraScrollState::SCROLLING)
+		DoScroll(); 
+	
 
 
 	return true;
@@ -397,50 +398,41 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 }
 
 
-void j1Render::DoCameraScroll(cameraScrollType scrollType, direction dir, j1Entity* callback)
+void j1Render::SetCameraScroll(cameraScrollType scrollType, direction dir, int speed, int worldDistance)
 {
-
-	int targetPos = 0;
-
-
-	if (callback->type == ENTITY_TYPE::PLAYER)
+	if (scrollState != cameraScrollState::SCROLLING)
 	{
-		int Displacement = 0;
 
-		if (dynamic_cast<j1EntityPlayer*>(callback)->onDynamicplatform)   // when dragged by platform outside camera
-		{
+		scrollValues.speed = speed; 
+		scrollValues.worldDistance = worldDistance; 
+		scrollValues.originPos = camera.x; 
 
-			if (!callback->collider->onCollisionWithMe.empty())
-				for (auto& col : callback->collider->onCollisionWithMe)
-					if (col->hasCallback && col->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
-					{
-						Displacement = (int)callback->lastSpeed.x;
-						
-						if((dir == direction::LEFT && col->callback->pointingDir == LEFT) || (dir == direction::RIGHT && col->callback->pointingDir == RIGHT))
-							Displacement += col->callback->lastSpeed.x;
-						
-					}
-						
 
-		}
-		else
-			Displacement = (int)callback->lastSpeed.x; 
-	
-
-		if (dir == direction::RIGHT)
-		{
-			targetPos = camera.x - Displacement;   // todo: add right limit prevention 
-			camera.x -= Displacement;
-			int a = 0; 
-		}
-		else if (dir == direction::LEFT)
-		{
-			targetPos = camera.x - Displacement;
-
-			if (targetPos < 0)
-				camera.x -= Displacement;
-
-		}
+		scrollState = cameraScrollState::SCROLLING; 
 
 	}
+
 }
+
+
+
+void j1Render::DoScroll()
+{
+	int captureX = camera.x; 
+
+	captureX += scrollValues.speed; 
+
+	if (captureX > 0)    // TODO: add right limit too
+	{
+		scrollState = cameraScrollState::AVAILABLE;
+		return; 
+	}
+
+
+	camera.x = captureX;
+
+	if (abs(camera.x - scrollValues.originPos) >= scrollValues.worldDistance)
+		scrollState = cameraScrollState::AVAILABLE; 
+
+}
+

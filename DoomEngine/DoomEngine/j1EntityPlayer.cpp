@@ -228,6 +228,7 @@ void j1EntityPlayer::HorizonatlMovement(float dt)
 			else
 				lastSpeed.x = (xAxis * speed) * dt;
 
+
 			state.movement.at(0) = (xAxis < 0) ? MovementState::INPUT_LEFT : state.movement.at(0);
 			state.movement.at(0) = (xAxis > 0) ? MovementState::INPUT_RIGHT : state.movement.at(0);
 
@@ -580,14 +581,18 @@ void j1EntityPlayer::WarnOtherModules()
 	
 
 	// - - - - - - - - - - - - - - - - >> Render 
+	int speed = -15; 
+
+	if (pointingDir == LEFT)
+		speed = -speed; 
 
 	if ((lastSpeed.x > 0 || onDynamicplatform) && -(int)position.x < App->render->camera.x - App->render->camera.w + (int)App->render->screenDivisions.lateralValue)
 	{
-		App->render->DoCameraScroll(cameraScrollType::GRADUAL, direction::RIGHT, this); 
+		App->render->SetCameraScroll(cameraScrollType::GRADUAL, direction::RIGHT, speed, 650); 
 	}
 	else if ((lastSpeed.x < 0|| onDynamicplatform) && -(int)position.x > App->render->camera.x - (int)App->render->screenDivisions.lateralValue && (int)previousPosition.x > (int)App->render->screenDivisions.lateralValue)
 	{
-		App->render->DoCameraScroll(cameraScrollType::GRADUAL, direction::LEFT, this);
+		App->render->SetCameraScroll(cameraScrollType::GRADUAL, direction::LEFT, speed, 650);
 	}
 }
 

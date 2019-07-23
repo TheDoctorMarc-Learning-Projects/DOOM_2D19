@@ -948,8 +948,6 @@ void j1EntityPlayer::PickWeapon(Collider* c2)
 
 		App->audio->PlayFx("weaponPickUp");
 
-
-
 		dynamic_cast<j1EntityLootWeapon*>(c2->callback)->blitOrder = 2U;   // so it is under enemies, but on top when picked
 
 

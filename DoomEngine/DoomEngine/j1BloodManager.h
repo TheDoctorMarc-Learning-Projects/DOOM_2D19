@@ -14,7 +14,7 @@
 
 
 #define bloodCubeSideSize 3
-#define bloodModuleSpeed 10.5f
+#define bloodModuleSpeed 12.5f
 #define randomBloodSpeedXFactor 0.6f
 #define bloodAmountPerDamageProportion 0.34f
 

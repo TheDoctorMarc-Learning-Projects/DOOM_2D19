@@ -15081,7 +15081,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="9" name="BackgroundFront" width="278" height="18" visible="0">
+ <layer id="9" name="BackgroundFront" width="278" height="18">
   <data>
    <tile/>
    <tile/>
@@ -17044,9 +17044,9 @@
    <tile gid="2533"/>
    <tile gid="2534"/>
    <tile gid="2533"/>
+   <tile gid="2534"/>
    <tile gid="2533"/>
-   <tile gid="2533"/>
-   <tile gid="2533"/>
+   <tile gid="2534"/>
    <tile gid="2533"/>
    <tile gid="2534"/>
    <tile gid="2533"/>
@@ -17321,12 +17321,12 @@
    <tile gid="2536"/>
    <tile gid="2535"/>
    <tile gid="2536"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2535"/>
+   <tile gid="2536"/>
+   <tile gid="2535"/>
+   <tile gid="2536"/>
+   <tile gid="2535"/>
+   <tile gid="2536"/>
    <tile gid="2535"/>
    <tile gid="2536"/>
    <tile gid="2535"/>

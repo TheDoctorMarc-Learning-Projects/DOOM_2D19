@@ -8,7 +8,7 @@ j1EntityBloodDrop::j1EntityBloodDrop(int posX, int posY, fPoint Speed, Color c) 
 {
 	drawActive = false; 
 	mass = 1.F; 
-	gravityFactor = DEFAULT_GRAV / mass;
+	gravityFactor = DEFAULT_GRAV / 1;
 	initialSpeed = Speed; 
 	lastSpeed = Speed; 
 	this->c = c; 
@@ -45,7 +45,7 @@ bool j1EntityBloodDrop::Update(float dt)
 	{
 		if (!roofReached)
 		{
-			static float decrementY = 0.7f;
+			static float decrementY = 0.8f;
 			static float decrementX = 0.97f;
 
 			float v1 = initialSpeed.y *= decrementY;
@@ -58,7 +58,17 @@ bool j1EntityBloodDrop::Update(float dt)
 		else
 		{
 			initialSpeed.y = 0;  // so that when it falls from roof again, it just goes down with gravity 
-			lastSpeed.x = 0;
+
+
+			if (dynGroundCallback)
+			{
+				if (dynGroundCallback->movementType == AXIS_Movement::HORIZONTAL)
+					lastSpeed.x = dynGroundCallback->lastSpeed.x;
+
+			}
+			else
+				lastSpeed.x = 0;
+
 
 			if (viscosityData.frameCounter != 0 && viscosityData.frameCounter % viscosityData.frameRate == 0)
 				lastSpeed.y = viscosityData.speed;
@@ -122,8 +132,8 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 								position.y -= offset;
 
 
-								if (c2->hasCallback && c2->callback->type == ENTITY_DYNAMIC)
-									dynGroundCallback = dynamic_cast<j1EntityPlatformDynamic*>(c2->callback); 
+								/*if (c2->hasCallback && c2->callback->type == ENTITY_DYNAMIC)
+									dynGroundCallback = dynamic_cast<j1EntityPlatformDynamic*>(c2->callback); */
 							}
 						}
 
@@ -173,6 +183,11 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 
 				collider->SetPos(position.x, position.y);
 			}
+
+			if(dynGroundCallback == nullptr)
+				if (c2->hasCallback && c2->callback->type == ENTITY_DYNAMIC)
+					dynGroundCallback = dynamic_cast<j1EntityPlatformDynamic*>(c2->callback);
+			
 			
 		}
 
@@ -237,8 +252,8 @@ void j1EntityBloodDrop::OnCollisionExit(Collider* c1, Collider* c2)
 {
 	if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_WALL)
 	{
-		if (lastSpeed.y > 0 && collider->rect.y > c2->rect.y + c2->rect.h)
-		{
+		/*if (lastSpeed.y > 0 && collider->rect.y > c2->rect.y + c2->rect.h)
+		{*/
 			if (roofReached)
 			{
 				roofReached = false;
@@ -252,7 +267,11 @@ void j1EntityBloodDrop::OnCollisionExit(Collider* c1, Collider* c2)
 					 
 			}
 				
-		}
+		//}
+
+
+			if (dynGroundCallback != nullptr)
+				dynGroundCallback = nullptr; 
 	
 	}
 }

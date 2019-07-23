@@ -319,8 +319,8 @@ void j1EntityPlayer::SetCollider()
 	if (position.x < 0)    
 		position.x = 0;
 
-	/*else if (position.x > App->map->mapLimitXWorldPos)  // TODO: uncomment this
-		position.x = App->map->mapLimitXWorldPos;*/ 
+	else if (position.x > App->map->mapLimitXWorldPos)  // TODO: uncomment this
+		position.x = App->map->mapLimitXWorldPos;
 
 	collider->SetPos(position.x, position.y);
 	collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);

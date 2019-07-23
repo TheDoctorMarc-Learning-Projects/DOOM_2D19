@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="330" height="26" tilewidth="32" tileheight="32" infinite="0" nextlayerid="36" nextobjectid="219">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="330" height="26" tilewidth="32" tileheight="32" infinite="0" nextlayerid="36" nextobjectid="221">
  <tileset firstgid="1" name="qzNJ1V6_3x (1)" tilewidth="32" tileheight="32" tilecount="2520" columns="140">
   <image source="textures/background_level1.png" width="4488" height="600"/>
  </tileset>
@@ -19684,6 +19684,8 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2533"/>
+   <tile gid="2534"/>
    <tile/>
    <tile/>
    <tile/>
@@ -20012,10 +20014,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2535"/>
+   <tile gid="2536"/>
    <tile/>
    <tile/>
    <tile/>
@@ -34542,13 +34542,12 @@
     <property name="heightLevel" type="int" value="2"/>
    </properties>
   </object>
-  <object id="102" name="staticPlatform" x="4192" y="352" width="512" height="32">
+  <object id="102" name="staticPlatform" x="4064" y="352" width="640" height="32">
    <properties>
     <property name="heightLevel" type="int" value="2"/>
    </properties>
   </object>
   <object id="103" name="wall" x="4288" y="384" width="32" height="96"/>
-  <object id="104" name="wall" x="4576" y="160" width="32" height="96"/>
   <object id="106" name="dynamicPlatform" x="740.364" y="350.667" width="192" height="32">
    <properties>
     <property name="axis" value="vertical"/>
@@ -34600,7 +34599,7 @@
     <property name="type" value="EnemyBaronOfHell"/>
    </properties>
   </object>
-  <object id="122" name="enemy" x="2592" y="192" width="32" height="32">
+  <object id="122" name="enemy" x="2528" y="192" width="32" height="32">
    <properties>
     <property name="type" value="EnemyCacodemon"/>
    </properties>
@@ -34676,7 +34675,6 @@
    </properties>
   </object>
   <object id="168" name="staticPlatform" x="2176" y="128" width="32" height="32"/>
-  <object id="169" name="staticPlatform" x="4576" y="256" width="32" height="32"/>
   <object id="170" name="staticPlatform" x="6464" y="256" width="32" height="32"/>
   <object id="171" name="enemy" x="2336" y="352" width="32" height="32">
    <properties>
@@ -34693,12 +34691,7 @@
     <property name="type" value="EnemyBaronOfHell"/>
    </properties>
   </object>
-  <object id="176" name="enemy" x="3520" y="192" width="32" height="32">
-   <properties>
-    <property name="type" value="EnemyCacodemon"/>
-   </properties>
-  </object>
-  <object id="177" name="enemy" x="4448" y="192" width="32" height="32">
+  <object id="176" name="enemy" x="4384" y="192" width="32" height="32">
    <properties>
     <property name="type" value="EnemyCacodemon"/>
    </properties>
@@ -34798,11 +34791,6 @@
     <property name="type" value="EnemyIMP"/>
    </properties>
   </object>
-  <object id="201" name="enemy" x="4320" y="288" width="32" height="32">
-   <properties>
-    <property name="type" value="EnemyHellKnight"/>
-   </properties>
-  </object>
   <object id="202" name="enemy" x="4480" y="288" width="32" height="32">
    <properties>
     <property name="type" value="EnemyIMP"/>
@@ -34813,7 +34801,7 @@
     <property name="type" value="EnemyIMP"/>
    </properties>
   </object>
-  <object id="205" name="enemy" x="5344" y="480" width="32" height="32">
+  <object id="205" name="enemy" x="5504" y="480" width="32" height="32">
    <properties>
     <property name="type" value="EnemyIMP"/>
    </properties>
@@ -34873,6 +34861,12 @@
     <property name="type" value="EnemyCacodemon"/>
    </properties>
   </object>
+  <object id="219" name="enemy" x="3584" y="480" width="32" height="32">
+   <properties>
+    <property name="type" value="EnemyIMP"/>
+   </properties>
+  </object>
+  <object id="220" name="wall" x="5312" y="416" width="32" height="128"/>
  </objectgroup>
  <layer id="35" name="Floor" width="330" height="26">
   <data>
@@ -36669,7 +36663,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2543"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -36999,7 +36993,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2543"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -37329,7 +37323,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2543"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -37659,7 +37653,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2543"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -38633,10 +38627,10 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2541"/>
+   <tile gid="2542"/>
+   <tile gid="2543"/>
+   <tile gid="2544"/>
    <tile gid="2541"/>
    <tile gid="2542"/>
    <tile gid="2543"/>
@@ -39332,7 +39326,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="2543"/>
    <tile/>
    <tile/>
    <tile/>
@@ -39662,7 +39656,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="2543"/>
    <tile/>
    <tile/>
    <tile/>
@@ -39992,7 +39986,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="2543"/>
    <tile/>
    <tile/>
    <tile/>
@@ -40322,7 +40316,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="2543"/>
    <tile/>
    <tile/>
    <tile/>

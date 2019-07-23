@@ -16,7 +16,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	speed = 50.75f;
 	mass = 1.8f;
 	gravityFactor = DEFAULT_GRAV / mass; 
-	tileDetectionRange = 20;
+	tileDetectionRange = 6;
 	cadenceValues.melee = 3000;
 	cadenceValues.longRange = 3000; 
 	damageValues.melee = 120;
@@ -29,7 +29,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	dataAnimFx.hasSecondDeathFx = false;
 	dataAnimFx.firstAttackFxIsMelee = false; 
 	hasMaxDistanceFromOrigin = true; 
-	maxDistFromOrigin = 8U; 
+	maxDistFromOrigin = 6U; 
 	myMeleeRange = 2U; 
 
 	state.movement.at(1) = eMovementState::NOT_ACTIVE;   // NEVER to jump or fall 
@@ -193,6 +193,7 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 	{
 		if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_WALL)
 		{
+
 			if(c2->hasCallback == true)
 				lastPlatform = dynamic_cast<j1EntityPlatform*>(c2->callback);
 
@@ -302,7 +303,6 @@ void j1EnemyCacodemon::SetDeviation(bool horizontal, Collider* c2)
 				specificDir = iPoint(0, -1);   // GO top
 			
 		}
-
 
 
 		state.path = ePathState::TEMPORAL_DEVIATION;

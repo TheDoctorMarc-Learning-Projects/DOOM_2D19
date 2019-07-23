@@ -47,22 +47,19 @@ bool j1Scene::Start()
 	if (state == SceneState::LEVEL1)
 	{
 		//App->audio->PlayMusic("audio/music/FFDI_Theme_14.ogg", -1);   // change with new music
-		//LoadNewMap("maps/level 1.tmx");
-		LoadNewMap("maps/level 1 for testing.tmx");
+		LoadNewMap("maps/level 1.tmx");
+		//LoadNewMap("maps/level 1 for testing.tmx");
 		App->audio->PlayMusic("sound/music/Rip & Tear.ogg", -1);
 	}
 
 	if (state == SceneState::LEVEL2)
 	{
 
-		//App->audio->PlayMusic("audio/music/BRPG_Hell_Spawn_FULL_Loop.ogg", -1);  // change with new music
-
 	}
 
 	if (state == SceneState::STARTMENU)
 	{
 
-		//App->audio->PlayMusic("audio/music/menu_1.0.ogg");   // change with new music
 	}
 
 

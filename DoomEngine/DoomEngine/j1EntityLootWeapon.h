@@ -102,6 +102,7 @@ private:
 
 public: 
 	int currentBullets = 0;
+	int maxBullets = 0; 
 
 	friend class j1EntityPlayer; 
 };

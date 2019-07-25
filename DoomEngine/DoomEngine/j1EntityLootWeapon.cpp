@@ -15,6 +15,8 @@ j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_ty
 	this->weaponData.weaponState = WEAPON_STATE::AWAIT; 
 	currentBullets = weaponData.maxBullets; 
 
+	maxBullets = currentBullets * 3.f; 
+
 	// define an offset from player, which may vary depending on weapon sprite
 
 	 

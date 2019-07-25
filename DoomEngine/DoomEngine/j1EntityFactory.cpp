@@ -308,17 +308,17 @@ j1Entity* j1EntityFactory::CreateHealth(ENTITY_TYPE type, int positionX, int pos
 
 
 
-/*j1Entity* j1EntityFactory::CreateAmmo(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE lootType)
+j1Entity* j1EntityFactory::CreateAmmo(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE lootType)
 {
 	j1Entity* ret = nullptr;
 
-	ret = DBG_NEW j1EntityLootAmmo(positionX, positionY, LOOT_TYPE::HEALTH, name);
+	ret = DBG_NEW j1EntityLootAmmo(positionX, positionY, LOOT_TYPE::AMMO, name);
 
 	if (ret)
 		entities.push_back(ret);
 
 	return ret;
-}*/
+}
 
 
 
@@ -385,4 +385,18 @@ void j1EntityFactory::AddLifeToEntity(j1Entity* ent, float maxLifePercentatge)
 		captureLife -= (captureLife - ent->maxLife);
 
 	ent->life = captureLife;
+}
+
+
+void j1EntityFactory::AddAmmoToPlayer(float maxBulletPercentage)
+{
+	int bullets = player->currentWeapon->currentBullets; 
+
+	bullets += (int)(maxBulletPercentage * (float)player->currentWeapon->maxBullets); 
+
+	if (bullets > player->currentWeapon->maxBullets)
+		bullets -= (bullets - player->currentWeapon->maxBullets);
+
+	player->currentWeapon->currentBullets = bullets;
+
 }

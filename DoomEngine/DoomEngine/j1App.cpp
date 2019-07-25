@@ -258,11 +258,13 @@ void j1App::FinishUpdate()
 	}
 
     static char title[256];
-	sprintf_s(title, 256, "FPS: %i, Av.FPS: %.2f Last Frame Ms: %02u / Time since startup: %.3f Frame Count: %lu / Frame Cap: / bullets: %i / life: %i",
-		frames_on_last_update, avg_fps, last_frame_ms, seconds_since_startup, frame_count, /*framerate_cap*/ playerHealth, currentWeaponAmmo);
-
+	//sprintf_s(title, 256, "FPS: %i, Av.FPS: %.2f Last Frame Ms: %02u / Time since startup: %.3f Frame Count: %lu / Frame Cap: ",
+		//frames_on_last_update, avg_fps, last_frame_ms, seconds_since_startup, frame_count /*framerate_cap*/); 
 	
-	//	App->win->AddStringToTitle(title);
+ 
+
+	sprintf_s(title, 256, "life: %i / bullets: %i", playerHealth, currentWeaponAmmo);
+
 
 	App->win->SetTitle(title);
 

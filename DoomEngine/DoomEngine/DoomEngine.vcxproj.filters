@@ -156,6 +156,9 @@
     <ClCompile Include="j1EntityLootHealth.cpp">
       <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
     </ClCompile>
+    <ClCompile Include="j1EntityLootAmmo.cpp">
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h">
@@ -279,6 +282,9 @@
       <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
     </ClInclude>
     <ClInclude Include="j1EntityLootHealth.h">
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityLootAmmo.h">
       <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
     </ClInclude>
   </ItemGroup>

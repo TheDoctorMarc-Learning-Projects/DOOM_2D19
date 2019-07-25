@@ -15,6 +15,7 @@
 #include "j1EntityLootWeapon.h"
 #include "j1EntityLootCoin.h"
 #include "j1EntityLootHealth.h"
+#include "j1EntityLootAmmo.h"
 #include <map>
 
 enum damage_Frame_Type
@@ -47,6 +48,8 @@ public:
 
 	void DoDamagetoEntity(j1Entity* ent, float damage, float shotsPerSecond, fPoint shotSpeed = fPoint(0,0));   // to do: capture shot dir and enemy rect for the blood functionality
 	void AddLifeToEntity(j1Entity* ent, float maxLifePercentatge = 0.0f); 
+	void AddAmmoToPlayer(float maxBulletPercentage = 0.0f); 
+
 	/*bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;*/  // TODO (xd) 
 

@@ -854,6 +854,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 				dynamic_cast<j1EntityLootCoin*>(c2->callback)->OnPickUp(); 
 			else if (dynamic_cast<j1EntityLoot*>(c2->callback)->GetType() == LOOT_TYPE::HEALTH)
 				dynamic_cast<j1EntityLootHealth*>(c2->callback)->OnPickUp();
+			else if (dynamic_cast<j1EntityLoot*>(c2->callback)->GetType() == LOOT_TYPE::AMMO)
+				dynamic_cast<j1EntityLootAmmo*>(c2->callback)->OnPickUp();
 			
 	    }
 

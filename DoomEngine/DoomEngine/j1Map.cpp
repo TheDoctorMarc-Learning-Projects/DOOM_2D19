@@ -686,7 +686,9 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 			{
 				 
 				if(ObjectName == "health")
-					App->entityFactory->CreateHealth(ENTITY_TYPE::LOOT, worldPos.x, worldPos.y, "figure", LOOT_TYPE::HEALTH);
+					App->entityFactory->CreateHealth(ENTITY_TYPE::LOOT, worldPos.x, worldPos.y, "health", LOOT_TYPE::HEALTH);
+				else if (ObjectName == "ammo")
+					App->entityFactory->CreateAmmo(ENTITY_TYPE::LOOT, worldPos.x, worldPos.y, "ammo", LOOT_TYPE::AMMO);
 				
 			}
 

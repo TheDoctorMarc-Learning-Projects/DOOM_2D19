@@ -390,13 +390,21 @@ void j1EntityFactory::AddLifeToEntity(j1Entity* ent, float maxLifePercentatge)
 
 void j1EntityFactory::AddAmmoToPlayer(float maxBulletPercentage)
 {
-	int bullets = player->currentWeapon->currentBullets; 
+	if(player->myWeapons.empty() == false)
+		for (auto& weapon : player->myWeapons)
+		{
+			if (weapon->maxBullets == 0.0f)
+				return; 
 
-	bullets += (int)(maxBulletPercentage * (float)player->currentWeapon->maxBullets); 
+			int bullets = weapon->currentBullets;
 
-	if (bullets > player->currentWeapon->maxBullets)
-		bullets -= (bullets - player->currentWeapon->maxBullets);
+			bullets += (int)(maxBulletPercentage * (float)weapon->maxBullets);
 
-	player->currentWeapon->currentBullets = bullets;
+			if (bullets > weapon->maxBullets)
+				bullets -= (bullets - weapon->maxBullets);
+
+			weapon->currentBullets = bullets;
+		}
+	
 
 }

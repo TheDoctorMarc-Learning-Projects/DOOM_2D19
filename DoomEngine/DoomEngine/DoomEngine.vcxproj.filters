@@ -55,6 +55,12 @@
     <Filter Include="Code\Core\In-Game\Entities\inanimated\platforms">
       <UniqueIdentifier>{7f3f0321-1941-45e8-bcde-a76a7f8389cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Core\In-Game\Entities\inanimated\loot\Basic Pickup Items">
+      <UniqueIdentifier>{d5ba5a94-fec4-4d4c-bfaa-2e3077c307a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Core\In-Game\Entities\inanimated\loot\Weapons">
+      <UniqueIdentifier>{f1033b18-420c-46c9-8f21-77127d2c30a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="j1App.cpp">
@@ -126,9 +132,6 @@
     <ClCompile Include="j1Particles.cpp">
       <Filter>Code\Core\In-Game</Filter>
     </ClCompile>
-    <ClCompile Include="j1EntityLootWeapon.cpp">
-      <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
-    </ClCompile>
     <ClCompile Include="j1EntityBloodDrop.cpp">
       <Filter>Code\Core\In-Game\Entities\inanimated\Blood</Filter>
     </ClCompile>
@@ -147,17 +150,23 @@
     <ClCompile Include="j1EnemyHellKnight.cpp">
       <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="j1EntityLootCoin.cpp">
-      <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
-    </ClCompile>
     <ClCompile Include="j1BloodManager.cpp">
       <Filter>Code\Core\In-Game\Entities\inanimated\Blood</Filter>
     </ClCompile>
-    <ClCompile Include="j1EntityLootHealth.cpp">
-      <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
-    </ClCompile>
     <ClCompile Include="j1EntityLootAmmo.cpp">
-      <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot\Basic Pickup Items</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EntityLootCoin.cpp">
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot\Basic Pickup Items</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EntityLootHealth.cpp">
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot\Basic Pickup Items</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EntityLootWeapon.cpp">
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EntityLootArmor.cpp">
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot\Basic Pickup Items</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -248,9 +257,6 @@
     <ClInclude Include="j1EntityLoot.h">
       <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
     </ClInclude>
-    <ClInclude Include="j1EntityLootWeapon.h">
-      <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
-    </ClInclude>
     <ClInclude Include="j1PathFinding.h">
       <Filter>Code\Core\In-Game</Filter>
     </ClInclude>
@@ -278,14 +284,20 @@
     <ClInclude Include="j1EnemyHellKnight.h">
       <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="j1EntityLootCoin.h">
-      <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
-    </ClInclude>
     <ClInclude Include="j1EntityLootHealth.h">
-      <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot\Basic Pickup Items</Filter>
     </ClInclude>
     <ClInclude Include="j1EntityLootAmmo.h">
-      <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot\Basic Pickup Items</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityLootCoin.h">
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot\Basic Pickup Items</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityLootWeapon.h">
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityLootArmor.h">
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot\Basic Pickup Items</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

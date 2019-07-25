@@ -322,6 +322,19 @@ j1Entity* j1EntityFactory::CreateAmmo(ENTITY_TYPE type, int positionX, int posit
 
 
 
+j1Entity* j1EntityFactory::CreateArmor(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE lootType)
+{
+	j1Entity* ret = nullptr;
+
+	ret = DBG_NEW j1EntityLootArmor(positionX, positionY, LOOT_TYPE::ARMOR, name);
+
+	if (ret)
+		entities.push_back(ret);
+
+	return ret;
+}
+
+
 void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadence, fPoint shotSpeed)
 {
 
@@ -347,20 +360,45 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 
 	if (ent->type != PLAYER)
 	{
-		if (player->godMode == true)
+		if (player->godMode == true)  // if godmode is active, just kill the enemy 
 			ent->life = 0.f;
 		else
 			ent->life -= damage;
 	}
 	else
-		ent->life -= damage;
+	{
+		
+		if (player->armor > 0.0f)
+		{
+			float captureArmor = player->armor;     // apply damage to the armor first 
+			float extraDamage = 0.0f;
+
+			captureArmor -= damage;
+
+			if (captureArmor >= 0.0f)
+				player->armor = captureArmor; 
+			else
+			{
+				player->armor = 0.0f; 
+				extraDamage = abs(captureArmor);
+				player->life -= extraDamage; 
+			}
+				
+		}
+		else
+			player->life -= damage;     
+
+		
+			
+	}
+		
 
 	
 	if (ent->life <= 0.f)
 	{
 		bool brutal = false; 
 
-		if (ent->life <= -EXTRA_DAMAGE_TO_TRIGGER_BRUTAL_DEATH)
+		if (ent->life <= -EXTRA_DAMAGE_TO_TRIGGER_BRUTAL_DEATH)  // if life exceeds a negative value, it is considered as a brutal death
 			brutal = true; 
 
 		ent->SetDyingState(brutal);
@@ -368,7 +406,7 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 	else
 		App->audio->PlayFx(ent->name + "Injured");
 
-	uint bloodDropAmount = App->bloodManager->CalculateNumberOfBloodDropsToBeSpawned(damage, cadence);   // TODO: damage in weapon is affected by scope, so calculate it accordingly
+	uint bloodDropAmount = App->bloodManager->CalculateNumberOfBloodDropsToBeSpawned(damage, cadence); 
 
 	App->bloodManager->CreateTargetedBloodSteam(ent->collider->rect, 0.5f, bloodDropAmount, shotSpeed);
 }
@@ -407,4 +445,16 @@ void j1EntityFactory::AddAmmoToPlayer(float maxBulletPercentage)
 		}
 	
 
+}
+
+void j1EntityFactory::AddArmorToPlayer(float maxArmorPercentatge)
+{
+	float captureArmor = player->armor;
+
+	captureArmor += (maxArmorPercentatge * player->maxArmor);
+
+	if (captureArmor > player->maxArmor)
+		captureArmor -= (captureArmor - player->maxArmor);
+
+	player->armor = captureArmor;
 }

@@ -23,8 +23,8 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY, std::string name) : j1Entity(
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = PLAYER; 
 	this->name = name;
-	life = 500;        // TODO: show life in percentatge UI, not this value 
-	maxLife = life; 
+	maxLife = life = 500;        // TODO: show life in percentatge UI, not this value 
+	maxArmor = 300; 
 	position = previousPosition = fPoint(posX, posY); 
 	pointingDir = RIGHT;
 	size.create(34, 53);
@@ -856,7 +856,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 				dynamic_cast<j1EntityLootHealth*>(c2->callback)->OnPickUp();
 			else if (dynamic_cast<j1EntityLoot*>(c2->callback)->GetType() == LOOT_TYPE::AMMO)
 				dynamic_cast<j1EntityLootAmmo*>(c2->callback)->OnPickUp();
-			
+			else if (dynamic_cast<j1EntityLoot*>(c2->callback)->GetType() == LOOT_TYPE::ARMOR)
+				dynamic_cast<j1EntityLootArmor*>(c2->callback)->OnPickUp();
 	    }
 
 		break;

@@ -16,6 +16,7 @@
 #include "j1EntityLootCoin.h"
 #include "j1EntityLootHealth.h"
 #include "j1EntityLootAmmo.h"
+#include "j1EntityLootArmor.h"
 #include <map>
 
 enum damage_Frame_Type
@@ -49,6 +50,7 @@ public:
 	void DoDamagetoEntity(j1Entity* ent, float damage, float shotsPerSecond, fPoint shotSpeed = fPoint(0,0));   // to do: capture shot dir and enemy rect for the blood functionality
 	void AddLifeToEntity(j1Entity* ent, float maxLifePercentatge = 0.0f); 
 	void AddAmmoToPlayer(float maxBulletPercentage = 0.0f); 
+	void AddArmorToPlayer(float maxArmorPercentage = 0.0f); 
 
 	/*bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;*/  // TODO (xd) 
@@ -62,7 +64,7 @@ public:
 	 j1Entity* CreateCoin(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type, bool classic);
 	 j1Entity* CreateHealth(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type); 
 	 j1Entity* CreateAmmo(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type);
-	// j1Entity* CreateArmor(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type);
+	 j1Entity* CreateArmor(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type);
 	 
 
 	bool isDistanceToManhattan(iPoint tilePos, iPoint targetTilePos, int distance)

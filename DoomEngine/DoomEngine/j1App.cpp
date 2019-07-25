@@ -248,10 +248,12 @@ void j1App::FinishUpdate()
 
 	int playerHealth = 0; 
 	int currentWeaponAmmo = 0;
+	int playerArmor = 0; 
 
 	if (App->entityFactory->player != nullptr)
 	{
 		playerHealth = (int)App->entityFactory->player->life; 
+		playerArmor = (int)App->entityFactory->player->armor;
 		
 		if (App->entityFactory->player->currentWeapon != nullptr)
 			currentWeaponAmmo = App->entityFactory->player->currentWeapon->currentBullets; 
@@ -263,7 +265,7 @@ void j1App::FinishUpdate()
 	
  
 
-	sprintf_s(title, 256, "life: %i / bullets: %i", playerHealth, currentWeaponAmmo);
+	sprintf_s(title, 256, "life: %i / bullets: %i / armor: %i", playerHealth, currentWeaponAmmo, playerArmor);
 
 
 	App->win->SetTitle(title);

@@ -155,6 +155,7 @@
     <ClCompile Include="j1EntityBloodDrop.cpp" />
     <ClCompile Include="j1EntityFactory.cpp" />
     <ClCompile Include="j1EntityLootAmmo.cpp" />
+    <ClCompile Include="j1EntityLootArmor.cpp" />
     <ClCompile Include="j1EntityLootCoin.cpp" />
     <ClCompile Include="j1EntityLootHealth.cpp" />
     <ClCompile Include="j1EntityLootWeapon.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="j1EntityFactory.h" />
     <ClInclude Include="j1EntityLoot.h" />
     <ClInclude Include="j1EntityLootAmmo.h" />
+    <ClInclude Include="j1EntityLootArmor.h" />
     <ClInclude Include="j1EntityLootCoin.h" />
     <ClInclude Include="j1EntityLootHealth.h" />
     <ClInclude Include="j1EntityLootWeapon.h" />

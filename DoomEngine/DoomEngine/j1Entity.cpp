@@ -93,8 +93,14 @@ void j1Entity::Draw()
 
 	if (drawActive && entityTex != nullptr)
 	{
-		if(section.w > 0 && section.h > 0)
-			App->render->Blit(entityTex, position.x, position.y, &section, 1.f, flip, spriteScale, spriteRotation, rotationPivots.x, rotationPivots.y);
+		if (section.w > 0 && section.h > 0)  // easy way to distinguish basic loot and stuff
+		{
+			if(currentAnimation == nullptr)
+				App->render->Blit(entityTex, position.x, position.y, &section, 1.f, flip, spriteScale, spriteRotation, rotationPivots.x, rotationPivots.y);
+			else
+				App->render->Blit(entityTex, position.x, position.y, &currentAnimation->GetCurrentFrame(), 1.f, flip, spriteScale, spriteRotation, rotationPivots.x, rotationPivots.y);
+		}
+			
 		else if(currentAnimation)
 			App->render->Blit(entityTex, position.x, position.y, &currentAnimation->GetCurrentFrame(), 1.f, flip, spriteScale, spriteRotation, rotationPivots.x, rotationPivots.y);
 		
@@ -108,9 +114,7 @@ void j1Entity::Draw()
 POINTING_DIR j1Entity::GetDirection()
 {
 
-	// TODO: only do this with player and enemies  AND REWORK IT 
-
-	
+ 
 		if (lastSpeed.x < 0)
 			return pointingDir = POINTING_DIR::LEFT;
 		else if (lastSpeed.x > 0)

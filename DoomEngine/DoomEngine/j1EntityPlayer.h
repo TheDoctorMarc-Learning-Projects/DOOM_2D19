@@ -146,6 +146,8 @@ private:
 	
 public: 
 	bool godMode = false;
+	float armor = 0.0f; 
+	float maxArmor = 0.0f; 
 	myState state;
 	bool onDynamicplatform = false;
 	SDL_Rect lastPosCollider;

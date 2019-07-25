@@ -43,7 +43,7 @@ public:
 	unsigned int LoadFx(const char* path, std::string wantedName);
 
 	// Play a previously loaded WAV
-	bool PlayFx(std::string name, int repeat = 0, bool prioritary = false, float musReduc = (float)INT_MAX, float fxsReduc = (float)INT_MAX );
+	bool PlayFx(std::string name, int repeat = 0, bool prioritary = false, float volume = (float)INT_MAX, float musReduc = (float)INT_MAX, float fxsReduc = (float)INT_MAX );
 
 	//Set specific FX volume
 	bool SetSpecificFxVolume(std::string name, float volume);

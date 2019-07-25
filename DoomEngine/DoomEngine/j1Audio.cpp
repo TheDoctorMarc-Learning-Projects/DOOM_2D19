@@ -241,7 +241,7 @@ unsigned int j1Audio::LoadFx(const char* path, std::string wantedName)
 }
 
 // Play WAV
-bool j1Audio::PlayFx(std::string name, int repeat, bool prioritary, float musReduc, float fxsReduc)
+bool j1Audio::PlayFx(std::string name, int repeat, bool prioritary, float volume, float musReduc, float fxsReduc)
 {
 	bool ret = false;
 
@@ -256,8 +256,8 @@ bool j1Audio::PlayFx(std::string name, int repeat, bool prioritary, float musRed
 		SetVolume(musReduc);   // set a music to a lower volume while playing the wanted fx
 		SetFxVolume(fxsReduc);   // set a fx to a lower volume while playing the wanted fx
 
-
-		SetSpecificFxVolume(name, previous_fx_volume);   // finally, set the desired fx to be played on top with previous volume
+		 
+		SetSpecificFxVolume(name, volume);   // finally, set the desired fx to be played on top with the desired volume
 	}
 
 	int channel = 0;
@@ -295,7 +295,7 @@ void j1Audio::SetVolume(float volume)
 
 
 	if (previous_volume == 0.f)
-		previous_volume = 0.5f;
+		previous_volume = 0.5f;  // default equals max volume / 2 = 64 (0.5f)
 
 	final_volume = MIX_MAX_VOLUME * volume;
 	if (final_volume < 0.0f || final_volume > MIX_MAX_VOLUME)
@@ -310,7 +310,7 @@ void j1Audio::SetFxVolume(float volume)
 	previous_fx_volume = last_fx_volume;
 
 	if (previous_fx_volume == 0.f)
-		previous_fx_volume = 0.5f; 
+		previous_fx_volume = 0.5f; // default equals max volume / 2 = 64 (0.5f)
 
 	final_fx_volume = MIX_MAX_VOLUME * volume;
 	if (final_fx_volume < 0.0f || final_fx_volume > MIX_MAX_VOLUME)

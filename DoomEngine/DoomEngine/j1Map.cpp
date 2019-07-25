@@ -663,8 +663,26 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 			}
 
 
+			else if (ObjectName == "figure")
+			{
+				bool classic = false; 
 
-			if (ObjectName == "enemy")
+				for (auto property = object.child("properties").child("property"); property; property = property.next_sibling("property"))
+				{
+					std::string name = property.attribute("name").as_string();
+					if (name == "classicType")
+						classic = property.attribute("value").as_bool();
+			 
+
+
+				}
+				 
+
+				App->entityFactory->CreateCoin(ENTITY_TYPE::LOOT, worldPos.x, worldPos.y, "figure", LOOT_TYPE::WEAPON, classic);
+			}
+
+
+			else if (ObjectName == "enemy")
 			{
 				std::string enemyName = ""; 
 

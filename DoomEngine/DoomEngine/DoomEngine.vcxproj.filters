@@ -150,6 +150,9 @@
     <ClCompile Include="j1EnemyHellKnight.cpp">
       <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="j1EntityLootCoin.cpp">
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h">
@@ -268,6 +271,9 @@
     </ClInclude>
     <ClInclude Include="j1EnemyHellKnight.h">
       <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityLootCoin.h">
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

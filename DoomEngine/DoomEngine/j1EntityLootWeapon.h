@@ -1,5 +1,5 @@
-#ifndef _J1ENTITY_LOOT_H__
-#define _J1ENTITY_LOOT_H__
+#ifndef _J1ENTITY_LOOT_WEAPON_H__
+#define _J1ENTITY_LOOT_WEAPON_H__
 
 #include "j1EntityLoot.h"
 #include "j1Particles.h"

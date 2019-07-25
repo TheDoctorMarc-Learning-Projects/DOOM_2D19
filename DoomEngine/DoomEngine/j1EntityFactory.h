@@ -13,6 +13,7 @@
 #include "j1Scene.h"
 #include "j1EntityLoot.h"
 #include "j1EntityLootWeapon.h"
+#include "j1EntityLootCoin.h"
 #include <map>
 
 enum damage_Frame_Type
@@ -54,6 +55,7 @@ public:
 	 j1Entity* CreatePlatform(ENTITY_TYPE type, SDL_Rect placing, int heightLevel, std::string name,
 		int levelsUp = 0, int LevelsDown = 0, SceneState level = SceneState::LEVEL1, AXIS_Movement movementType = AXIS_Movement::HORIZONTAL);
 	 j1Entity* CreateWeapon(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type, weaponInfo weaponData);
+	 j1Entity* CreateCoin(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type, bool classic);
 
 	bool isDistanceToManhattan(iPoint tilePos, iPoint targetTilePos, int distance)
 	{

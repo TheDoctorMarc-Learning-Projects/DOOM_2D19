@@ -8,6 +8,7 @@ enum class LOOT_TYPE
 {
 	CONSUMABLE,
 	WEAPON,
+	COIN,
 	NO_LOOT
 };
 
@@ -27,6 +28,7 @@ public:
 		
 	
 		position = previousPosition = fPoint(posX, posY); 
+		blitOrder = 1U;
 
 		type = LOOT;
 		this->loot_type = loot_type; 

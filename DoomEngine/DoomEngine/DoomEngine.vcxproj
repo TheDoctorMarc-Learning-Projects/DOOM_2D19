@@ -154,6 +154,7 @@
     <ClCompile Include="j1Entity.cpp" />
     <ClCompile Include="j1EntityBloodDrop.cpp" />
     <ClCompile Include="j1EntityFactory.cpp" />
+    <ClCompile Include="j1EntityLootCoin.cpp" />
     <ClCompile Include="j1EntityLootWeapon.cpp" />
     <ClCompile Include="j1EntityPlayer.cpp" />
     <ClCompile Include="j1EntityPlatform.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="j1EntityBloodDrop.h" />
     <ClInclude Include="j1EntityFactory.h" />
     <ClInclude Include="j1EntityLoot.h" />
+    <ClInclude Include="j1EntityLootCoin.h" />
     <ClInclude Include="j1EntityLootWeapon.h" />
     <ClInclude Include="j1EntityPlatform.h" />
     <ClInclude Include="j1EntityPlayer.h" />

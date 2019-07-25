@@ -13,7 +13,7 @@
 j1Enemy::j1Enemy(int posX, int posY) : j1Entity(ENEMY_STATIC, posX, posY, "enemy")
 {
 	useRenderFlip = true; 
-
+	blitOrder = 2U; 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 
 	position = previousPosition = fPoint(posX, posY);

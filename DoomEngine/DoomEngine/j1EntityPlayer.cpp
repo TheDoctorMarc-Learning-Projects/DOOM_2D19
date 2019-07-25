@@ -18,7 +18,7 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY, std::string name) : j1Entity(
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - texture
 	entityTex = App->entityFactory->entityTextureMap.at(name); 
 	useRenderFlip = true; 
-	blitOrder = 2U; 
+	blitOrder = 4U; 
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = PLAYER; 
@@ -843,6 +843,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 	case COLLIDER_TYPE::COLLIDER_LOOT:
 
+		
 		if (c2->hasCallback)
 		{
 			if (dynamic_cast<j1EntityLoot*>(c2->callback)->GetType() == LOOT_TYPE::WEAPON)
@@ -974,7 +975,7 @@ void j1EntityPlayer::PickWeapon(Collider* c2)
 
 		App->audio->PlayFx("weaponPickUp");
 
-		dynamic_cast<j1EntityLootWeapon*>(c2->callback)->blitOrder = 2U;   // so it is under enemies, but on top when picked
+		dynamic_cast<j1EntityLootWeapon*>(c2->callback)->blitOrder = 3U;   // so it is under enemies, but on top when picked
 
 
 		

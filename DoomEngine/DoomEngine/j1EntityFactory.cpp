@@ -272,7 +272,7 @@ j1Entity* j1EntityFactory::CreateWeapon(ENTITY_TYPE type, int positionX, int pos
 {
 	j1Entity* ret = nullptr;
 
-	ret = DBG_NEW j1EntityLootWeapon(positionX, positionY, loot_type, name, weaponData);
+	ret = DBG_NEW j1EntityLootWeapon(positionX, positionY, LOOT_TYPE::WEAPON, name, weaponData);
 
 	if (ret)
 		entities.push_back(ret);
@@ -280,6 +280,18 @@ j1Entity* j1EntityFactory::CreateWeapon(ENTITY_TYPE type, int positionX, int pos
 	return ret;
 }
 
+
+j1Entity* j1EntityFactory::CreateCoin(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE lootType, bool classic)
+{
+	j1Entity* ret = nullptr;
+
+	ret = DBG_NEW j1EntityLootCoin(positionX, positionY, LOOT_TYPE::COIN, name, classic);
+
+	if (ret)
+		entities.push_back(ret);
+
+	return ret;
+}
 
 void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadence, fPoint shotSpeed)
 {

@@ -29,9 +29,16 @@ j1EntityLootCoin::j1EntityLootCoin(float posX, float posY, LOOT_TYPE loot_type, 
 
 void j1EntityLootCoin::OnPickUp()
 {
-	// TODO 1: play a pickup fx, so while it is player, the music and other fx are set to a desired lower volume 
+	if (to_delete == false)
+	{
+		// TODO 1: play a pickup fx, so while it is player, the music and other fx are set to a desired lower volume 
+		App->audio->PlayFx("figurePickUp", 0, true, 0.1f, 0.1f);
 
-	// TODO 3: add to the UI counter
+		// TODO 3: add to the UI counter
 
-	// TODO 2: destroy myself (call entity CleanUp()) 
+		// TODO 2: destroy myself
+		to_delete = true;
+
+	}
+
 }

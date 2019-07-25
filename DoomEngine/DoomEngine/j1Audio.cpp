@@ -57,6 +57,9 @@ bool j1Audio::Awake(pugi::xml_node& config)
 
 bool j1Audio::Start()
 {
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - coins
+	LoadFx("sound/fx/figurePickUp.wav", "figurePickUp");
+
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - weapons
 	LoadFx("sound/fx/dswpnup.wav", "weaponPickUp");
 	LoadFx("sound/fx/dsshotgn.wav", "shotgunShotFire");
@@ -109,6 +112,26 @@ bool j1Audio::Start()
  
 
 	return true;
+}
+
+bool j1Audio::Update(float dt)
+{
+	if (toUpdate == true)
+		if (prioritaryChunk != "empty")
+			if (isPlayingFx(prioritaryChunk) == false)
+				ResetMusicAndFxVolumes();
+
+	return true; 
+}
+
+void j1Audio::ResetMusicAndFxVolumes()
+{
+
+	SetVolume(previous_volume); 
+	SetFxVolume(previous_fx_volume); 
+
+	prioritaryChunk = "empty"; 
+	toUpdate = false; 
 }
 
 // Called before quitting
@@ -218,18 +241,29 @@ unsigned int j1Audio::LoadFx(const char* path, std::string wantedName)
 }
 
 // Play WAV
-bool j1Audio::PlayFx(std::string name, int repeat)
+bool j1Audio::PlayFx(std::string name, int repeat, bool prioritary, float musReduc, float fxsReduc)
 {
 	bool ret = false;
 
 	if(!active)
 		return false;
+	
+	if (prioritary == true)
+	{
+		prioritaryChunk = name;  // capture the chunk name that has a priority 
+		toUpdate = true; 
 
-	int channel = 0; 
+		SetVolume(musReduc);   // set a music to a lower volume while playing the wanted fx
+		SetFxVolume(fxsReduc);   // set a fx to a lower volume while playing the wanted fx
 
-	if(fxMap.at(name).chunk) // TODO: future prevention here
+
+		SetSpecificFxVolume(name, previous_fx_volume);   // finally, set the desired fx to be played on top with previous volume
+	}
+
+	int channel = 0;
+
+	if (fxMap.at(name).chunk) // TODO: future prevention here
 		channel = Mix_PlayChannel(fxMap.at(name).actualChannel, fxMap.at(name).chunk, repeat);
-		
 
 
 	return ret;
@@ -242,10 +276,7 @@ bool j1Audio::SetSpecificFxVolume(std::string name, float volume)
 	if (!active)
 		return false;
 
-
-	
-	
-	final_fx_volume = MIX_MAX_VOLUME * volume;;
+	final_fx_volume = MIX_MAX_VOLUME * volume;
 	if (final_fx_volume < 0.0f || final_fx_volume > MIX_MAX_VOLUME)
 		final_fx_volume = (final_fx_volume < 0.0f) ? 0.0f : MIX_MAX_VOLUME;
 
@@ -260,10 +291,15 @@ bool j1Audio::SetSpecificFxVolume(std::string name, float volume)
 
 void j1Audio::SetVolume(float volume)
 {
+	previous_volume = last_volume;
+
+
+	if (previous_volume == 0.f)
+		previous_volume = 0.5f;
+
 	final_volume = MIX_MAX_VOLUME * volume;
 	if (final_volume < 0.0f || final_volume > MIX_MAX_VOLUME)
 		final_volume = (final_volume < 0.0f) ? 0.0f : MIX_MAX_VOLUME;
-
 
 	Mix_VolumeMusic(final_volume);
 	last_volume = volume;
@@ -271,7 +307,12 @@ void j1Audio::SetVolume(float volume)
 
 void j1Audio::SetFxVolume(float volume)
 {
-	final_fx_volume = MIX_MAX_VOLUME * volume;;
+	previous_fx_volume = last_fx_volume;
+
+	if (previous_fx_volume == 0.f)
+		previous_fx_volume = 0.5f; 
+
+	final_fx_volume = MIX_MAX_VOLUME * volume;
 	if (final_fx_volume < 0.0f || final_fx_volume > MIX_MAX_VOLUME)
 		final_fx_volume = (final_fx_volume < 0.0f) ? 0.0f : MIX_MAX_VOLUME;
 

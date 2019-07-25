@@ -31,6 +31,8 @@ public:
 	bool Awake(pugi::xml_node&);
 
 	bool Start();
+
+	bool Update(float dt); 
 	// Called before quitting
 	bool CleanUp();
 
@@ -41,7 +43,7 @@ public:
 	unsigned int LoadFx(const char* path, std::string wantedName);
 
 	// Play a previously loaded WAV
-	bool PlayFx(std::string name, int repeat = 0);
+	bool PlayFx(std::string name, int repeat = 0, bool prioritary = false, float musReduc = (float)INT_MAX, float fxsReduc = (float)INT_MAX );
 
 	//Set specific FX volume
 	bool SetSpecificFxVolume(std::string name, float volume);
@@ -51,6 +53,9 @@ public:
 
 	// Set FX volume
 	void SetFxVolume(float volume);
+
+	// Set both
+	void ResetMusicAndFxVolumes(); 
 
 	void UnLoadAudio();
 
@@ -70,11 +75,15 @@ public:
 private:
 
 	_Mix_Music*			music = nullptr;
+	std::string prioritaryChunk = "empty"; 
+	bool toUpdate = false; 
 //	std::list<Mix_Chunk*>	fx;
 	float final_volume = MIX_MAX_VOLUME;
 	float final_fx_volume = MIX_MAX_VOLUME;
 	float last_volume = 0.0f;
 	float last_fx_volume = 0.0f; 
+	float previous_volume = 0.0f; 
+	float previous_fx_volume = 0.0f; 
 
 public: 
 	std::map<std::string, Mix_Chunk_Avanced> fxMap;

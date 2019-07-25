@@ -847,10 +847,11 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 		if (c2->hasCallback)
 		{
 			if (dynamic_cast<j1EntityLoot*>(c2->callback)->GetType() == LOOT_TYPE::WEAPON)
-			{
 				PickWeapon(c2);
-				
-			}
+
+			else if (dynamic_cast<j1EntityLoot*>(c2->callback)->GetType() == LOOT_TYPE::COIN)
+				dynamic_cast<j1EntityLootCoin*>(c2->callback)->OnPickUp(); 
+			
 	    }
 
 		break;

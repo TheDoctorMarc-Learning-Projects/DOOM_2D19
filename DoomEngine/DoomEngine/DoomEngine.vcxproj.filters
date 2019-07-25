@@ -43,9 +43,6 @@
     <Filter Include="Code\Core\In-Game\Entities\animated\Enemies">
       <UniqueIdentifier>{bfb21894-3384-4382-b64a-eae9ae2aa9ae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Code\Core\In-Game\Entities\inanimated\platforms">
-      <UniqueIdentifier>{7f3f0321-1941-45e8-bcde-a76a7f8389cd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Code\Core\In-Game\Entities\inanimated\loot">
       <UniqueIdentifier>{47371f93-e41b-41db-94b8-888ddf37cfe6}</UniqueIdentifier>
     </Filter>
@@ -54,6 +51,9 @@
     </Filter>
     <Filter Include="Code\Core\In-Game\Entities\inanimated\loot\help">
       <UniqueIdentifier>{f25ecf02-da7c-4d75-a3b0-9c6f834b3345}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Core\In-Game\Entities\inanimated\platforms">
+      <UniqueIdentifier>{7f3f0321-1941-45e8-bcde-a76a7f8389cd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -129,9 +129,6 @@
     <ClCompile Include="j1EntityLootWeapon.cpp">
       <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
     </ClCompile>
-    <ClCompile Include="j1BloodManager.cpp">
-      <Filter>Code\Core\In-Game\Entities\inanimated\Blood</Filter>
-    </ClCompile>
     <ClCompile Include="j1EntityBloodDrop.cpp">
       <Filter>Code\Core\In-Game\Entities\inanimated\Blood</Filter>
     </ClCompile>
@@ -152,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="j1EntityLootCoin.cpp">
       <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
+    </ClCompile>
+    <ClCompile Include="j1BloodManager.cpp">
+      <Filter>Code\Core\In-Game\Entities\inanimated\Blood</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

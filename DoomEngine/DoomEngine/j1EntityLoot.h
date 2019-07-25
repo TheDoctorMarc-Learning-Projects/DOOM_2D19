@@ -9,6 +9,9 @@ enum class LOOT_TYPE
 	CONSUMABLE,
 	WEAPON,
 	COIN,
+	HEALTH,
+	AMMO,
+	ARMOR,
 	NO_LOOT
 };
 

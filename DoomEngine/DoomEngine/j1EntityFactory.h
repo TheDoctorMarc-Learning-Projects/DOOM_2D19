@@ -2,7 +2,7 @@
 #define __J1ENTITYFACTORY_H__
 
 #include "j1Module.h"
-//#include "j1Entity.h"
+ 
 
 #include <vector>
 #include <list>
@@ -14,6 +14,7 @@
 #include "j1EntityLoot.h"
 #include "j1EntityLootWeapon.h"
 #include "j1EntityLootCoin.h"
+#include "j1EntityLootHealth.h"
 #include <map>
 
 enum damage_Frame_Type
@@ -45,8 +46,7 @@ public:
 	bool CleanUp();
 
 	void DoDamagetoEntity(j1Entity* ent, float damage, float shotsPerSecond, fPoint shotSpeed = fPoint(0,0));   // to do: capture shot dir and enemy rect for the blood functionality
- 
-
+	void AddLifeToEntity(j1Entity* ent, float maxLifePercentatge = 0.0f); 
 	/*bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;*/  // TODO (xd) 
 
@@ -57,6 +57,10 @@ public:
 		int levelsUp = 0, int LevelsDown = 0, SceneState level = SceneState::LEVEL1, AXIS_Movement movementType = AXIS_Movement::HORIZONTAL);
 	 j1Entity* CreateWeapon(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type, weaponInfo weaponData);
 	 j1Entity* CreateCoin(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type, bool classic);
+	 j1Entity* CreateHealth(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type); 
+	 j1Entity* CreateAmmo(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type);
+	// j1Entity* CreateArmor(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type);
+	 
 
 	bool isDistanceToManhattan(iPoint tilePos, iPoint targetTilePos, int distance)
 	{

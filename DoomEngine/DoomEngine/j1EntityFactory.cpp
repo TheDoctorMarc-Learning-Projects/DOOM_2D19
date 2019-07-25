@@ -293,6 +293,35 @@ j1Entity* j1EntityFactory::CreateCoin(ENTITY_TYPE type, int positionX, int posit
 	return ret;
 }
 
+
+j1Entity* j1EntityFactory::CreateHealth(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE lootType)
+{
+	j1Entity* ret = nullptr;
+
+	ret = DBG_NEW j1EntityLootHealth(positionX, positionY, LOOT_TYPE::HEALTH, name);
+
+	if (ret)
+		entities.push_back(ret);
+
+	return ret;
+}
+
+
+
+/*j1Entity* j1EntityFactory::CreateAmmo(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE lootType)
+{
+	j1Entity* ret = nullptr;
+
+	ret = DBG_NEW j1EntityLootAmmo(positionX, positionY, LOOT_TYPE::HEALTH, name);
+
+	if (ret)
+		entities.push_back(ret);
+
+	return ret;
+}*/
+
+
+
 void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadence, fPoint shotSpeed)
 {
 
@@ -344,3 +373,16 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 	App->bloodManager->CreateTargetedBloodSteam(ent->collider->rect, 0.5f, bloodDropAmount, shotSpeed);
 }
 
+
+
+void j1EntityFactory::AddLifeToEntity(j1Entity* ent, float maxLifePercentatge)
+{
+	float captureLife = ent->life;
+
+	captureLife += (maxLifePercentatge * ent->maxLife);
+
+	if (captureLife > ent->maxLife)
+		captureLife -= (captureLife - ent->maxLife);
+
+	ent->life = captureLife;
+}

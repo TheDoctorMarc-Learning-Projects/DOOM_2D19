@@ -24,6 +24,7 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY, std::string name) : j1Entity(
 	type = PLAYER; 
 	this->name = name;
 	life = 500;        // TODO: show life in percentatge UI, not this value 
+	maxLife = life; 
 	position = previousPosition = fPoint(posX, posY); 
 	pointingDir = RIGHT;
 	size.create(34, 53);
@@ -851,6 +852,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 			else if (dynamic_cast<j1EntityLoot*>(c2->callback)->GetType() == LOOT_TYPE::COIN)
 				dynamic_cast<j1EntityLootCoin*>(c2->callback)->OnPickUp(); 
+			else if (dynamic_cast<j1EntityLoot*>(c2->callback)->GetType() == LOOT_TYPE::HEALTH)
+				dynamic_cast<j1EntityLootHealth*>(c2->callback)->OnPickUp();
 			
 	    }
 

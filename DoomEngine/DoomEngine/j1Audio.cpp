@@ -59,7 +59,8 @@ bool j1Audio::Start()
 {
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - coins
 	LoadFx("sound/fx/figurePickUp.wav", "figurePickUp");
-
+	LoadFx("sound/fx/dsitemup.wav", "itemPickUp");
+	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - weapons
 	LoadFx("sound/fx/dswpnup.wav", "weaponPickUp");
 	LoadFx("sound/fx/dsshotgn.wav", "shotgunShotFire");
@@ -256,9 +257,9 @@ bool j1Audio::PlayFx(std::string name, int repeat, bool prioritary, float volume
 		SetVolume(musReduc);   // set a music to a lower volume while playing the wanted fx
 		SetFxVolume(fxsReduc);   // set a fx to a lower volume while playing the wanted fx
 
-		 
-		SetSpecificFxVolume(name, volume);   // finally, set the desired fx to be played on top with the desired volume
 	}
+
+	SetSpecificFxVolume(name, volume);   // finally, set the desired fx to be played on top with the desired volume
 
 	int channel = 0;
 

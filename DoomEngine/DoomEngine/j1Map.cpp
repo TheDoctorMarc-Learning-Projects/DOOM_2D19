@@ -678,7 +678,16 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 				}
 				 
 
-				App->entityFactory->CreateCoin(ENTITY_TYPE::LOOT, worldPos.x, worldPos.y, "figure", LOOT_TYPE::WEAPON, classic);
+				App->entityFactory->CreateCoin(ENTITY_TYPE::LOOT, worldPos.x, worldPos.y, "figure", LOOT_TYPE::COIN, classic);
+			}
+
+
+			else if (ObjectName == "health" || ObjectName == "ammo" || ObjectName == "armor")
+			{
+				 
+				if(ObjectName == "health")
+					App->entityFactory->CreateHealth(ENTITY_TYPE::LOOT, worldPos.x, worldPos.y, "figure", LOOT_TYPE::HEALTH);
+				
 			}
 
 

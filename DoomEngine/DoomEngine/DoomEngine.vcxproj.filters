@@ -153,6 +153,9 @@
     <ClCompile Include="j1BloodManager.cpp">
       <Filter>Code\Core\In-Game\Entities\inanimated\Blood</Filter>
     </ClCompile>
+    <ClCompile Include="j1EntityLootHealth.cpp">
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h">
@@ -273,6 +276,9 @@
       <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="j1EntityLootCoin.h">
+      <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityLootHealth.h">
       <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
     </ClInclude>
   </ItemGroup>

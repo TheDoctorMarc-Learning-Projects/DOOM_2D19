@@ -96,10 +96,12 @@ public:
 private:
 	weaponInfo weaponData; 
 	Collider* hotspotCol; 
-	int currentBullets = 0; 
 	bool firing = false; 
 	bool playerKO = false; 
 	bool arrivedFloor = false; 
+
+public: 
+	int currentBullets = 0;
 
 	friend class j1EntityPlayer; 
 };

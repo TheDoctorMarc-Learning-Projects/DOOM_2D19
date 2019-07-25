@@ -244,9 +244,22 @@ void j1App::FinishUpdate()
 	uint32 last_frame_ms = frame_time.Read();
 	frames_on_last_update = prev_last_sec_frame_count;
 
+	// TODO: remove the extra indications here
+
+	int playerHealth = 0; 
+	int currentWeaponAmmo = 0;
+
+	if (App->entityFactory->player != nullptr)
+	{
+		playerHealth = (int)App->entityFactory->player->life; 
+		
+		if (App->entityFactory->player->currentWeapon != nullptr)
+			currentWeaponAmmo = App->entityFactory->player->currentWeapon->currentBullets; 
+	}
+
     static char title[256];
-	sprintf_s(title, 256, "FPS: %i, Av.FPS: %.2f Last Frame Ms: %02u / Time since startup: %.3f Frame Count: %lu / Frame Cap: ",
-		frames_on_last_update, avg_fps, last_frame_ms, seconds_since_startup, frame_count/*, framerate_cap*/);
+	sprintf_s(title, 256, "FPS: %i, Av.FPS: %.2f Last Frame Ms: %02u / Time since startup: %.3f Frame Count: %lu / Frame Cap: / bullets: %i / life: %i",
+		frames_on_last_update, avg_fps, last_frame_ms, seconds_since_startup, frame_count, /*framerate_cap*/ playerHealth, currentWeaponAmmo);
 
 	
 	//	App->win->AddStringToTitle(title);

@@ -102,7 +102,7 @@ public:
 public:
 
 	std::string	name;
-	bool		active;
+	bool		active = false;
 
 };
 

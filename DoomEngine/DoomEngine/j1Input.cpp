@@ -59,6 +59,7 @@ bool j1Input::Awake(pugi::xml_node& config)
 		ret = false;
 	}
 	
+
 	// ------------------------
 
 	return ret;
@@ -68,6 +69,9 @@ bool j1Input::Awake(pugi::xml_node& config)
 bool j1Input::Start()
 {
 	SDL_StopTextInput();
+
+
+	//SDL_ShowCursor(0); // TODO: uncomment to hide cursor
 
 	return true;
 }

@@ -59,16 +59,15 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
-	//modules.push_back(map);   // this can make sense later 
-	AddModule(map); 
+	modules.push_back(map);   
 	AddModule(scene);
-	AddModule(particles);
-	//modules.push_back(pathfinding);  // this can make sense later 
-	AddModule(pathfinding); 
+	modules.push_back(particles); 
+	modules.push_back(pathfinding);  
 	AddModule(font);
-	AddModule(collision); 
-	AddModule(entityFactory); 
-	AddModule(bloodManager);
+	modules.push_back(collision);
+	modules.push_back(entityFactory);
+	modules.push_back(bloodManager);
+ 
 
 	// render last to swap buffer
 	AddModule(render);
@@ -244,7 +243,7 @@ void j1App::FinishUpdate()
 	uint32 last_frame_ms = frame_time.Read();
 	frames_on_last_update = prev_last_sec_frame_count;
 
-	// TODO: remove the extra indications here
+	// TODO: change the window indications in the release
 
 	int playerHealth = 0; 
 	int currentWeaponAmmo = 0;

@@ -529,6 +529,7 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* 
 			break;
 		}
 	}
+  
 
 	return ret;
 }

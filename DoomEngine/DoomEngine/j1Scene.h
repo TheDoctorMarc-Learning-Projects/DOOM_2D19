@@ -16,6 +16,11 @@ enum class SceneState
 	LEVEL2,
 };
 
+enum class sceneType
+{
+	MENU,
+	LEVEL
+};
 
 
 
@@ -65,7 +70,7 @@ public:
 
 	void LoadNewMap(const char* mapName);
 	void UnLoadScene();
-	void LoadScene(SceneState sceneState);
+	void LoadScene(SceneState sceneState, sceneType menuLevel);
 
 };
 

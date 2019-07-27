@@ -254,8 +254,8 @@ bool j1Audio::PlayFx(std::string name, int repeat, bool prioritary, float volume
 		prioritaryChunk = name;  // capture the chunk name that has a priority 
 		toUpdate = true; 
 
-		SetVolume(musReduc);   // set a music to a lower volume while playing the wanted fx
-		SetFxVolume(fxsReduc);   // set a fx to a lower volume while playing the wanted fx
+		SetVolume(musReduc);   // set the music to a lower volume while playing the wanted fx
+		SetFxVolume(fxsReduc);   // set the other fxs to a lower volume while playing the wanted fx
 
 	}
 

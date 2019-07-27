@@ -69,7 +69,7 @@ struct TargetPos
 
 struct ejumpData
 {
-	float jumpPower = 33.5f;
+	float jumpPower = 38.5f;
 	float currenJumpPower = jumpPower;
 	float jumpIncrementFactor = .9f;
 	float speedXIncrementJump = 2.5f;

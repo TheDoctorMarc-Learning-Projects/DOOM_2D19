@@ -245,7 +245,7 @@ void j1App::FinishUpdate()
 
 	// TODO: change the window indications in the release
 
-	int playerHealth = 0; 
+	/*int playerHealth = 0; 
 	int currentWeaponAmmo = 0;
 	int playerArmor = 0; 
 
@@ -256,15 +256,15 @@ void j1App::FinishUpdate()
 		
 		if (App->entityFactory->player->currentWeapon != nullptr)
 			currentWeaponAmmo = App->entityFactory->player->currentWeapon->currentBullets; 
-	}
+	}*/
 
     static char title[256];
-	//sprintf_s(title, 256, "FPS: %i, Av.FPS: %.2f Last Frame Ms: %02u / Time since startup: %.3f Frame Count: %lu / Frame Cap: ",
-		//frames_on_last_update, avg_fps, last_frame_ms, seconds_since_startup, frame_count /*framerate_cap*/); 
+	sprintf_s(title, 256, "FPS: %i, Av.FPS: %.2f Last Frame Ms: %02u / Time since startup: %.3f Frame Count: %lu / Frame Cap: ",
+		frames_on_last_update, avg_fps, last_frame_ms, seconds_since_startup, frame_count /*framerate_cap*/); 
 	
  
 
-	sprintf_s(title, 256, "life: %i / bullets: %i / armor: %i", playerHealth, currentWeaponAmmo, playerArmor);
+	//sprintf_s(title, 256, "life: %i / bullets: %i / armor: %i", playerHealth, currentWeaponAmmo, playerArmor);
 
 
 	App->win->SetTitle(title);

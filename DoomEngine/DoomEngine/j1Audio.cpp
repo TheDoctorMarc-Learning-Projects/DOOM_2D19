@@ -141,6 +141,8 @@ bool j1Audio::CleanUp()
 
 	LOG("Freeing sound FX, closing Mixer and Audio subsystem");
 
+	Mix_AllocateChannels(0);
+
 	if(music != NULL)
 	{
 		Mix_FreeMusic(music);
@@ -332,6 +334,8 @@ void j1Audio::SetFxVolume(float volume)
 
 void j1Audio::UnLoadAudio()
 {
+
+	Mix_AllocateChannels(0); 
 
 	if (music != NULL)
 	{

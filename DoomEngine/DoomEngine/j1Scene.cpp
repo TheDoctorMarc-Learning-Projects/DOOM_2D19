@@ -158,7 +158,7 @@ bool j1Scene::Save(pugi::xml_node &node) const
 
 bool j1Scene::Load(pugi::xml_node &node)
 {
-;
+
 	return true;
 }
 
@@ -201,17 +201,13 @@ void j1Scene::UnLoadScene()
 	if (App->collision->IsEnabled())
 		App->collision->Disable();
 
-	// what about audio? and the allocated channels
-
+ 
+	App->audio->UnLoadAudio(); 
 }
 
 void j1Scene::LoadScene(SceneState sceneState, sceneType menuLevel)
 {
-
-
 	UnLoadScene();   // 1) First unload every needed module
-
- 
 
 	switch (sceneState)
 	{
@@ -221,7 +217,7 @@ void j1Scene::LoadScene(SceneState sceneState, sceneType menuLevel)
 
 	case SceneState::LEVEL1: 
 		App->audio->PlayMusic("sound/music/Rip & Tear.ogg", -1);  
-		LoadNewMap("maps/level 1.tmx");                           // 2) First call load map (which has encapsulated entity data)
+		LoadNewMap("maps/level 1.tmx");                           // 2) Then call load map (which has encapsulated entity data)
 		break;
 
 	case SceneState::LEVEL2:
@@ -231,9 +227,11 @@ void j1Scene::LoadScene(SceneState sceneState, sceneType menuLevel)
 		break;
 	}
 
+	// 3) then load modules, the previous encapsulated entity data... 
 
+	App->audio->Start(); // audio has not been disabled (to keep mix channels etc) 
 
-	if (menuLevel == sceneType::LEVEL)                  // 3) then load modules, the previous encapsulated entity data... 
+	if (menuLevel == sceneType::LEVEL)                  
 	{
 		if (App->pathfinding->IsEnabled() == false)
 			App->pathfinding->Enable();

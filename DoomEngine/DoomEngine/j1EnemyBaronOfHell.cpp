@@ -97,14 +97,29 @@ bool j1EnemyBaronOfHell::Move(float dt)
 	}
 
 
+	// - - - - - - - - - - - - - - - - debug
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+		debug = !debug; 
+
+	if (debug)
+		App->render->DrawLine(lastRaycast[0], lastRaycast[1], lastRaycast[2], lastRaycast[3], 255, 0, 0, 255); 
+
 	return true;
 }
 
 bool j1EnemyBaronOfHell::LongRangeConditions()
 {
+	// player on my collider height horizontal projection
+
 	if (App->entityFactory->player->collider->rect.y + App->entityFactory->player->collider->rect.h < position.y)
 		return false; 
 	if (App->entityFactory->player->collider->rect.y > position.y + collider->rect.h)
+		return false; 
+
+	// no walls between player and myself :) 
+
+	if (IsWallBetweenPlayerAndMe() == true)
 		return false; 
 
 	return true; 
@@ -133,4 +148,29 @@ void j1EnemyBaronOfHell::ResolvePathDeviation()
 
 
 	speed = defaultSpeed; 
+}
+
+// - - - - - - - - - - - - - - - - - - - - returns true if there is a wall between myself and player
+
+bool j1EnemyBaronOfHell::IsWallBetweenPlayerAndMe() 
+{
+
+	// capture player and enemy positions 
+	iPoint p1 = iPoint((int)position.x, (int)position.y); 
+	iPoint p2 = iPoint((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y); 
+	 
+
+	// make a line and store it for debugging purposes 
+	lastRaycast = { p1.x, p1.y, p2.x, p2.y };
+
+
+	// check if any wall on screen has got an intersection with the line 
+	for (const auto& wallCol : App->collision->colliders)
+		if (wallCol->type == COLLIDER_WALL)
+			if (App->render->IsOnCamera(wallCol->rect.x, wallCol->rect.y, wallCol->rect.w, wallCol->rect.h) == true)
+				if (App->entityFactory->hasIntersectionRectAndLine(&wallCol->rect, lastRaycast) == true)
+					return true; 
+
+	return false; 
+
 }

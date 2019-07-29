@@ -130,7 +130,7 @@ bool j1EntityPlayer::Move(float dt)
 	BROFILER_CATEGORY("Player Move", Profiler::Color::Aqua);
 	SetPreviousFrameData();
 
-	if (state.combat != combatState::DYING && state.combat != combatState::DEAD)
+    if (state.combat != combatState::DYING && state.combat != combatState::DEAD)
 	{
 		
 		HorizonatlMovement(dt);
@@ -651,15 +651,14 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 		}
 
 
-
-
+	 
 
 		
 		if (!onPlatform)
 		{
 			if (c2->callback)    // platforms
 			{
-				if (collider->rect.y + collider->rect.h > c2->rect.y)
+				if (collider->rect.y + collider->rect.h >= c2->rect.y)
 				{
 					if (lastSpeed.y > 0)
 					{
@@ -715,8 +714,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 								collider->SetPos(position.x, position.y);
 
 
-								if (currentAnimation->paused == true)
-									currentAnimation->Resume();
+							
+								currentAnimation->Resume();
 							}
 						}
 
@@ -728,7 +727,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 			}
 			else  // just for the base floor 
 			{
-				if (collider->rect.y + collider->rect.h > c2->rect.y)
+				if (collider->rect.y + collider->rect.h >= c2->rect.y)
 				{
 					if (lastSpeed.y > 0)
 					{
@@ -746,8 +745,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 						collider->SetPos(position.x, position.y);
 
 
-						if (currentAnimation->paused == true)
-							currentAnimation->Resume();
+						 
+						currentAnimation->Resume();
 					}
 				}
 			}
@@ -756,7 +755,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 
 			// Y - bottom to top                                   
-			if (collider->rect.y < c2->rect.y + c2->rect.h)
+			if (collider->rect.y <= c2->rect.y + c2->rect.h)
 			{
 				if (lastSpeed.y < 0)
 				{

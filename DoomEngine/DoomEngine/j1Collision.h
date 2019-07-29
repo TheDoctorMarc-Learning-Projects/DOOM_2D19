@@ -101,10 +101,11 @@ public:
 
 
 private:
-
-	Collider* colliders[MAX_COLLIDERS];
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
 	bool debug = false;
+public: 
+	Collider* colliders[MAX_COLLIDERS];
+	
 };
 
 #endif // __j1COLLISION_H__  

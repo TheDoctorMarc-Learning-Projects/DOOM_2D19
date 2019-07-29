@@ -44,21 +44,9 @@ bool j1Scene::Start()
 
 	// TODO: WHY THE HELL is this loaded here? And not in audio start haha. It is borderline idiotic :/ (punishes himself) :/ 
 
-
-	if (state == SceneState::LEVEL1)
-	{
 	 
-	//	LoadScene(SceneState::LEVEL1, sceneType::LEVEL);
-	}
-
-	if (state == SceneState::LEVEL2)
-	{ 
-	}
-
-	if (state == SceneState::STARTMENU)
-	{
-
-	}
+	LoadScene(SceneState::LEVEL2, sceneType::LEVEL);
+ 
 
 
 	return true;

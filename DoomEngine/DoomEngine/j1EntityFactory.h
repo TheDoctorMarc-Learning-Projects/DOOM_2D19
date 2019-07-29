@@ -18,6 +18,7 @@
 #include "j1EntityLootAmmo.h"
 #include "j1EntityLootArmor.h"
 #include <map>
+#include <array>
 
 enum damage_Frame_Type
 {
@@ -80,6 +81,11 @@ public:
 	{
 		uint ret = (uint)(int)(float)abs(hypot(pos1.x - pos2.x, pos1.y - pos2.y));
 		return ret <= distance; 
+	}
+
+	bool hasIntersectionRectAndLine(const SDL_Rect* rect, std::array<int, 4> line) const  // line is passed like this: {x1, y1, x2, y2}
+	{ 
+		return SDL_IntersectRectAndLine(rect, &line[0], &line[1], &line[2], &line[3]);
 	}
 
 private: 

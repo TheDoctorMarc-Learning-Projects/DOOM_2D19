@@ -47,7 +47,7 @@ public:
 	{
 		if (paused == false)
 		{
-			current_frame += speed * App->GetDt();
+    		current_frame += speed * App->GetDt();
 			if (current_frame >= last_frame)
 			{
 				current_frame = (loop) ? 0.0f : last_frame - 1;

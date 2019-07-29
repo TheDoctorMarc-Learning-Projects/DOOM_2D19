@@ -153,7 +153,16 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 
 		return; 
 	}
-		
+
+
+
+	if (state == KEY_REPEAT)
+	{
+
+		if(App->audio->isPausedFx(name + "ShotFire"))             // useful after hitting with chainsaw
+			App->audio->ResumeSpecificFx(name + "ShotFire");
+	}
+
 
 	if (weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
 	{

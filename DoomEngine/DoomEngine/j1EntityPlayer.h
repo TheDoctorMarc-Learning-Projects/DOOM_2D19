@@ -84,10 +84,13 @@ public:
 	void AimWeapon(); 
 	void ShootWeapon(j1KeyState state);
 	void DieLogic(float dt); 
-
+	
 	virtual void SetDyingState(bool brutal = false)
 	{
 		state.combat = combatState::DYING;
+
+		if (currentWeapon)
+			currentWeapon->StopAllFxs(); 
 
 		if (!brutal)
 		{

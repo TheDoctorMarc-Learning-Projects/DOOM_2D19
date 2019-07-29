@@ -83,7 +83,7 @@ bool j1Enemy::Save(pugi::xml_node &) const
 bool j1Enemy::Move(float dt)
 {
 
-	if (App->entityFactory->IsPlayerAlive() == false) // first line prevention
+	if (App->entityFactory->IsPlayerAlive() == false) // first line prevention _> TODO: maybe it is safer to just stop the entity factory, but the player weapon wouldn't fall to the floor then 
 	{
 		return false;
 	}

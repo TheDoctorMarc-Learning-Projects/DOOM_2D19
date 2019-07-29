@@ -651,7 +651,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 		}
 
 
-	 
+		if (collider->rect.y + collider->rect.h == c2->rect.y)
+			currentAnimation->Resume(); 
 
 		
 		if (!onPlatform)

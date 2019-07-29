@@ -103,24 +103,27 @@ bool j1EnemyBaronOfHell::Move(float dt)
 		debug = !debug; 
 
 	if (debug)
-		App->render->DrawLine(lastRaycast[0], lastRaycast[1], lastRaycast[2], lastRaycast[3], 255, 0, 0, 255); 
+		App->render->DrawLine(lastRaycast[0], lastRaycast[1], lastRaycast[2], lastRaycast[3], debugColor.r, debugColor.g, debugColor.b, debugColor.a, true); 
 
 	return true;
 }
 
 bool j1EnemyBaronOfHell::LongRangeConditions()
 {
-	// player on my collider height horizontal projection
-
-	if (App->entityFactory->player->collider->rect.y + App->entityFactory->player->collider->rect.h < position.y)
-		return false; 
-	if (App->entityFactory->player->collider->rect.y > position.y + collider->rect.h)
-		return false; 
 
 	// no walls between player and myself :) 
 
 	if (IsWallBetweenPlayerAndMe() == true)
+		return false;
+
+
+	// player on my collider height horizontal projection AND in the shot projection 
+
+	if (App->entityFactory->player->collider->rect.y + App->entityFactory->player->collider->rect.h < position.y + longRangeShootData.relativeOffsetPos.y)
 		return false; 
+	if (App->entityFactory->player->collider->rect.y > position.y + collider->rect.h - (collider->rect.h - longRangeShootData.relativeOffsetPos.y)) 
+		return false; 
+
 
 	return true; 
 }
@@ -155,9 +158,10 @@ void j1EnemyBaronOfHell::ResolvePathDeviation()
 bool j1EnemyBaronOfHell::IsWallBetweenPlayerAndMe() 
 {
 
-	// capture player and enemy positions 
-	iPoint p1 = iPoint((int)position.x, (int)position.y); 
-	iPoint p2 = iPoint((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y); 
+	// capture player and enemy positions: take into account shot offset and shot hieght
+	int offset = longRangeShootData.relativeOffsetPos.y + App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().h / 2; 
+	iPoint p1 = iPoint((int)position.x, (int)position.y + offset); 
+	iPoint p2 = iPoint((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y + offset);
 	 
 
 	// make a line and store it for debugging purposes 
@@ -166,11 +170,16 @@ bool j1EnemyBaronOfHell::IsWallBetweenPlayerAndMe()
 
 	// check if any wall on screen has got an intersection with the line 
 	for (const auto& wallCol : App->collision->colliders)
-		if (wallCol->type == COLLIDER_WALL)
+		if (wallCol && (wallCol->type == COLLIDER_WALL || wallCol->type == COLLIDER_FLOOR))
 			if (App->render->IsOnCamera(wallCol->rect.x, wallCol->rect.y, wallCol->rect.w, wallCol->rect.h) == true)
 				if (App->entityFactory->hasIntersectionRectAndLine(&wallCol->rect, lastRaycast) == true)
-					return true; 
+				{
+					debugColor = { 255, 0, 0, 255 };
+					return true;
+				}
+				
 
+	debugColor = { 0, 255, 0, 255 }; 
 	return false; 
 
 }

@@ -25,6 +25,7 @@ private:
 	
 	std::array<int, 4> lastRaycast; 
 	bool debug = false; 
+	SDL_Color debugColor = { 255, 0, 0, 255 }; 
 	float defaultSpeed = 0.f; 
 
 };

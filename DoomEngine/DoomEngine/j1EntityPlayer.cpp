@@ -402,7 +402,7 @@ void j1EntityPlayer::WeaponLogic()
 			ChangeWeapon(SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
 		}
 
-		AimWeapon(); 
+		//AimWeapon(); 
 
 		j1KeyState shootButtonState = App->input->GetControllerAxisPulsation(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
 
@@ -715,6 +715,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 								collider->SetPos(position.x, position.y);
 
 
+								if (currentAnimation->paused == true)
+									currentAnimation->Resume();
 							}
 						}
 
@@ -742,6 +744,10 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 						state.movement.at(1) = MovementState::NOT_ACTIVE;   // jump or fall not active
 
 						collider->SetPos(position.x, position.y);
+
+
+						if (currentAnimation->paused == true)
+							currentAnimation->Resume();
 					}
 				}
 			}
@@ -881,6 +887,9 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 	switch (c2->type)
 	{
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
+
+		currentAnimation->Pause(); 
+
 		if (c2->hasCallback && c2->callback->type != ENTITY_TYPE::ENTITY_DYNAMIC)
 		{
 			if (state.movement.at(1) != MovementState::JUMP)

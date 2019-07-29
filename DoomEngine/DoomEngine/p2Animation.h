@@ -9,6 +9,7 @@ class Animation
 {
 public:
 	bool loop = true;
+	bool paused = false; 
 	float speed = 1.0f;
 	SDL_Rect frames[MAX_FRAMES];
 
@@ -44,11 +45,15 @@ public:
 
 	SDL_Rect& GetCurrentFrame()
 	{
-		current_frame += speed * App->GetDt();
-		if (current_frame >= last_frame)
+		if (paused == false)
 		{
-			current_frame = (loop) ? 0.0f : last_frame - 1;
-			loops++;
+			current_frame += speed * App->GetDt();
+			if (current_frame >= last_frame)
+			{
+				current_frame = (loop) ? 0.0f : last_frame - 1;
+				loops++;
+			}
+
 		}
 
 		return frames[(int)current_frame];
@@ -59,8 +64,17 @@ public:
 		return frames[(int)current_frame];
 	}
 
+	void Pause()
+	{
+		paused = true; 
+	}
 
-	SDL_Rect& Rewind()
+	void Resume()
+	{
+		paused = false;
+	}
+
+	/*SDL_Rect& Rewind()
 	{
 		if(current_frame <= 0.0f)
 			return frames[(int)current_frame];
@@ -70,7 +84,7 @@ public:
 
 		current_frame -= speed * App->GetDt();
 		return frames[(int)current_frame];
-	}
+	}*/
 
 	bool Finished() const
 	{

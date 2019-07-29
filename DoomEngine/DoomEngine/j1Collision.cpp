@@ -508,8 +508,8 @@ bool j1Collision::CleanUp()
 
 			colliders[i] = nullptr;
 		}
-		else
-			break;    // one you encounter a nullptr pos, do not proceed until MAX_COLLIDERS
+		/*else
+			break;    // one you encounter a nullptr pos, do not proceed until MAX_COLLIDERS*/
 	}
 
 	return ret; 

@@ -173,6 +173,7 @@ public:
 	virtual void SetDyingState(bool brutal = false)
 	{
 		state.combat = eCombatState::DYING; 
+		blitOrder = 1U;  // to be rendered under weapons etc
 
 		App->audio->StopSpecificFx(name + "Injured");   // so that death is audible 
 

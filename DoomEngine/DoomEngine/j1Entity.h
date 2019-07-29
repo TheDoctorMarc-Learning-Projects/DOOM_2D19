@@ -99,6 +99,7 @@ public:
 
 public:
 	SDL_Rect                section = { 0, 0, 0, 0 }; 
+	bool                    isEnemy = false; 
 	bool					to_delete = false;
 	bool					to_die = false; 
 	bool                    drawActive = true; 

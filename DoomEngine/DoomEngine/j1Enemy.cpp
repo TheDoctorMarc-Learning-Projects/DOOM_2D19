@@ -16,6 +16,7 @@ j1Enemy::j1Enemy(int posX, int posY) : j1Entity(ENEMY_STATIC, posX, posY, "enemy
 	blitOrder = 2U; 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 
+	isEnemy = true; 
 	position = previousPosition = fPoint(posX, posY);
 	originTilePos = App->map->WorldToMap(posX, posY); 
 	pointingDir = LEFT;
@@ -610,7 +611,12 @@ void j1Enemy::CallPathCreation(iPoint pos, iPoint target, bool& success)
 
 			success = (pathToFollow.size() > 1);
 		}
-		else LOG("Could not create path correctly, enemy tried to go from (%i,%i) to (%i,%i)", pos.x, pos.y, target.x, target.y);   
+		else
+		{
+			LOG("Could not create path correctly, enemy tried to go from (%i,%i) to (%i,%i)", pos.x, pos.y, target.x, target.y);
+			success = false;
+			return; 
+		}
 
 
 	}
@@ -1408,4 +1414,45 @@ bool j1Enemy::Go_A_to_B()
 	return true; 
 }
 
+
+
+
+bool j1Enemy::isWallBetweenPlayerAndMe()
+{
+
+	// capture player and enemy positions: take into account shot offset and shot hieght
+	int yOffset = longRangeShootData.relativeOffsetPos.y + App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().h / 2;
+	int xOffset = 0; 
+	int xOffsetPlayer = 0; 
+
+	if (pointingDir == RIGHT)
+	{
+		xOffset += collider->rect.w;
+		xOffsetPlayer += App->entityFactory->player->collider->rect.w;
+	}
+		
+
+	iPoint p1 = iPoint((int)position.x + xOffset, (int)position.y + yOffset);
+	iPoint p2 = iPoint((int)App->entityFactory->player->position.x + xOffsetPlayer, (int)App->entityFactory->player->position.y + yOffset);
+
+
+	// make a line and store it for debugging purposes 
+	lastRaycastInfo.lastRaycast = { p1.x, p1.y, p2.x, p2.y };
+
+
+	// check if any wall on screen has got an intersection with the line 
+	for (const auto& wallCol : App->collision->colliders)
+		if (wallCol && (wallCol->type == COLLIDER_WALL || wallCol->type == COLLIDER_FLOOR))
+			if (App->render->IsOnCamera(wallCol->rect.x, wallCol->rect.y, wallCol->rect.w, wallCol->rect.h) == true)
+				if (App->entityFactory->hasIntersectionRectAndLine(&wallCol->rect, lastRaycastInfo.lastRaycast) == true)
+				{
+					lastRaycastInfo.Color = { 255, 0, 0, 255 };
+					return true;
+				}
+
+
+	lastRaycastInfo.Color = { 0, 255, 0, 255 };
+	return false;
+
+}
 

@@ -164,6 +164,7 @@ bool j1EntityFactory::PostUpdate()
 	blitOrderEntities.clear(); 
 
 	 
+	Debug(); 
 				 
 				
 	return true;
@@ -173,6 +174,35 @@ bool j1EntityFactory::isBlitOrderHigherThanPreviousEntity(const j1Entity* ent1, 
 {
 	return ent2->blitOrder > ent1->blitOrder;
 }
+
+
+void j1EntityFactory::Debug()
+{
+
+	// - - - - - - - - - - - - - - - - debug
+
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+		debug = !debug; 
+
+	if (debug)
+	{
+		for(const auto& entity : entities)
+			if(entity->isEnemy)
+				if(dynamic_cast<j1Enemy*>(entity)->state.combat != eCombatState::DYING && dynamic_cast<j1Enemy*>(entity)->state.combat != eCombatState::DEAD)
+					App->render->DrawLine(dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.lastRaycast[0],
+						dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.lastRaycast[1],
+						dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.lastRaycast[2],
+						dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.lastRaycast[3],
+						dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.Color.r,
+						dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.Color.g,
+						dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.Color.b,
+						dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.Color.a,
+						true);
+				
+	}
+}
+		
 
 bool j1EntityFactory::CleanUp()
 {

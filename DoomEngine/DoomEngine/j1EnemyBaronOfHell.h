@@ -4,7 +4,7 @@
 #include "j1Enemy.h"
 #include <array>
 
-class j1Enemy;
+class j1Enemy; 
 
 class j1EnemyBaronOfHell : public j1Enemy
 {
@@ -16,16 +16,14 @@ public:
 	void ResolvePathDeviation();
 	bool LongRangeConditions(); 
 	fPoint GetShotSpeed(fPoint dir) const override; 
-	bool IsWallBetweenPlayerAndMe(); 
+ 
 
 	bool Move(float dt) override;  // call parent function, then if enemy does enaything extra, do it after call 
 
 
 private:
 	
-	std::array<int, 4> lastRaycast; 
-	bool debug = false; 
-	SDL_Color debugColor = { 255, 0, 0, 255 }; 
+; 
 	float defaultSpeed = 0.f; 
 
 };

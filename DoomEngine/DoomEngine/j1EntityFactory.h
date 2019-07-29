@@ -48,6 +48,8 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	void Debug(); 
+
 	void DoDamagetoEntity(j1Entity* ent, float damage, float shotsPerSecond, fPoint shotSpeed = fPoint(0,0));   // to do: capture shot dir and enemy rect for the blood functionality
 	void AddLifeToEntity(j1Entity* ent, float maxLifePercentatge = 0.0f); 
 	void AddAmmoToPlayer(float maxBulletPercentage = 0.0f); 
@@ -106,6 +108,9 @@ public:
 	std::map<std::string, SDL_Texture*> entityTextureMap; 
 	std::map<std::string, ENTITY_TYPE> enemyTypeMap; 
 	j1EntityPlayer* player = nullptr; 
+
+	bool debug = false;
+
 
 	std::list<encapsulatedEnemyData*> enemiesToBeSpawned; 
 

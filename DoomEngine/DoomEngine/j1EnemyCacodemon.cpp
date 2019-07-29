@@ -86,10 +86,12 @@ bool j1EnemyCacodemon::Move(float dt)
 	if (state.combat != eCombatState::DYING && state.combat != eCombatState::DEAD)
 	{
 		DoMeleeAttack();
-		DoLongRangeAttack();
+
+		if (j1Enemy::isWallBetweenPlayerAndMe() == false)
+			DoLongRangeAttack();
+	
 	}
-	/*else
-		return false; */
+ 
 	
 	
 

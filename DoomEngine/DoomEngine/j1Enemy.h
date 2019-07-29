@@ -112,6 +112,13 @@ struct AttackData
 	bool lastShooted = false; 
 };
 
+
+struct lastRaycastData
+{
+	std::array<int, 4> lastRaycast = { 0, 0, 0, 0 } ;
+	SDL_Color Color = { 0, 0, 0, 0 }; 
+};
+
 class j1Entity;
 
 class j1Enemy : public j1Entity
@@ -248,6 +255,9 @@ public:
 	virtual fPoint GetShotDir(); 
 	virtual fPoint GetShotSpeed(fPoint dir) const { return fPoint(dir.x * longRangeShootData.shotSpeed, dir.y * longRangeShootData.shotSpeed); }
 
+
+	bool isWallBetweenPlayerAndMe(); 
+
 public:
 
 	ATTACK_TYPE currentAttackType = ATTACK_TYPE::NO_ATTACK_TYPE; 
@@ -285,6 +295,7 @@ public:
 	ejumpData jumpInfo;
 	j1EntityPlatform* lastPlatform = nullptr; 
 	float platFormSpeed = 60.f;
+	lastRaycastData lastRaycastInfo; 
 
 private: 
 	float momentumFactor = 10.f;

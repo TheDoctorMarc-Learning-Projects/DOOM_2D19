@@ -14,6 +14,7 @@
 
 j1EntityPlayer::j1EntityPlayer(int posX, int posY, std::string name) : j1Entity(PLAYER, posX , posY, "player")
 {
+	App->entityFactory->playerAlive = true; 
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - texture
 	entityTex = App->entityFactory->entityTextureMap.at(name); 

@@ -90,6 +90,8 @@ public:
 		return SDL_IntersectRectAndLine(rect, &line[0], &line[1], &line[2], &line[3]);
 	}
 
+	bool IsPlayerAlive() const { return playerAlive; }; 
+
 private: 
 
 	static bool isBlitOrderHigherThanPreviousEntity(const j1Entity* ent1, const j1Entity* ent2); 
@@ -108,6 +110,7 @@ public:
 	std::map<std::string, SDL_Texture*> entityTextureMap; 
 	std::map<std::string, ENTITY_TYPE> enemyTypeMap; 
 	j1EntityPlayer* player = nullptr; 
+	bool playerAlive = false; 
 
 	bool debug = false;
 

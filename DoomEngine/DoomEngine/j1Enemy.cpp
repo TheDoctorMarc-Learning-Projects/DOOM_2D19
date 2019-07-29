@@ -83,9 +83,8 @@ bool j1Enemy::Save(pugi::xml_node &) const
 bool j1Enemy::Move(float dt)
 {
 
-	if (App->entityFactory->player->state.combat == combatState::DYING || stopLogic == true)
+	if (App->entityFactory->IsPlayerAlive() == false) // first line prevention
 	{
-		stopLogic = true; 
 		return false;
 	}
 		

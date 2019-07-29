@@ -103,6 +103,7 @@ public:
 
 	std::string	name;
 	bool		active = false;
+	bool        startInitialized = true; 
 
 };
 

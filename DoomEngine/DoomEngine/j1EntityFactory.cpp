@@ -368,6 +368,8 @@ j1Entity* j1EntityFactory::CreateArmor(ENTITY_TYPE type, int positionX, int posi
 void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadence, fPoint shotSpeed)
 {
 
+	// - - - - - - - - - - - - - - - - - - - - - - - - - 1) Preventions
+
 	if (ent->to_delete)  // first line prevention 
 		return; 
 
@@ -387,6 +389,8 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 	}
 		
 	float previousLife = ent->life;
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - 2) Do damage
 
 	if (ent->type != PLAYER)
 	{
@@ -422,7 +426,7 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 			
 	}
 		
-
+	// - - - - - - - - - - - - - - - - - - - - - - - - - 3) Set the dying state 
 	
 	if (ent->life <= 0.f)
 	{
@@ -432,12 +436,16 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 			brutal = true; 
 
 		ent->SetDyingState(brutal);
+
+		if (ent == player)
+			playerAlive = false; 
 	}
 	else
 		App->audio->PlayFx(ent->name + "Injured");
 
-	uint bloodDropAmount = App->bloodManager->CalculateNumberOfBloodDropsToBeSpawned(damage, cadence); 
+	// - - - - - - - - - - - - - - - - - - - - - - - - - 4) spawn the blood 
 
+	uint bloodDropAmount = App->bloodManager->CalculateNumberOfBloodDropsToBeSpawned(damage, cadence); 
 	App->bloodManager->CreateTargetedBloodSteam(ent->collider->rect, 0.5f, bloodDropAmount, shotSpeed);
 }
 

@@ -59,15 +59,20 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
-	modules.push_back(map);   
+	modules.push_back(map);
+	map->startInitialized = false; 
 	AddModule(scene);
 	modules.push_back(particles); 
+	particles->startInitialized = false;
 	modules.push_back(pathfinding);  
+	pathfinding->startInitialized = false;
 	AddModule(font);
 	modules.push_back(collision);
+	collision->startInitialized = false;
 	modules.push_back(entityFactory);
+	entityFactory->startInitialized = false;
 	modules.push_back(bloodManager);
- 
+	bloodManager->startInitialized = false;
 
 	// render last to swap buffer
 	AddModule(render);
@@ -156,7 +161,7 @@ bool j1App::Start()
 
 	while(item != modules.end() && ret == true)
 	{
-		if ((*item)->active)
+		if ((*item)->startInitialized)
 			ret = (*item)->Start();
 
 		++item;
@@ -269,26 +274,13 @@ void j1App::FinishUpdate()
 
 	App->win->SetTitle(title);
 
-
-
-
-	
-	/*static char title[256];
-	std::string capFramesString;
-
-	sprintf_s(title, 256, "%s" , App->GetTitle());
-
-	char title[256];
-	sprintf_s(title, 256, "Realtime fps: %i", frames_on_last_update);
-	App->win->AddStringToTitle(title);*/
-
+	 
 	//- Cap the framerate
 
 	uint32 delay = MAX(0, (int)capTime - (int)last_frame_ms);
-	//LOG("Should wait: %i", delay);
-	//j1PerfTimer delayTimer;
+ 
 	SDL_Delay(delay);
-	//LOG("Has waited:  %f", delayTimer.ReadMs());
+ 
 }
 
 // Call modules before each loop iteration

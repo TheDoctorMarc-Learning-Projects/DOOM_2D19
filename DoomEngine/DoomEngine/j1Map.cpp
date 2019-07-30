@@ -575,11 +575,17 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 			for (auto property = object.child("properties").child("property"); property; property = property.next_sibling("property"))
 			{
 				std::string name = property.attribute("name").as_string();
-				if(name == "heightLevel")
+				if (name == "heightLevel")
+				{
 					heighLevel = property.attribute("value").as_int();
+					App->entityFactory->platFormLevelHeights[heighLevel] = worldPos.y;
+				}
+		
 				
 
 			}
+
+			
 
 			App->entityFactory->CreatePlatform(ENTITY_TYPE::ENTITY_STATIC, worldPos, heighLevel, "platform");
 		}

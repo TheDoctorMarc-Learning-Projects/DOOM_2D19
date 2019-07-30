@@ -34,7 +34,6 @@ struct encapsulatedEnemyData  // needed to load enemies from tiled, because text
 };
 
 
-
 class j1EntityFactory : public j1Module
 {
 public:
@@ -106,9 +105,11 @@ private:
 public:
 
 
+
 	std::list<j1Entity*>	entities;
 	std::map<std::string, SDL_Texture*> entityTextureMap; 
 	std::map<std::string, ENTITY_TYPE> enemyTypeMap; 
+	std::array<int, 5> platFormLevelHeights; 
 	j1EntityPlayer* player = nullptr; 
 	bool playerAlive = false; 
 

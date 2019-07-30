@@ -21,8 +21,9 @@ public:
 	//bool Awake(pugi::xml_node& node);
 	bool Start();
 	bool PreUpdate();
+	bool CleanUp() override; 
 	bool Update(float dt);
-	bool PostUpdate();
+	void SetAreaColPos(); 
 	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
 	void CheckPlatformSameLevel(); 
@@ -39,6 +40,8 @@ private:
 	bool endReached = false;
 	int levelsUp; 
 	int levelsDown; 
+	Collider* AreaCollider = nullptr;
+	int areaExtraSides = 100;  
 };
 
 #endif 

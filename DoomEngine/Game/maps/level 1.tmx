@@ -34556,12 +34556,12 @@
     <property name="levelsUp" type="int" value="1"/>
    </properties>
   </object>
-  <object id="107" name="staticPlatform" x="4960" y="256" width="256" height="32">
+  <object id="107" name="staticPlatform" x="5024" y="256" width="224" height="32">
    <properties>
     <property name="heightLevel" type="int" value="4"/>
    </properties>
   </object>
-  <object id="108" name="staticPlatform" x="4960" y="448" width="256" height="32">
+  <object id="108" name="staticPlatform" x="5024" y="448" width="224" height="32">
    <properties>
     <property name="heightLevel" type="int" value="1"/>
    </properties>
@@ -37685,15 +37685,15 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2545"/>
-   <tile gid="2546"/>
-   <tile gid="2547"/>
-   <tile gid="2548"/>
-   <tile gid="2545"/>
-   <tile gid="2546"/>
-   <tile gid="2547"/>
-   <tile gid="2548"/>
    <tile/>
+   <tile/>
+   <tile gid="2547"/>
+   <tile gid="2548"/>
+   <tile gid="2545"/>
+   <tile gid="2541"/>
+   <tile gid="2542"/>
+   <tile gid="2543"/>
+   <tile gid="2544"/>
    <tile/>
    <tile/>
    <tile gid="2541"/>
@@ -39665,15 +39665,15 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2545"/>
-   <tile gid="2546"/>
-   <tile gid="2547"/>
-   <tile gid="2548"/>
-   <tile gid="2545"/>
-   <tile gid="2546"/>
-   <tile gid="2547"/>
-   <tile gid="2548"/>
    <tile/>
+   <tile/>
+   <tile gid="2547"/>
+   <tile gid="2548"/>
+   <tile gid="2545"/>
+   <tile gid="2541"/>
+   <tile gid="2542"/>
+   <tile gid="2543"/>
+   <tile gid="2544"/>
    <tile/>
    <tile/>
    <tile gid="2543"/>

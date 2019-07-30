@@ -29388,9 +29388,9 @@
    <tile gid="2536"/>
    <tile gid="2535"/>
    <tile gid="2536"/>
-   <tile gid="2535"/>
-   <tile gid="2536"/>
-   <tile gid="2535"/>
+   <tile gid="2533"/>
+   <tile gid="2533"/>
+   <tile gid="2534"/>
    <tile gid="2536"/>
    <tile/>
    <tile/>
@@ -29718,9 +29718,9 @@
    <tile gid="2534"/>
    <tile gid="2533"/>
    <tile gid="2534"/>
-   <tile gid="2533"/>
-   <tile gid="2534"/>
-   <tile gid="2533"/>
+   <tile gid="2535"/>
+   <tile gid="2535"/>
+   <tile gid="2536"/>
    <tile gid="2534"/>
    <tile/>
    <tile/>
@@ -34531,7 +34531,7 @@
   <object id="89" name="wall" x="3008" y="288" width="32" height="64"/>
   <object id="90" name="wall" x="3264" y="288" width="32" height="64"/>
   <object id="92" name="wall" x="3424" y="289.333" width="32" height="160"/>
-  <object id="100" name="dynamicPlatform" x="3776" y="352" width="192" height="32">
+  <object id="100" name="dynamicPlatform" x="3840" y="352" width="192" height="32">
    <properties>
     <property name="axis" value="horizontal"/>
     <property name="heightLevel" type="int" value="2"/>

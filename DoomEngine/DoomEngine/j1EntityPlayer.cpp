@@ -96,12 +96,6 @@ bool j1EntityPlayer::PreUpdate()
 		godMode = !godMode; 
 
  
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-	{
-		position.x = 7500; 
-		collider->SetPos(position.x, position.y); 
-		App->render->camera.x = -position.x; 
-	}
 
 	return true;
 }
@@ -617,9 +611,6 @@ void j1EntityPlayer::WarnOtherModules()
 
 	if ((lastSpeed.x > 0 || onDynamicplatform) && -(int)position.x < App->render->camera.x - App->render->camera.w + (int)App->render->screenDivisions.lateralValue)
 	{
-		if (speed > 0) // prevent weird case in the end of the map going left
-			return; 
-
 		App->render->SetCameraScroll(cameraScrollType::GRADUAL, direction::RIGHT, speed, 650); 
 	}
 	else if ((lastSpeed.x < 0|| onDynamicplatform) && -(int)position.x > App->render->camera.x - (int)App->render->screenDivisions.lateralValue && (int)previousPosition.x > (int)App->render->screenDivisions.lateralValue)

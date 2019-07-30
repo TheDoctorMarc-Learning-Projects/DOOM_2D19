@@ -926,9 +926,9 @@ void j1Enemy::SpawnShotParticle()
 
 	fPoint dir = GetShotDir();
 	fPoint speed = GetShotSpeed(dir);
-	fPoint targetPos = fPoint(0, 0); 
+	fPoint OriginShotPos = fPoint(0, 0);
 
-	targetPos.y = position.y + longRangeShootData.relativeOffsetPos.y; 
+	OriginShotPos.y = position.y + longRangeShootData.relativeOffsetPos.y;
 	SDL_RendererFlip shotFlip = SDL_FLIP_NONE; 
 
 	if(speed.x < 0)
@@ -936,17 +936,17 @@ void j1Enemy::SpawnShotParticle()
 
 	if (GetDirection() == LEFT)
 	{
-		targetPos.x = position.x + longRangeShootData.relativeOffsetPos.x;
+		OriginShotPos.x = position.x + longRangeShootData.relativeOffsetPos.x;
 	}
 
 	else if (GetDirection() == RIGHT)
 	{
-		targetPos.x = position.x + collider->rect.w - longRangeShootData.relativeOffsetPos.x;
+		OriginShotPos.x = position.x + collider->rect.w - longRangeShootData.relativeOffsetPos.x - App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().w;
 	}
  
 	
 
-	Particle* shot = App->particles->AddParticleRet(name + "Shot", (int)targetPos.x, (int)targetPos.y, this, true, COLLIDER_ENEMY_SHOT, speed, 0U,
+	Particle* shot = App->particles->AddParticleRet(name + "Shot", (int)OriginShotPos.x, (int)OriginShotPos.y, this, true, COLLIDER_ENEMY_SHOT, speed, 0U,
 		shotFlip);
 
 	std::string fxname = ""; 
@@ -960,8 +960,18 @@ void j1Enemy::SpawnShotParticle()
 
 fPoint j1Enemy::GetShotDir()
 {
-	fPoint playerPos = App->entityFactory->player->position; 
-	fPoint Dir = playerPos - position; 
+
+	//capture player and enemy positions : take into account shot offset and shot hieght
+	float yOffset = longRangeShootData.relativeOffsetPos.y + App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().h / 2;
+	float xOffset = longRangeShootData.relativeOffsetPos.x + App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().w / 2;
+
+	if (pointingDir == RIGHT)
+		xOffset = collider->rect.w - longRangeShootData.relativeOffsetPos.x - App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().w / 2;
+
+	fPoint p1 = { position.x + xOffset, position.y + yOffset };
+	fPoint p2 = App->entityFactory->GetRectCentralPoint(&App->entityFactory->player->collider->rect);
+
+	fPoint Dir = p2 - p1;
 
 	if(Dir.IsZero() == false)
 		Dir.Normalize();
@@ -1418,25 +1428,19 @@ bool j1Enemy::Go_A_to_B()
 
 bool j1Enemy::isWallBetweenPlayerAndMe()
 {
-
-	// capture player and enemy positions: take into account shot offset and shot hieght
-	int yOffset = longRangeShootData.relativeOffsetPos.y + App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().h / 2;
-	int xOffset = 0; 
-	int xOffsetPlayer = 0; 
+	//capture player and enemy positions : take into account shot offset and shot hieght
+	float yOffset = longRangeShootData.relativeOffsetPos.y + App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().h / 2;
+	float xOffset = longRangeShootData.relativeOffsetPos.x + App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().w / 2;
 
 	if (pointingDir == RIGHT)
-	{
-		xOffset += collider->rect.w;
-		xOffsetPlayer += App->entityFactory->player->collider->rect.w;
-	}
-		
+		xOffset = collider->rect.w - longRangeShootData.relativeOffsetPos.x - App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().w / 2;
 
-	iPoint p1 = iPoint((int)position.x + xOffset, (int)position.y + yOffset);
-	iPoint p2 = iPoint((int)App->entityFactory->player->position.x + xOffsetPlayer, (int)App->entityFactory->player->position.y + yOffset);
+	fPoint p1 = { position.x + xOffset, position.y + yOffset };
+	fPoint p2 = App->entityFactory->GetRectCentralPoint(&App->entityFactory->player->collider->rect);
 
 
 	// make a line and store it for debugging purposes 
-	lastRaycastInfo.lastRaycast = { p1.x, p1.y, p2.x, p2.y };
+	lastRaycastInfo.lastRaycast = { (int)p1.x, (int)p1.y, (int)p2.x, (int)p2.y };
 
 
 	// check if any wall on screen has got an intersection with the line 

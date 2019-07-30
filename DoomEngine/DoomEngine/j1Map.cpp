@@ -764,7 +764,7 @@ bool j1Map::LoadProperties(pugi::xml_node& node, MapLayer* layer)
 bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 {
 	bool ret = false;
-	std::list<MapLayer*>:: const_iterator item;   // todo, revise this
+	std::list<MapLayer*>:: const_iterator item;   
 	item = data.layers.begin();
 
 	for(; *item != NULL; ++item)

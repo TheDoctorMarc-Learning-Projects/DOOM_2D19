@@ -22,7 +22,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	damageValues.melee = 120;
 	damageValues.longRange = 45; 
 	longRangeShootData.msWaitFromAnimStartToShot = 800;
-	longRangeShootData.relativeOffsetPos.create(20, size.y / 2); // assuming spritescale is 1.0f
+	longRangeShootData.relativeOffsetPos.create(10, size.y / 2); // assuming spritescale is 1.0f
 	longRangeShootData.shotSpeed = 200;
 	pathType = enemyPathType::FLYING;
 	dataAnimFx.hasSecondDeathAnim = false;

@@ -89,6 +89,11 @@ public:
 		return SDL_IntersectRectAndLine(rect, &line[0], &line[1], &line[2], &line[3]);
 	}
 
+	fPoint GetRectCentralPoint(const SDL_Rect* rect) const {
+
+		return { (float)rect->x + (float)rect->w / 2.F, (float)rect->y + (float)rect->h / 2.F };
+	}
+
 	bool IsPlayerAlive() const { return playerAlive; }; 
 
 private: 

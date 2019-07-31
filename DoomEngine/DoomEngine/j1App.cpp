@@ -19,6 +19,7 @@
 #include "j1Particles.h"
 #include "j1EntityFactory.h"
 #include "j1BloodManager.h"
+#include "j1Gui.h"
 
 #include "Brofiler/Brofiler.h"
 
@@ -50,6 +51,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	collision = DBG_NEW j1Collision();
 	entityFactory = DBG_NEW j1EntityFactory();
 	bloodManager = DBG_NEW j1BloodManager(); 
+	gui = DBG_NEW j1Gui(); 
 
 	// Ordered for awake / Start / Update
 
@@ -59,20 +61,23 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
+	AddModule(scene);
+	AddModule(font);
+	AddModule(gui);
+
 	modules.push_back(map);
 	map->startInitialized = false; 
-	AddModule(scene);
 	modules.push_back(particles); 
 	particles->startInitialized = false;
 	modules.push_back(pathfinding);  
 	pathfinding->startInitialized = false;
-	AddModule(font);
 	modules.push_back(collision);
 	collision->startInitialized = false;
 	modules.push_back(entityFactory);
 	entityFactory->startInitialized = false;
 	modules.push_back(bloodManager);
 	bloodManager->startInitialized = false;
+
 
 	// render last to swap buffer
 	AddModule(render);

@@ -4,7 +4,7 @@
 #include "j1EntityPlatform.h"
 #include "j1Scene.h"
 
-enum AXIS_Movement
+enum class AXIS_Movement
 {
 	VERTICAL,
 	HORIZONTAL,

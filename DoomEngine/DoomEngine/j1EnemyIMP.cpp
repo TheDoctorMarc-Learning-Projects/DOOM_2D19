@@ -3,7 +3,8 @@
 
 j1EnemyIMP::j1EnemyIMP(int posX, int posY, std::string name) : j1Enemy(posX, posY)
 {
- 
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - texture
+
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - texture
 	entityTex = App->entityFactory->entityTextureMap.at(name);
 
@@ -27,7 +28,7 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY, std::string name) : j1Enemy(posX, pos
 	// jumpdata
 
 
-	jumpInfo.jumpPower = 20.5f;
+	jumpInfo.jumpPower = 15.5f;
 	jumpInfo.currenJumpPower = jumpInfo.jumpPower;
 	jumpInfo.jumpIncrementFactor = .9f;
 	jumpInfo.speedXIncrementJump = 2.3f;
@@ -84,10 +85,7 @@ j1EnemyIMP::~j1EnemyIMP()
 
 bool j1EnemyIMP::Move(float dt)
 {
-	if (App->entityFactory->IsPlayerAlive() == false) // first line prevention _> TODO: maybe it is safer to just stop the entity factory, but the player weapon wouldn't fall to the floor then 
-	{
-		return false;
-	}
+	 
 
 	if (j1Enemy::Move(dt))
 	{

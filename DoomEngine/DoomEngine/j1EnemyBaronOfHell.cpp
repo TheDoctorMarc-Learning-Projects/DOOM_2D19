@@ -73,11 +73,6 @@ j1EnemyBaronOfHell::~j1EnemyBaronOfHell()
 
 bool j1EnemyBaronOfHell::Move(float dt)
 {
-	if (App->entityFactory->IsPlayerAlive() == false) // first line prevention _> TODO: maybe it is safer to just stop the entity factory, but the player weapon wouldn't fall to the floor then 
-	{
-		return false;
-
-	}
 	j1Enemy::Move(dt); 
 	
 	if (state.combat != eCombatState::DYING && state.combat != eCombatState::DEAD)

@@ -143,6 +143,10 @@ void j1EntityPlatformDynamic::UpdateEntitiesOnTopPositions(bool justOfsset, floa
 	
 	for (auto& col : collider->onCollisionWithMe)
 	{
+
+		if (col == collider)  // the horizontal area collider is detected as on collision with the normal one 
+			continue; 
+
 		if (col->type == COLLIDER_PLAYER || col->type == COLLIDER_ENEMY || col->type == COLLIDER_BLOOD)  // god also?? 
 		{
 			if (movementType == AXIS_Movement::VERTICAL)

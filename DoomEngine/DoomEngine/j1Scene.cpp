@@ -14,7 +14,8 @@
 #include "j1Collision.h"        
 #include "j1EntityFactory.h"
 #include "j1BloodManager.h"
-                                                     // TODO: later on, check if any library is not neede here 
+#include "j1Gui.h"
+                                    
 #include "Brofiler/Brofiler.h"
 
 j1Scene::j1Scene() : j1Module()
@@ -191,6 +192,7 @@ void j1Scene::UnLoadScene()
 
  
 	App->audio->UnLoadAudio(); 
+ 
 }
 
 void j1Scene::LoadScene(SceneState sceneState, sceneType menuLevel)
@@ -240,8 +242,7 @@ void j1Scene::LoadScene(SceneState sceneState, sceneType menuLevel)
 
 		App->map->active = true;
 	}
-
-	
+ 
 
 	state = sceneState; 
  

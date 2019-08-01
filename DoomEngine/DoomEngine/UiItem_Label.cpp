@@ -57,7 +57,7 @@ UiItem_Label::~UiItem_Label()
 //}
 
 
-void UiItem_Label::Draw(const float & dt)
+void UiItem_Label::Draw()
 {
 	/*if (!hide)
 			App->render->BlitGui(texture, hitBox.x, hitBox.y, NULL, speed);*/

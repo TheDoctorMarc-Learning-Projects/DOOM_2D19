@@ -52,7 +52,7 @@ UiItem_Bar::~UiItem_Bar()
 	
 }
 
-void UiItem_Bar::Draw(const float & dt)
+void UiItem_Bar::Draw()
 {
 
 	//App->render->Blit(App->gui->GetAtlas(), hitBox.x, hitBox.y, &this->section, 0.0F, SDL_FLIP_NONE);

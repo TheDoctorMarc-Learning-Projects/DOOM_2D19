@@ -59,7 +59,7 @@ UiItem_Image::~UiItem_Image()
 	
 }
 
-void UiItem_Image::Draw(const float& dt)
+void UiItem_Image::Draw()
 {
      // if !hide -> draw 
 }

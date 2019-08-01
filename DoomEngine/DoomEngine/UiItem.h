@@ -29,27 +29,29 @@ class UiItem
 protected:
 	// UiItem* parent = NULL;
 public:
-	UiItem* parent = nullptr;
-	// TODO:have a list of childrens. The global ui draw calls the canvas draw, then canvas calls children, etc etc etc 
-	std::string name;
-
-	UI_STATES state = IDLE;
-	GUI_TYPES guiType = UNKNOWN;
-	std::string name_object;
-	SDL_Rect hitBox = { 0,0,0,0 };
-	std::string function;
-	// p2Point<int> pivot = { 0,0 };
-	uint mouseButtonDown = 0;
 	UiItem(const iPoint& pos, UiItem* const parent);
 	UiItem(const iPoint& pos, std::string& name, UiItem* const parent);
-	UiItem(const iPoint& pos, std::string& function, std::string& name, UiItem* const parent);
 	UiItem(UiItem* const parent);
 	~UiItem();
-	virtual void Draw(const float&) {};
+	virtual void Draw() {};
+	void DebugDraw(); 
+	void DrawChildren(); 
 	virtual void CleanUp() {}; 
 	//virtual bool Update(float dt){};
 
 	//void Draw_Cursor(float dt);
+
+protected: 
+	std::string name;
+	UiItem* parent = nullptr;
+	// TODO: have a list of childrens. The global ui draw calls the canvas draw, then canvas calls children, etc etc etc 
+	std::list<UiItem*> children;
+	UI_STATES state = IDLE;
+	GUI_TYPES guiType = UNKNOWN;
+	SDL_Rect hitBox = { 0,0,0,0 };
+	iPoint textureDimensions;
+	float scaleFactor = 0.F;
+
 	bool slidable = false;
 	bool tabbable = false;
 	bool enable = true;
@@ -57,9 +59,7 @@ public:
 	bool to_delete = false;
 	bool useCamera = true;
 	bool selected = false;
-	int scaleFactor;
-	iPoint textureDimensions;
-	iPoint prevTextDimension;
+	
 
 
 

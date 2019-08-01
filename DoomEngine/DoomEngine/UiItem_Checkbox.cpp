@@ -14,7 +14,7 @@
 #include <assert.h> 
 #include "j1Audio.h"
 
-UiItem_Checkbox::UiItem_Checkbox(iPoint position, std::string& function, std::string& name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click, const SDL_Rect* hover, const SDL_Rect* tick_section) :UiItem(position, function, name, parent)
+UiItem_Checkbox::UiItem_Checkbox(iPoint position, std::string function, std::string name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click, const SDL_Rect* hover, const SDL_Rect* tick_section) :UiItem(position, name, parent)
 {
 
 	assert(parent != NULL);
@@ -53,14 +53,14 @@ UiItem_Checkbox::~UiItem_Checkbox()
 
 }
 
-void UiItem_Checkbox::Draw(const float & dt)
+void UiItem_Checkbox::Draw()
 {
 
 	//App->render->BlitGui(App->gui->GetAtlas(), hitBox.x, hitBox.y, &frames[state], 0.0F);
 }
 
 
-void UiItem_Checkbox::DoLogicClicked(std::string &functionName) {
+void UiItem_Checkbox::DoLogicClicked() {
 
  
 }

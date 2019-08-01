@@ -10,13 +10,14 @@ class UiItem_Button :public UiItem
 {
 protected:
 	SDL_Rect frames[MAX_STATES];
-	std::string name_button;
+	std::string functionName;
+	void(*function) () = nullptr;
+ 
 
 public:
-	UiItem_Button(iPoint position, std::string& function, std::string& name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click = nullptr, const SDL_Rect* hover = nullptr);
-	void AddFuntion(std::string & string);
-	void DoLogicClicked(std::string &functionName);
-	void Draw(const float&);
+	UiItem_Button(iPoint position, std::string functionName, std::string name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click = nullptr, const SDL_Rect* hover = nullptr);
+	void DoLogicClicked();
+	void Draw();
 
 
 };

@@ -21,12 +21,12 @@ protected:
 	SDL_Rect tick_section;
 	SDL_Rect captureIdleSection;
 
-	void DoLogicClicked(std::string &functionName);   // clicking logic matters the most
+	void DoLogicClicked();   
 	void CleanUp();
 public:
-	UiItem_Checkbox(iPoint position, std::string& function, std::string& name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click = nullptr, const SDL_Rect* hover = nullptr, const SDL_Rect* tick_Section = nullptr);
+	UiItem_Checkbox(iPoint position, std::string function, std::string name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click = nullptr, const SDL_Rect* hover = nullptr, const SDL_Rect* tick_Section = nullptr);
 	~UiItem_Checkbox();
-	void Draw(const float& dt);
+	void Draw();
 
 
 

@@ -21,5 +21,10 @@
   <file_system>
     <path>data.zip</path>
   </file_system>
+  
+  <scene>
+    <inGameUI>
+    </inGameUI> 
+  </scene>
 
 </config>

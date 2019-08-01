@@ -15,7 +15,7 @@ UiItem::UiItem(const iPoint & pos, UiItem * const parent)
 	if (parent != nullptr)
 		this->parent = parent;
 
-	this->function = function;
+
 
 	SDL_ShowCursor(SDL_DISABLE);
 }
@@ -28,8 +28,6 @@ UiItem::UiItem(const iPoint& pos, std::string& name, UiItem* const parent)
 	if (parent != nullptr)
 		this->parent = parent;
 
-	this->function = function;
-
 }
 
 
@@ -38,28 +36,11 @@ UiItem::UiItem(UiItem * const parent)
 
 	if (parent != nullptr)
 		this->parent = parent;
-
-	this->function = function;
 }
 
 
 
-UiItem::UiItem(const iPoint& pos, std::string& function, std::string& name, UiItem* const parent) : parent(parent)
-{
-	hitBox.x = pos.x;
-	hitBox.y = pos.y;
-	if (parent != nullptr)
-		this->parent = parent;
-
-	this->function = function;
-
-	this->name = name;
-}
-
-//UiItem::UiItem(SDL_Rect hitBox, UiItem * const parent, p2Point<int> pivot) :pivot(pivot), parent(parent)
-//{
-//
-//}
+ 
 
 UiItem::~UiItem()
 {
@@ -67,11 +48,32 @@ UiItem::~UiItem()
 
 }
  
+void UiItem::DrawChildren()    // what about "to_delete"? is it needed for the gui ?
+{
+	if (children.size() > 0)
+		for (const auto& child : children)
+			if (child->enable == true && child->hide == false)
+			{
+				child->Draw();
+				if (App->gui->debug == true)
+					child->DebugDraw();
 
 
+				if (child->children.size() > 0)
+					child->DrawChildren(); 
+			}		
+	
+}
+
+ 
+
+void UiItem::DebugDraw()
+{
+	App->render->DrawQuad(hitBox, 0, 0, 255, 255, true, true); 
+}
 
 
-/*                                        // TODO: have a nice cursor when on menus. Disable it ingame. 
+/*                                        // TODO: have a nice cursor when on menus. Disable it ingame ( the original skull cursor?) 
 void UiItem::Draw_Cursor(float dt) {
 	int x, y;
 	x = y = 0;

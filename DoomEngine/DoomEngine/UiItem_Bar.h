@@ -33,7 +33,7 @@ protected:
 public:
 	UiItem_Bar(iPoint position, std::string name, const SDL_Rect* section, const SDL_Rect* thumb_section, const SDL_Rect* image_idle, const SDL_Rect* image_hover, UiItem*const parent/*, TypeBar type = VERTICAL*/);
 	~UiItem_Bar();
-	void Draw(const float& dt);
+	void Draw();
 	float GetBarValue();
 
 public:

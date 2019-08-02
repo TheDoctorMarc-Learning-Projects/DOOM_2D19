@@ -139,9 +139,7 @@ bool j1App::Awake()
 		item = modules.begin();
 
 		while(item != modules.end() && ret == true)
-		{
-			//ret = (*item)->Awake(config.child((*item)->name.data()));    // IMPERATIVE TODO: Check this out, same code as other proj, but does not work
-
+		{ 
 			ret = (*item)->Awake((pugi::xml_node&)(config).child((*item)->name.data())); 
 
 

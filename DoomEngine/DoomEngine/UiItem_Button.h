@@ -3,6 +3,7 @@
 
 #include "UiItem.h"
 #include "p2Point.h"
+#include "j1Scene.h"
 #include "j1Textures.h"
 #include <string>
 
@@ -11,15 +12,14 @@ class UiItem_Button :public UiItem
 protected:
 	SDL_Rect frames[MAX_STATES];
 	std::string functionName;
-	void(*function) () = nullptr;
- 
+
 
 public:
-	UiItem_Button(iPoint position, std::string functionName, std::string name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click = nullptr, const SDL_Rect* hover = nullptr);
+	UiItem_Button(iPoint position, std::string functionName, std::string name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click = nullptr, const SDL_Rect* hover = nullptr, 
+		sceneTypeGUI targetScene = sceneTypeGUI::NO_SCENE);
 	void DoLogicClicked();
 	void Draw();
-
-
+ 
 };
 
 #endif

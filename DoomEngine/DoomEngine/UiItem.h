@@ -4,7 +4,7 @@
 #include <list>
 #include "p2Point.h"
 #include <string>
-
+#include "j1Scene.h"
 
 enum UI_STATES
 {
@@ -26,9 +26,9 @@ enum GUI_TYPES
 
 class UiItem
 {
-protected:
-	// UiItem* parent = NULL;
+ 
 public:
+	UiItem(std::string name); 
 	UiItem(const iPoint& pos, UiItem* const parent);
 	UiItem(const iPoint& pos, std::string& name, UiItem* const parent);
 	UiItem(UiItem* const parent);
@@ -41,7 +41,7 @@ public:
 
 	//void Draw_Cursor(float dt);
 
-protected: 
+public: 
 	std::string name;
 	UiItem* parent = nullptr;
 	// TODO: have a list of childrens. The global ui draw calls the canvas draw, then canvas calls children, etc etc etc 
@@ -61,7 +61,10 @@ protected:
 	bool selected = false;
 	
 
-
+	// TODO: encapsulate this in a "functionData" struct 
+	void(*function) (UiItem*) = nullptr;
+	bool hasExecutedFunction = false; 
+	sceneTypeGUI targetScene;
 
 	/*virtual void DoLogicClicked() {};
 	virtual void DoLogicClicked(std::string& functionName) {};

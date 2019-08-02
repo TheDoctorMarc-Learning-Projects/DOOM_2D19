@@ -38,6 +38,11 @@ UiItem::UiItem(UiItem * const parent)
 		this->parent = parent;
 }
 
+UiItem::UiItem(std::string name)
+{
+	this->name = name; 
+}
+
 
 
  

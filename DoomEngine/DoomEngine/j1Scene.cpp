@@ -22,11 +22,23 @@ j1Scene::j1Scene() : j1Module()
 {
 	name.assign("scene");
 	state = SceneState::LEVEL1;
+
+
+
+	sceneGuiXMLIndexes =
+	{
+		 {sceneTypeGUI::INGAME, "InGameUI"},
+	};
+
+
+	// TODO: keep updating this scene-gui index map
 }
 
 // Destructor
 j1Scene::~j1Scene()
-{}
+{
+	sceneGuiXMLIndexes.clear(); 
+}
 
 // Called before render is available
 bool j1Scene::Awake(pugi::xml_node& node)

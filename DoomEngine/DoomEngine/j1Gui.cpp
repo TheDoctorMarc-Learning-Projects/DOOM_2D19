@@ -48,12 +48,21 @@ bool j1Gui::Start()
 
  
 
+	// the first time just load the main menu GUI
+	initializeGUI(); 
+
 	return true;
 }
 
+void j1Gui::initializeGUI()   // set the state to Main Menu while creating a Main Menu canvas
+{
+	ChangeCurrentCanvas(sceneTypeGUI::INGAME, DBG_NEW UiItem(App->scene->sceneGuiXMLIndexes.at(sceneTypeGUI::INGAME)));  // TODO: change to main menu
+}
+
+
 bool j1Gui::Update(float dt)
 {
-//	DoLogicSelected();
+//	DoLogicSelected(); // TODO: this must only consider current canvas children !! 
 
 
 	return true;
@@ -134,8 +143,17 @@ void j1Gui::ChangeCurrentCanvas(sceneTypeGUI targetScene, UiItem* newCanvas)
 	 
 }
 
-void j1Gui::LoadXMLGUI(pugi::xml_node& nodeScene)
+void j1Gui::LoadXMLGUI(pugi::xml_node& menuNode)
 {
+	for (pugi::xml_node uiNode = menuNode.child("images").child("image"); uiNode; uiNode = uiNode.next_sibling("image"))
+	{
+		std::string name = uiNode.attribute("name").as_string();
+
+		SDL_Rect section = { uiNode.child("section").attribute("x").as_int(), uiNode.child("section").attribute("y").as_int(), uiNode.child("section").attribute("w").as_int(), uiNode.child("section").attribute("h").as_int() };
+		iPoint position = { uiNode.child("position").attribute("x").as_int(), uiNode.child("position").attribute("y").as_int() };
+
+		App->gui->AddImage(position, &section, name, NULL, false);  // bug: an image is created as panel 
+	}
 
 }
 

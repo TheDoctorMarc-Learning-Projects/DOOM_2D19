@@ -22,9 +22,19 @@
     <path>data.zip</path>
   </file_system>
   
+  <gui>
+    <atlas file="gui/atlas.png"/>
+  </gui>
+
   <scene>
-    <inGameUI>
-    </inGameUI> 
+    <InGameUI>
+	 <images>
+        <image name="test">
+		  <position x="100" y="100" />
+          <section x="0" y="69" w="35" h="33"/>
+        </image>
+	 </images>	
+    </InGameUI> 
   </scene>
 
 </config>

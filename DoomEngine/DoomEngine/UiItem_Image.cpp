@@ -8,11 +8,17 @@
 
 UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, std::string& name, UiItem* const parent, bool isTabbable) : UiItem(position, name, parent)
 {
+	assert(parent != nullptr);
+
 	this->section = *section;
 	this->guiType = GUI_TYPES::IMAGE;
 
 	this->hitBox.w = section->w;
 	this->hitBox.h = section->h;
+
+
+	this->hitBox.x = position.x;
+	this->hitBox.y = position.y;
 
 	tabbable = isTabbable;
 
@@ -20,17 +26,16 @@ UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, std::string
 		this->hide = true;
 
 	// the parent
-	this->parent = parent;
+	AssignParentChild(parent); 
 
 
-
-	this->hitBox.x = position.x;
-	this->hitBox.y = position.y;
 
 }
 
-UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, UiItem* const parent, SDL_Texture* newTex, UiItem_Description* myDescr) : UiItem(position, parent)
+UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, UiItem* const parent) : UiItem(position, parent)
 {
+	assert(parent != nullptr);
+
 	this->section = *section;
 	this->guiType = GUI_TYPES::IMAGE;
 
@@ -39,17 +44,15 @@ UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, UiItem* con
 	this->hitBox.h = section->h;
 
 
-	// the parent
-	this->parent = parent;
-
-
 
 	this->hitBox.x = position.x;
 	this->hitBox.y = position.y;
 
-	// new texture for loot image
-	this->newTex = newTex;
 
+	// the parent
+	AssignParentChild(parent);
+
+	 
 
  
 }
@@ -62,6 +65,7 @@ UiItem_Image::~UiItem_Image()
 void UiItem_Image::Draw()
 {
      // if !hide -> draw 
+	App->render->Blit(App->gui->GetAtlas(), hitBox.x, hitBox.y, &this->section, 0.0F, SDL_FLIP_NONE);
 }
 
 void UiItem_Image::CleanUp()

@@ -36,6 +36,12 @@ public:
 	virtual void Draw() {};
 	void DebugDraw(); 
 	void DrawChildren(); 
+
+	void AssignParentChild(UiItem* parent) {
+		this->parent = parent; 
+		parent->children.push_back(this); 
+	}
+
 	virtual void CleanUp() {}; 
 	//virtual bool Update(float dt){};
 

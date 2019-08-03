@@ -17,6 +17,8 @@
 UiItem_Bar::UiItem_Bar(iPoint position, std::string name, const SDL_Rect* section, const SDL_Rect* thumb_section, const SDL_Rect* image_idle, const SDL_Rect* image_hover, UiItem*const parent) : UiItem(position, parent)
 
 {
+	assert(parent != nullptr);
+
 	this->section = *section;
 	this->guiType = GUI_TYPES::BAR;
 	this->image_idle = *image_idle;

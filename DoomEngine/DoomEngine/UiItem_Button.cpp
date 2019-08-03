@@ -32,6 +32,11 @@ UiItem_Button::UiItem_Button(iPoint position, std::string functionName, std::str
 	// assign the function pointer here
 	this->function = App->gui->GetFunctionsMap().at(functionName);
 	this->targetScene = targetScene; 
+
+
+	// the parent
+	AssignParentChild(parent);
+
 }
 
  

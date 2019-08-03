@@ -14,7 +14,7 @@
 #include "UiItem_Button.h"
 
 
-void LoadGui(UiItem* callback);
+void LoadGui(UiItem* callback); 
  
 class j1Gui : public j1Module
 {
@@ -47,9 +47,9 @@ public:
 	UiItem* AddEmptyElement(iPoint pos, UiItem* const parent = nullptr);
 	UiItem_Checkbox* AddCheckbox(iPoint position, std::string function, std::string name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click = nullptr, const SDL_Rect* hover = nullptr, const SDL_Rect* tick_section = nullptr);
 
-
+	void initializeGUI(); 
 	void ChangeCurrentCanvas(sceneTypeGUI targetScene, UiItem* newCanvas = nullptr);
-	void LoadXMLGUI(pugi::xml_node& nodeScene);
+	void LoadXMLGUI(pugi::xml_node& menuNode);
  
 	std::map<std::string, void(*)(UiItem* callback)> GetFunctionsMap()
 	{
@@ -57,6 +57,8 @@ public:
 	}
 
 	UiItem* GetCurrentCanvas() const { return currentCanvas; }; 
+
+	SDL_Texture* GetAtlas() const { return atlas; }; 
  
 private:
 	SDL_Texture* atlas = nullptr;

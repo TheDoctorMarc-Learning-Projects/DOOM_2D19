@@ -140,9 +140,7 @@ bool j1App::Awake()
 
 		while(item != modules.end() && ret == true)
 		{ 
-			ret = (*item)->Awake((pugi::xml_node&)(config).child((*item)->name.data())); 
-
-
+			ret = (*item)->Awake((pugi::xml_node&)(config).child((*item)->name.data()));
 			++item;
 		}
 	}

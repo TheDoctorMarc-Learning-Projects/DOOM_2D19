@@ -42,8 +42,7 @@ UiItem_Checkbox::UiItem_Checkbox(iPoint position, std::string function, std::str
 	
 
 	// the parent
-	this->parent = parent;
-
+	AssignParentChild(parent);
 
 
 }

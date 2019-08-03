@@ -78,7 +78,7 @@ void UiItem::DebugDraw()
 }
 
 
-/*                                        // TODO: have a nice cursor when on menus. Disable it ingame ( the original skull cursor?) 
+/*                                        // TODO: do this in gui cpp: have a nice cursor when on menus. Disable it ingame ( the original skull cursor?) 
 void UiItem::Draw_Cursor(float dt) {
 	int x, y;
 	x = y = 0;

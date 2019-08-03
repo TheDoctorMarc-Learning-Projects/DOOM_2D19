@@ -232,7 +232,8 @@ void j1Scene::LoadScene(SceneState sceneState, sceneType menuLevel)
 
 	// 3) then load modules, the previous encapsulated entity data... 
 
-	App->audio->Start(); // audio has not been disabled (to keep mix channels etc) 
+ 
+	App->audio->Start();
 
 	if (menuLevel == sceneType::LEVEL)                  
 	{

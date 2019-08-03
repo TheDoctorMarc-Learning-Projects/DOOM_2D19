@@ -16,6 +16,7 @@
 
 UiItem_Label::UiItem_Label(std::string text, SDL_Color color, TTF_Font * font, p2Point<int> position, UiItem*const parent) :UiItem(position, parent)
 {
+	assert(parent != nullptr);
 
 	texture = App->font->Print(text.data(), color, font);
 	this->guiType = GUI_TYPES::LABEL;
@@ -28,8 +29,8 @@ UiItem_Label::UiItem_Label(std::string text, SDL_Color color, TTF_Font * font, p
 		SDL_QueryTexture(texture, NULL, NULL, &textureDimensions.x, &textureDimensions.y);
 
 	// the parent
-	this->parent = parent;
-	
+	AssignParentChild(parent);
+
 }
 
 UiItem_Label::~UiItem_Label()

@@ -150,11 +150,15 @@ void j1Gui::LoadXMLGUI(pugi::xml_node& menuNode)
 	for (pugi::xml_node uiNode = menuNode.child("images").child("image"); uiNode; uiNode = uiNode.next_sibling("image"))
 	{
 		std::string name = uiNode.attribute("name").as_string();
-
 		SDL_Rect section = { uiNode.child("section").attribute("x").as_int(), uiNode.child("section").attribute("y").as_int(), uiNode.child("section").attribute("w").as_int(), uiNode.child("section").attribute("h").as_int() };
 		iPoint position = { uiNode.child("position").attribute("x").as_int(), uiNode.child("position").attribute("y").as_int() };
 
-	    App->gui->AddImage(position, &section, name, NULL, false);   
+		std::string textureName = uiNode.child("textureMapName").attribute("value").as_string();
+		SDL_Texture* nexTexture = nullptr; 
+		if (textureName != "")
+			nexTexture = App->map->entityTextureMap.at(textureName); 
+
+	    App->gui->AddImage(position, &section, name, NULL, false, nexTexture, 0.0F);
 	}
 
 

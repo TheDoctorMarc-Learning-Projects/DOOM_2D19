@@ -682,9 +682,14 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 
 
 				}
+
+				std::string UIName = "oldCollectible"; 
+
+				if (classic == false)
+					UIName = "newCollectible"; 
 				 
 
-				App->entityFactory->CreateCoin(ENTITY_TYPE::LOOT, worldPos.x, worldPos.y, "figure", LOOT_TYPE::COIN, classic);
+				App->entityFactory->CreateCoin(ENTITY_TYPE::LOOT, worldPos.x, worldPos.y, UIName, LOOT_TYPE::COIN, classic);
 			}
 
 

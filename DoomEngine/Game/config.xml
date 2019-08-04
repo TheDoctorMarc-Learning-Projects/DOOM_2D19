@@ -38,6 +38,19 @@
 		  <position x="598" y="589" />
           <section x="72" y="34" w="25" h="30"/>
         </image>
+		
+		 <image name="oldCollectible">
+		  <position x="914" y="599" />
+          <section x="22" y="45" w="16" h="23"/>
+		  <textureMapName value="loot"/>
+        </image>
+		
+		 <image name="newCollectible">
+		  <position x="1044" y="599" />
+          <section x="0" y="45" w="16" h="23"/>
+		  <textureMapName value="loot"/>
+        </image>
+		
 	 </images>	
 	 
 	 
@@ -52,7 +65,7 @@
 		
 		<label name="armorLabel">
           <position x="780" y="585"/>
-          <color R="0" G="40" B="0" A="255"/>
+          <color R="40" G="0" B="0" A="255"/>
           <text value="0"/>
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
           <size s="24"/>
@@ -60,11 +73,29 @@
 		
 		<label name="ammoLabel">
           <position x="160" y="585"/>
-          <color R="0" G="0" B="40" A="255"/>
+          <color R="40" G="0" B="0" A="255"/>
           <text value="0"/>
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
           <size s="24"/>
         </label>
+		
+		
+		<label name="oldCollectibleLabel">
+           <position x="984" y="605" />
+          <color R="40" G="0" B="0" A="255"/>
+          <text value="0"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="24"/>
+        </label>
+		
+		<label name="newCollectibleLabel">
+          <position x="1114" y="605" />
+          <color R="40" G="0" B="0" A="255"/>
+          <text value="0"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="24"/>
+        </label>
+		
 		
       </labels>
 

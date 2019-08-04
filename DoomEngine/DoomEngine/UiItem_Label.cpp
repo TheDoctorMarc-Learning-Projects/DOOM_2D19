@@ -99,7 +99,7 @@ bool UiItem_Label::ChangeTextureIdle(std::string textIdle, const SDL_Color* colo
 	}
 
 	texture = aux;
-
+	text = textIdle; 
 
 	if (texture)
 	{

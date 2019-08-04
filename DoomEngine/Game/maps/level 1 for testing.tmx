@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="330" height="26" tilewidth="32" tileheight="32" infinite="0" nextlayerid="36" nextobjectid="243">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="330" height="26" tilewidth="32" tileheight="32" infinite="0" nextlayerid="36" nextobjectid="244">
  <tileset firstgid="1" name="qzNJ1V6_3x (1)" tilewidth="32" tileheight="32" tilecount="2520" columns="140">
   <image source="textures/background_level1.png" width="4488" height="600"/>
  </tileset>
@@ -34698,7 +34698,7 @@
    </properties>
   </object>
   <object id="236" name="health" x="864" y="512" width="32" height="32"/>
-  <object id="237" name="figure" x="736" y="512" width="32" height="32">
+  <object id="237" name="figure" x="1120" y="416" width="32" height="32">
    <properties>
     <property name="classicType" type="bool" value="true"/>
    </properties>
@@ -34713,6 +34713,11 @@
     <property name="maxBullets" type="int" value="200"/>
     <property name="name" value="machineGun"/>
     <property name="scope" type="float" value="5000"/>
+   </properties>
+  </object>
+  <object id="243" name="figure" x="1056" y="256" width="32" height="32">
+   <properties>
+    <property name="classicType" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>

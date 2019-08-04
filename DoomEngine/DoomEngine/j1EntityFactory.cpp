@@ -401,12 +401,13 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 	}
 	else
 	{
-		float captureArmor = player->armor;
-		float captureLife = player->life;
+		float previousArmor = player->armor;
+		float previousLife = player->life;
 		
 		if (player->armor > 0.0f)
 		{
 			   // apply damage to the armor first 
+			float captureArmor = player->armor;
 			float extraDamage = 0.0f;
 
 			captureArmor -= damage;
@@ -425,9 +426,9 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 		else
 			player->life -= damage;     
 
-		if(captureArmor != player->armor)
+		if(previousArmor != player->armor)
 			App->gui->UpDateInGameUISlot("armorLabel", player->armor);
-		if (captureLife != player->life)
+		if (previousLife != player->life)
 			App->gui->UpDateInGameUISlot("healthLabel", player->life);
 
 		
@@ -459,16 +460,19 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 
 
 
-void j1EntityFactory::AddLifeToEntity(j1Entity* ent, float maxLifePercentatge)
+void j1EntityFactory::AddLifeToPlayer(float maxLifePercentatge)
 {
-	float captureLife = ent->life;
+	float captureLife = player->life;
 
-	captureLife += (maxLifePercentatge * ent->maxLife);
+	captureLife += (maxLifePercentatge * player->maxLife);
 
-	if (captureLife > ent->maxLife)
-		captureLife -= (captureLife - ent->maxLife);
+	if (captureLife > player->maxLife)
+		captureLife -= (captureLife - player->maxLife);
 
-	ent->life = captureLife;
+	player->life = captureLife;
+
+	App->gui->UpDateInGameUISlot("healthLabel", player->life);
+
 }
 
 
@@ -491,6 +495,7 @@ void j1EntityFactory::AddAmmoToPlayer(float maxBulletPercentage)
 		}
 	
 
+	App->gui->UpDateInGameUISlot("ammoLabel", player->currentWeapon->currentBullets);
 }
 
 void j1EntityFactory::AddArmorToPlayer(float maxArmorPercentatge)
@@ -503,4 +508,7 @@ void j1EntityFactory::AddArmorToPlayer(float maxArmorPercentatge)
 		captureArmor -= (captureArmor - player->maxArmor);
 
 	player->armor = captureArmor;
+
+
+	App->gui->UpDateInGameUISlot("armorLabel", player->armor);
 }

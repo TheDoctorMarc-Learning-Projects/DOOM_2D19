@@ -8,6 +8,7 @@
 #include "j1Scene.h"
 #include "j1EntityFactory.h" // needed for some functions
 #include "j1Enemy.h"
+#include "j1Gui.h"
 
 #include <math.h>
 
@@ -498,8 +499,8 @@ void j1EntityPlayer::ChangeWeapon(SDL_GameControllerButton button)
 					currentWeapon = myWeapons.at(desiredIndex); 
 
 
-
-
+					// warn the GUI
+					App->gui->UpDateInGameUISlot("ammoLabel", currentWeapon->currentBullets);   
 				
 				}
 			
@@ -999,11 +1000,14 @@ void j1EntityPlayer::PickWeapon(Collider* c2)
 		dynamic_cast<j1EntityLootWeapon*>(c2->callback)->weaponData.weaponState = WEAPON_STATE::ACTIVE;    // put to active 
 		dynamic_cast<j1EntityLootWeapon*>(c2->callback)->PlaceMeWithPlayer();  // player the new weapon in the desired pos; 
 
-		App->audio->PlayFx("weaponPickUp");
+		
 
 		dynamic_cast<j1EntityLootWeapon*>(c2->callback)->blitOrder = 3U;   // so it is under enemies, but on top when picked
 
 
+		// other modules logic 
+		App->audio->PlayFx("weaponPickUp");
+		App->gui->UpDateInGameUISlot("ammoLabel", dynamic_cast<j1EntityLootWeapon*>(c2->callback)->currentBullets);
 		
 
 	}

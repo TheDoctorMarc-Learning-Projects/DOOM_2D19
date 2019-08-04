@@ -1,5 +1,6 @@
 #include "j1EntityFactory.h"
 #include "LootWeaponMaps.h"
+#include "j1Gui.h"
 #include "j1Enemy.h"
 
 j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_type, std::string name, weaponInfo weaponData) :j1EntityLoot(posX, posY, loot_type, name)
@@ -276,6 +277,11 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 			App->particles->AddParticle(name + "Shot", this, weaponTipPos.x, weaponTipPos.y, COLLIDER_NONE);  // the proper projectile with callback (this) that will do damage
 		else*/
 		CalculateStrike();
+
+
+
+		// warn the GUI
+		App->gui->UpDateInGameUISlot("ammoLabel", this->currentBullets);
 
 	}
 	else

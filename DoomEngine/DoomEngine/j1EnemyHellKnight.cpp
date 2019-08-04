@@ -9,6 +9,7 @@ j1EnemyHellKnight::j1EnemyHellKnight(int posX, int posY, std::string name) : j1E
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = ENEMY_HELL_KNIGHT;
 	this->name = name;
+	powerLevel = 2U; 
 	maxLife = 200;
 	life = (float)maxLife;
 	size.create(44, 70);

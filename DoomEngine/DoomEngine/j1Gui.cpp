@@ -347,7 +347,7 @@ void j1Gui::UpDateInGameUISlot(std::string name, float newValue, SDL_Rect newSec
 
 }
  
-void j1Gui::UpdateDeathTimer()
+void j1Gui::UpdateDeathTimer(int value)
 {
 	if (App->entityFactory->IsPlayerAlive() == false)
 		return; 
@@ -355,7 +355,7 @@ void j1Gui::UpdateDeathTimer()
 	UiItem_Label* myLabel = (UiItem_Label*)App->gui->GetItemByName("deathTimerCounter");
 
 	int time = std::stoi(myLabel->text);
-	time -= 1;
+	time += value;
 
 	if (time >= 0)
 	{

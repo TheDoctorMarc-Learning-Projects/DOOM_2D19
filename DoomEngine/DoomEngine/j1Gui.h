@@ -63,7 +63,7 @@ public:
 	UiItem* GetItemByName(std::string name, UiItem* parent = nullptr) const;
 
 	void UpDateInGameUISlot(std::string name, float newValue = 0.0f, SDL_Rect newSection = { 0, 0, 0, 0 });
-	void UpdateDeathTimer();     // it is here just not to call the above function in app, maybe it is cleaner to call it from here; 
+	void UpdateDeathTimer(int value = -1);     // it is here just not to call the above function in app, maybe it is cleaner to call it from here; 
 
 private: 
 	void initializeGUI(); 
@@ -82,6 +82,7 @@ private:
 
 	std::string atlas_file_name;
 	float spriteScale = 0.0f; 
+
 
 public: 
 	bool debug = false;

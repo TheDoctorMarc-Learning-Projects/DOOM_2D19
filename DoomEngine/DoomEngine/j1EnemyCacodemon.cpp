@@ -10,6 +10,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	adaptativeColliderMovement = false; 
 	type = ENEMY_CACODEMON;
 	this->name = name;
+	powerLevel = 3U;
 	maxLife = 480;
 	life = (float)maxLife;
 	size.create(62, 67);

@@ -299,6 +299,7 @@ public:
 	j1EntityPlatform* lastPlatform = nullptr; 
 	float platFormSpeed = 60.f;
 	lastRaycastData lastRaycastInfo; 
+	uint powerLevel = 1U; 
 
 private: 
 	float momentumFactor = 10.f;

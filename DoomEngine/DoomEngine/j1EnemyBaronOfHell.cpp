@@ -9,6 +9,7 @@ j1EnemyBaronOfHell::j1EnemyBaronOfHell(int posX, int posY, std::string name) : j
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = ENEMY_BARON_OF_HELL;
 	this->name = name;
+	powerLevel = 4U;
 	maxLife = 500;
 	life = (float)maxLife;
 	size.create(44, 70);

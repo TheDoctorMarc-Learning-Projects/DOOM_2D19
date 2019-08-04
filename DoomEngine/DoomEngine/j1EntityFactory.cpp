@@ -445,6 +445,10 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 			brutal = true; 
 
 		ent->SetDyingState(brutal);
+
+
+		if (ent != player)  // add time to the death countdown
+			App->gui->UpdateDeathTimer((int)dynamic_cast<j1Enemy*>(ent)->powerLevel * enemyKillTimeBonusFactor); 
 			
 	}
 	else

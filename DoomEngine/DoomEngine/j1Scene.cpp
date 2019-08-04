@@ -218,13 +218,13 @@ void j1Scene::LoadScene(SceneState sceneState, sceneType menuLevel)
 		break;
 
 	case SceneState::LEVEL1: 
-		App->audio->PlayMusic("sound/music/soil-halo.ogg", -1);  
+		App->audio->PlayMusic("sound/music/Arch Enemy First Day In Hell.ogg", -1);  
 		LoadNewMap("maps/level 1.tmx");                           // 2) Then call load map (which has encapsulated entity data)
 		break;
 
 	case SceneState::LEVEL2:
 		LoadNewMap("maps/level 1 for testing.tmx");
-		App->audio->PlayMusic("sound/music/stricken.ogg", -1);
+		App->audio->PlayMusic("sound/music/Heaven Shall Burn - They Shall Not Pass.ogg", -1);
 		break;
 	default:
 		break;

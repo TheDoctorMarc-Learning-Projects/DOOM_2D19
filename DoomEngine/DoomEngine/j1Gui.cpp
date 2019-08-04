@@ -11,12 +11,15 @@
 #include "p2Log.h"
 #include "Brofiler/Brofiler.h"
 #include "j1Scene.h"
+#include "j1Fonts.h"
 
 j1Gui::j1Gui() : j1Module()
 {
 	name.assign("gui");
 
 	FillFunctionsMap(); 
+
+ 
 }
 
 void j1Gui::FillFunctionsMap()
@@ -39,14 +42,14 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 {
 	bool ret = true;
 	atlas_file_name = conf.child("atlas").attribute("file").as_string();
+	spriteScale = conf.child("spriteScale").attribute("value").as_float();
+
 	return true;
 }
 
 bool j1Gui::Start()
 {
 	atlas = App->tex->Load(atlas_file_name.data());
-
- 
 
 	// the first time just load the main menu GUI
 	initializeGUI(); 
@@ -108,7 +111,6 @@ bool j1Gui::CleanUp()
 
 	canvases.clear();
 
-	
 	return true;
 }
 
@@ -152,8 +154,26 @@ void j1Gui::LoadXMLGUI(pugi::xml_node& menuNode)
 		SDL_Rect section = { uiNode.child("section").attribute("x").as_int(), uiNode.child("section").attribute("y").as_int(), uiNode.child("section").attribute("w").as_int(), uiNode.child("section").attribute("h").as_int() };
 		iPoint position = { uiNode.child("position").attribute("x").as_int(), uiNode.child("position").attribute("y").as_int() };
 
-		App->gui->AddImage(position, &section, name, NULL, false);  // bug: an image is created as panel 
+		UiItem_Image* image = App->gui->AddImage(position, &section, name, NULL, false);   
 	}
+
+
+	// labels
+	for (pugi::xml_node uiNode = menuNode.child("labels").child("label"); uiNode; uiNode = uiNode.next_sibling("label"))
+	{
+		std::string name = uiNode.attribute("name").as_string();
+		iPoint position = { uiNode.child("position").attribute("x").as_int(), uiNode.child("position").attribute("y").as_int() };
+		std::string text = uiNode.child("text").attribute("value").as_string();
+		std::string font = uiNode.child("font").attribute("value").as_string();
+		SDL_Color color = { uiNode.child("color").attribute("R").as_uint(),uiNode.child("color").attribute("G").as_uint(),uiNode.child("color").attribute("B").as_uint(),uiNode.child("color").attribute("A").as_uint() };
+		const char* path = uiNode.child("path").attribute("p").as_string();
+		uint size = uiNode.child("size").attribute("s").as_int();
+
+		App->gui->AddLabel(name, text.data(), color, App->font->Load(path, size), position, NULL);
+
+	}
+
+
 
 }
 
@@ -176,10 +196,14 @@ void j1Gui::destroyElement(UiItem * elem)   // TODO: delete children first :/ Th
 
 }
 
-UiItem_Label * j1Gui::AddLabel(std::string text, SDL_Color color, TTF_Font * font, p2Point<int> position, UiItem * const parent)
+UiItem_Label * j1Gui::AddLabel(std::string name, std::string text, SDL_Color color, TTF_Font * font, p2Point<int> position, UiItem * const parent)
 {
 	UiItem* newUIItem = nullptr;
-	newUIItem = DBG_NEW UiItem_Label(text, color, font, position, parent);
+	if (parent == NULL)
+		newUIItem = DBG_NEW UiItem_Label(name, text, color, font, position, currentCanvas);
+	else
+		newUIItem = DBG_NEW UiItem_Label(name, text, color, font, position, parent);
+
 	listOfItems.push_back(newUIItem);
 	return (UiItem_Label*)newUIItem;
 }
@@ -205,7 +229,12 @@ UiItem_Bar* j1Gui::AddBar(iPoint position, std::string name, const SDL_Rect * se
 {
 	UiItem* newUIItem = nullptr;
 
-	newUIItem = DBG_NEW UiItem_Bar(position, name, section, thumb_section, image_idle, image_hover, parent);
+	if (parent == NULL)
+		newUIItem = DBG_NEW UiItem_Bar(position, name, section, thumb_section, image_idle, image_hover, currentCanvas);
+	else
+		newUIItem = DBG_NEW UiItem_Bar(position, name, section, thumb_section, image_idle, image_hover, parent);
+
+
 
 	listOfItems.push_back(newUIItem);
 
@@ -257,6 +286,50 @@ UiItem* j1Gui::AddEmptyElement(iPoint pos, UiItem * const parent)
 
 	listOfItems.push_back(newUIItem);
 	return newUIItem;
+}
+
+UiItem* j1Gui::GetItemByName(std::string name, UiItem* parent) const  // searches item only in the current canvas childhood 
+{
+	if (parent == nullptr)   // if parent is not defined, start searching from canvas 
+		parent = currentCanvas;
+
+	for (const auto& item : parent->children)
+	{
+		if (item->name == name)  // if found, return 
+			return item;
+		else
+			if (item->children.size() > 0)   // do a recursive call with the child's children
+			{
+				UiItem* success = GetItemByName(name, item);
+
+				if (success != nullptr)
+					return success;
+			}
+	}
+
+	return nullptr;
+	
+}
+
+
+void j1Gui::UpDateInGameUISlot(std::string name, float newValue)   // needed for ammo, health, armor
+{
+	if (newValue < 0.0f)
+		newValue = 0.0f; 
+
+	UiItem* item = GetItemByName(name); 
+
+	if (item == nullptr)
+		return; 
+
+	if (item->guiType == GUI_TYPES::LABEL)
+	{
+		float lastWidth = item->section.w * App->gui->GetSpriteGlobalScale();
+		dynamic_cast<UiItem_Label*>(item)->ChangeTextureIdle(std::to_string((int)newValue), NULL, NULL);
+		float newWidth = item->section.w * App->gui->GetSpriteGlobalScale();
+
+		item->hitBox.x -= (int)((newWidth - lastWidth) * .5F); 
+	}
 }
  
  

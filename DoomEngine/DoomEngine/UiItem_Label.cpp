@@ -14,9 +14,10 @@
 
 
 
-UiItem_Label::UiItem_Label(std::string text, SDL_Color color, TTF_Font * font, p2Point<int> position, UiItem*const parent) :UiItem(position, parent)
+UiItem_Label::UiItem_Label(std::string name, std::string text, SDL_Color color, TTF_Font * font, p2Point<int> position, UiItem*const parent) :UiItem(position, parent)
 {
 	assert(parent != nullptr);
+	this->name = name; 
 
 	texture = App->font->Print(text.data(), color, font);
 	this->guiType = GUI_TYPES::LABEL;
@@ -26,7 +27,12 @@ UiItem_Label::UiItem_Label(std::string text, SDL_Color color, TTF_Font * font, p
 
 
 	if (texture)
+	{
 		SDL_QueryTexture(texture, NULL, NULL, &textureDimensions.x, &textureDimensions.y);
+
+		section = { 0, 0, textureDimensions.x, textureDimensions.y }; 
+	}
+
 
 	// the parent
 	AssignParentChild(parent);
@@ -60,8 +66,8 @@ UiItem_Label::~UiItem_Label()
 
 void UiItem_Label::Draw()
 {
-	/*if (!hide)
-			App->render->BlitGui(texture, hitBox.x, hitBox.y, NULL, speed);*/
+
+	App->render->Blit(texture, hitBox.x, hitBox.y, &section, 0.0F, SDL_FLIP_NONE, App->gui->GetSpriteGlobalScale());
 	
 }
 
@@ -92,6 +98,13 @@ bool UiItem_Label::ChangeTextureIdle(std::string textIdle, const SDL_Color* colo
 	}
 
 	texture = aux;
+
+
+	if (texture)
+	{
+		SDL_QueryTexture(texture, NULL, NULL, &textureDimensions.x, &textureDimensions.y);
+		section = { 0, 0, textureDimensions.x, textureDimensions.y };
+	}
 
 	return ret;
 

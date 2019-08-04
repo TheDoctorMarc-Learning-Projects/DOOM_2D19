@@ -55,7 +55,9 @@ public:
 	UI_STATES state = IDLE;
 	GUI_TYPES guiType = UNKNOWN;
 	SDL_Rect hitBox = { 0,0,0,0 };
-	iPoint textureDimensions;
+	SDL_Rect section = { 0,0,0,0 };
+	iPoint textureDimensions = iPoint(0, 0);
+	iPoint originPos = iPoint(0, 0); 
 	float scaleFactor = 0.F;
 
 	bool slidable = false;

@@ -64,16 +64,10 @@ UiItem_Image::~UiItem_Image()
 
 void UiItem_Image::Draw()
 {
-     // if !hide -> draw 
-	App->render->Blit(App->gui->GetAtlas(), hitBox.x, hitBox.y, &this->section, 0.0F, SDL_FLIP_NONE);
+	App->render->Blit(App->gui->GetAtlas(), hitBox.x, hitBox.y, &this->section, 0.0F, SDL_FLIP_NONE, App->gui->GetSpriteGlobalScale());
 }
 
 void UiItem_Image::CleanUp()
 {
-	
-	if (newTex != nullptr)
-	{
-		//App->tex->UnLoad(newTex);
-		newTex = nullptr;
-	}
+	 
 }

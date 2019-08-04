@@ -4,7 +4,7 @@
  <app cap_frames="false" framerate_cap="60">
     <title>DOOM 2D19</title>
     <organization>Doctor Corp</organization>
-  </app>
+ </app>
 
   <renderer>
     <vsync value="false"/>
@@ -24,16 +24,51 @@
   
   <gui>
     <atlas file="gui/atlas.png"/>
+    <spriteScale value = "3.35" /> 	
   </gui>
 
   <scene>
     <InGameUI>
 	 <images>
-        <image name="test">
-		  <position x="100" y="100" />
-          <section x="0" y="69" w="35" h="33"/>
+        <image name="panel">
+		  <position x="104" y="580" />
+          <section x="0" y="0" w="320" h="32"/>
+        </image>
+		<image name="face">   <!-- this face will rather be a different gui item -->
+		  <position x="598" y="589" />
+          <section x="72" y="34" w="25" h="30"/>
         </image>
 	 </images>	
+	 
+	 
+	  <labels>
+        <label name="healthLabel">
+          <position x="444" y="585"/>
+          <color R="40" G="0" B="0" A="255"/>
+          <text value="500"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="24"/>
+        </label>
+		
+		<label name="armorLabel">
+          <position x="780" y="585"/>
+          <color R="0" G="40" B="0" A="255"/>
+          <text value="0"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="24"/>
+        </label>
+		
+		<label name="ammoLabel">
+          <position x="160" y="585"/>
+          <color R="0" G="0" B="40" A="255"/>
+          <text value="0"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="24"/>
+        </label>
+		
+      </labels>
+
+	  
     </InGameUI> 
   </scene>
 

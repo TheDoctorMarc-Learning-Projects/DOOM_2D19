@@ -10,6 +10,7 @@
 
 UiItem::UiItem(const iPoint & pos, UiItem * const parent)
 {
+	originPos = pos; 
 	hitBox.x = pos.x;
 	hitBox.y = pos.y;
 	if (parent != nullptr)
@@ -22,6 +23,7 @@ UiItem::UiItem(const iPoint & pos, UiItem * const parent)
 
 UiItem::UiItem(const iPoint& pos, std::string& name, UiItem* const parent)
 {
+	originPos = pos;
 	hitBox.x = pos.x;
 	hitBox.y = pos.y;
 	this->name = name;

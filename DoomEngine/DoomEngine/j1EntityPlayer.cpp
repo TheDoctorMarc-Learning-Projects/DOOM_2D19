@@ -96,12 +96,12 @@ bool j1EntityPlayer::PreUpdate()
 		godMode = !godMode; 
 
  
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
 	{
-		position.x = 7500; 
-		collider->SetPos(position.x, position.y); 
-		App->render->camera.x = -position.x; 
+		App->entityFactory->DoDamagetoEntity(this, 50, 0); 
 	}
+	 
+
 
 	return true;
 }

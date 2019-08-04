@@ -287,9 +287,6 @@
     <ClInclude Include="j1EntityLoot.h">
       <Filter>Code\Core\In-Game\Entities\inanimated\loot</Filter>
     </ClInclude>
-    <ClInclude Include="j1PathFinding.h">
-      <Filter>Code\Core\In-Game</Filter>
-    </ClInclude>
     <ClInclude Include="LootWeaponMaps.h">
       <Filter>Code\Core\In-Game\Entities\inanimated\loot\help</Filter>
     </ClInclude>
@@ -349,6 +346,9 @@
     </ClInclude>
     <ClInclude Include="UiItem.h">
       <Filter>Code\Core\In-Screen\GUI\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="j1PathFinding.h">
+      <Filter>Code\Core\In-Screen</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

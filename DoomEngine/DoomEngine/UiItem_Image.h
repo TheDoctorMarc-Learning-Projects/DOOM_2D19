@@ -21,8 +21,6 @@ public:
 	void CleanUp();
 
 private:
-	SDL_Rect section;
-	SDL_Texture* newTex = nullptr;
 
 	friend class UiItem_Bar; 
 };

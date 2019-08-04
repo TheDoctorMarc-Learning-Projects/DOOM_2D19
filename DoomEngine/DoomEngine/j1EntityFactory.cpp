@@ -17,11 +17,10 @@
 #include "j1EnemyCacodemon.h"
 #include "j1EnemyBaronOfHell.h"
 #include "j1EnemyHellKnight.h"
-
 #include "LootWeaponMaps.h"
-
 #include "j1BloodManager.h"
 #include "j1EntityBloodDrop.h"
+#include "j1Gui.h"
 
 #include <assert.h>
 
@@ -402,10 +401,12 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 	}
 	else
 	{
+		float captureArmor = player->armor;
+		float captureLife = player->life;
 		
 		if (player->armor > 0.0f)
 		{
-			float captureArmor = player->armor;     // apply damage to the armor first 
+			   // apply damage to the armor first 
 			float extraDamage = 0.0f;
 
 			captureArmor -= damage;
@@ -419,9 +420,15 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 				player->life -= extraDamage; 
 			}
 				
+			
 		}
 		else
 			player->life -= damage;     
+
+		if(captureArmor != player->armor)
+			App->gui->UpDateInGameUISlot("armorLabel", player->armor);
+		if (captureLife != player->life)
+			App->gui->UpDateInGameUISlot("healthLabel", player->life);
 
 		
 			

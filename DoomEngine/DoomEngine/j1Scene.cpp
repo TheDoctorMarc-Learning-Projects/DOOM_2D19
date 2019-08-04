@@ -258,7 +258,7 @@ void j1Scene::LoadScene(SceneState sceneState, sceneType menuLevel)
  
 
 	state = sceneState; 
- 
+	currentStateType = menuLevel; 
 
 }
 

@@ -96,6 +96,24 @@
           <size s="24"/>
         </label>
 		
+		<label name="deathTimerLabel">
+          <position x="1000" y="15" />
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="Death in: "/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="60"/>
+		  <scaleFactor value="1.0"/>
+        </label>
+		
+		<label name="deathTimerCounter">
+          <position x="1170" y="15" />
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="10"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="60"/>
+		  <scaleFactor value="1.0"/>
+        </label>
+		
 		
       </labels>
 

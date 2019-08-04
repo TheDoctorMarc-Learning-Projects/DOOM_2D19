@@ -445,9 +445,7 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 			brutal = true; 
 
 		ent->SetDyingState(brutal);
-
-		if (ent == player)
-			playerAlive = false; 
+			
 	}
 	else
 		App->audio->PlayFx(ent->name + "Injured");

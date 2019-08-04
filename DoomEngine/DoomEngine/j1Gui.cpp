@@ -172,8 +172,9 @@ void j1Gui::LoadXMLGUI(pugi::xml_node& menuNode)
 		SDL_Color color = { uiNode.child("color").attribute("R").as_uint(),uiNode.child("color").attribute("G").as_uint(),uiNode.child("color").attribute("B").as_uint(),uiNode.child("color").attribute("A").as_uint() };
 		const char* path = uiNode.child("path").attribute("p").as_string();
 		uint size = uiNode.child("size").attribute("s").as_int();
+		float scaleFactor = uiNode.child("scaleFactor").attribute("value").as_float(); 
 
-		App->gui->AddLabel(name, text.data(), color, App->font->Load(path, size), position, NULL);
+		App->gui->AddLabel(name, text.data(), color, App->font->Load(path, size), position, NULL, scaleFactor);
 
 	}
 
@@ -200,13 +201,13 @@ void j1Gui::destroyElement(UiItem * elem)   // TODO: delete children first :/ Th
 
 }
 
-UiItem_Label * j1Gui::AddLabel(std::string name, std::string text, SDL_Color color, TTF_Font * font, p2Point<int> position, UiItem * const parent)
+UiItem_Label * j1Gui::AddLabel(std::string name, std::string text, SDL_Color color, TTF_Font * font, p2Point<int> position, UiItem * const parent, float SpriteScale)
 {
 	UiItem* newUIItem = nullptr;
 	if (parent == NULL)
-		newUIItem = DBG_NEW UiItem_Label(name, text, color, font, position, currentCanvas);
+		newUIItem = DBG_NEW UiItem_Label(name, text, color, font, position, currentCanvas, SpriteScale);
 	else
-		newUIItem = DBG_NEW UiItem_Label(name, text, color, font, position, parent);
+		newUIItem = DBG_NEW UiItem_Label(name, text, color, font, position, parent, SpriteScale); 
 
 	listOfItems.push_back(newUIItem);
 	return (UiItem_Label*)newUIItem;
@@ -346,4 +347,22 @@ void j1Gui::UpDateInGameUISlot(std::string name, float newValue, SDL_Rect newSec
 
 }
  
- 
+void j1Gui::UpdateDeathTimer()
+{
+	if (App->entityFactory->IsPlayerAlive() == false)
+		return; 
+
+	UiItem_Label* myLabel = (UiItem_Label*)App->gui->GetItemByName("deathTimerCounter");
+
+	int time = std::stoi(myLabel->text);
+	time -= 1;
+
+	if (time >= 0)
+	{
+		UpDateInGameUISlot("deathTimerCounter", time);
+		if(time == 0)
+			App->entityFactory->player->SetDyingState();
+	}
+
+
+}

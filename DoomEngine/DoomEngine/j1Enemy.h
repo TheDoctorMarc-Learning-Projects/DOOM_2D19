@@ -179,6 +179,9 @@ public:
 
 	virtual void SetDyingState(bool brutal = false)
 	{
+		if (state.combat == eCombatState::DYING || state.combat == eCombatState::DEAD)
+			return;
+
 		state.combat = eCombatState::DYING; 
 		blitOrder = 1U;  // to be rendered under weapons etc
 

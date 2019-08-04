@@ -243,6 +243,12 @@ void j1App::FinishUpdate()
 		last_sec_frame_time.Start();
 		prev_last_sec_frame_count = last_sec_frame_count;
 		last_sec_frame_count = 0;
+
+		if (App->gui->IsEnabled() == true)
+			if(App->scene->GetCurrentSceneType() == sceneType::LEVEL)
+				App->gui->UpdateDeathTimer();
+			
+
 	}
 	seconds_since_startup = startup_time.ReadSec();
 	float avg_fps = float(frame_count) / seconds_since_startup;

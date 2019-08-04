@@ -6,7 +6,7 @@
 #include "j1EntityFactory.h"
 #include "j1Window.h"
 #include "j1Scene.h"
-#include "j1EntityFactory.h" // needed for some functions
+#include "j1EntityFactory.h" 
 #include "j1Enemy.h"
 #include "j1Gui.h"
 
@@ -25,7 +25,7 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY, std::string name) : j1Entity(
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = PLAYER; 
 	this->name = name;
-	maxLife = life = 500;        // TODO: show life in percentatge UI, not this value 
+	maxLife = life = 500;       
 	maxArmor = 300; 
 	position = previousPosition = fPoint(posX, posY); 
 	pointingDir = RIGHT;
@@ -1022,3 +1022,37 @@ void j1EntityPlayer::PickWeapon(Collider* c2)
 		
 	}
 }
+
+
+
+void j1EntityPlayer::SetDyingState(bool brutal)
+{
+
+	if (state.combat == combatState::DYING || state.combat == combatState::DEAD)
+		return;
+
+	App->entityFactory->playerAlive = false;
+
+	state.combat = combatState::DYING;
+
+	if (currentWeapon)
+		currentWeapon->StopAllFxs();
+
+	if (!brutal)
+	{
+		currentAnimation = &death1;
+
+		App->audio->StopSpecificFx(name + "Injured");   // so that death is audible 
+		App->audio->PlayFx(this->name + "Death");
+	}
+
+	else
+	{
+		currentAnimation = &death2;
+
+		App->audio->StopSpecificFx(name + "Injured");   // so that death is audible 
+		App->audio->PlayFx(this->name + "Death2");
+	}
+
+
+};

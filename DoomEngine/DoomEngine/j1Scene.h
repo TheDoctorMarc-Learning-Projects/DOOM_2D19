@@ -69,11 +69,13 @@ public:
 	bool Load(pugi::xml_node&);
 
  
+	sceneType GetCurrentSceneType() const { return currentStateType; };
+
 private:
 	SDL_Texture* debug_tex = nullptr;
 
 	SceneState state = SceneState::LEVEL1;
-
+	sceneType currentStateType = sceneType::MENU; 
 
 public:
 	pugi::xml_node sceneNode;

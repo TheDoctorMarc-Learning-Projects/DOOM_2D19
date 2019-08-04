@@ -41,9 +41,6 @@ void j1EntityLootCoin::OnPickUp()
 			App->audio->PlayFx("figurePickUp", 0, true, 1.f, 0.15f, 0.15f);
 			App->gui->UpDateInGameUISlot(name + "Label", coins, section);
 
-			// TODO 3: add to the UI counter
-
-
 			to_delete = true;
 		}
 		else

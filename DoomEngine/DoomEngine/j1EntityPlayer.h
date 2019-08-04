@@ -85,31 +85,7 @@ public:
 	void ShootWeapon(j1KeyState state);
 	void DieLogic(float dt); 
 	
-	virtual void SetDyingState(bool brutal = false)
-	{
-		state.combat = combatState::DYING;
-
-		if (currentWeapon)
-			currentWeapon->StopAllFxs(); 
-
-		if (!brutal)
-		{
-			currentAnimation = &death1;
-
-			App->audio->StopSpecificFx(name + "Injured");   // so that death is audible 
-			App->audio->PlayFx(this->name + "Death");
-		}
-			
-		else
-		{
-			currentAnimation = &death2;
-
-			App->audio->StopSpecificFx(name + "Injured");   // so that death is audible 
-			App->audio->PlayFx(this->name + "Death2");
-		}
-		
-
-	};
+	void SetDyingState(bool brutal = false); 
 
 	virtual void CheckDeathFinished() override
 	{

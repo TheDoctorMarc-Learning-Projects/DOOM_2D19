@@ -14,7 +14,7 @@
 
 
 
-UiItem_Label::UiItem_Label(std::string name, std::string text, SDL_Color color, TTF_Font * font, p2Point<int> position, UiItem*const parent) :UiItem(position, parent)
+UiItem_Label::UiItem_Label(std::string name, std::string text, SDL_Color color, TTF_Font * font, p2Point<int> position, UiItem*const parent, float SpriteScale) :UiItem(position, parent)
 {
 	assert(parent != nullptr);
 	this->name = name; 
@@ -33,7 +33,10 @@ UiItem_Label::UiItem_Label(std::string name, std::string text, SDL_Color color, 
 		section = { 0, 0, textureDimensions.x, textureDimensions.y }; 
 	}
 
-	this->scaleFactor = App->gui->GetSpriteGlobalScale();
+	if (SpriteScale != 0.F)
+		this->scaleFactor = SpriteScale;
+	else
+		this->scaleFactor = App->gui->GetSpriteGlobalScale();
 
 	// the parent
 	AssignParentChild(parent);

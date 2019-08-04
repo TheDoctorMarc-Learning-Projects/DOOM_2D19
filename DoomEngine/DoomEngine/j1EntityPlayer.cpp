@@ -501,7 +501,7 @@ void j1EntityPlayer::ChangeWeapon(SDL_GameControllerButton button)
 
 					// warn the GUI
 					App->gui->UpDateInGameUISlot("ammoLabel", currentWeapon->currentBullets);   
-				
+					App->gui->UpDateInGameUISlot("weaponImage", 0.0f, currentWeapon->section); 
 				}
 			
 
@@ -994,21 +994,31 @@ void j1EntityPlayer::PickWeapon(Collider* c2)
 		currentWeapon = dynamic_cast<j1EntityLootWeapon*>(c2->callback);
 
 		// chainsaw needs a hotspot collider to do damage: 
-		if (dynamic_cast<j1EntityLootWeapon*>(c2->callback)->weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
-			dynamic_cast<j1EntityLootWeapon*>(c2->callback)->AddHotSpotToChainsaw(true);
+		if (currentWeapon->weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
+			currentWeapon->AddHotSpotToChainsaw(true);
 
-		dynamic_cast<j1EntityLootWeapon*>(c2->callback)->weaponData.weaponState = WEAPON_STATE::ACTIVE;    // put to active 
-		dynamic_cast<j1EntityLootWeapon*>(c2->callback)->PlaceMeWithPlayer();  // player the new weapon in the desired pos; 
+		currentWeapon->weaponData.weaponState = WEAPON_STATE::ACTIVE;    // put to active 
+		currentWeapon->PlaceMeWithPlayer();  // player the new weapon in the desired pos; 
 
 		
 
-		dynamic_cast<j1EntityLootWeapon*>(c2->callback)->blitOrder = 3U;   // so it is under enemies, but on top when picked
+		currentWeapon->blitOrder = 3U;   // so it is under enemies, but on top when picked
 
 
 		// other modules logic 
 		App->audio->PlayFx("weaponPickUp");
-		App->gui->UpDateInGameUISlot("ammoLabel", dynamic_cast<j1EntityLootWeapon*>(c2->callback)->currentBullets);
-		
 
+		App->gui->UpDateInGameUISlot("ammoLabel", currentWeapon->currentBullets);
+		if (App->gui->GetItemByName("weaponImage") == nullptr)                    // create the weapon image
+		{
+			SDL_Rect section = { currentWeapon->section.x, currentWeapon->section.y, currentWeapon->section.w, currentWeapon->section.h};
+			iPoint pos = iPoint(272, 615);
+			std::string name = "weaponImage"; 
+			App->gui->AddImage(pos, &section, name, NULL, false, currentWeapon->entityTex, 1.6F);
+
+		}
+		else
+			App->gui->UpDateInGameUISlot("weaponImage", 0.0f, currentWeapon->section);   // change the weapon image section to the new weapon's sections 
+		
 	}
 }

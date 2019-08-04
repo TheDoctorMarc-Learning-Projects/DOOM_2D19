@@ -6,7 +6,7 @@
 #include "j1Scene.h"
 #include "j1Input.h"
 
-UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, std::string& name, UiItem* const parent, bool isTabbable) : UiItem(position, name, parent)
+UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, std::string& name, UiItem* const parent, bool isTabbable, SDL_Texture* specialTex, float spriteScale) : UiItem(position, name, parent)
 {
 	assert(parent != nullptr);
 
@@ -25,9 +25,17 @@ UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, std::string
 	if (name == "tick")   // this is rather for checkbox purposes 
 		this->hide = true;
 
+
+	if (specialTex != nullptr)
+		this->specialTex = specialTex;
+
+	if (spriteScale != 0.F)
+		this->scaleFactor = spriteScale; 
+	else
+		this->scaleFactor = App->gui->GetSpriteGlobalScale();
+
 	// the parent
 	AssignParentChild(parent); 
-
 
 
 }
@@ -63,11 +71,16 @@ UiItem_Image::~UiItem_Image()
 }
 
 void UiItem_Image::Draw()
-{
-	App->render->Blit(App->gui->GetAtlas(), hitBox.x, hitBox.y, &this->section, 0.0F, SDL_FLIP_NONE, App->gui->GetSpriteGlobalScale());
+{ 
+	if (specialTex != nullptr)
+		App->render->Blit(specialTex, hitBox.x, hitBox.y, &this->section, 0.0F, SDL_FLIP_NONE, scaleFactor);
+	else
+		App->render->Blit(App->gui->GetAtlas(), hitBox.x, hitBox.y, &this->section, 0.0F, SDL_FLIP_NONE, scaleFactor);
+
 }
 
 void UiItem_Image::CleanUp()
 {
-	 
+	if (specialTex != nullptr)
+		specialTex = nullptr; 
 }

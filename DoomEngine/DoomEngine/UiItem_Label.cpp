@@ -33,6 +33,7 @@ UiItem_Label::UiItem_Label(std::string name, std::string text, SDL_Color color, 
 		section = { 0, 0, textureDimensions.x, textureDimensions.y }; 
 	}
 
+	this->scaleFactor = App->gui->GetSpriteGlobalScale();
 
 	// the parent
 	AssignParentChild(parent);
@@ -67,7 +68,7 @@ UiItem_Label::~UiItem_Label()
 void UiItem_Label::Draw()
 {
 
-	App->render->Blit(texture, hitBox.x, hitBox.y, &section, 0.0F, SDL_FLIP_NONE, App->gui->GetSpriteGlobalScale());
+	App->render->Blit(texture, hitBox.x, hitBox.y, &section, 0.0F, SDL_FLIP_NONE, scaleFactor);
 	
 }
 

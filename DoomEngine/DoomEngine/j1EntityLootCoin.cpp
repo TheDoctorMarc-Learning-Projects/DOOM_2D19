@@ -30,7 +30,7 @@ j1EntityLootCoin::j1EntityLootCoin(float posX, float posY, LOOT_TYPE loot_type, 
 void j1EntityLootCoin::OnPickUp()
 {
 	
-		App->audio->PlayFx("figurePickUp", 0, true, 1.f, 0.3f, 0.3f);
+		App->audio->PlayFx("figurePickUp", 0, true, 1.f, 0.15f, 0.15f);
 
 		// TODO 3: add to the UI counter
 

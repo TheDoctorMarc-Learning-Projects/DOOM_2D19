@@ -154,7 +154,7 @@ void j1Gui::LoadXMLGUI(pugi::xml_node& menuNode)
 		SDL_Rect section = { uiNode.child("section").attribute("x").as_int(), uiNode.child("section").attribute("y").as_int(), uiNode.child("section").attribute("w").as_int(), uiNode.child("section").attribute("h").as_int() };
 		iPoint position = { uiNode.child("position").attribute("x").as_int(), uiNode.child("position").attribute("y").as_int() };
 
-		UiItem_Image* image = App->gui->AddImage(position, &section, name, NULL, false);   
+	    App->gui->AddImage(position, &section, name, NULL, false);   
 	}
 
 
@@ -208,14 +208,14 @@ UiItem_Label * j1Gui::AddLabel(std::string name, std::string text, SDL_Color col
 	return (UiItem_Label*)newUIItem;
 }
 
-UiItem_Image* j1Gui::AddImage(iPoint position, const SDL_Rect* section, std::string& name, UiItem* const parent, bool isTabbable)
+UiItem_Image* j1Gui::AddImage(iPoint position, const SDL_Rect* section, std::string& name, UiItem* const parent, bool isTabbable, SDL_Texture* specialTex, float spriteScale)
 {
 	UiItem* newUIItem = nullptr;
 
 	if (parent == NULL)
-		newUIItem = DBG_NEW UiItem_Image(position, section, name, currentCanvas, isTabbable);
+		newUIItem = DBG_NEW UiItem_Image(position, section, name, currentCanvas, isTabbable, specialTex, spriteScale);
 	else
-		newUIItem = DBG_NEW UiItem_Image(position, section, name, parent, isTabbable);
+		newUIItem = DBG_NEW UiItem_Image(position, section, name, parent, isTabbable, specialTex, spriteScale);
 
 	listOfItems.push_back(newUIItem);
 
@@ -312,7 +312,7 @@ UiItem* j1Gui::GetItemByName(std::string name, UiItem* parent) const  // searche
 }
 
 
-void j1Gui::UpDateInGameUISlot(std::string name, float newValue)   // needed for ammo, health, armor
+void j1Gui::UpDateInGameUISlot(std::string name, float newValue, SDL_Rect newSection)   // needed for ammo, health, armor
 {
 	if (newValue < 0.0f)
 		newValue = 0.0f; 
@@ -324,12 +324,22 @@ void j1Gui::UpDateInGameUISlot(std::string name, float newValue)   // needed for
 
 	if (item->guiType == GUI_TYPES::LABEL)
 	{
-		float lastWidth = item->section.w * App->gui->GetSpriteGlobalScale();
+		float lastWidth = item->section.w * item->scaleFactor;
 		dynamic_cast<UiItem_Label*>(item)->ChangeTextureIdle(std::to_string((int)newValue), NULL, NULL);
-		float newWidth = item->section.w * App->gui->GetSpriteGlobalScale();
+		float newWidth = item->section.w * item->scaleFactor;
 
 		item->hitBox.x -= (int)((newWidth - lastWidth) * .5F); 
 	}
+	else if (item->guiType == GUI_TYPES::IMAGE)    // needed for the weapon image 
+	{
+		float lastWidth = item->section.w * item->scaleFactor;
+		item->section = newSection; 
+		float newWidth = item->section.w * item->scaleFactor;
+
+		item->hitBox.x -= (int)((newWidth - lastWidth) * .5F);
+	}
+
+
 }
  
  

@@ -224,7 +224,7 @@ void j1Scene::LoadScene(SceneState sceneState, sceneType menuLevel)
 
 	case SceneState::LEVEL2:
 		LoadNewMap("maps/level 1 for testing.tmx");
-		App->audio->PlayMusic("sound/music/Heaven Shall Burn - They Shall Not Pass.ogg", -1);
+		App->audio->PlayMusic("sound/music/soil-halo.ogg", -1);
 		break;
 	default:
 		break;

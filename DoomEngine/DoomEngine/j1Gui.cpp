@@ -352,6 +352,9 @@ void j1Gui::UpdateDeathTimer(int value)
 	if (App->entityFactory->IsPlayerAlive() == false)
 		return; 
 
+	if (App->entityFactory->player->godMode == true)
+		return; 
+
 	UiItem_Label* myLabel = (UiItem_Label*)App->gui->GetItemByName("deathTimerCounter");
 
 	int time = std::stoi(myLabel->text);

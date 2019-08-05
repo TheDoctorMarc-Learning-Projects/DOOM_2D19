@@ -143,6 +143,13 @@ void j1Gui::ChangeCurrentCanvas(sceneTypeGUI targetScene, UiItem* newCanvas)
 	else
 		currentCanvas = canvases.at(targetScene);  // B) find the canvas in the map         	
 	 
+
+	// hide the cursor if in game 
+/*	if(App->scene->GetCurrentSceneType() == sceneType::LEVEL)
+		SDL_ShowCursor(SDL_DISABLE);
+	else
+		SDL_ShowCursor(SDL_ENABLE);*/
+	
 }
 
 void j1Gui::LoadXMLGUI(pugi::xml_node& menuNode)

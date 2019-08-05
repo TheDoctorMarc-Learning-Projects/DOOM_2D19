@@ -109,7 +109,6 @@ bool j1EntityFactory::PreUpdate()
 
 bool j1EntityFactory::Update(float dt)
 {
-	bool ret = true;
 	BROFILER_CATEGORY("Entities Update", Profiler::Color::Fuchsia);
 
 	std::list<j1Entity*>::iterator item = entities.begin();
@@ -120,8 +119,8 @@ bool j1EntityFactory::Update(float dt)
 			if (!(*item)->to_delete)
 			{
 				
-					ret = (*item)->Update(dt);
-					ret = (*item)->Move(dt);
+					(*item)->Update(dt);
+					(*item)->Move(dt);
 
 					++item;
 			
@@ -143,7 +142,7 @@ bool j1EntityFactory::Update(float dt)
 	}
 
 
-	return ret;
+	return true;
 }
 
 bool j1EntityFactory::PostUpdate()
@@ -462,7 +461,7 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 		else
 		{
 			// warn the GUI
-            // TODO: put the death face anim here 
+			dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("death");
 		}
 			
 			

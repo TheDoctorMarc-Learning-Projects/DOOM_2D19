@@ -16,9 +16,6 @@ UiItem::UiItem(const iPoint & pos, UiItem * const parent)
 	if (parent != nullptr)
 		this->parent = parent;
 
-
-
-	SDL_ShowCursor(SDL_DISABLE);
 }
 
 UiItem::UiItem(const iPoint& pos, std::string& name, UiItem* const parent)

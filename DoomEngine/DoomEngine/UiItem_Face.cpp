@@ -30,6 +30,12 @@ UiItem_Face::UiItem_Face(iPoint position, std::string& name, UiItem* const paren
 void UiItem_Face::FIllMaps()
 {
 	// first create the data 
+	death.PushBack({ 0, 517, 24, 31 }); 
+	death.loop = false; 
+
+	win.PushBack({ 26, 517, 24, 31 });
+	win.loop = false;
+
 	Anims healthlevel5; 
 	healthlevel5.damaged.anim.name = "damaged"; 
 	healthlevel5.damaged.anim.PushBack({ 0, 452, 24, 31}); 
@@ -243,7 +249,14 @@ void UiItem_Face::Draw()
 
 void UiItem_Face::SetCurrentAnim(std::string karma)
 {
-	// TODO: check if player life is 0, then set directly to the death anim 
+	// First of all discard extreme cases where no calculations are needed
+	
+	if (karma == "win")
+		currentAnimation.anim = win;
+	if (App->entityFactory->player->godMode == true)
+		return; 
+	if (karma == "death")
+		currentAnimation.anim = death;
 
 
 	// calculations 

@@ -309,8 +309,13 @@ bool j1App::PreUpdate()
 		}
 
 		ret = (*item)->PreUpdate();
+
+		if (ret == false)
+			LOG("Alert: module has caused App exit");
+
 	}
 
+	
 	return ret;
 }
 
@@ -333,8 +338,13 @@ bool j1App::DoUpdate()
 		}
 
 		ret = (*item)->Update(dt);
+
+		if (ret == false)
+			LOG("Alert: module has caused App exit");
+
 	}
 
+	
 	return ret;
 }
 
@@ -357,8 +367,12 @@ bool j1App::PostUpdate()
 		}
 
 		ret = (*item)->PostUpdate();
-	}
 
+		if (ret == false)
+			LOG("Alert: module has caused App exit");
+
+	}
+ 
 	return ret;
 }
 

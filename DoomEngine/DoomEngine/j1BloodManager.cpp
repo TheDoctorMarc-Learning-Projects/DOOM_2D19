@@ -38,7 +38,6 @@ bool j1BloodManager::PreUpdate()
 
 bool j1BloodManager::Update(float dt)
 {
-	bool ret = true;
 	BROFILER_CATEGORY("Blood Update", Profiler::Color::White);
 
 	// update blood pos 
@@ -54,7 +53,7 @@ bool j1BloodManager::Update(float dt)
 					if (!(*bloodDrop)->to_delete)
 					{
 
-						ret = (*bloodDrop)->Update(dt);
+						(*bloodDrop)->Update(dt);
 
 						++bloodDrop;
 
@@ -87,10 +86,8 @@ bool j1BloodManager::Update(float dt)
 		}
 
 	}
-	
-
-
-	return ret;
+ 
+	return true;
 }
 
 bool j1BloodManager::PostUpdate()

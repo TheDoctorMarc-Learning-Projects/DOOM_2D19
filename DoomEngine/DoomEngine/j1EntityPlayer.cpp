@@ -93,8 +93,17 @@ bool j1EntityPlayer::Start()
 bool j1EntityPlayer::PreUpdate()
 {
 	
-	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
-		godMode = !godMode; 
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)   // TODO: God mode allows to fly around 
+	{
+		godMode = !godMode;
+
+		if(godMode)
+			dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("win");
+		else
+			dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("idle");
+		
+	}
+		
 
  
 	if (App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
@@ -1020,6 +1029,8 @@ void j1EntityPlayer::PickWeapon(Collider* c2)
 		else
 			App->gui->UpDateInGameUISlot("weaponImage", 0.0f, currentWeapon->section);   // change the weapon image section to the new weapon's sections 
 		
+		dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("weapon");   // change the ui face 
+
 	}
 }
 

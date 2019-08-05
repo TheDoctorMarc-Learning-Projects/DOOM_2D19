@@ -48,6 +48,8 @@ public:
 private:
 	uint lastActionTime = 0U; 
 	advancedAnim currentAnimation;
+	Animation death; 
+	Animation win;         // death and win work differently 
 	bool toUpdate = false; 
 
 	std::map<uint, Anims> animMap; // the uint is the player life level: 1, 2, 3... : depending on the player life a different set of anims is assigned

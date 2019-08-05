@@ -398,6 +398,7 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 			ent->life = 0.f;
 		else
 			ent->life -= damage;
+
 	}
 	else
 	{
@@ -426,12 +427,15 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 		else
 			player->life -= damage;     
 
+		// warn the GUI
+
 		if(previousArmor != player->armor)
 			App->gui->UpDateInGameUISlot("armorLabel", player->armor);
 		if (previousLife != player->life)
 			App->gui->UpDateInGameUISlot("healthLabel", player->life);
 
-		
+		// warn the GUI
+		dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("damaged");
 			
 	}
 		
@@ -447,8 +451,20 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 		ent->SetDyingState(brutal);
 
 
-		if (ent != player)  // add time to the death countdown
+		if (ent != player)  
+		{
+			// add time to the death countdown
 			App->gui->UpdateDeathTimer((int)dynamic_cast<j1Enemy*>(ent)->powerLevel * enemyKillTimeBonusFactor); 
+
+			// warn the GUI
+			dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("kill");
+		}
+		else
+		{
+			// warn the GUI
+            // TODO: put the death face anim here 
+		}
+			
 			
 	}
 	else

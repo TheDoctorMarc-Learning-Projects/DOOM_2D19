@@ -178,6 +178,12 @@ void j1Gui::LoadXMLGUI(pugi::xml_node& menuNode)
 
 	}
 
+	// face
+	pugi::xml_node uiNode = menuNode.child("face"); 
+		std::string name = uiNode.attribute("name").as_string();
+		iPoint position = { uiNode.child("position").attribute("x").as_int(), uiNode.child("position").attribute("y").as_int() };
+		App->gui->AddFace(position, name, NULL, 0.0F);
+	
 
 
 }
@@ -213,7 +219,7 @@ UiItem_Label * j1Gui::AddLabel(std::string name, std::string text, SDL_Color col
 	return (UiItem_Label*)newUIItem;
 }
 
-UiItem_Image* j1Gui::AddImage(iPoint position, const SDL_Rect* section, std::string& name, UiItem* const parent, bool isTabbable, SDL_Texture* specialTex, float spriteScale)
+UiItem_Image* j1Gui::AddImage(iPoint position, const SDL_Rect* section, std::string name, UiItem* const parent, bool isTabbable, SDL_Texture* specialTex, float spriteScale)
 {
 	UiItem* newUIItem = nullptr;
 
@@ -278,6 +284,22 @@ UiItem_Checkbox * j1Gui::AddCheckbox(iPoint position, std::string function, std:
 	listOfItems.push_back(newUIItem);
 
 	return (UiItem_Checkbox*)newUIItem;
+}
+
+
+
+UiItem_Face* j1Gui::AddFace(iPoint position, std::string name, UiItem* const parent, float spriteScale)
+{
+	UiItem* newUIItem = nullptr;
+
+	if (parent == NULL)
+		newUIItem = DBG_NEW UiItem_Face(position, name, currentCanvas, spriteScale);
+	else
+		newUIItem = DBG_NEW UiItem_Face(position, name, parent, spriteScale);
+
+	listOfItems.push_back(newUIItem);
+
+	return (UiItem_Face*)newUIItem;
 }
 
 

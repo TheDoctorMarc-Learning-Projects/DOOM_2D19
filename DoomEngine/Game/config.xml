@@ -34,10 +34,7 @@
 		  <position x="104" y="580" />
           <section x="0" y="0" w="320" h="32"/>
         </image>
-		<image name="face">   <!-- this face will rather be a different gui item -->
-		  <position x="598" y="589" />
-          <section x="72" y="34" w="25" h="30"/>
-        </image>
+		
 		
 		 <image name="oldCollectible">
 		  <position x="914" y="599" />
@@ -117,7 +114,11 @@
 		
       </labels>
 
-	  
+	  <face name="face">   
+		  <position x="598" y="589" />
+       </face>
+		
+		
     </InGameUI> 
   </scene>
 

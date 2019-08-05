@@ -27,13 +27,11 @@ UiItem_Bar::UiItem_Bar(iPoint position, std::string name, const SDL_Rect* sectio
 	this->hitBox.y = position.y;
 	this->name = name;
 	// bar 
-	bar = App->gui->AddImage(position, section, name, this);   // TODO: this should have as pareNT "this"
-
-
-														 // thumb
+	bar = App->gui->AddImage(position, section, name, this);   
+    // thumb
 	iPoint thumbPos(position.x + (section->w*0.5) - (thumb_section->w*0.5), position.y - (section->h*0.09));
 
-	thumb = App->gui->AddImage(thumbPos, thumb_section, name, this);    // TODO: this should have as pareNT "this"
+	thumb = App->gui->AddImage(thumbPos, thumb_section, name, this);    
 
 	image_bar = App->gui->AddImage({ position.x - 100, position.y }, &this->image_idle, name, this);
 	thumb->slidable = true;

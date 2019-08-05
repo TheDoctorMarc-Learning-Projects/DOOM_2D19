@@ -7,7 +7,6 @@
 #include "p2Log.h"
 
 struct SDL_Texture;
-class UiItem_Description;
 
 class UiItem_Image : public UiItem
 {

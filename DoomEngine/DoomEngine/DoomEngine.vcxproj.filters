@@ -70,6 +70,9 @@
     <Filter Include="Code\Core\In-Screen\GUI\Items">
       <UniqueIdentifier>{3d7e8067-d16e-4594-b892-b14addfae4cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Core\In-Screen\GUI\Items\special">
+      <UniqueIdentifier>{a10e1346-01a4-44b7-89b8-851df77ce7cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="j1App.cpp">
@@ -197,6 +200,9 @@
     </ClCompile>
     <ClCompile Include="UiItem.cpp">
       <Filter>Code\Core\In-Screen\GUI\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="UiItem_Face.cpp">
+      <Filter>Code\Core\In-Screen\GUI\Items\special</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -349,6 +355,9 @@
     </ClInclude>
     <ClInclude Include="j1PathFinding.h">
       <Filter>Code\Core\In-Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="UiItem_Face.h">
+      <Filter>Code\Core\In-Screen\GUI\Items\special</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

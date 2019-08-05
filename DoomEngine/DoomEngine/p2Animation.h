@@ -12,6 +12,7 @@ public:
 	bool paused = false; 
 	float speed = 1.0f;
 	SDL_Rect frames[MAX_FRAMES];
+	std::string name; 
 
 private:
 	float current_frame = 0.0f;
@@ -22,6 +23,11 @@ public:
 
 	Animation()
 	{}
+
+	Animation(std::string name)
+	{
+		this->name = name; 
+	}
 
 	Animation(const Animation& anim) : loop(anim.loop), speed(anim.speed), last_frame(anim.last_frame)
 	{

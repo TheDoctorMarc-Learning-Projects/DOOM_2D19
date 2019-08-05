@@ -21,6 +21,7 @@ enum GUI_TYPES
 	IMAGE,
 	LABEL,
 	CHECKBOX,
+	FACE,
 	UNKNOWN
 };
 

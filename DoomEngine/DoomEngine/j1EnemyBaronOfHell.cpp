@@ -119,9 +119,9 @@ bool j1EnemyBaronOfHell::LongRangeConditions()
 
 	// player on my collider height horizontal projection AND in the shot projection 
 
-	if (App->entityFactory->player->collider->rect.y + App->entityFactory->player->collider->rect.h < position.y + longRangeShootData.relativeOffsetPos.y)
+	if (App->entityFactory->player->position.y + App->entityFactory->player->collider->rect.h < position.y + longRangeShootData.relativeOffsetPos.y)
 		return false; 
-	if (App->entityFactory->player->collider->rect.y > position.y + collider->rect.h - (collider->rect.h - longRangeShootData.relativeOffsetPos.y)) 
+	if (App->entityFactory->player->position.y > position.y + collider->rect.h - (collider->rect.h - longRangeShootData.relativeOffsetPos.y))
 		return false; 
 
 

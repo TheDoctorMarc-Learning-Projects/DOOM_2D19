@@ -1023,6 +1023,12 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
 
+
+		/*for (const auto& col : collider->onCollisionWithMe)   // if im on the floor already, and my head is touching a platform above 
+			if (col->type == COLLIDER_FLOOR)
+				if (col != c2)
+					return; */
+
 		if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
 		{
 			if (dynamic_cast<j1EntityPlatformDynamic*>(c2->callback)->movementType == AXIS_Movement::HORIZONTAL)
@@ -1436,7 +1442,9 @@ bool j1Enemy::isWallBetweenPlayerAndMe()
 		xOffset = collider->rect.w - longRangeShootData.relativeOffsetPos.x - App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().w / 2;
 
 	fPoint p1 = { position.x + xOffset, position.y + yOffset };
-	fPoint p2 = App->entityFactory->GetRectCentralPoint(&App->entityFactory->player->collider->rect);
+	SDL_Rect target = { App->entityFactory->player->position.x, App->entityFactory->player->position.y, App->entityFactory->player->collider->rect.w,
+	App->entityFactory->player->collider->rect.h }; 
+	fPoint p2 = App->entityFactory->GetRectCentralPoint(&target);
 
 
 	// make a line and store it for debugging purposes 

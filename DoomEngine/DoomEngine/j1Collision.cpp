@@ -254,25 +254,25 @@ bool j1Collision::PreUpdate()
 		}
 		else if(colliders[i] != nullptr)
 		{
-			if (App->render->IsOnCamera(colliders[i]->rect.x, colliders[i]->rect.y, colliders[i]->rect.w, colliders[i]->rect.h))
+			if (colliders[i]->volatileOutOfScreen)  // delete whe out of camera limits 
 			{
-				if (colliders[i]->hasSpeed)
-					colliders[i]->SetPos(colliders[i]->rect.x + colliders[i]->speed.x, colliders[i]->rect.y + colliders[i]->speed.y);
-			}
-			else
-			{
-				if (colliders[i]->volatileOutOfScreen)  // delete whe out of camera limits 
+				if (colliders[i]->lifetime.Read() > VOLATILE_LIFE)
 				{
 					if (colliders[i]->owner != nullptr)
 						colliders[i]->owner->to_delete = true;   // if it has an owner, delete the owner too
 					else
 						colliders[i]->to_delete = true;
+
+					continue; 
 				}
-				
-				
+			
 			}
 
 
+				if (colliders[i]->hasSpeed)
+					colliders[i]->SetPos(colliders[i]->rect.x + colliders[i]->speed.x, colliders[i]->rect.y + colliders[i]->speed.y);
+		
+				
 		}
 	}
 

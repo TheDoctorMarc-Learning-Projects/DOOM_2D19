@@ -104,13 +104,7 @@ bool j1EntityPlayer::PreUpdate()
 		
 	}
 		
-
  
-	if (App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
-	{
-		App->entityFactory->DoDamagetoEntity(this, 50, 0); 
-	}
-	 
 
 
 	return true;

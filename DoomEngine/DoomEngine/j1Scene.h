@@ -70,11 +70,13 @@ public:
 
  
 	sceneType GetCurrentSceneType() const { return currentStateType; };
-
+	SceneState GetCurrentSceneState() const { return state; }; 
+	SceneState GetNextSceneState() const { return nextSceneState; };  // when transitioning 
 private:
 	SDL_Texture* debug_tex = nullptr;
 
 	SceneState state = SceneState::LEVEL1;
+	SceneState nextSceneState = SceneState::LEVEL1; 
 	sceneType currentStateType = sceneType::MENU; 
 
 public:

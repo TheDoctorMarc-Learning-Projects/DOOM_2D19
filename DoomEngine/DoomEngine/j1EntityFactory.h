@@ -67,7 +67,6 @@ public:
 	 j1Entity* CreateHealth(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type); 
 	 j1Entity* CreateAmmo(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type);
 	 j1Entity* CreateArmor(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type);
-	 
 
 	bool isDistanceToManhattan(iPoint tilePos, iPoint targetTilePos, int distance)
 	{
@@ -117,12 +116,13 @@ public:
 	std::array<int, 5> platFormLevelHeights; 
 	j1EntityPlayer* player = nullptr; 
 	bool playerAlive = false; 
+	iPoint playerSpawnPos = iPoint(0, 0); 
 
 	bool debug = false;
 
 
 	std::list<encapsulatedEnemyData*> enemiesToBeSpawned; 
-	int enemyKillTimeBonusFactor = 5;
+	int enemyKillTimeBonusFactor = 3;
 
 };
 

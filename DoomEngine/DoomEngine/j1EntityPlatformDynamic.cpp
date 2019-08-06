@@ -21,7 +21,7 @@ j1EntityPlatformDynamic::j1EntityPlatformDynamic(SDL_Rect placing, int heightLev
 		pointingDir = POINTING_DIR::LEFT;
 	else if (this->movementType == AXIS_Movement::VERTICAL)
 	{
-		pointingDir = POINTING_DIR::UP;
+		pointingDir = POINTING_DIR::DOWN;
 		this->levelsUp = levelsUp;
 		this->levelsDown = levelsDown; 
 	}
@@ -36,9 +36,10 @@ j1EntityPlatformDynamic::j1EntityPlatformDynamic(SDL_Rect placing, int heightLev
 
 
 	if (level == SceneState::LEVEL1)
-	{
-		name = "platform1"; 
-	}
+		name = "platform1";
+	else if(level == SceneState::LEVEL2)
+		name = "platform2"; 
+
 		 
   
 	entityTex = App->map->entityTextureMap.at(name);
@@ -218,26 +219,26 @@ void j1EntityPlatformDynamic::CheckPlatformSameLevel()
 
 void j1EntityPlatformDynamic::OnCollision(Collider* c1, Collider* c2)
 {
-
-	switch (c2->type)
+	if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_WALL_DETECTION)
 	{
-	case COLLIDER_TYPE::COLLIDER_FLOOR:
-
 		switch (movementType)
 		{
 		case AXIS_Movement::HORIZONTAL:
 
-			if (c2 == collider)
-				return; 
+			if ((c1 == collider && c2 == AreaCollider) || (c2 == collider && c1 == AreaCollider))
+				return;
 
 			if (!endReached)
 			{
-				 
+
 				if (AreaCollider->rect.x + AreaCollider->rect.w >= c2->rect.x &&  pointingDir == POINTING_DIR::RIGHT && lastPointingDir != POINTING_DIR::LEFT)
 				{
 					float offset = AreaCollider->rect.x + AreaCollider->rect.w - c2->rect.x;
 					position.x -= offset;
 					pointingDir = POINTING_DIR::LEFT;
+
+
+					endReached = true;
 				}
 
 				else if (AreaCollider->rect.x <= c2->rect.x + c2->rect.w && pointingDir == POINTING_DIR::LEFT && lastPointingDir != POINTING_DIR::RIGHT)
@@ -246,52 +247,20 @@ void j1EntityPlatformDynamic::OnCollision(Collider* c1, Collider* c2)
 					float offset = c2->rect.x + c2->rect.w - AreaCollider->rect.x;
 					position.x += offset;
 					pointingDir = POINTING_DIR::RIGHT;
+
+					endReached = true;
 				}
 
 				lastPointingDir = pointingDir;
-		    	endReached = true; 
+
+	
 			}
-			
-			break;
-
-
-		case AXIS_Movement::VERTICAL:
-
-			/*if (!endReached)
-			{*/
-				 
-
-				if (!c2->hasCallback)   // collider with floor, ignore side platforms
-				{
-					if (collider->rect.y + collider->rect.h > c2->rect.y &&  pointingDir == POINTING_DIR::DOWN && lastPointingDir != POINTING_DIR::UP)
-					{
-						float xOffset = collider->rect.y + collider->rect.h - c2->rect.y;
-						position.y -= xOffset;
-						pointingDir = POINTING_DIR::UP;
-
-						UpdateEntitiesOnTopPositions(true, xOffset);
-					}
-				}
-			
-
-				/*else if (collider->rect.y < c2->rect.y + c2->rect.h && pointingDir == POINTING_DIR::UP && lastPointingDir != POINTING_DIR::DOWN)
-				{
-
-					offset = c2->rect.y + c2->rect.h - collider->rect.y;   // to put back player if it goes off a bit
-					position.y += offset;
-					pointingDir = POINTING_DIR::DOWN;
-				}*/
-
-				lastPointingDir = pointingDir;
-			//	endReached = true;
-			//}
 
 			break;
 		}
-
-		break;
 	}
 
+	
 	
 
 }
@@ -300,20 +269,18 @@ void j1EntityPlatformDynamic::OnCollision(Collider* c1, Collider* c2)
 void j1EntityPlatformDynamic::OnCollisionExit(Collider* c1, Collider* c2)
 {
 
-	switch (c2->type)
+	if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_WALL_DETECTION)
 	{
-	case COLLIDER_TYPE::COLLIDER_FLOOR:
-
 		switch (movementType)
 		{
 		case AXIS_Movement::HORIZONTAL:
 			if (endReached)
 				endReached = false;
+			break;
 		}
-		
-		break;
 
 	}
+
 
 
 	

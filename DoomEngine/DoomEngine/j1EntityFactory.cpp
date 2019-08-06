@@ -75,7 +75,7 @@ bool j1EntityFactory::Start()
 	enemiesToBeSpawned.clear(); 
 	
 	// for the moment, create player here 
-	player = (j1EntityPlayer*)CreateEntity(PLAYER, 0, 300, "player"); 
+	player = (j1EntityPlayer*)CreateEntity(PLAYER, playerSpawnPos.x, playerSpawnPos.y, "player");
 
 
 	std::list<j1Entity*>::iterator item = entities.begin();

@@ -242,6 +242,8 @@ bool j1Map::Load(const char* file_name)
 	// object textures
 	entityTextureMap.insert(std::make_pair("loot", App->tex->Load("textures/loot/loot.png")));
 	entityTextureMap.insert(std::make_pair("platform1", App->tex->Load("maps/textures/plat1.png")));  
+	entityTextureMap.insert(std::make_pair("platform2", App->tex->Load("maps/textures/plat2.png")));
+
 
 
 
@@ -549,6 +551,9 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 		worldPos.h = object.attribute("height").as_int();
 
 		std::string ObjectName = object.attribute("name").as_string();
+
+	 
+
 		if (ObjectName == "floor")
 		{
 			
@@ -620,17 +625,10 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 			}
 				
 
-
 			App->entityFactory->CreatePlatform(ENTITY_TYPE::ENTITY_DYNAMIC, worldPos, heightLevel, "platform",
-				levelsUp, levelsDown, SceneState::LEVEL1, axisMov);
-
-
-			
-
-
+				levelsUp, levelsDown, App->scene->GetNextSceneState(), axisMov);
 
 		}
-
 
 		else 
 		{
@@ -638,7 +636,7 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 
 			if (ObjectName == "weapon")
 			{
-				std::string weaponName; 
+				std::string weaponName;
 				std::string firingTypeName;
 
 				weaponInfo weaponData;                // capture weapon data 
@@ -651,7 +649,7 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 					else if (name == "firingType")
 						firingTypeName = property.attribute("value").as_string();
 					else if (name == "damage")
-					    weaponData.damage = property.attribute("value").as_float();  
+						weaponData.damage = property.attribute("value").as_float();
 					else if (name == "cadence")
 						weaponData.cadence = property.attribute("value").as_int();
 					else if (name == "maxBullets")
@@ -659,9 +657,9 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 					else if (name == "scope")
 						weaponData.scope = property.attribute("value").as_float();
 
-					
+
 				}
-				weaponData.weaponType = weaponTypeMap.at(weaponName); 
+				weaponData.weaponType = weaponTypeMap.at(weaponName);
 				weaponData.FiringType = weaponFiringTypeMap.at(firingTypeName);
 
 
@@ -671,23 +669,23 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 
 			else if (ObjectName == "figure")
 			{
-				bool classic = false; 
+				bool classic = false;
 
 				for (auto property = object.child("properties").child("property"); property; property = property.next_sibling("property"))
 				{
 					std::string name = property.attribute("name").as_string();
 					if (name == "classicType")
 						classic = property.attribute("value").as_bool();
-			 
+
 
 
 				}
 
-				std::string UIName = "oldCollectible"; 
+				std::string UIName = "oldCollectible";
 
 				if (classic == false)
-					UIName = "newCollectible"; 
-				 
+					UIName = "newCollectible";
+
 
 				App->entityFactory->CreateCoin(ENTITY_TYPE::LOOT, worldPos.x, worldPos.y, UIName, LOOT_TYPE::COIN, classic);
 			}
@@ -695,20 +693,20 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 
 			else if (ObjectName == "health" || ObjectName == "ammo" || ObjectName == "armor")
 			{
-				 
-				if(ObjectName == "health")
+
+				if (ObjectName == "health")
 					App->entityFactory->CreateHealth(ENTITY_TYPE::LOOT, worldPos.x, worldPos.y, "health", LOOT_TYPE::HEALTH);
 				else if (ObjectName == "ammo")
 					App->entityFactory->CreateAmmo(ENTITY_TYPE::LOOT, worldPos.x, worldPos.y, "ammo", LOOT_TYPE::AMMO);
 				else if (ObjectName == "armor")
 					App->entityFactory->CreateArmor(ENTITY_TYPE::LOOT, worldPos.x, worldPos.y, "armor", LOOT_TYPE::ARMOR);
-				
+
 			}
 
 
 			else if (ObjectName == "enemy")
 			{
-				std::string enemyName = ""; 
+				std::string enemyName = "";
 
 				for (auto property = object.child("properties").child("property"); property; property = property.next_sibling("property"))
 				{
@@ -718,14 +716,17 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 
 				}
 
-			
-					encapsulatedEnemyData* enemyData = DBG_NEW encapsulatedEnemyData(iPoint(worldPos.x, worldPos.y), enemyName);
-					App->entityFactory->enemiesToBeSpawned.push_back(enemyData);
-				
-			
-				
+
+				encapsulatedEnemyData* enemyData = DBG_NEW encapsulatedEnemyData(iPoint(worldPos.x, worldPos.y), enemyName);
+				App->entityFactory->enemiesToBeSpawned.push_back(enemyData);
+
+
+
 
 			}
+
+			else if (ObjectName == "player")
+				App->entityFactory->playerSpawnPos = iPoint(worldPos.x, worldPos.y); 
 
 
 		}

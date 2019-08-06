@@ -43,7 +43,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_PRESENTIAL] = false;
 
 
-	matrix[COLLIDER_WALL_DETECTION][COLLIDER_WALL_DETECTION] = false;
+	matrix[COLLIDER_WALL_DETECTION][COLLIDER_WALL_DETECTION] = true;
 	matrix[COLLIDER_WALL_DETECTION][COLLIDER_BLOOD] = false;
 	matrix[COLLIDER_WALL_DETECTION][COLLIDER_LOOT] = false;
 	matrix[COLLIDER_WALL_DETECTION][COLLIDER_WALL] = true;
@@ -418,7 +418,7 @@ void j1Collision::DebugDraw()
 			App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
 			break;
 		case COLLIDER_WALL: // red
-			App->render->DrawQuad(colliders[i]->rect, 0, 0, 255, alpha);
+			App->render->DrawQuad(colliders[i]->rect, 255, 0, 255, alpha);
 			break;
 		case COLLIDER_PLAYER: // green
 			App->render->DrawQuad(colliders[i]->rect, 0, 255, 0, alpha);

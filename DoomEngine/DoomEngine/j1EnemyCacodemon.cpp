@@ -162,7 +162,8 @@ bool j1EnemyCacodemon::DoDie()
 
 void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 {
-
+	if ((c1 == shieldAreaCollider && c2 == collider) || (c1 == collider && c2 == shieldAreaCollider)) // ignore my own wall detection collider
+		return; 
 
 	if (c1->type == COLLIDER_ENEMY_SHOT)
 	{

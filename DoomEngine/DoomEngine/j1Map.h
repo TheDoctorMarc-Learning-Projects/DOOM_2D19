@@ -159,7 +159,6 @@ public:
 	MapData data;
 	bool map_loaded;
 	int mapLimitXWorldPos = 0; 
-
 	bool mapDebug = false; 
 
 	std::map<std::string, SDL_Texture*> entityTextureMap;

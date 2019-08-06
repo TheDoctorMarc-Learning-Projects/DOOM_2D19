@@ -52,15 +52,7 @@ bool j1Scene::Awake(pugi::xml_node& node)
 // Called before the first frame
 bool j1Scene::Start()
 {
-	// TODO: call load new map in each case --> do not do it in load / unload, or do not do it here if it is already being done there the previous frame
-
-
-	// TODO: WHY THE HELL is this loaded here? And not in audio start haha. It is borderline idiotic :/ (punishes himself) :/ 
-
-	 
-	LoadScene(SceneState::LEVEL2, sceneType::LEVEL);
- 
-
+	LoadScene(SceneState::LEVEL2, sceneType::LEVEL);  // todo, do not load anything at first, rather main menu :)
 
 	return true;
 
@@ -119,14 +111,20 @@ bool j1Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
 	{
-	//	LoadScene(SceneState::LEVEL2, sceneType::LEVEL); 
 		UnLoadScene(); 
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
 	{
 		LoadScene(SceneState::LEVEL1, sceneType::LEVEL);
 	}
+
+
+	if (App->input->GetKey(SDL_SCANCODE_KP_2) == KEY_DOWN)
+	{
+		LoadScene(SceneState::LEVEL2, sceneType::LEVEL);
+	}
+
 
 	return true;
 }
@@ -209,21 +207,23 @@ void j1Scene::UnLoadScene()
 
 void j1Scene::LoadScene(SceneState sceneState, sceneType menuLevel)
 {
+	nextSceneState = sceneState; 
+
 	UnLoadScene();   // 1) First unload every needed module
 
 	switch (sceneState)
 	{
 	case SceneState::STARTMENU:
  
-		break;
+		break;                                                           // 2) Then call load map (which has encapsulated entity data)
 
 	case SceneState::LEVEL1: 
 		App->audio->PlayMusic("sound/music/Arch Enemy First Day In Hell.ogg", -1);  
-		LoadNewMap("maps/level 1.tmx");                           // 2) Then call load map (which has encapsulated entity data)
+		LoadNewMap("maps/level 1.tmx");                           
 		break;
 
 	case SceneState::LEVEL2:
-		LoadNewMap("maps/level 1 for testing.tmx");
+		LoadNewMap("maps/level2Test.tmx"); // LoadNewMap("maps/level 1 for testing.tmx");
 		App->audio->PlayMusic("sound/music/soil-halo.ogg", -1);
 		break;
 	default:

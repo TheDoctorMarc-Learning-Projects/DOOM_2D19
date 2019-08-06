@@ -104,6 +104,17 @@ public:
 		return aiming;
 	}
 
+	bool isParalized()
+
+	{
+		return isnan(paralizedDir) == false; 
+	}
+
+	void UnParalize()
+	{
+	    paralizedDir = std::numeric_limits<double>::quiet_NaN();
+	}
+
 public:
 
 	Animation run; 
@@ -118,6 +129,7 @@ private:
 	fPoint lastAirPos = fPoint(0, 0); 
 	fPoint deathPosGround = fPoint(0, 0);
 	SDL_Rect deathColllider = { 0, 0, 0, 0 };
+	double paralizedDir = std::numeric_limits<double>::quiet_NaN();   // when colliding with enemy, he can't ho in that dir (it can be 1, -1 or nan)
 
 	jumpData jumpInfo; 
 	float momentumFactor = 10.f; 

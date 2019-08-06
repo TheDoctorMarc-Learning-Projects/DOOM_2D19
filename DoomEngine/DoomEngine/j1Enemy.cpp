@@ -1459,3 +1459,42 @@ bool j1Enemy::isWallBetweenPlayerAndMe()
 
 }
 
+
+
+void j1Enemy::SetDyingState(bool brutal)
+{
+	if (state.combat == eCombatState::DYING || state.combat == eCombatState::DEAD)
+		return;
+
+
+	// if i was blocking the player movement, unblock it: 
+
+	if (App->entityFactory->player->isParalized() == true)
+	{
+		for (const auto& col : collider->onCollisionWithMe)
+			if (col->type == COLLIDER_PLAYER)
+				App->entityFactory->player->UnParalize();
+	}
+
+	state.combat = eCombatState::DYING;
+	blitOrder = 1U;  // to be rendered under weapons etc
+
+	App->audio->StopSpecificFx(name + "Injured");   // so that death is audible 
+
+	if (!brutal || dataAnimFx.hasSecondDeathAnim == false)   // check this out (for the ones that only have one death anim) 
+	{
+		currentAnimation = &death1;
+		App->audio->PlayFx(this->name + "Death");  // TODO: if two deaths sounds, play one or another
+	}
+
+	else
+	{
+		currentAnimation = &death2;
+
+		if (dataAnimFx.hasSecondDeathFx)
+			App->audio->PlayFx(this->name + "Death2");  // TODO: if two deaths sounds, play one or another
+		else
+			App->audio->PlayFx(this->name + "Death");  // TODO: if two deaths sounds, play one or another
+	}
+
+}

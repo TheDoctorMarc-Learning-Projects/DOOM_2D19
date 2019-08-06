@@ -261,6 +261,9 @@ void j1EntityPlayer::HorizonatlMovement(float dt)
 			else
 				lastSpeed.x = (xAxis * speed) * dt;
 
+			// check not paralized
+			if ((lastSpeed.x > 0 && paralizedDir == 1) || (lastSpeed.x < 0 && paralizedDir == -1))
+				lastSpeed.x = 0; 
 
 			state.movement.at(0) = (xAxis < 0) ? MovementState::INPUT_LEFT : state.movement.at(0);
 			state.movement.at(0) = (xAxis > 0) ? MovementState::INPUT_RIGHT : state.movement.at(0);
@@ -867,6 +870,46 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 	break;
 
 
+	case COLLIDER_TYPE::COLLIDER_ENEMY:   // paralize player movement in that direction
+
+		// CHECK ENEMY IS NOT DYING OR DEAD
+		if (dynamic_cast<j1Enemy*>(c2->callback)->state.combat == eCombatState::DYING || dynamic_cast<j1Enemy*>(c2->callback)->state.combat == eCombatState::DEAD)
+			return;
+
+		if (pointingDir == RIGHT && lastSpeed.x > 0)
+		{
+			if (collider->rect.x + collider->rect.w >= c2->rect.x && collider->rect.x < c2->rect.x)  // second condition is due to aiming and changing pointing dir and collider
+			{
+				if (lastPosCollider.x + lastPosCollider.w < c2->rect.x)
+				{
+
+					float offset = collider->rect.x + collider->rect.w - c2->rect.x;
+					position.x -= offset;
+					collider->SetPos(position.x, position.y); 
+					paralizedDir = 1; 
+				}
+
+			}
+
+
+		}
+		else if (pointingDir == LEFT && lastSpeed.x < 0)
+		{
+			if (collider->rect.x <= c2->rect.x + c2->rect.w && collider->rect.x > c2->rect.x)  // second condition is due to aiming and changing pointing dir and collider
+			{
+				if (lastPosCollider.x > c2->rect.x + c2->rect.w)
+				{
+					float offset = c2->rect.x + c2->rect.w - collider->rect.x;
+					position.x += offset;
+					collider->SetPos(position.x, position.y);
+					paralizedDir = -1;
+				}
+			}
+		}
+
+		break;
+
+
 
 	case COLLIDER_TYPE::COLLIDER_LOOT:
 
@@ -956,6 +999,15 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 		}
 		
 		break;
+
+
+
+	case COLLIDER_TYPE::COLLIDER_ENEMY:
+
+		if(isnan(paralizedDir) == false)
+			paralizedDir = std::numeric_limits<double>::quiet_NaN();
+
+		break; 
 
 	}
 

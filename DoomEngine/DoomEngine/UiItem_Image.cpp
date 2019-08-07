@@ -5,8 +5,10 @@
 #include "j1Gui.h"
 #include "j1Scene.h"
 #include "j1Input.h"
+#include "j1Map.h"
 
-UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, std::string& name, UiItem* const parent, bool isTabbable, SDL_Texture* specialTex, float spriteScale) : UiItem(position, name, parent)
+UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, std::string& name, UiItem* const parent, bool isTabbable, SDL_Texture* specialTex, float spriteScale,
+	std::string newTextureName) : UiItem(position, name, parent)
 {
 	assert(parent != nullptr);
 
@@ -27,7 +29,12 @@ UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, std::string
 
 
 	if (specialTex != nullptr)
+	{
 		this->specialTex = specialTex;
+		this->newTextureName = newTextureName; 
+	}
+		
+
 
 	if (spriteScale != 0.F)
 		this->scaleFactor = spriteScale; 
@@ -36,7 +43,6 @@ UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, std::string
 
 	// the parent
 	AssignParentChild(parent); 
-
 
 }
 
@@ -77,6 +83,11 @@ void UiItem_Image::Draw()
 	else
 		App->render->Blit(App->gui->GetAtlas(), hitBox.x, hitBox.y, &this->section, 0.0F, SDL_FLIP_NONE, scaleFactor);
 
+}
+
+void UiItem_Image::ReAssignSpecialTexture()
+{
+	specialTex = App->map->entityTextureMap.at(newTextureName);
 }
 
 void UiItem_Image::CleanUp()

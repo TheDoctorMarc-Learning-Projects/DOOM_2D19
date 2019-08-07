@@ -12,9 +12,11 @@ struct SDL_Texture;
 
 enum class SceneState  // the proper scene state
 {
-	STARTMENU,
+	MAINMENU,
 	LEVEL1,
 	LEVEL2,
+	CREDITS,
+	SETTINGS,
 	NO_SCENE	
 };
 
@@ -28,7 +30,6 @@ enum class sceneType   // two base types so that the scene transitions code is m
 enum class sceneTypeGUI    // coordination with GUI needed for a generic XML load 
 {
 	MAINMENU,
-	INGAME,
 	LEVEL,
 	CREDITS,
 	SETTINGS,
@@ -79,10 +80,14 @@ private:
 	SceneState nextSceneState = SceneState::LEVEL1; 
 	sceneType currentStateType = sceneType::MENU; 
 
+	sceneTypeGUI convertSceneTypeToGui(SceneState state); 
+
 public:
 	pugi::xml_node sceneNode;
 
 	std::map<sceneTypeGUI, std::string> sceneGuiXMLIndexes;
+ 
+
 	void LoadNewMap(const char* mapName);
 	void UnLoadScene();
 	void LoadScene(SceneState sceneState, sceneType menuLevel);

@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include <list>
 
+
 struct SDL_Texture;
 struct SDL_Surface;
 

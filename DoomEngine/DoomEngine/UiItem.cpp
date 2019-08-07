@@ -37,9 +37,11 @@ UiItem::UiItem(UiItem * const parent)
 		this->parent = parent;
 }
 
-UiItem::UiItem(std::string name)
+UiItem::UiItem(std::string name, sceneTypeGUI myscene)
 {
 	this->name = name; 
+	this->myScene = myscene; 
+
 }
 
 

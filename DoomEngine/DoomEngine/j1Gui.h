@@ -15,7 +15,7 @@
 #include "UiItem_Face.h"
  
 
-void LoadGui(UiItem* callback); 
+void LoadGui(UiItem* callback = nullptr);
  
 class j1Gui : public j1Module
 {
@@ -36,12 +36,11 @@ public:
 
 private: 
 	void destroyElement(UiItem*);
-
 	 
-
 public: 
 	UiItem_Label* AddLabel(std::string name, std::string text, SDL_Color color, TTF_Font* font, p2Point<int> position, UiItem* const parent, float SpriteScale = 0.0f);
-	UiItem_Image* AddImage(iPoint position, const SDL_Rect* section, std::string name, UiItem* const parent, bool isTabbable = false, SDL_Texture* specialTex = nullptr, float spriteScale = 0.0f);
+	UiItem_Image* AddImage(iPoint position, const SDL_Rect* section, std::string name, UiItem* const parent, bool isTabbable = false, SDL_Texture* specialTex = nullptr, float spriteScale = 0.0f,
+		std::string newTextureName = "");
 	UiItem_Bar* AddBar(iPoint position, std::string name, const SDL_Rect* section, const SDL_Rect* thumb_section, const SDL_Rect* image_idle, const SDL_Rect* image_hover, UiItem* const parent);  
 	UiItem_Button* AddButton(iPoint position, std::string function, std::string name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click = nullptr, const SDL_Rect* hover = nullptr,
 		sceneTypeGUI targetScene = sceneTypeGUI::NO_SCENE);
@@ -49,7 +48,8 @@ public:
 	UiItem_Checkbox* AddCheckbox(iPoint position, std::string function, std::string name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click = nullptr, const SDL_Rect* hover = nullptr, const SDL_Rect* tick_section = nullptr);
 	UiItem_Face* AddFace(iPoint position, std::string name, UiItem* const parent, float spriteScale = 0.0f);
 
-	void ChangeCurrentCanvas(sceneTypeGUI targetScene, UiItem* newCanvas = nullptr);
+	void LoadGuiDefined(sceneTypeGUI targetScene); 
+	void ChangeCurrentCanvas(UiItem* newCanvas, bool exists);
 
 	std::map<std::string, void(*)(UiItem* callback)> GetFunctionsMap()
 	{
@@ -57,8 +57,8 @@ public:
 	}
 
 
-
 	UiItem* GetCurrentCanvas() const { return currentCanvas; };
+	std::map<sceneTypeGUI, UiItem*> GetCanvases() const { return canvases; }; 
 	SDL_Texture* GetAtlas() const { return atlas; };
 	float GetSpriteGlobalScale() const { return spriteScale; };   // TODO: alter this when needed, pass the items a specific scale if needed
 	UiItem* GetItemByName(std::string name, UiItem* parent = nullptr) const;
@@ -69,7 +69,7 @@ public:
 private: 
 	void initializeGUI(); 
 	void LoadXMLGUI(pugi::xml_node& menuNode);
- 
+	void ResetInGameUI(); 
 
 	
 private:
@@ -80,9 +80,11 @@ private:
 	std::map<sceneTypeGUI, UiItem*> canvases;
 	std::map<std::string, void(*)(UiItem* callback)> functionsMap;  // the functions have callback. So I can call them in button cpp etc without if / elses 
 
+	std::map<std::string, int> defaultInGameStats; 
 
 	std::string atlas_file_name;
 	float spriteScale = 0.0f; 
+
 
 
 public: 

@@ -82,6 +82,7 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY, std::string name) : j1Entity(
 
 j1EntityPlayer::~j1EntityPlayer()
 {
+	App->entityFactory->playerAlive = false; 
 }
 
 bool j1EntityPlayer::Start()
@@ -925,8 +926,15 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 		break;
 
+	case COLLIDER_TYPE::COLLIDER_WIN:
+		if (App->scene->GetCurrentSceneState() == SceneState::LEVEL1)
+			App->scene->LoadScene(SceneState::LEVEL2, sceneType::LEVEL); 
+		if (App->scene->GetCurrentSceneState() == SceneState::LEVEL2)                     // TODO: level 2 loads main menu again
+			App->scene->LoadScene(SceneState::LEVEL1, sceneType::LEVEL);
+		break;
 
 	}
+
 
 
 	if (!lastOnplatform && onPlatform)
@@ -1069,7 +1077,7 @@ void j1EntityPlayer::PickWeapon(Collider* c2)
 			SDL_Rect section = { currentWeapon->section.x, currentWeapon->section.y, currentWeapon->section.w, currentWeapon->section.h};
 			iPoint pos = iPoint(272, 615);
 			std::string name = "weaponImage"; 
-			App->gui->AddImage(pos, &section, name, NULL, false, currentWeapon->entityTex, 1.6F);
+			App->gui->AddImage(pos, &section, name, NULL, false, currentWeapon->entityTex, 1.6F, "loot");
 
 		}
 		else

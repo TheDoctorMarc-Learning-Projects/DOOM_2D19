@@ -51,7 +51,7 @@
  <tileset firstgid="138" name="underground1" tilewidth="32" tileheight="32" tilecount="4" columns="2">
   <image source="textures/underground1.png" width="64" height="64"/>
  </tileset>
- <layer id="31" name="Walkability" width="330" height="26" visible="0">
+ <layer id="31" name="Walkability" width="330" height="26">
   <properties>
    <property name="Navigation" type="int" value="1"/>
   </properties>
@@ -17225,7 +17225,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="33" name="BackgroundMiddle" width="330" height="26" visible="0">
+ <layer id="33" name="BackgroundMiddle" width="330" height="26">
   <properties>
    <property name="parallaxSpeed" type="float" value="1.1"/>
   </properties>
@@ -25812,7 +25812,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="34" name="BackgroundFront" width="330" height="26" visible="0">
+ <layer id="34" name="BackgroundFront" width="330" height="26">
   <data>
    <tile/>
    <tile/>
@@ -34396,7 +34396,7 @@
    <tile/>
   </data>
  </layer>
- <objectgroup id="6" name="Objects" visible="0">
+ <objectgroup id="6" name="Objects">
   <properties>
    <property name="axis" value="vertical"/>
    <property name="heightLevel" value="3"/>
@@ -34909,7 +34909,7 @@
   <object id="251" name="health" x="3168" y="320" width="32" height="32"/>
   <object id="256" name="player" x="32" y="448" width="32" height="32"/>
  </objectgroup>
- <layer id="35" name="Floor" width="330" height="26" visible="0">
+ <layer id="35" name="Floor" width="330" height="26">
   <data>
    <tile/>
    <tile/>

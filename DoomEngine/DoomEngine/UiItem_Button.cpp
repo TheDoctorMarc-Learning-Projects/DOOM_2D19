@@ -42,7 +42,6 @@ UiItem_Button::UiItem_Button(iPoint position, std::string functionName, std::str
  
 void UiItem_Button::DoLogicClicked()
 {
-	hasExecutedFunction = true; 
 	this->function(this); 
 }
 

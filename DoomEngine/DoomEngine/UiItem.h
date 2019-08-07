@@ -29,7 +29,7 @@ class UiItem
 {
  
 public:
-	UiItem(std::string name); 
+	UiItem(std::string name, sceneTypeGUI myscene); 
 	UiItem(const iPoint& pos, UiItem* const parent);
 	UiItem(const iPoint& pos, std::string& name, UiItem* const parent);
 	UiItem(UiItem* const parent);
@@ -70,10 +70,10 @@ public:
 	bool selected = false;
 	
 
-	// TODO: encapsulate this in a "functionData" struct 
+ 
 	void(*function) (UiItem*) = nullptr;
-	bool hasExecutedFunction = false; 
-	sceneTypeGUI targetScene;
+	sceneTypeGUI targetScene = sceneTypeGUI::NO_SCENE;
+	sceneTypeGUI myScene = sceneTypeGUI::NO_SCENE;
 
 	/*virtual void DoLogicClicked() {};
 	virtual void DoLogicClicked(std::string& functionName) {};

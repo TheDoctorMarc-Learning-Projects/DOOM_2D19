@@ -726,7 +726,10 @@ bool j1Map::LoadMapObjects(pugi::xml_node& node)
 			}
 
 			else if (ObjectName == "player")
-				App->entityFactory->playerSpawnPos = iPoint(worldPos.x, worldPos.y); 
+				App->entityFactory->playerSpawnPos = iPoint(worldPos.x, worldPos.y);
+
+			else if (ObjectName == "win")
+				App->collision->AddCollider(worldPos, COLLIDER_WIN, nullptr); 
 
 
 		}

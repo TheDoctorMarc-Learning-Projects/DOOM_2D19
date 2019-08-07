@@ -12,7 +12,7 @@ j1EntityLootCoin::j1EntityLootCoin(float posX, float posY, LOOT_TYPE loot_type, 
 
 	// adjust Y pos so it its just on top of floor: 
 	position.y += (32 - size.y);  // 32 equals tiled tile height; 
-
+	position.x += (32 - size.x); 
 
 	section.w = size.x; 
 	section.h = size.y; 
@@ -40,6 +40,7 @@ void j1EntityLootCoin::OnPickUp()
 
 			App->audio->PlayFx("figurePickUp", 0, true, 1.f, 0.15f, 0.15f);
 			App->gui->UpDateInGameUISlot(name + "Label", coins, section);
+			App->gui->UpdateDeathTimer(timeBonus);
 
 			to_delete = true;
 		}

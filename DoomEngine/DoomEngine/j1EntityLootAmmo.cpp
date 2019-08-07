@@ -10,6 +10,7 @@ j1EntityLootAmmo::j1EntityLootAmmo(float posX, float posY, LOOT_TYPE loot_type, 
 
 	// adjust Y pos so it its just on top of floor: 
 	position.y += (32 - size.y);  // 32 equals tiled tile height; 
+	position.x += (32 - size.x);
 
 	section = { 153, 60, size.x, size.y };
 

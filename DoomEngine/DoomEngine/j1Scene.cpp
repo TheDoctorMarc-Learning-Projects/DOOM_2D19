@@ -27,7 +27,7 @@ j1Scene::j1Scene() : j1Module()
 
 	sceneGuiXMLIndexes =
 	{
-		 {sceneTypeGUI::INGAME, "InGameUI"},
+		 {sceneTypeGUI::LEVEL, "InGameUI"},
 	};
 
 
@@ -212,10 +212,7 @@ void j1Scene::LoadScene(SceneState sceneState, sceneType menuLevel)
 	UnLoadScene();   // 1) First unload every needed module
 
 	switch (sceneState)
-	{
-	case SceneState::STARTMENU:
- 
-		break;                                                           // 2) Then call load map (which has encapsulated entity data)
+	{                                                          // 2) Then call load map (which has encapsulated entity data)
 
 	case SceneState::LEVEL1: 
 		App->audio->PlayMusic("sound/music/Arch Enemy First Day In Hell.ogg", -1);  
@@ -223,7 +220,7 @@ void j1Scene::LoadScene(SceneState sceneState, sceneType menuLevel)
 		break;
 
 	case SceneState::LEVEL2:
-		LoadNewMap("maps/level2Test.tmx"); // LoadNewMap("maps/level 1 for testing.tmx");
+		LoadNewMap("maps/level 2.tmx"); // LoadNewMap("maps/level 1 for testing.tmx");
 		App->audio->PlayMusic("sound/music/soil-halo.ogg", -1);
 		break;
 	default:
@@ -234,6 +231,7 @@ void j1Scene::LoadScene(SceneState sceneState, sceneType menuLevel)
 
  
 	App->audio->Start();
+	App->render->ResetCamera(); 
 
 	if (menuLevel == sceneType::LEVEL)                  
 	{
@@ -256,9 +254,42 @@ void j1Scene::LoadScene(SceneState sceneState, sceneType menuLevel)
 		App->map->active = true;
 	}
  
+	App->gui->LoadGuiDefined(convertSceneTypeToGui(sceneState));
 
 	state = sceneState; 
 	currentStateType = menuLevel; 
+
+}
+
+
+sceneTypeGUI j1Scene::convertSceneTypeToGui(SceneState state)
+{
+
+	switch (state)
+	{
+	case SceneState::MAINMENU:
+		return sceneTypeGUI::MAINMENU; 
+		break;
+	case SceneState::LEVEL1:
+		return sceneTypeGUI::LEVEL;
+		break;
+	case SceneState::LEVEL2:
+		return sceneTypeGUI::LEVEL;
+		break;
+	case SceneState::CREDITS:
+		return sceneTypeGUI::CREDITS;
+		break;
+	case SceneState::SETTINGS:
+		return sceneTypeGUI::SETTINGS;
+		break;
+	case SceneState::NO_SCENE:
+		return sceneTypeGUI::NO_SCENE;
+		break;
+	default:
+		return sceneTypeGUI::NO_SCENE;
+		break;
+	}
+		
 
 }
 

@@ -253,14 +253,16 @@ void UiItem_Face::SetCurrentAnim(std::string karma)
 	
 	if (karma == "win")
 		currentAnimation.anim = win;
-	if (App->entityFactory->player->godMode == true)
+	if (App->entityFactory->playerAlive == true && App->entityFactory->player->godMode == true)
 		return; 
 	if (karma == "death")
 		currentAnimation.anim = death;
 
 
 	// calculations 
-	float playerHealthPercent = (App->entityFactory->player->life * 100) / App->entityFactory->player->maxLife;    // get the player current health percentatge 
+	float playerHealthPercent = 100.F; 
+	if(App->entityFactory->playerAlive == true)
+		playerHealthPercent = (App->entityFactory->player->life * 100) / App->entityFactory->player->maxLife;    // get the player current health percentatge 
 	float healthLevelModule = 100 / animMap.size();                                                                // divide 100% by number of health levels (5) to get the % each divison has 
 	float actualHealthLevel = playerHealthPercent / healthLevelModule;                       // translate the % to a health level value eg 75% / 20% = 3.75
 	uint roundedHealthLevel = (uint)(int)(float)std::ceil((double)(actualHealthLevel));      // round UP the previous number to get the real uint level

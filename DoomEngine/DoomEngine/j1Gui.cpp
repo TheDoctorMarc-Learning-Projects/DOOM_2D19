@@ -30,12 +30,21 @@ void j1Gui::FillFunctionsMap()
 
 	// TODO: keep updating this function map
 
+	defaultInGameStats = {
+		{ "healthLabel", 500},
+		{ "armorLabel", 0},
+		{ "ammoLabel", 0},
+		{ "oldCollectibleLabel", 0},
+		{ "newCollectibleLabel", 0},
+		{ "deathTimerCounter", 30},
+	}; 
 }
 
 
 j1Gui::~j1Gui()
 {
 	functionsMap.clear(); 
+	defaultInGameStats.clear(); 
 }
 
 bool j1Gui::Awake(pugi::xml_node& conf)
@@ -50,23 +59,13 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 bool j1Gui::Start()
 {
 	atlas = App->tex->Load(atlas_file_name.data());
-
-	// the first time just load the main menu GUI
-	initializeGUI(); 
-
 	return true;
-}
-
-void j1Gui::initializeGUI()   // set the state to Main Menu while creating a Main Menu canvas
-{
-	ChangeCurrentCanvas(sceneTypeGUI::INGAME, DBG_NEW UiItem(App->scene->sceneGuiXMLIndexes.at(sceneTypeGUI::INGAME)));  // TODO: change to main menu
 }
 
 
 bool j1Gui::Update(float dt)
 {
 //	DoLogicSelected(); // TODO: this must only consider current canvas children !! 
-
 
 	return true;
 }
@@ -114,34 +113,68 @@ bool j1Gui::CleanUp()
 	return true;
 }
 
-void LoadGui(UiItem* callback)  
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - create a canvas from a button action
+void LoadGui(UiItem* callback)   
 {
-	if (callback->targetScene != sceneTypeGUI::NO_SCENE)
+	for (auto& canvas : App->gui->GetCanvases())
 	{
-		// CASE A) The menu GUI and canvas have not been created
-		if (callback->hasExecutedFunction == false)    
-			App->gui->ChangeCurrentCanvas(callback->targetScene, DBG_NEW UiItem(App->scene->sceneGuiXMLIndexes.at(callback->targetScene)));
+		if (canvas.second->myScene == callback->targetScene)     // if there exists a current canvas with the scene
+		{
+			App->gui->ChangeCurrentCanvas(canvas.second, true);   // just change the current canvas
+			return;
+		}
 
-		// CASE B) the menu GUI and canvas already exist 
-		else
-			App->gui->ChangeCurrentCanvas(callback->targetScene);   
-		
 	}
+
+	// if not found, create it: 
+	App->gui->ChangeCurrentCanvas(DBG_NEW UiItem(App->scene->sceneGuiXMLIndexes.at(callback->targetScene), callback->targetScene), false);
+
 }
 
-void j1Gui::ChangeCurrentCanvas(sceneTypeGUI targetScene, UiItem* newCanvas)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - create a canvas from external action, eg collider win, ingame ESC...
+void j1Gui::LoadGuiDefined(sceneTypeGUI targetScene)   
 {
-	if (newCanvas != nullptr)    // A) create a new canvas in the map and set to current one                               
+
+	for (auto& canvas : App->gui->GetCanvases())
 	{
-		canvases.insert(std::make_pair(targetScene, newCanvas));
+		if (canvas.second->myScene == targetScene)     // if there exists a current canvas with the scene
+		{
+			App->gui->ChangeCurrentCanvas(canvas.second, true);   // just change the current canvas
+			return;
+		}
+
+	}
+
+	// if not found, create it: 
+	App->gui->ChangeCurrentCanvas(DBG_NEW UiItem(App->scene->sceneGuiXMLIndexes.at(targetScene), targetScene), false);
+
+}
+
+
+void j1Gui::ChangeCurrentCanvas(UiItem* newCanvas, bool exists)
+{
+	// A) push the new canvas in the map and set to current one    
+
+	if (exists == false)                             
+	{
+		canvases.insert(std::make_pair(newCanvas->myScene, newCanvas));
 		currentCanvas = newCanvas;
 
 		// finally load the GUI with the canvas name 
 		LoadXMLGUI((pugi::xml_node&)App->scene->sceneNode.child(currentCanvas->name.data()));   
 	}
-		   
-	else
-		currentCanvas = canvases.at(targetScene);  // B) find the canvas in the map         	
+		  
+	// B) if it already exists in the map, just assign it
+
+	else 
+	{
+		if (App->scene->GetCurrentSceneType() == sceneType::LEVEL)  
+			ResetInGameUI();
+
+		currentCanvas = newCanvas;  
+
+	}
+	  	
 	 
 
 	// hide the cursor if in game 
@@ -161,11 +194,11 @@ void j1Gui::LoadXMLGUI(pugi::xml_node& menuNode)
 		iPoint position = { uiNode.child("position").attribute("x").as_int(), uiNode.child("position").attribute("y").as_int() };
 
 		std::string textureName = uiNode.child("textureMapName").attribute("value").as_string();
-		SDL_Texture* nexTexture = nullptr; 
+		SDL_Texture* newTexture = nullptr; 
 		if (textureName != "")
-			nexTexture = App->map->entityTextureMap.at(textureName); 
+			newTexture = App->map->entityTextureMap.at(textureName); 
 
-	    App->gui->AddImage(position, &section, name, NULL, false, nexTexture, 0.0F);
+	    App->gui->AddImage(position, &section, name, NULL, false, newTexture, 0.0F, textureName);
 	}
 
 
@@ -226,12 +259,12 @@ UiItem_Label * j1Gui::AddLabel(std::string name, std::string text, SDL_Color col
 	return (UiItem_Label*)newUIItem;
 }
 
-UiItem_Image* j1Gui::AddImage(iPoint position, const SDL_Rect* section, std::string name, UiItem* const parent, bool isTabbable, SDL_Texture* specialTex, float spriteScale)
+UiItem_Image* j1Gui::AddImage(iPoint position, const SDL_Rect* section, std::string name, UiItem* const parent, bool isTabbable, SDL_Texture* specialTex, float spriteScale, std::string newTextureName)
 {
 	UiItem* newUIItem = nullptr;
 
 	if (parent == NULL)
-		newUIItem = DBG_NEW UiItem_Image(position, section, name, currentCanvas, isTabbable, specialTex, spriteScale);
+		newUIItem = DBG_NEW UiItem_Image(position, section, name, currentCanvas, isTabbable, specialTex, spriteScale, newTextureName);
 	else
 		newUIItem = DBG_NEW UiItem_Image(position, section, name, parent, isTabbable, specialTex, spriteScale);
 
@@ -397,4 +430,23 @@ void j1Gui::UpdateDeathTimer(int value)
 	}
 
 
+}
+
+
+void j1Gui::ResetInGameUI()
+{
+	// reset the stats do default values
+	for (auto& item : currentCanvas->children)
+		if(item->name != "panel" && item->name != "oldCollectible" && item->name != "newCollectible" && item->name != "deathTimerLabel" && item->name != "face" && item->name != "weaponImage")
+			UpDateInGameUISlot(item->name, defaultInGameStats.at(item->name));
+		
+	// The texture map in map cpp, where the loot texture was, has been created again after map swap, so update the items that get the texture from it
+	for (auto& item : currentCanvas->children)
+		if (item->guiType == GUI_TYPES::IMAGE)
+			if(dynamic_cast<UiItem_Image*>(item)->specialTex != nullptr)
+				dynamic_cast<UiItem_Image*>(item)->ReAssignSpecialTexture();
+			
+
+	// finally reset the face: 
+	dynamic_cast<UiItem_Face*>(GetItemByName("face"))->SetCurrentAnim("idle");
 }

@@ -12,15 +12,19 @@ class UiItem_Image : public UiItem
 {
 
 public:
-	UiItem_Image(iPoint position, const SDL_Rect* section, std::string& name, UiItem* const parent, bool isTabbable = false, SDL_Texture* specialTex = nullptr, float spriteScale = 0.0f);
+	UiItem_Image(iPoint position, const SDL_Rect* section, std::string& name, UiItem* const parent, bool isTabbable = false, SDL_Texture* specialTex = nullptr, float spriteScale = 0.0f,
+		std::string newTextureName = "");
 	UiItem_Image(iPoint position, const SDL_Rect* section, UiItem* const parent);
 	//UiItem_Image(SDL_Rect hitBox, const Animation& section, UiItem*const parent, p2Point<int> pivot = { 0,0 });
 	~UiItem_Image();
 	void Draw();
 	void CleanUp();
+	void ReAssignSpecialTexture();
 
-private:
+public:
 	SDL_Texture* specialTex = nullptr; 
+	std::string newTextureName = ""; 
+
 	friend class UiItem_Bar; 
 };
 

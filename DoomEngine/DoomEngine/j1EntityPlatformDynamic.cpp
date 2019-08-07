@@ -8,8 +8,6 @@
 j1EntityPlatformDynamic::j1EntityPlatformDynamic(SDL_Rect placing, int heightLevel, int levelsUp, int levelsDown, SceneState level, AXIS_Movement movementType) : j1EntityPlatform(placing, heightLevel)
 {
 
-
-
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = ENTITY_DYNAMIC; // update this in dynamic platforms
 	speed = 100.f;

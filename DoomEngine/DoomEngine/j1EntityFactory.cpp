@@ -222,6 +222,7 @@ bool j1EntityFactory::CleanUp()
 	}
 	entities.clear();
 
+
 	// TODO: unload Atlas texture
 
 	for (auto tex : entityTextureMap)

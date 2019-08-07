@@ -16,7 +16,7 @@ protected:
 
 public:
 	UiItem_Button(iPoint position, std::string functionName, std::string name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click = nullptr, const SDL_Rect* hover = nullptr, 
-		sceneTypeGUI targetScene = sceneTypeGUI::NO_SCENE);
+		sceneTypeGUI targetSceneGUI = sceneTypeGUI::NO_SCENE, SceneState targetScene = SceneState::NO_SCENE);
 	void DoLogicClicked();
 	void Draw();
  

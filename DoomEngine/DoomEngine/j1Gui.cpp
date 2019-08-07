@@ -116,18 +116,25 @@ bool j1Gui::CleanUp()
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - create a canvas from a button action
 void LoadGui(UiItem* callback)   
 {
+	bool found = false; 
 	for (auto& canvas : App->gui->GetCanvases())
 	{
-		if (canvas.second->myScene == callback->targetScene)     // if there exists a current canvas with the scene
+		if (canvas.second->myScene == callback->targetSceneGui)     // if there exists a current canvas with the scene
 		{
+			found = true; 
 			App->gui->ChangeCurrentCanvas(canvas.second, true);   // just change the current canvas
-			return;
 		}
 
 	}
 
 	// if not found, create it: 
-	App->gui->ChangeCurrentCanvas(DBG_NEW UiItem(App->scene->sceneGuiXMLIndexes.at(callback->targetScene), callback->targetScene), false);
+	if(found == false) 
+		App->gui->ChangeCurrentCanvas(DBG_NEW UiItem(App->scene->sceneGuiXMLIndexes.at(callback->targetSceneGui), callback->targetSceneGui), false);
+
+
+	// finally, call scene swap
+	App->scene->LoadScene(callback->targetScene, false); 
+
 
 }
 
@@ -168,7 +175,7 @@ void j1Gui::ChangeCurrentCanvas(UiItem* newCanvas, bool exists)
 
 	else 
 	{
-		if (App->scene->GetCurrentSceneType() == sceneType::LEVEL)  
+		if (currentCanvas->myScene == sceneTypeGUI::LEVEL)  
 			ResetInGameUI();
 
 		currentCanvas = newCanvas;  
@@ -294,14 +301,15 @@ UiItem_Bar* j1Gui::AddBar(iPoint position, std::string name, const SDL_Rect * se
 
 
 
-UiItem_Button* j1Gui::AddButton(iPoint position, std::string function, std::string name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click, const SDL_Rect* hover, sceneTypeGUI targetScene)
+UiItem_Button* j1Gui::AddButton(iPoint position, std::string function, std::string name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click, const SDL_Rect* hover,
+	sceneTypeGUI targetSceneGui, SceneState targetScene)
 {
 	UiItem* newUIItem = nullptr;
 
 	if (parent == NULL)
-		newUIItem = DBG_NEW UiItem_Button(position, function, name, idle, currentCanvas, click, hover, targetScene);
+		newUIItem = DBG_NEW UiItem_Button(position, function, name, idle, currentCanvas, click, hover, targetSceneGui, targetScene);
 	else
-		newUIItem = DBG_NEW UiItem_Button(position, function, name, idle, parent, click, hover, targetScene);
+		newUIItem = DBG_NEW UiItem_Button(position, function, name, idle, parent, click, hover);
 
 	listOfItems.push_back(newUIItem);
 

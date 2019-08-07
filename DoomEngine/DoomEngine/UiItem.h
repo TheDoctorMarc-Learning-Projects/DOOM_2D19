@@ -72,7 +72,8 @@ public:
 
  
 	void(*function) (UiItem*) = nullptr;
-	sceneTypeGUI targetScene = sceneTypeGUI::NO_SCENE;
+	SceneState targetScene = SceneState::NO_SCENE; 
+	sceneTypeGUI targetSceneGui = sceneTypeGUI::NO_SCENE;
 	sceneTypeGUI myScene = sceneTypeGUI::NO_SCENE;
 
 	/*virtual void DoLogicClicked() {};

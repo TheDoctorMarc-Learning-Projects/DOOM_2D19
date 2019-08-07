@@ -10,7 +10,8 @@
 
 
 // TODO: Define the function name in the XML 
-UiItem_Button::UiItem_Button(iPoint position, std::string functionName, std::string name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click, const SDL_Rect* hover, sceneTypeGUI targetScene) :UiItem(position, name, parent)
+UiItem_Button::UiItem_Button(iPoint position, std::string functionName, std::string name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click, const SDL_Rect* hover,
+	sceneTypeGUI targetSceneGUI, SceneState targetScene) :UiItem(position, name, parent)
 {
 	assert(parent != nullptr);
 	frames[IDLE] = *idle;
@@ -31,8 +32,8 @@ UiItem_Button::UiItem_Button(iPoint position, std::string functionName, std::str
  
 	// assign the function pointer here
 	this->function = App->gui->GetFunctionsMap().at(functionName);
+	this->targetSceneGui = targetSceneGUI;
 	this->targetScene = targetScene; 
-
 
 	// the parent
 	AssignParentChild(parent);

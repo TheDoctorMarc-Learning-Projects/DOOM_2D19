@@ -52,7 +52,7 @@ bool j1Scene::Awake(pugi::xml_node& node)
 // Called before the first frame
 bool j1Scene::Start()
 {
-	LoadScene(SceneState::LEVEL2, sceneType::LEVEL);  // todo, do not load anything at first, rather main menu :)
+	LoadScene(SceneState::LEVEL2, true);  // todo, do not load anything at first, rather main menu :)
 
 	return true;
 
@@ -116,13 +116,13 @@ bool j1Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
 	{
-		LoadScene(SceneState::LEVEL1, sceneType::LEVEL);
+		LoadScene(SceneState::LEVEL1, true);
 	}
 
 
 	if (App->input->GetKey(SDL_SCANCODE_KP_2) == KEY_DOWN)
 	{
-		LoadScene(SceneState::LEVEL2, sceneType::LEVEL);
+		LoadScene(SceneState::LEVEL2, true);
 	}
 
 
@@ -205,7 +205,7 @@ void j1Scene::UnLoadScene()
  
 }
 
-void j1Scene::LoadScene(SceneState sceneState, sceneType menuLevel)
+void j1Scene::LoadScene(SceneState sceneState, bool loadGUI)
 {
 	nextSceneState = sceneState; 
 
@@ -227,13 +227,12 @@ void j1Scene::LoadScene(SceneState sceneState, sceneType menuLevel)
 		break;
 	}
 
-	// 3) then load modules, the previous encapsulated entity data... 
-
+	// 3) then load modulesa
  
 	App->audio->Start();
 	App->render->ResetCamera(); 
 
-	if (menuLevel == sceneType::LEVEL)                  
+	if (sceneState == SceneState::LEVEL1 || sceneState == SceneState::LEVEL2)
 	{
 		if (App->pathfinding->IsEnabled() == false)
 			App->pathfinding->Enable();
@@ -254,10 +253,12 @@ void j1Scene::LoadScene(SceneState sceneState, sceneType menuLevel)
 		App->map->active = true;
 	}
  
-	App->gui->LoadGuiDefined(convertSceneTypeToGui(sceneState));
+	// load the GUI when map swap comes from collider win, or ingame esc. Do NOT load it when coming from button (which already executes the load)
 
+	if(loadGUI == true)                                   
+		App->gui->LoadGuiDefined(convertSceneTypeToGui(sceneState));
+	
 	state = sceneState; 
-	currentStateType = menuLevel; 
 
 }
 
@@ -293,5 +294,4 @@ sceneTypeGUI j1Scene::convertSceneTypeToGui(SceneState state)
 
 }
 
-
-
+ 

@@ -69,8 +69,7 @@ public:
 	bool Save(pugi::xml_node&) const;
 	bool Load(pugi::xml_node&);
 
- 
-	sceneType GetCurrentSceneType() const { return currentStateType; };
+
 	SceneState GetCurrentSceneState() const { return state; }; 
 	SceneState GetNextSceneState() const { return nextSceneState; };  // when transitioning 
 private:
@@ -78,7 +77,7 @@ private:
 
 	SceneState state = SceneState::LEVEL1;
 	SceneState nextSceneState = SceneState::LEVEL1; 
-	sceneType currentStateType = sceneType::MENU; 
+
 
 	sceneTypeGUI convertSceneTypeToGui(SceneState state); 
 
@@ -90,7 +89,7 @@ public:
 
 	void LoadNewMap(const char* mapName);
 	void UnLoadScene();
-	void LoadScene(SceneState sceneState, sceneType menuLevel);
+	void LoadScene(SceneState sceneState, bool loadGUI);  
 
 };
 

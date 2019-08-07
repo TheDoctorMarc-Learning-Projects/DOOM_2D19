@@ -245,7 +245,7 @@ void j1App::FinishUpdate()
 		last_sec_frame_count = 0;
 
 		if (App->gui->IsEnabled() == true)
-			if(App->scene->GetCurrentSceneType() == sceneType::LEVEL)
+			if(App->gui->GetCurrentCanvas()->myScene == sceneTypeGUI::LEVEL)
 				App->gui->UpdateDeathTimer();
 			
 

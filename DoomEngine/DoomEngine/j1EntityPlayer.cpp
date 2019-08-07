@@ -928,9 +928,9 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 	case COLLIDER_TYPE::COLLIDER_WIN:
 		if (App->scene->GetCurrentSceneState() == SceneState::LEVEL1)
-			App->scene->LoadScene(SceneState::LEVEL2, sceneType::LEVEL); 
+			App->scene->LoadScene(SceneState::LEVEL2, true); 
 		if (App->scene->GetCurrentSceneState() == SceneState::LEVEL2)                     // TODO: level 2 loads main menu again
-			App->scene->LoadScene(SceneState::LEVEL1, sceneType::LEVEL);
+			App->scene->LoadScene(SceneState::LEVEL1, true);
 		break;
 
 	}
@@ -1062,8 +1062,6 @@ void j1EntityPlayer::PickWeapon(Collider* c2)
 
 		currentWeapon->weaponData.weaponState = WEAPON_STATE::ACTIVE;    // put to active 
 		currentWeapon->PlaceMeWithPlayer();  // player the new weapon in the desired pos; 
-
-		
 
 		currentWeapon->blitOrder = 3U;   // so it is under enemies, but on top when picked
 

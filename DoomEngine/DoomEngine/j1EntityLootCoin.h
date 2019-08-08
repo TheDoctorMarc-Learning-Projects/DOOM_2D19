@@ -13,7 +13,8 @@ public:
 
 	void OnPickUp();
  
- 
+private: 
+	int timeBonus = 5; 
 };
 
 #endif

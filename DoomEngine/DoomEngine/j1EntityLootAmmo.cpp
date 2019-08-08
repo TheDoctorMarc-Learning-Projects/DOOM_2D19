@@ -1,5 +1,6 @@
 #include "j1EntityLootAmmo.h"
 #include "j1EntityFactory.h"
+#include "j1Gui.h"
 
 j1EntityLootAmmo::j1EntityLootAmmo(float posX, float posY, LOOT_TYPE loot_type, std::string name) :j1EntityLoot(posX, posY, loot_type, name)
 {
@@ -9,6 +10,7 @@ j1EntityLootAmmo::j1EntityLootAmmo(float posX, float posY, LOOT_TYPE loot_type, 
 
 	// adjust Y pos so it its just on top of floor: 
 	position.y += (32 - size.y);  // 32 equals tiled tile height; 
+	position.x += (32 - size.x);
 
 	section = { 153, 60, size.x, size.y };
 
@@ -23,6 +25,7 @@ void j1EntityLootAmmo::OnPickUp()
 	App->audio->PlayFx("itemPickUp", 0, false, 1.f);
 
 	App->entityFactory->AddAmmoToPlayer(0.25f); 
+	App->gui->UpDateInGameUISlot("ammoLabel", App->entityFactory->player->currentWeapon->currentBullets);
 
 	to_delete = true;
 

@@ -9,6 +9,7 @@ j1EnemyBaronOfHell::j1EnemyBaronOfHell(int posX, int posY, std::string name) : j
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = ENEMY_BARON_OF_HELL;
 	this->name = name;
+	powerLevel = 4U;
 	maxLife = 500;
 	life = (float)maxLife;
 	size.create(44, 70);
@@ -73,6 +74,11 @@ j1EnemyBaronOfHell::~j1EnemyBaronOfHell()
 
 bool j1EnemyBaronOfHell::Move(float dt)
 {
+	if (App->entityFactory->IsPlayerAlive() == false) // first line prevention _> TODO: maybe it is safer to just stop the entity factory, but the player weapon wouldn't fall to the floor then 
+	{
+		return false;
+
+	}
 	j1Enemy::Move(dt); 
 	
 	if (state.combat != eCombatState::DYING && state.combat != eCombatState::DEAD)
@@ -97,15 +103,27 @@ bool j1EnemyBaronOfHell::Move(float dt)
 	}
 
 
+	
+
 	return true;
 }
 
 bool j1EnemyBaronOfHell::LongRangeConditions()
 {
-	if (App->entityFactory->player->collider->rect.y + App->entityFactory->player->collider->rect.h < position.y)
+
+	// no walls between player and myself :) 
+
+	if (j1Enemy::isWallBetweenPlayerAndMe(true) == true)
+		return false;
+
+
+	// player on my collider height horizontal projection AND in the shot projection 
+
+	if (App->entityFactory->player->position.y + App->entityFactory->player->collider->rect.h < position.y + longRangeShootData.relativeOffsetPos.y)
 		return false; 
-	if (App->entityFactory->player->collider->rect.y > position.y + collider->rect.h)
+	if (App->entityFactory->player->position.y > position.y + collider->rect.h - (collider->rect.h - longRangeShootData.relativeOffsetPos.y))
 		return false; 
+
 
 	return true; 
 }
@@ -134,3 +152,5 @@ void j1EnemyBaronOfHell::ResolvePathDeviation()
 
 	speed = defaultSpeed; 
 }
+
+ 

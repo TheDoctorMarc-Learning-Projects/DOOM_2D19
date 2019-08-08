@@ -1,5 +1,6 @@
 #include "j1EntityFactory.h"
 #include "LootWeaponMaps.h"
+#include "j1Gui.h"
 #include "j1Enemy.h"
 
 j1EntityLootWeapon::j1EntityLootWeapon(float posX, float posY, LOOT_TYPE loot_type, std::string name, weaponInfo weaponData) :j1EntityLoot(posX, posY, loot_type, name)
@@ -137,15 +138,12 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 	}
 		
 
-	if (state == KEY_UP /*&& firing*/)
+	if (state == KEY_UP)
 	{
 		firing = false;
 
 		if (weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
 		{
-			/*App->audio->SetSpecificFxVolume(name + "Idle", App->audio->fxMap.at(name + "Hit")->volume);    // restore idle and shot sounds back to normal
-			App->audio->SetSpecificFxVolume(name + "ShotFire", App->audio->fxMap.at(name + "Hit")->volume);*/
-
 			App->audio->StopSpecificFx(name + "ShotFire"); 
 			App->audio->StopSpecificFx(name + "Hit"); 
 			App->audio->ResumeSpecificFx(name + "Idle");
@@ -153,12 +151,20 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 
 		return; 
 	}
-		
+
+
+
+	if (state == KEY_REPEAT)
+	{
+
+		if(App->audio->isPausedFx(name + "ShotFire"))             // useful after hitting with chainsaw
+			App->audio->ResumeSpecificFx(name + "ShotFire");
+	}
+
 
 	if (weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
 	{
 		firing = true; 
-		//App->audio->SetSpecificFxVolume(name + "Idle", 0.f); 
 
 		App->audio->PauseSpecificFx(name + "Start");
 		App->audio->PauseSpecificFx(name + "Idle"); 
@@ -181,8 +187,10 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 	if (SDL_GetTicks() > lastTimeShoot + (uint)(int)MiliSecShotTIme && currentBullets > 0)    // TODO later on: MAXBULLETS, bullet functionality discount and prevent firing when 0 bullets etc
 	{
 		firing = true;
-		currentBullets--; 
 
+		if(App->entityFactory->player->godMode == false)
+			currentBullets--;
+		
 		lastTimeShoot = SDL_GetTicks();
 
 		SDL_RendererFlip shotFlip = SDL_FLIP_NONE;   // TODO: all particles sprites to the right by default, to match the weapon sprites and simplify this 
@@ -268,6 +276,11 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 		else*/
 		CalculateStrike();
 
+
+
+		// warn the GUI
+		App->gui->UpDateInGameUISlot("ammoLabel", this->currentBullets);
+
 	}
 	else
 		firing = false; 
@@ -311,10 +324,6 @@ void j1EntityLootWeapon::CalculateStrike()
 
 		Collider* shot = App->collision->AddCollider({ (int)position.x + collider->rect.w, (int)position.y, 10, 10 }, COLLIDER_TYPE::COLLIDER_SHOT, this, speed, true); // add a mini colllider to simulate bullet 
 	}
-
-
-
-	//shot->SetPos(position.x, position.y); 
 
 
 }

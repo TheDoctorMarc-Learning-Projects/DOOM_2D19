@@ -43,7 +43,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_PRESENTIAL] = false;
 
 
-	matrix[COLLIDER_WALL_DETECTION][COLLIDER_WALL_DETECTION] = false;
+	matrix[COLLIDER_WALL_DETECTION][COLLIDER_WALL_DETECTION] = true;
 	matrix[COLLIDER_WALL_DETECTION][COLLIDER_BLOOD] = false;
 	matrix[COLLIDER_WALL_DETECTION][COLLIDER_LOOT] = false;
 	matrix[COLLIDER_WALL_DETECTION][COLLIDER_WALL] = true;
@@ -254,25 +254,26 @@ bool j1Collision::PreUpdate()
 		}
 		else if(colliders[i] != nullptr)
 		{
-			if (App->render->IsOnCamera(colliders[i]->rect.x, colliders[i]->rect.y, colliders[i]->rect.w, colliders[i]->rect.h))
+			/*if (colliders[i]->volatileOutOfScreen)  // delete whe out of camera limits 
 			{
-				if (colliders[i]->hasSpeed)
-					colliders[i]->SetPos(colliders[i]->rect.x + colliders[i]->speed.x, colliders[i]->rect.y + colliders[i]->speed.y);
-			}
-			else
-			{
-				if (colliders[i]->volatileOutOfScreen)  // delete whe out of camera limits 
+				uint now = colliders[i]->lifetime.Read(); 
+				if (now > VOLATILE_LIFE)
 				{
 					if (colliders[i]->owner != nullptr)
 						colliders[i]->owner->to_delete = true;   // if it has an owner, delete the owner too
 					else
 						colliders[i]->to_delete = true;
+
+					continue; 
 				}
-				
-				
-			}
+			
+			}*/
 
 
+				if (colliders[i]->hasSpeed)
+					colliders[i]->SetPos(colliders[i]->rect.x + colliders[i]->speed.x, colliders[i]->rect.y + colliders[i]->speed.y);
+		
+				
 		}
 	}
 
@@ -418,7 +419,7 @@ void j1Collision::DebugDraw()
 			App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
 			break;
 		case COLLIDER_WALL: // red
-			App->render->DrawQuad(colliders[i]->rect, 0, 0, 255, alpha);
+			App->render->DrawQuad(colliders[i]->rect, 255, 0, 255, alpha);
 			break;
 		case COLLIDER_PLAYER: // green
 			App->render->DrawQuad(colliders[i]->rect, 0, 255, 0, alpha);
@@ -508,8 +509,7 @@ bool j1Collision::CleanUp()
 
 			colliders[i] = nullptr;
 		}
-		else
-			break;    // one you encounter a nullptr pos, do not proceed until MAX_COLLIDERS
+
 	}
 
 	return ret; 
@@ -526,11 +526,12 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* 
 		if (colliders[i] == nullptr)
 		{
 			ret = colliders[i] = new Collider(rect, type, callback, speed, volatileOutOfScreen);
-			break;
+			return ret;
 		}
 	}
+  
 
-	return ret;
+	return nullptr;
 }
 
 

@@ -3,10 +3,12 @@
 
 #include "j1Module.h"
 #include "p2Point.h"
+#include "j1Timer.h"
 #include <list>
 
 #include "SDL/include/SDL_rect.h"
 #define MAX_COLLIDERS 1000
+#define VOLATILE_LIFE 10000
 
 enum COLLIDER_TYPE
 {
@@ -37,6 +39,7 @@ struct Collider
 	SDL_Rect rect;
 	bool to_delete = false;
 	COLLIDER_TYPE type;
+	j1Timer lifetime; 
 	j1Entity* callback = nullptr;
 	Particle* owner = nullptr; // eg shot creates collider, but callback is instead the enemy
 	bool hasCallback = false; 
@@ -52,7 +55,7 @@ struct Collider
 		speed(speed),
 		volatileOutOfScreen(volatileOutOfScreen)
 	{
-		if (!speed.IsZero())
+		if (speed.IsZero() == false)
 		{
 			hasSpeed = true;
 			initialPos = fPoint((float)rect.x, (float)rect.y); 
@@ -60,6 +63,9 @@ struct Collider
 			
 		if (callback != nullptr)
 			hasCallback = true; 
+
+		if (volatileOutOfScreen == true)
+			lifetime.Start(); 
 	}
 
 	void SetPos(int x, int y)
@@ -101,10 +107,11 @@ public:
 
 
 private:
-
-	Collider* colliders[MAX_COLLIDERS];
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
 	bool debug = false;
+public: 
+	Collider* colliders[MAX_COLLIDERS];
+	
 };
 
 #endif // __j1COLLISION_H__  

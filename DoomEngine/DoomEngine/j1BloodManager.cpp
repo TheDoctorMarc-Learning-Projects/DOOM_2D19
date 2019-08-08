@@ -38,7 +38,6 @@ bool j1BloodManager::PreUpdate()
 
 bool j1BloodManager::Update(float dt)
 {
-	bool ret = true;
 	BROFILER_CATEGORY("Blood Update", Profiler::Color::White);
 
 	// update blood pos 
@@ -54,7 +53,7 @@ bool j1BloodManager::Update(float dt)
 					if (!(*bloodDrop)->to_delete)
 					{
 
-						ret = (*bloodDrop)->Update(dt);
+						(*bloodDrop)->Update(dt);
 
 						++bloodDrop;
 
@@ -87,10 +86,8 @@ bool j1BloodManager::Update(float dt)
 		}
 
 	}
-	
-
-
-	return ret;
+ 
+	return true;
 }
 
 bool j1BloodManager::PostUpdate()
@@ -313,12 +310,9 @@ uint j1BloodManager::CalculateNumberOfBloodDropsToBeSpawned(float damage, float 
 {
 	float drops = 0; 
 
-	// if it shots like chainsaw, that means that each frame blood is generated, so there would be 60+ blood drops per second
-
-
 	if (shotsPerSec == 0.0f) // chainsaw, 1 shot per frame, = 60 shots per second (60 FPS)
 	{
-		shotsPerSec = 60.f; // App->GetFPS();
+		shotsPerSec = 60.f;  
 	}
 
 	if (damage == 0.0f || shotsPerSec == 0.0f)  // prevention for the next line divisions
@@ -328,19 +322,25 @@ uint j1BloodManager::CalculateNumberOfBloodDropsToBeSpawned(float damage, float 
 
 	assert(drops < 1000 && "Too much blood drops!! Something went wrong :/");
 
+	if (drops >= 1000)
+		return 0U; 
+
 	if (drops < 1)
 	{
 		int prop = GetRandomIntValue(1, (int)shotsPerSec);
 		prop = abs(prop); 
 
 		if (!App->entityFactory->player->myWeapons.empty())
-			if (App->entityFactory->player->currentWeapon->GetWeaponType() == WEAPON_TYPE::CHAINSAW)   // cause why not?? (TODO: have a multiplier or smth) 
+			if (App->entityFactory->player->currentWeapon->GetWeaponType() == WEAPON_TYPE::CHAINSAW)   // cause why not??  
 				return 1U; 
 
-		//if (prop <= 10)
+ 
 		uint calc = (uint)(int)(shotsPerSec / (float)prop);
 
 		assert(calc < 1000 && "Too much blood drops!! Something went wrong :/");
+
+		if (calc >= 1000)
+			return 0U; 
 
 		if (calc <= 1U)
 			calc = 5U; 

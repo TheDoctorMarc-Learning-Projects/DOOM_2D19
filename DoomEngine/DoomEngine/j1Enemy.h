@@ -69,7 +69,7 @@ struct TargetPos
 
 struct ejumpData
 {
-	float jumpPower = 33.5f;
+	float jumpPower = 38.5f;
 	float currenJumpPower = jumpPower;
 	float jumpIncrementFactor = .9f;
 	float speedXIncrementJump = 2.5f;
@@ -110,6 +110,13 @@ struct AttackData
 	uint lastTimeMeleeAttack = 0U; 
 	uint lastTimeLongRangeAttack = 0U;
 	bool lastShooted = false; 
+};
+
+
+struct lastRaycastData
+{
+	std::array<int, 4> lastRaycast = { 0, 0, 0, 0 } ;
+	SDL_Color Color = { 0, 0, 0, 0 }; 
 };
 
 class j1Entity;
@@ -170,31 +177,7 @@ public:
 
 	virtual POINTING_DIR GetDirection() override; 
 
-	virtual void SetDyingState(bool brutal = false)
-	{
-		state.combat = eCombatState::DYING; 
-
-		App->audio->StopSpecificFx(name + "Injured");   // so that death is audible 
-
-		if (!brutal || dataAnimFx.hasSecondDeathAnim == false)   // check this out (for the ones that only have one death anim) 
-		{
-			currentAnimation = &death1;
-			App->audio->PlayFx(this->name + "Death");  // TODO: if two deaths sounds, play one or another
-		}
-			
-		else
-		{
-			currentAnimation = &death2;
-
-			if(dataAnimFx.hasSecondDeathFx)
-				App->audio->PlayFx(this->name + "Death2");  // TODO: if two deaths sounds, play one or another
-			else
-				App->audio->PlayFx(this->name + "Death");  // TODO: if two deaths sounds, play one or another
-		}
-			
-
-
-	};
+	void SetDyingState(bool brutal = false); 
 
 	virtual void CheckDeathFinished() override
 	{
@@ -245,8 +228,10 @@ public:
 
 
 	virtual fPoint GetShotDir(); 
-	virtual fPoint GetShotSpeed(fPoint dir) const { return fPoint(dir.x * longRangeShootData.shotSpeed, dir.y * longRangeShootData.shotSpeed);
-	}
+	virtual fPoint GetShotSpeed(fPoint dir) const { return fPoint(dir.x * longRangeShootData.shotSpeed, dir.y * longRangeShootData.shotSpeed); }
+
+
+	bool isWallBetweenPlayerAndMe(bool shoot = false); 
 
 public:
 
@@ -285,6 +270,8 @@ public:
 	ejumpData jumpInfo;
 	j1EntityPlatform* lastPlatform = nullptr; 
 	float platFormSpeed = 60.f;
+	lastRaycastData lastRaycastInfo; 
+	uint powerLevel = 1U; 
 
 private: 
 	float momentumFactor = 10.f;

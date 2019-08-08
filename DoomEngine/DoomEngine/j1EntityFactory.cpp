@@ -17,11 +17,10 @@
 #include "j1EnemyCacodemon.h"
 #include "j1EnemyBaronOfHell.h"
 #include "j1EnemyHellKnight.h"
-
 #include "LootWeaponMaps.h"
-
 #include "j1BloodManager.h"
 #include "j1EntityBloodDrop.h"
+#include "j1Gui.h"
 
 #include <assert.h>
 
@@ -76,7 +75,7 @@ bool j1EntityFactory::Start()
 	enemiesToBeSpawned.clear(); 
 	
 	// for the moment, create player here 
-	player = (j1EntityPlayer*)CreateEntity(PLAYER, 0, 300, "player"); 
+	player = (j1EntityPlayer*)CreateEntity(PLAYER, playerSpawnPos.x, playerSpawnPos.y, "player");
 
 
 	std::list<j1Entity*>::iterator item = entities.begin();
@@ -110,7 +109,6 @@ bool j1EntityFactory::PreUpdate()
 
 bool j1EntityFactory::Update(float dt)
 {
-	bool ret = true;
 	BROFILER_CATEGORY("Entities Update", Profiler::Color::Fuchsia);
 
 	std::list<j1Entity*>::iterator item = entities.begin();
@@ -121,8 +119,8 @@ bool j1EntityFactory::Update(float dt)
 			if (!(*item)->to_delete)
 			{
 				
-					ret = (*item)->Update(dt);
-					ret = (*item)->Move(dt);
+					(*item)->Update(dt);
+					(*item)->Move(dt);
 
 					++item;
 			
@@ -144,7 +142,7 @@ bool j1EntityFactory::Update(float dt)
 	}
 
 
-	return ret;
+	return true;
 }
 
 bool j1EntityFactory::PostUpdate()
@@ -164,6 +162,7 @@ bool j1EntityFactory::PostUpdate()
 	blitOrderEntities.clear(); 
 
 	 
+	Debug(); 
 				 
 				
 	return true;
@@ -173,6 +172,36 @@ bool j1EntityFactory::isBlitOrderHigherThanPreviousEntity(const j1Entity* ent1, 
 {
 	return ent2->blitOrder > ent1->blitOrder;
 }
+
+
+void j1EntityFactory::Debug()
+{
+
+	// - - - - - - - - - - - - - - - - debug
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+		debug = !debug; 
+
+	if (debug)
+	{
+		for(const auto& entity : entities)
+			if(entity->isEnemy)
+				if(App->render->IsOnCamera(entity->position.x, entity->position.y, entity->collider->rect.w, entity->collider->rect.h))
+					if (dynamic_cast<j1Enemy*>(entity)->state.combat != eCombatState::DYING && dynamic_cast<j1Enemy*>(entity)->state.combat != eCombatState::DEAD)
+						App->render->DrawLine(dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.lastRaycast[0],
+							dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.lastRaycast[1],
+							dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.lastRaycast[2],
+							dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.lastRaycast[3],
+							dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.Color.r,
+							dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.Color.g,
+							dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.Color.b,
+							dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.Color.a,
+							true);
+				
+				
+	}
+}
+		
 
 bool j1EntityFactory::CleanUp()
 {
@@ -192,6 +221,7 @@ bool j1EntityFactory::CleanUp()
 
 	}
 	entities.clear();
+
 
 	// TODO: unload Atlas texture
 
@@ -338,6 +368,8 @@ j1Entity* j1EntityFactory::CreateArmor(ENTITY_TYPE type, int positionX, int posi
 void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadence, fPoint shotSpeed)
 {
 
+	// - - - - - - - - - - - - - - - - - - - - - - - - - 1) Preventions
+
 	if (ent->to_delete)  // first line prevention 
 		return; 
 
@@ -358,19 +390,25 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 		
 	float previousLife = ent->life;
 
+	// - - - - - - - - - - - - - - - - - - - - - - - - - 2) Do damage
+
 	if (ent->type != PLAYER)
 	{
 		if (player->godMode == true)  // if godmode is active, just kill the enemy 
 			ent->life = 0.f;
 		else
 			ent->life -= damage;
+
 	}
 	else
 	{
+		float previousArmor = player->armor;
+		float previousLife = player->life;
 		
 		if (player->armor > 0.0f)
 		{
-			float captureArmor = player->armor;     // apply damage to the armor first 
+			   // apply damage to the armor first 
+			float captureArmor = player->armor;
 			float extraDamage = 0.0f;
 
 			captureArmor -= damage;
@@ -384,15 +422,24 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 				player->life -= extraDamage; 
 			}
 				
+			
 		}
 		else
 			player->life -= damage;     
 
-		
+		// warn the GUI
+
+		if(previousArmor != player->armor)
+			App->gui->UpDateInGameUISlot("armorLabel", player->armor);
+		if (previousLife != player->life)
+			App->gui->UpDateInGameUISlot("healthLabel", player->life);
+
+		// warn the GUI
+		dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("damaged");
 			
 	}
 		
-
+	// - - - - - - - - - - - - - - - - - - - - - - - - - 3) Set the dying state 
 	
 	if (ent->life <= 0.f)
 	{
@@ -402,27 +449,48 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 			brutal = true; 
 
 		ent->SetDyingState(brutal);
+
+
+		if (ent != player)  
+		{
+			// add time to the death countdown
+			App->gui->UpdateDeathTimer((int)dynamic_cast<j1Enemy*>(ent)->powerLevel * enemyKillTimeBonusFactor); 
+
+			// warn the GUI
+			dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("kill");
+		}
+		else
+		{
+			// warn the GUI
+			dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("death");
+		}
+			
+			
 	}
 	else
 		App->audio->PlayFx(ent->name + "Injured");
 
-	uint bloodDropAmount = App->bloodManager->CalculateNumberOfBloodDropsToBeSpawned(damage, cadence); 
+	// - - - - - - - - - - - - - - - - - - - - - - - - - 4) spawn the blood 
 
+	uint bloodDropAmount = App->bloodManager->CalculateNumberOfBloodDropsToBeSpawned(damage, cadence); 
 	App->bloodManager->CreateTargetedBloodSteam(ent->collider->rect, 0.5f, bloodDropAmount, shotSpeed);
 }
 
 
 
-void j1EntityFactory::AddLifeToEntity(j1Entity* ent, float maxLifePercentatge)
+void j1EntityFactory::AddLifeToPlayer(float maxLifePercentatge)
 {
-	float captureLife = ent->life;
+	float captureLife = player->life;
 
-	captureLife += (maxLifePercentatge * ent->maxLife);
+	captureLife += (maxLifePercentatge * player->maxLife);
 
-	if (captureLife > ent->maxLife)
-		captureLife -= (captureLife - ent->maxLife);
+	if (captureLife > player->maxLife)
+		captureLife -= (captureLife - player->maxLife);
 
-	ent->life = captureLife;
+	player->life = captureLife;
+
+	App->gui->UpDateInGameUISlot("healthLabel", player->life);
+
 }
 
 
@@ -445,6 +513,7 @@ void j1EntityFactory::AddAmmoToPlayer(float maxBulletPercentage)
 		}
 	
 
+	App->gui->UpDateInGameUISlot("ammoLabel", player->currentWeapon->currentBullets);
 }
 
 void j1EntityFactory::AddArmorToPlayer(float maxArmorPercentatge)
@@ -457,4 +526,7 @@ void j1EntityFactory::AddArmorToPlayer(float maxArmorPercentatge)
 		captureArmor -= (captureArmor - player->maxArmor);
 
 	player->armor = captureArmor;
+
+
+	App->gui->UpDateInGameUISlot("armorLabel", player->armor);
 }

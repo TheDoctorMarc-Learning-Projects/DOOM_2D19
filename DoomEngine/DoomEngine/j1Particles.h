@@ -62,6 +62,8 @@ public:
 	void AddParticle(std::string nameAtMap, int x, int y, j1Entity* callback = nullptr, bool assignToCollider = false, COLLIDER_TYPE colType = COLLIDER_NONE, fPoint speed = { 0,0 }, Uint32 delay = 0, SDL_RendererFlip rFlip = SDL_RendererFlip::SDL_FLIP_NONE, double angle = 0, int pivotx = INT_MAX, int pivoty = INT_MAX, float scale = 1.0F, float parallaxSpeed = 1.0F, bool useCameraScale = true, bool onSceen = false);
 	Particle* AddParticleRet(std::string nameAtMap, int x, int y, j1Entity* callback = nullptr, bool assignToCollider = false, COLLIDER_TYPE colType = COLLIDER_NONE, fPoint speed = { 0,0 }, Uint32 delay = 0, SDL_RendererFlip rFlip = SDL_RendererFlip::SDL_FLIP_NONE, double angle = 0, int pivotx = INT_MAX, int pivoty = INT_MAX, float scale = 1.0F, float parallaxSpeed = 1.0F, bool useCameraScale = true, bool onSceen = false);
 
+
+	Particle GetParticleAt(std::string name) { return particleMap.at(name); }; 
 private:
 
 	SDL_Texture* texture = nullptr; 

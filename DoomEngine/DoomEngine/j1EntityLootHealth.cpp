@@ -9,6 +9,7 @@ j1EntityLootHealth::j1EntityLootHealth(float posX, float posY, LOOT_TYPE loot_ty
 
 	// adjust Y pos so it its just on top of floor: 
 	position.y += (32 - size.y);  // 32 equals tiled tile height; 
+	position.x += (32 - size.x);
 
 	section = {44, 50, size.x, size.y};
 
@@ -22,7 +23,7 @@ void j1EntityLootHealth::OnPickUp()
 {
 	 App->audio->PlayFx("itemPickUp", 0, false, 1.f);
 
-	 App->entityFactory->AddLifeToEntity(App->entityFactory->player, 0.25f); 
+	 App->entityFactory->AddLifeToPlayer(0.25f);
 	 
 	 to_delete = true;
 

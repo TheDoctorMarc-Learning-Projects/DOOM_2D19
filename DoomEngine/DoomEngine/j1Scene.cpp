@@ -13,18 +13,33 @@
 #include "j1Particles.h"
 #include "j1Collision.h"        
 #include "j1EntityFactory.h"
-                                                     // TODO: later on, check if any library is not neede here 
+#include "j1BloodManager.h"
+#include "j1FadeToBlack.h"
+#include "j1Gui.h"
+                                    
 #include "Brofiler/Brofiler.h"
 
 j1Scene::j1Scene() : j1Module()
 {
 	name.assign("scene");
 	state = SceneState::LEVEL1;
+
+
+
+	sceneGuiXMLIndexes =
+	{
+		 {sceneTypeGUI::LEVEL, "InGameUI"},
+	};
+
+
+	// TODO: keep updating this scene-gui index map
 }
 
 // Destructor
 j1Scene::~j1Scene()
-{}
+{
+	sceneGuiXMLIndexes.clear(); 
+}
 
 // Called before render is available
 bool j1Scene::Awake(pugi::xml_node& node)
@@ -38,30 +53,7 @@ bool j1Scene::Awake(pugi::xml_node& node)
 // Called before the first frame
 bool j1Scene::Start()
 {
-	// TODO: call load new map in each case --> do not do it in load / unload, or do not do it here if it is already being done there the previous frame
-
-
-	// TODO: WHY THE HELL is this loaded here? And not in audio start haha. It is borderline idiotic :/ (punishes himself) :/ 
-
-
-	if (state == SceneState::LEVEL1)
-	{
-		//App->audio->PlayMusic("audio/music/FFDI_Theme_14.ogg", -1);   // change with new music
-		//LoadNewMap("maps/level 1.tmx");
-		LoadNewMap("maps/level 1 for testing.tmx");
-		App->audio->PlayMusic("sound/music/Rip & Tear.ogg", -1);
-	}
-
-	if (state == SceneState::LEVEL2)
-	{
-
-	}
-
-	if (state == SceneState::STARTMENU)
-	{
-
-	}
-
+	LoadScene(SceneState::LEVEL2, true);  // todo, do not load anything at first, rather main menu :)
 
 	return true;
 
@@ -118,6 +110,23 @@ bool j1Scene::Update(float dt)
 	}
 
 
+	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
+	{
+		UnLoadScene(); 
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
+	{
+		LoadScene(SceneState::LEVEL1, true);
+	}
+
+
+	if (App->input->GetKey(SDL_SCANCODE_KP_2) == KEY_DOWN)
+	{
+		LoadScene(SceneState::LEVEL2, true);
+	}
+
+
 	return true;
 }
 
@@ -149,13 +158,15 @@ bool j1Scene::Save(pugi::xml_node &node) const
 
 bool j1Scene::Load(pugi::xml_node &node)
 {
-;
+
 	return true;
 }
 
 
 void j1Scene::LoadNewMap(const char* mapName)
 {
+ 
+
 	if (App->map->Load(mapName))
 	{
 		int w, h;
@@ -164,76 +175,130 @@ void j1Scene::LoadNewMap(const char* mapName)
 			App->pathfinding->SetMap(w, h, data);
 
 		RELEASE_ARRAY(data);
+ 
 
-		// not yet, check this later: 
-
-		/*// re set entities data map (create or delete/create if we have a previous one)    
-		App->entityFactory->CreateEntitiesDataMap(App->map->data.width * 2, App->map->data.height * 2);*/
+		 
 	}
 }
 
 void j1Scene::UnLoadScene()
 {
-	// TODO: Clean floor collider, clean all objects colliders 
-	
-	// TODO: if I add new modules, disable them here if needed 
 	if (App->map->IsEnabled())
 		App->map->Disable();
 
 	if (App->pathfinding->IsEnabled())
 		App->pathfinding->Disable();
-	
 
-	App->audio->CleanUp(); // scene already loads it in start 
+	if (App->entityFactory->IsEnabled())
+		App->entityFactory->Disable();
 
-	// particles and EntityFactory TODO 
+	if (App->bloodManager->IsEnabled())
+		App->bloodManager->Disable();
 
+	if (App->particles->IsEnabled())
+		App->particles->Disable();
 
+	if (App->collision->IsEnabled())
+		App->collision->Disable();
+
+ 
+	App->audio->UnLoadAudio(); 
+ 
 }
 
-void j1Scene::LoadScene(SceneState sceneState)
+void j1Scene::LoadScene(SceneState sceneState, bool loadGUI)
 {
+	if (App->fade->GetCurrentStep() != fade_step::none)  // prevention
+		return; 
+
+	nextSceneState = sceneState; 
+	this->loadGUI = loadGUI; 
+
+	UnLoadScene();   // 1) First unload every needed module
+
+	// Make a fade, do NOT create anything until fade allows it 
+	App->fade->FadeToBlack(sceneSwapColor);
+}
 
 
-	UnLoadScene();
-
-
-	switch (sceneState)
-	{
-	case SceneState::STARTMENU:
-		state = SceneState::STARTMENU;
-		break;
+void j1Scene::CreateScene()
+{
+	switch (nextSceneState)
+	{                           // 2) Then call load map (which has encapsulated entity data)
 
 	case SceneState::LEVEL1:
-		                                                // TODO: if I add new modules, enable them if needed  
-		state = SceneState::LEVEL1;
-	                                               
-		App->pathfinding->Enable();
-		App->map->active = true;
-		//LoadNewMap("maps/Level1_Final_Borders_Faked.tmx");  // TODO: change map and sound
-		// particles TODO 
-
-
+		App->audio->PlayMusic("sound/music/Arch Enemy First Day In Hell.ogg", -1);
+		LoadNewMap("maps/level 1.tmx");
 		break;
 
 	case SceneState::LEVEL2:
-		state = SceneState::LEVEL2;
-		
-		App->pathfinding->Enable();
-	
-		App->map->active = true;
-		/*App->audio->PlayMusic("audio/music/BRPG_Hell_Spawn_FULL_Loop.ogg");
-		LoadNewMap("maps/Level2_rework.tmx");*/                                          // TODO: change map and sound
-		// particles TODO 
-
+		LoadNewMap("maps/level 2.tmx");
+		App->audio->PlayMusic("sound/music/soil-halo.ogg", -1);
 		break;
 	default:
 		break;
 	}
 
-	Start();
+	// 3) then load modules
+
+	App->audio->Start();
+	App->render->ResetCamera();
+
+	if (nextSceneState == SceneState::LEVEL1 || nextSceneState == SceneState::LEVEL2)
+	{
+		if (App->pathfinding->IsEnabled() == false)
+			App->pathfinding->Enable();
+
+		if (App->entityFactory->IsEnabled() == false)
+			App->entityFactory->Enable();
+
+		if (App->bloodManager->IsEnabled() == false)
+			App->bloodManager->Enable();
+
+		if (App->particles->IsEnabled() == false)
+			App->particles->Enable();
+
+		if (App->collision->IsEnabled() == false)
+			App->collision->Enable();
+
+
+		App->map->active = true;
+	}
+
+	// 4) load the GUI when map swap comes from collider win, or ingame esc. Do NOT load it when coming from button (which already executes the load)
+
+	if (loadGUI == true)
+		App->gui->LoadGuiDefined(convertSceneTypeToGui(nextSceneState));
+
+	state = nextSceneState;
 
 }
 
+sceneTypeGUI j1Scene::convertSceneTypeToGui(SceneState state)
+{
 
+	if ((int)state <= 2)
+		return (sceneTypeGUI)(int)state;
+	else
+		switch (state)
+		{
+		case SceneState::LEVEL1:
+			return sceneTypeGUI::LEVEL;
+			break;
+		case SceneState::LEVEL2:
+			return sceneTypeGUI::LEVEL;
+			break;
+		case SceneState::SETTINGS:
+			return sceneTypeGUI::SETTINGS;
+			break;
+		case SceneState::IN_GAME_SETTINGS:
+			return sceneTypeGUI::SETTINGS;
+			break;
 
+		}
+
+	return sceneTypeGUI::NO_SCENE;
+
+}
+
+ 

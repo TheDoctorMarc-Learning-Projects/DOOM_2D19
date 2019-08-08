@@ -1,5 +1,7 @@
 #include "j1EntityLootCoin.h"
- 
+#include "j1Gui.h"
+#include <string>   
+
 j1EntityLootCoin::j1EntityLootCoin(float posX, float posY, LOOT_TYPE loot_type, std::string name, bool classicFigure) :j1EntityLoot(posX, posY, loot_type, name)
 {
 	this->name = name;
@@ -10,7 +12,7 @@ j1EntityLootCoin::j1EntityLootCoin(float posX, float posY, LOOT_TYPE loot_type, 
 
 	// adjust Y pos so it its just on top of floor: 
 	position.y += (32 - size.y);  // 32 equals tiled tile height; 
-
+	position.x += (32 - size.x); 
 
 	section.w = size.x; 
 	section.h = size.y; 
@@ -29,13 +31,21 @@ j1EntityLootCoin::j1EntityLootCoin(float posX, float posY, LOOT_TYPE loot_type, 
 
 void j1EntityLootCoin::OnPickUp()
 {
-	
-		App->audio->PlayFx("figurePickUp", 0, true, 1.f, 0.1f, 0.1f);
+	    UiItem_Label* myLabel = (UiItem_Label*)App->gui->GetItemByName(name + "Label"); 
 
-		// TODO 3: add to the UI counter
+		if (myLabel != nullptr)
+		{
+			int coins = std::stoi(myLabel->text);
+			coins += 1;
 
-		
-		to_delete = true;
+			App->audio->PlayFx("figurePickUp", 0, true, 1.f, 0.15f, 0.15f);
+			App->gui->UpDateInGameUISlot(name + "Label", coins, section);
+			App->gui->UpdateDeathTimer(timeBonus);
+
+			to_delete = true;
+		}
+		else
+			assert(false); 
 
 	
 

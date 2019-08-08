@@ -15,6 +15,7 @@ public:
 
 	void Jump(); 
 	void ResolvePathDeviation(); 
+	bool MoveConditions(); 
 
 	bool Move(float dt) override;  // call parent function, then if enemy does enaything extra, do it after call 
 

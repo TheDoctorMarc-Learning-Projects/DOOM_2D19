@@ -18,6 +18,7 @@
 #include "j1EntityLootAmmo.h"
 #include "j1EntityLootArmor.h"
 #include <map>
+#include <array>
 
 enum damage_Frame_Type
 {
@@ -33,7 +34,6 @@ struct encapsulatedEnemyData  // needed to load enemies from tiled, because text
 };
 
 
-
 class j1EntityFactory : public j1Module
 {
 public:
@@ -47,8 +47,10 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	void Debug(); 
+
 	void DoDamagetoEntity(j1Entity* ent, float damage, float shotsPerSecond, fPoint shotSpeed = fPoint(0,0));   // to do: capture shot dir and enemy rect for the blood functionality
-	void AddLifeToEntity(j1Entity* ent, float maxLifePercentatge = 0.0f); 
+	void AddLifeToPlayer(float maxLifePercentatge = 0.0f);
 	void AddAmmoToPlayer(float maxBulletPercentage = 0.0f); 
 	void AddArmorToPlayer(float maxArmorPercentage = 0.0f); 
 
@@ -65,7 +67,6 @@ public:
 	 j1Entity* CreateHealth(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type); 
 	 j1Entity* CreateAmmo(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type);
 	 j1Entity* CreateArmor(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type);
-	 
 
 	bool isDistanceToManhattan(iPoint tilePos, iPoint targetTilePos, int distance)
 	{
@@ -82,6 +83,18 @@ public:
 		return ret <= distance; 
 	}
 
+	bool hasIntersectionRectAndLine(const SDL_Rect* rect, std::array<int, 4> line) const  // line is passed like this: {x1, y1, x2, y2}
+	{ 
+		return SDL_IntersectRectAndLine(rect, &line[0], &line[1], &line[2], &line[3]);
+	}
+
+	fPoint GetRectCentralPoint(const SDL_Rect* rect) const {
+
+		return { (float)rect->x + (float)rect->w / 2.F, (float)rect->y + (float)rect->h / 2.F };
+	}
+
+	bool IsPlayerAlive() const { return playerAlive; }; 
+
 private: 
 
 	static bool isBlitOrderHigherThanPreviousEntity(const j1Entity* ent1, const j1Entity* ent2); 
@@ -96,12 +109,20 @@ private:
 public:
 
 
+
 	std::list<j1Entity*>	entities;
 	std::map<std::string, SDL_Texture*> entityTextureMap; 
 	std::map<std::string, ENTITY_TYPE> enemyTypeMap; 
+	std::array<int, 5> platFormLevelHeights; 
 	j1EntityPlayer* player = nullptr; 
+	bool playerAlive = false; 
+	iPoint playerSpawnPos = iPoint(0, 0); 
+
+	bool debug = false;
+
 
 	std::list<encapsulatedEnemyData*> enemiesToBeSpawned; 
+	int enemyKillTimeBonusFactor = 4;
 
 };
 

@@ -141,6 +141,8 @@ bool j1Audio::CleanUp()
 
 	LOG("Freeing sound FX, closing Mixer and Audio subsystem");
 
+	Mix_AllocateChannels(0);
+
 	if(music != NULL)
 	{
 		Mix_FreeMusic(music);
@@ -254,8 +256,8 @@ bool j1Audio::PlayFx(std::string name, int repeat, bool prioritary, float volume
 		prioritaryChunk = name;  // capture the chunk name that has a priority 
 		toUpdate = true; 
 
-		SetVolume(musReduc);   // set a music to a lower volume while playing the wanted fx
-		SetFxVolume(fxsReduc);   // set a fx to a lower volume while playing the wanted fx
+		SetVolume(musReduc);   // set the music to a lower volume while playing the wanted fx
+		SetFxVolume(fxsReduc);   // set the other fxs to a lower volume while playing the wanted fx
 
 	}
 
@@ -332,6 +334,8 @@ void j1Audio::SetFxVolume(float volume)
 
 void j1Audio::UnLoadAudio()
 {
+
+	Mix_AllocateChannels(0); 
 
 	if (music != NULL)
 	{

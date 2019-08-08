@@ -43,7 +43,7 @@ struct myState
 
 struct jumpData
 {
-	float jumpPower = 16.f; 
+	float jumpPower = 17.4f; 
 	float currenJumpPower = jumpPower; 
 	float jumpIncrementFactor = .9f;
 	float speedXIncrementJump = 1.7f; 
@@ -84,29 +84,8 @@ public:
 	void AimWeapon(); 
 	void ShootWeapon(j1KeyState state);
 	void DieLogic(float dt); 
-
-	virtual void SetDyingState(bool brutal = false)
-	{
-		state.combat = combatState::DYING;
-
-		if (!brutal)
-		{
-			currentAnimation = &death1;
-
-			App->audio->StopSpecificFx(name + "Injured");   // so that death is audible 
-			App->audio->PlayFx(this->name + "Death");
-		}
-			
-		else
-		{
-			currentAnimation = &death2;
-
-			App->audio->StopSpecificFx(name + "Injured");   // so that death is audible 
-			App->audio->PlayFx(this->name + "Death2");
-		}
-		
-
-	};
+	
+	void SetDyingState(bool brutal = false); 
 
 	virtual void CheckDeathFinished() override
 	{
@@ -125,6 +104,17 @@ public:
 		return aiming;
 	}
 
+	bool isParalized()
+
+	{
+		return isnan(paralizedDir) == false; 
+	}
+
+	void UnParalize()
+	{
+	    paralizedDir = std::numeric_limits<double>::quiet_NaN();
+	}
+
 public:
 
 	Animation run; 
@@ -139,6 +129,7 @@ private:
 	fPoint lastAirPos = fPoint(0, 0); 
 	fPoint deathPosGround = fPoint(0, 0);
 	SDL_Rect deathColllider = { 0, 0, 0, 0 };
+	double paralizedDir = std::numeric_limits<double>::quiet_NaN();   // when colliding with enemy, he can't ho in that dir (it can be 1, -1 or nan)
 
 	jumpData jumpInfo; 
 	float momentumFactor = 10.f; 

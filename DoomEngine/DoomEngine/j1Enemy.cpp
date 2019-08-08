@@ -16,6 +16,7 @@ j1Enemy::j1Enemy(int posX, int posY) : j1Entity(ENEMY_STATIC, posX, posY, "enemy
 	blitOrder = 2U; 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 
+	isEnemy = true; 
 	position = previousPosition = fPoint(posX, posY);
 	originTilePos = App->map->WorldToMap(posX, posY); 
 	pointingDir = LEFT;
@@ -82,9 +83,8 @@ bool j1Enemy::Save(pugi::xml_node &) const
 bool j1Enemy::Move(float dt)
 {
 
-	if (App->entityFactory->player->state.combat == combatState::DYING || stopLogic == true)
+	if (App->entityFactory->IsPlayerAlive() == false) // first line prevention _> TODO: maybe it is safer to just stop the entity factory, but the player weapon wouldn't fall to the floor then 
 	{
-		stopLogic = true; 
 		return false;
 	}
 		
@@ -610,7 +610,12 @@ void j1Enemy::CallPathCreation(iPoint pos, iPoint target, bool& success)
 
 			success = (pathToFollow.size() > 1);
 		}
-		else LOG("Could not create path correctly, enemy tried to go from (%i,%i) to (%i,%i)", pos.x, pos.y, target.x, target.y);   
+		else
+		{
+			LOG("Could not create path correctly, enemy tried to go from (%i,%i) to (%i,%i)", pos.x, pos.y, target.x, target.y);
+			success = false;
+			return; 
+		}
 
 
 	}
@@ -921,9 +926,9 @@ void j1Enemy::SpawnShotParticle()
 
 	fPoint dir = GetShotDir();
 	fPoint speed = GetShotSpeed(dir);
-	fPoint targetPos = fPoint(0, 0); 
+	fPoint OriginShotPos = fPoint(0, 0);
 
-	targetPos.y = position.y + longRangeShootData.relativeOffsetPos.y; 
+	OriginShotPos.y = position.y + longRangeShootData.relativeOffsetPos.y;
 	SDL_RendererFlip shotFlip = SDL_FLIP_NONE; 
 
 	if(speed.x < 0)
@@ -931,17 +936,17 @@ void j1Enemy::SpawnShotParticle()
 
 	if (GetDirection() == LEFT)
 	{
-		targetPos.x = position.x + longRangeShootData.relativeOffsetPos.x;
+		OriginShotPos.x = position.x + longRangeShootData.relativeOffsetPos.x;
 	}
 
 	else if (GetDirection() == RIGHT)
 	{
-		targetPos.x = position.x + collider->rect.w - longRangeShootData.relativeOffsetPos.x;
+		OriginShotPos.x = position.x + collider->rect.w - longRangeShootData.relativeOffsetPos.x - App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().w;
 	}
  
 	
 
-	Particle* shot = App->particles->AddParticleRet(name + "Shot", (int)targetPos.x, (int)targetPos.y, this, true, COLLIDER_ENEMY_SHOT, speed, 0U,
+	Particle* shot = App->particles->AddParticleRet(name + "Shot", (int)OriginShotPos.x, (int)OriginShotPos.y, this, true, COLLIDER_ENEMY_SHOT, speed, 0U,
 		shotFlip);
 
 	std::string fxname = ""; 
@@ -955,8 +960,18 @@ void j1Enemy::SpawnShotParticle()
 
 fPoint j1Enemy::GetShotDir()
 {
-	fPoint playerPos = App->entityFactory->player->position; 
-	fPoint Dir = playerPos - position; 
+
+	//capture player and enemy positions : take into account shot offset and shot hieght
+	float yOffset = longRangeShootData.relativeOffsetPos.y + App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().h / 2;
+	float xOffset = longRangeShootData.relativeOffsetPos.x + App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().w / 2;
+
+	if (pointingDir == RIGHT)
+		xOffset = collider->rect.w - longRangeShootData.relativeOffsetPos.x - App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().w / 2;
+
+	fPoint p1 = { position.x + xOffset, position.y + yOffset };
+	fPoint p2 = App->entityFactory->GetRectCentralPoint(&App->entityFactory->player->collider->rect);
+
+	fPoint Dir = p2 - p1;
 
 	if(Dir.IsZero() == false)
 		Dir.Normalize();
@@ -1007,6 +1022,12 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 
 
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
+
+
+		/*for (const auto& col : collider->onCollisionWithMe)   // if im on the floor already, and my head is touching a platform above 
+			if (col->type == COLLIDER_FLOOR)
+				if (col != c2)
+					return; */
 
 		if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
 		{
@@ -1409,3 +1430,88 @@ bool j1Enemy::Go_A_to_B()
 }
 
 
+
+
+bool j1Enemy::isWallBetweenPlayerAndMe(bool shoot)
+{
+	//capture player and enemy positions : take into account shot offset and shot hieght
+
+	fPoint p1 = fPoint(0, 0); 
+	if (shoot == true)
+	{
+		float yOffset = longRangeShootData.relativeOffsetPos.y + App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().h / 2;
+		float xOffset = longRangeShootData.relativeOffsetPos.x + App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().w / 2;
+
+		if (pointingDir == RIGHT)
+			xOffset = collider->rect.w - longRangeShootData.relativeOffsetPos.x - App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().w / 2;
+
+		p1 = { position.x + xOffset, position.y + yOffset };
+	}
+	else
+		p1 = App->entityFactory->GetRectCentralPoint(&collider->rect);
+	
+
+	SDL_Rect target = { App->entityFactory->player->position.x, App->entityFactory->player->position.y, App->entityFactory->player->collider->rect.w,
+	App->entityFactory->player->collider->rect.h }; 
+	fPoint p2 = App->entityFactory->GetRectCentralPoint(&target);
+
+
+	// make a line and store it for debugging purposes 
+	lastRaycastInfo.lastRaycast = { (int)p1.x, (int)p1.y, (int)p2.x, (int)p2.y };
+
+
+	// check if any wall on screen has got an intersection with the line 
+	for (const auto& wallCol : App->collision->colliders)
+		if (wallCol && (wallCol->type == COLLIDER_WALL || wallCol->type == COLLIDER_FLOOR))
+			if (App->render->IsOnCamera(wallCol->rect.x, wallCol->rect.y, wallCol->rect.w, wallCol->rect.h) == true)
+				if (App->entityFactory->hasIntersectionRectAndLine(&wallCol->rect, lastRaycastInfo.lastRaycast) == true)
+				{
+					lastRaycastInfo.Color = { 255, 0, 0, 255 };
+					return true;
+				}
+
+
+	lastRaycastInfo.Color = { 0, 255, 0, 255 };
+	return false;
+
+}
+
+
+
+void j1Enemy::SetDyingState(bool brutal)
+{
+	if (state.combat == eCombatState::DYING || state.combat == eCombatState::DEAD)
+		return;
+
+
+	// if i was blocking the player movement, unblock it: 
+
+	if (App->entityFactory->player->isParalized() == true)
+	{
+		for (const auto& col : collider->onCollisionWithMe)
+			if (col->type == COLLIDER_PLAYER)
+				App->entityFactory->player->UnParalize();
+	}
+
+	state.combat = eCombatState::DYING;
+	blitOrder = 1U;  // to be rendered under weapons etc
+
+	App->audio->StopSpecificFx(name + "Injured");   // so that death is audible 
+
+	if (!brutal || dataAnimFx.hasSecondDeathAnim == false)   // check this out (for the ones that only have one death anim) 
+	{
+		currentAnimation = &death1;
+		App->audio->PlayFx(this->name + "Death");  // TODO: if two deaths sounds, play one or another
+	}
+
+	else
+	{
+		currentAnimation = &death2;
+
+		if (dataAnimFx.hasSecondDeathFx)
+			App->audio->PlayFx(this->name + "Death2");  // TODO: if two deaths sounds, play one or another
+		else
+			App->audio->PlayFx(this->name + "Death");  // TODO: if two deaths sounds, play one or another
+	}
+
+}

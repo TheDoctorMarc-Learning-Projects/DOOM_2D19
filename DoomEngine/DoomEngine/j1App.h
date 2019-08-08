@@ -25,6 +25,8 @@ class j1Particles;
 class j1Collision;
 class j1EntityFactory; 
 class j1BloodManager; 
+class j1Gui;
+class j1FadeToBlack; 
 
 class j1App
 {
@@ -115,6 +117,8 @@ public:
 	j1Collision*  		collision = nullptr; 
 	j1EntityFactory*    entityFactory = nullptr; 
 	j1BloodManager*     bloodManager = nullptr; 
+	j1Gui*              gui = nullptr; 
+	j1FadeToBlack*      fade = nullptr; 
 
 	bool				vsync = false;
 	bool				pause = false;

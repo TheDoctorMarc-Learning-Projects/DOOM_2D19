@@ -6,14 +6,16 @@
 #include "j1EntityFactory.h"
 #include "j1Window.h"
 #include "j1Scene.h"
-#include "j1EntityFactory.h" // needed for some functions
+#include "j1EntityFactory.h" 
 #include "j1Enemy.h"
+#include "j1Gui.h"
 
 #include <math.h>
 
 
 j1EntityPlayer::j1EntityPlayer(int posX, int posY, std::string name) : j1Entity(PLAYER, posX , posY, "player")
 {
+	App->entityFactory->playerAlive = true; 
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - texture
 	entityTex = App->entityFactory->entityTextureMap.at(name); 
@@ -23,7 +25,7 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY, std::string name) : j1Entity(
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = PLAYER; 
 	this->name = name;
-	maxLife = life = 500;        // TODO: show life in percentatge UI, not this value 
+	maxLife = life = 500;       
 	maxArmor = 300; 
 	position = previousPosition = fPoint(posX, posY); 
 	pointingDir = RIGHT;
@@ -80,6 +82,7 @@ j1EntityPlayer::j1EntityPlayer(int posX, int posY, std::string name) : j1Entity(
 
 j1EntityPlayer::~j1EntityPlayer()
 {
+	App->entityFactory->playerAlive = false; 
 }
 
 bool j1EntityPlayer::Start()
@@ -91,10 +94,19 @@ bool j1EntityPlayer::Start()
 bool j1EntityPlayer::PreUpdate()
 {
 	
-	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
-		godMode = !godMode; 
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)   // TODO: God mode allows to fly around 
+	{
+		godMode = !godMode;
 
+		if(godMode)
+			dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("win");
+		else
+			dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("idle");
+		
+	}
+		
  
+
 
 	return true;
 }
@@ -130,7 +142,7 @@ bool j1EntityPlayer::Move(float dt)
 	BROFILER_CATEGORY("Player Move", Profiler::Color::Aqua);
 	SetPreviousFrameData();
 
-	if (state.combat != combatState::DYING && state.combat != combatState::DEAD)
+    if (state.combat != combatState::DYING && state.combat != combatState::DEAD)
 	{
 		
 		HorizonatlMovement(dt);
@@ -244,6 +256,9 @@ void j1EntityPlayer::HorizonatlMovement(float dt)
 			else
 				lastSpeed.x = (xAxis * speed) * dt;
 
+			// check not paralized
+			if ((lastSpeed.x > 0 && paralizedDir == 1) || (lastSpeed.x < 0 && paralizedDir == -1))
+				lastSpeed.x = 0; 
 
 			state.movement.at(0) = (xAxis < 0) ? MovementState::INPUT_LEFT : state.movement.at(0);
 			state.movement.at(0) = (xAxis > 0) ? MovementState::INPUT_RIGHT : state.movement.at(0);
@@ -402,7 +417,7 @@ void j1EntityPlayer::WeaponLogic()
 			ChangeWeapon(SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
 		}
 
-		AimWeapon(); 
+		//AimWeapon(); 
 
 		j1KeyState shootButtonState = App->input->GetControllerAxisPulsation(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
 
@@ -491,9 +506,9 @@ void j1EntityPlayer::ChangeWeapon(SDL_GameControllerButton button)
 					currentWeapon = myWeapons.at(desiredIndex); 
 
 
-
-
-				
+					// warn the GUI
+					App->gui->UpDateInGameUISlot("ammoLabel", currentWeapon->currentBullets);   
+					App->gui->UpDateInGameUISlot("weaponImage", 0.0f, currentWeapon->section); 
 				}
 			
 
@@ -604,17 +619,14 @@ void j1EntityPlayer::WarnOtherModules()
 
 	// - - - - - - - - - - - - - - - - >> Render 
 	int speed = -15; 
-
-	if (pointingDir == LEFT)
-		speed = -speed; 
-
-	if ((lastSpeed.x > 0 || onDynamicplatform) && -(int)position.x < App->render->camera.x - App->render->camera.w + (int)App->render->screenDivisions.lateralValue)
+ 
+	if (-(int)position.x < App->render->camera.x - App->render->camera.w + (int)App->render->screenDivisions.lateralValue)
 	{
 		App->render->SetCameraScroll(cameraScrollType::GRADUAL, direction::RIGHT, speed, 650); 
 	}
-	else if ((lastSpeed.x < 0|| onDynamicplatform) && -(int)position.x > App->render->camera.x - (int)App->render->screenDivisions.lateralValue && (int)previousPosition.x > (int)App->render->screenDivisions.lateralValue)
+	else if (-(int)position.x > App->render->camera.x - (int)App->render->screenDivisions.lateralValue && (int)previousPosition.x > (int)App->render->screenDivisions.lateralValue)
 	{
-		App->render->SetCameraScroll(cameraScrollType::GRADUAL, direction::LEFT, speed, 650);
+		App->render->SetCameraScroll(cameraScrollType::GRADUAL, direction::LEFT, -speed, 650);
 	}
 }
 
@@ -651,15 +663,15 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 		}
 
 
-
-
+		if (collider->rect.y + collider->rect.h == c2->rect.y)
+			currentAnimation->Resume(); 
 
 		
 		if (!onPlatform)
 		{
 			if (c2->callback)    // platforms
 			{
-				if (collider->rect.y + collider->rect.h > c2->rect.y)
+				if (collider->rect.y + collider->rect.h >= c2->rect.y)
 				{
 					if (lastSpeed.y > 0)
 					{
@@ -715,6 +727,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 								collider->SetPos(position.x, position.y);
 
 
+							
+								currentAnimation->Resume();
 							}
 						}
 
@@ -726,7 +740,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 			}
 			else  // just for the base floor 
 			{
-				if (collider->rect.y + collider->rect.h > c2->rect.y)
+				if (collider->rect.y + collider->rect.h >= c2->rect.y)
 				{
 					if (lastSpeed.y > 0)
 					{
@@ -742,6 +756,10 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 						state.movement.at(1) = MovementState::NOT_ACTIVE;   // jump or fall not active
 
 						collider->SetPos(position.x, position.y);
+
+
+						 
+						currentAnimation->Resume();
 					}
 				}
 			}
@@ -750,7 +768,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 
 			// Y - bottom to top                                   
-			if (collider->rect.y < c2->rect.y + c2->rect.h)
+			if (collider->rect.y <= c2->rect.y + c2->rect.h)
 			{
 				if (lastSpeed.y < 0)
 				{
@@ -841,6 +859,46 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 	break;
 
 
+	case COLLIDER_TYPE::COLLIDER_ENEMY:   // paralize player movement in that direction
+
+		// CHECK ENEMY IS NOT DYING OR DEAD
+		if (dynamic_cast<j1Enemy*>(c2->callback)->state.combat == eCombatState::DYING || dynamic_cast<j1Enemy*>(c2->callback)->state.combat == eCombatState::DEAD)
+			return;
+
+		if (pointingDir == RIGHT && lastSpeed.x > 0)
+		{
+			if (collider->rect.x + collider->rect.w >= c2->rect.x && collider->rect.x < c2->rect.x)  // second condition is due to aiming and changing pointing dir and collider
+			{
+				if (lastPosCollider.x + lastPosCollider.w < c2->rect.x)
+				{
+
+					float offset = collider->rect.x + collider->rect.w - c2->rect.x;
+					position.x -= offset;
+					collider->SetPos(position.x, position.y); 
+					paralizedDir = 1; 
+				}
+
+			}
+
+
+		}
+		else if (pointingDir == LEFT && lastSpeed.x < 0)
+		{
+			if (collider->rect.x <= c2->rect.x + c2->rect.w && collider->rect.x > c2->rect.x)  // second condition is due to aiming and changing pointing dir and collider
+			{
+				if (lastPosCollider.x > c2->rect.x + c2->rect.w)
+				{
+					float offset = c2->rect.x + c2->rect.w - collider->rect.x;
+					position.x += offset;
+					collider->SetPos(position.x, position.y);
+					paralizedDir = -1;
+				}
+			}
+		}
+
+		break;
+
+
 
 	case COLLIDER_TYPE::COLLIDER_LOOT:
 
@@ -862,8 +920,15 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 		break;
 
+	case COLLIDER_TYPE::COLLIDER_WIN:
+		if (App->scene->GetCurrentSceneState() == SceneState::LEVEL1)
+			App->scene->LoadScene(SceneState::LEVEL2, true); 
+		if (App->scene->GetCurrentSceneState() == SceneState::LEVEL2)                     // TODO: level 2 loads main menu again
+			App->scene->LoadScene(SceneState::LEVEL1, true);
+		break;
 
 	}
+
 
 
 	if (!lastOnplatform && onPlatform)
@@ -881,6 +946,9 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 	switch (c2->type)
 	{
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
+
+		currentAnimation->Pause(); 
+
 		if (c2->hasCallback && c2->callback->type != ENTITY_TYPE::ENTITY_DYNAMIC)
 		{
 			if (state.movement.at(1) != MovementState::JUMP)
@@ -928,6 +996,15 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 		
 		break;
 
+
+
+	case COLLIDER_TYPE::COLLIDER_ENEMY:
+
+		if(isnan(paralizedDir) == false)
+			paralizedDir = std::numeric_limits<double>::quiet_NaN();
+
+		break; 
+
 	}
 
 
@@ -974,18 +1051,65 @@ void j1EntityPlayer::PickWeapon(Collider* c2)
 		currentWeapon = dynamic_cast<j1EntityLootWeapon*>(c2->callback);
 
 		// chainsaw needs a hotspot collider to do damage: 
-		if (dynamic_cast<j1EntityLootWeapon*>(c2->callback)->weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
-			dynamic_cast<j1EntityLootWeapon*>(c2->callback)->AddHotSpotToChainsaw(true);
+		if (currentWeapon->weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
+			currentWeapon->AddHotSpotToChainsaw(true);
 
-		dynamic_cast<j1EntityLootWeapon*>(c2->callback)->weaponData.weaponState = WEAPON_STATE::ACTIVE;    // put to active 
-		dynamic_cast<j1EntityLootWeapon*>(c2->callback)->PlaceMeWithPlayer();  // player the new weapon in the desired pos; 
+		currentWeapon->weaponData.weaponState = WEAPON_STATE::ACTIVE;    // put to active 
+		currentWeapon->PlaceMeWithPlayer();  // player the new weapon in the desired pos; 
 
+		currentWeapon->blitOrder = 3U;   // so it is under enemies, but on top when picked
+
+
+		// other modules logic 
 		App->audio->PlayFx("weaponPickUp");
 
-		dynamic_cast<j1EntityLootWeapon*>(c2->callback)->blitOrder = 3U;   // so it is under enemies, but on top when picked
+		App->gui->UpDateInGameUISlot("ammoLabel", currentWeapon->currentBullets);
+		if (App->gui->GetItemByName("weaponImage") == nullptr)                    // create the weapon image
+		{
+			SDL_Rect section = { currentWeapon->section.x, currentWeapon->section.y, currentWeapon->section.w, currentWeapon->section.h};
+			iPoint pos = iPoint(272, 615);
+			std::string name = "weaponImage"; 
+			App->gui->AddImage(pos, &section, name, NULL, false, currentWeapon->entityTex, 1.6F, "loot");
 
-
+		}
+		else
+			App->gui->UpDateInGameUISlot("weaponImage", 0.0f, currentWeapon->section);   // change the weapon image section to the new weapon's sections 
 		
+		dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("weapon");   // change the ui face 
 
 	}
 }
+
+
+
+void j1EntityPlayer::SetDyingState(bool brutal)
+{
+
+	if (state.combat == combatState::DYING || state.combat == combatState::DEAD)
+		return;
+
+	App->entityFactory->playerAlive = false;
+
+	state.combat = combatState::DYING;
+
+	if (currentWeapon)
+		currentWeapon->StopAllFxs();
+
+	if (!brutal)
+	{
+		currentAnimation = &death1;
+
+		App->audio->StopSpecificFx(name + "Injured");   // so that death is audible 
+		App->audio->PlayFx(this->name + "Death");
+	}
+
+	else
+	{
+		currentAnimation = &death2;
+
+		App->audio->StopSpecificFx(name + "Injured");   // so that death is audible 
+		App->audio->PlayFx(this->name + "Death2");
+	}
+
+
+};

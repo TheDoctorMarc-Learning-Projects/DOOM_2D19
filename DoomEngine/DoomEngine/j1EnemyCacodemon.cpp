@@ -10,6 +10,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	adaptativeColliderMovement = false; 
 	type = ENEMY_CACODEMON;
 	this->name = name;
+	powerLevel = 3U;
 	maxLife = 480;
 	life = (float)maxLife;
 	size.create(62, 67);
@@ -22,7 +23,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	damageValues.melee = 120;
 	damageValues.longRange = 45; 
 	longRangeShootData.msWaitFromAnimStartToShot = 800;
-	longRangeShootData.relativeOffsetPos.create(20, size.y / 2); // assuming spritescale is 1.0f
+	longRangeShootData.relativeOffsetPos.create(10, size.y / 2); // assuming spritescale is 1.0f
 	longRangeShootData.shotSpeed = 200;
 	pathType = enemyPathType::FLYING;
 	dataAnimFx.hasSecondDeathAnim = false;
@@ -74,6 +75,11 @@ j1EnemyCacodemon::~j1EnemyCacodemon()
 
 bool j1EnemyCacodemon::Move(float dt)
 {
+	if (App->entityFactory->IsPlayerAlive() == false) // first line prevention _> TODO: maybe it is safer to just stop the entity factory, but the player weapon wouldn't fall to the floor then 
+	{
+		return false;
+	}
+
 	if (j1Enemy::Move(dt))
 	{
 
@@ -86,10 +92,12 @@ bool j1EnemyCacodemon::Move(float dt)
 	if (state.combat != eCombatState::DYING && state.combat != eCombatState::DEAD)
 	{
 		DoMeleeAttack();
-		DoLongRangeAttack();
+
+		if (j1Enemy::isWallBetweenPlayerAndMe(true) == false)
+			DoLongRangeAttack();
+	
 	}
-	/*else
-		return false; */
+ 
 	
 	
 
@@ -154,7 +162,8 @@ bool j1EnemyCacodemon::DoDie()
 
 void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 {
-
+	if ((c1 == shieldAreaCollider && c2 == collider) || (c1 == collider && c2 == shieldAreaCollider)) // ignore my own wall detection collider
+		return; 
 
 	if (c1->type == COLLIDER_ENEMY_SHOT)
 	{

@@ -19,12 +19,15 @@
 #include "j1Particles.h"
 #include "j1EntityFactory.h"
 #include "j1BloodManager.h"
+#include "j1FadeToBlack.h"
+#include "j1Gui.h"
 
 #include "Brofiler/Brofiler.h"
 
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
+
 #ifdef _DEBUG
 #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
 // Replace _NORMAL_BLOCK with _CLIENT_BLOCK if you want the
@@ -32,6 +35,9 @@
 #else
 #define DBG_NEW new
 #endif
+
+#define ReportMemoryLeaks() _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF)
+
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -50,6 +56,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	collision = DBG_NEW j1Collision();
 	entityFactory = DBG_NEW j1EntityFactory();
 	bloodManager = DBG_NEW j1BloodManager(); 
+	gui = DBG_NEW j1Gui(); 
+	fade = DBG_NEW j1FadeToBlack(); 
 
 	// Ordered for awake / Start / Update
 
@@ -59,16 +67,24 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
-	//modules.push_back(map);   // this can make sense later 
-	AddModule(map); 
 	AddModule(scene);
-	AddModule(particles);
-	//modules.push_back(pathfinding);  // this can make sense later 
-	AddModule(pathfinding); 
 	AddModule(font);
-	AddModule(collision); 
-	AddModule(entityFactory); 
-	AddModule(bloodManager);
+	AddModule(gui);
+	AddModule(fade); 
+
+	modules.push_back(map);
+	map->startInitialized = false; 
+	modules.push_back(particles); 
+	particles->startInitialized = false;
+	modules.push_back(pathfinding);  
+	pathfinding->startInitialized = false;
+	modules.push_back(collision);
+	collision->startInitialized = false;
+	modules.push_back(entityFactory);
+	entityFactory->startInitialized = false;
+	modules.push_back(bloodManager);
+	bloodManager->startInitialized = false;
+
 
 	// render last to swap buffer
 	AddModule(render);
@@ -130,12 +146,8 @@ bool j1App::Awake()
 		item = modules.begin();
 
 		while(item != modules.end() && ret == true)
-		{
-			//ret = (*item)->Awake(config.child((*item)->name.data()));    // IMPERATIVE TODO: Check this out, same code as other proj, but does not work
-
-			ret = (*item)->Awake((pugi::xml_node&)(config).child((*item)->name.data())); 
-
-
+		{ 
+			ret = (*item)->Awake((pugi::xml_node&)(config).child((*item)->name.data()));
 			++item;
 		}
 	}
@@ -157,7 +169,7 @@ bool j1App::Start()
 
 	while(item != modules.end() && ret == true)
 	{
-		if ((*item)->active)
+		if ((*item)->startInitialized)
 			ret = (*item)->Start();
 
 		++item;
@@ -238,58 +250,31 @@ void j1App::FinishUpdate()
 		last_sec_frame_time.Start();
 		prev_last_sec_frame_count = last_sec_frame_count;
 		last_sec_frame_count = 0;
+
+		// update the death timer once each second (do not do it yet if fading) 
+		if (App->gui->IsEnabled() == true)
+			if(App->gui->GetCurrentCanvas() && App->gui->GetCurrentCanvas()->myScene == sceneTypeGUI::LEVEL)
+				if(App->fade->GetCurrentStep() == fade_step::none)
+					App->gui->UpdateDeathTimer();
 	}
+
 	seconds_since_startup = startup_time.ReadSec();
 	float avg_fps = float(frame_count) / seconds_since_startup;
 	uint32 last_frame_ms = frame_time.Read();
 	frames_on_last_update = prev_last_sec_frame_count;
 
-	// TODO: remove the extra indications here
-
-	int playerHealth = 0; 
-	int currentWeaponAmmo = 0;
-	int playerArmor = 0; 
-
-	if (App->entityFactory->player != nullptr)
-	{
-		playerHealth = (int)App->entityFactory->player->life; 
-		playerArmor = (int)App->entityFactory->player->armor;
-		
-		if (App->entityFactory->player->currentWeapon != nullptr)
-			currentWeaponAmmo = App->entityFactory->player->currentWeapon->currentBullets; 
-	}
-
     static char title[256];
-	//sprintf_s(title, 256, "FPS: %i, Av.FPS: %.2f Last Frame Ms: %02u / Time since startup: %.3f Frame Count: %lu / Frame Cap: ",
-		//frames_on_last_update, avg_fps, last_frame_ms, seconds_since_startup, frame_count /*framerate_cap*/); 
-	
- 
-
-	sprintf_s(title, 256, "life: %i / bullets: %i / armor: %i", playerHealth, currentWeaponAmmo, playerArmor);
-
+	sprintf_s(title, 256, "FPS: %i, Av.FPS: %.2f Last Frame Ms: %02u / Time since startup: %.3f Frame Count: %lu / Frame Cap: ",
+		frames_on_last_update, avg_fps, last_frame_ms, seconds_since_startup, frame_count /*framerate_cap*/); 
 
 	App->win->SetTitle(title);
-
-
-
-
-	
-	/*static char title[256];
-	std::string capFramesString;
-
-	sprintf_s(title, 256, "%s" , App->GetTitle());
-
-	char title[256];
-	sprintf_s(title, 256, "Realtime fps: %i", frames_on_last_update);
-	App->win->AddStringToTitle(title);*/
 
 	//- Cap the framerate
 
 	uint32 delay = MAX(0, (int)capTime - (int)last_frame_ms);
-	//LOG("Should wait: %i", delay);
-	//j1PerfTimer delayTimer;
+ 
 	SDL_Delay(delay);
-	//LOG("Has waited:  %f", delayTimer.ReadMs());
+ 
 }
 
 // Call modules before each loop iteration
@@ -311,8 +296,13 @@ bool j1App::PreUpdate()
 		}
 
 		ret = (*item)->PreUpdate();
+
+		if (ret == false)
+			LOG("Alert: module has caused App exit");
+
 	}
 
+	
 	return ret;
 }
 
@@ -335,8 +325,13 @@ bool j1App::DoUpdate()
 		}
 
 		ret = (*item)->Update(dt);
+
+		if (ret == false)
+			LOG("Alert: module has caused App exit");
+
 	}
 
+	
 	return ret;
 }
 
@@ -359,8 +354,12 @@ bool j1App::PostUpdate()
 		}
 
 		ret = (*item)->PostUpdate();
-	}
 
+		if (ret == false)
+			LOG("Alert: module has caused App exit");
+
+	}
+ 
 	return ret;
 }
 

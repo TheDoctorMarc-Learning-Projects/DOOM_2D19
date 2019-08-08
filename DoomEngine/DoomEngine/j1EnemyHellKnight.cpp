@@ -9,6 +9,7 @@ j1EnemyHellKnight::j1EnemyHellKnight(int posX, int posY, std::string name) : j1E
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - data
 	type = ENEMY_HELL_KNIGHT;
 	this->name = name;
+	powerLevel = 2U; 
 	maxLife = 200;
 	life = (float)maxLife;
 	size.create(44, 70);
@@ -65,6 +66,11 @@ j1EnemyHellKnight::~j1EnemyHellKnight()
 
 bool j1EnemyHellKnight::Move(float dt)
 {
+	if (App->entityFactory->IsPlayerAlive() == false) // first line prevention _> TODO: maybe it is safer to just stop the entity factory, but the player weapon wouldn't fall to the floor then 
+	{
+		return false;
+	}
+
 	j1Enemy::Move(dt);
 
 	if (state.combat != eCombatState::DYING && state.combat != eCombatState::DEAD)

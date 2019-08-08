@@ -2,8 +2,9 @@
 #define _J1ENEMYBARONOFHELL_H__
 
 #include "j1Enemy.h"
+#include <array>
 
-class j1Enemy;
+class j1Enemy; 
 
 class j1EnemyBaronOfHell : public j1Enemy
 {
@@ -15,13 +16,14 @@ public:
 	void ResolvePathDeviation();
 	bool LongRangeConditions(); 
 	fPoint GetShotSpeed(fPoint dir) const override; 
+ 
 
 	bool Move(float dt) override;  // call parent function, then if enemy does enaything extra, do it after call 
 
 
 private:
-
-
+	
+; 
 	float defaultSpeed = 0.f; 
 
 };

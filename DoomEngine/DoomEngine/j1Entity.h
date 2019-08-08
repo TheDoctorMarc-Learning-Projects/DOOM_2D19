@@ -22,8 +22,8 @@
 
 #define EXTRA_DAMAGE_TO_TRIGGER_BRUTAL_DEATH 40
 
-#define DEFAULT_GRAV 50.f	
-#define MAX_GRAV 550.f
+#define DEFAULT_GRAV 70.f	
+#define MAX_GRAV 2000.f
 
 
 inline float GravityCalc(float& gm, float& m)  // g  and mass inline calc container
@@ -99,6 +99,7 @@ public:
 
 public:
 	SDL_Rect                section = { 0, 0, 0, 0 }; 
+	bool                    isEnemy = false; 
 	bool					to_delete = false;
 	bool					to_die = false; 
 	bool                    drawActive = true; 

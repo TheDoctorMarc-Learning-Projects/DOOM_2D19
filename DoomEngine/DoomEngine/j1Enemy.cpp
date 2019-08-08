@@ -1432,16 +1432,25 @@ bool j1Enemy::Go_A_to_B()
 
 
 
-bool j1Enemy::isWallBetweenPlayerAndMe()
+bool j1Enemy::isWallBetweenPlayerAndMe(bool shoot)
 {
 	//capture player and enemy positions : take into account shot offset and shot hieght
-	float yOffset = longRangeShootData.relativeOffsetPos.y + App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().h / 2;
-	float xOffset = longRangeShootData.relativeOffsetPos.x + App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().w / 2;
 
-	if (pointingDir == RIGHT)
-		xOffset = collider->rect.w - longRangeShootData.relativeOffsetPos.x - App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().w / 2;
+	fPoint p1 = fPoint(0, 0); 
+	if (shoot == true)
+	{
+		float yOffset = longRangeShootData.relativeOffsetPos.y + App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().h / 2;
+		float xOffset = longRangeShootData.relativeOffsetPos.x + App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().w / 2;
 
-	fPoint p1 = { position.x + xOffset, position.y + yOffset };
+		if (pointingDir == RIGHT)
+			xOffset = collider->rect.w - longRangeShootData.relativeOffsetPos.x - App->particles->GetParticleAt(name + "Shot").anim.GetCurrentFrame().w / 2;
+
+		p1 = { position.x + xOffset, position.y + yOffset };
+	}
+	else
+		p1 = App->entityFactory->GetRectCentralPoint(&collider->rect);
+	
+
 	SDL_Rect target = { App->entityFactory->player->position.x, App->entityFactory->player->position.y, App->entityFactory->player->collider->rect.w,
 	App->entityFactory->player->collider->rect.h }; 
 	fPoint p2 = App->entityFactory->GetRectCentralPoint(&target);

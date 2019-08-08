@@ -231,7 +231,7 @@ public:
 	virtual fPoint GetShotSpeed(fPoint dir) const { return fPoint(dir.x * longRangeShootData.shotSpeed, dir.y * longRangeShootData.shotSpeed); }
 
 
-	bool isWallBetweenPlayerAndMe(); 
+	bool isWallBetweenPlayerAndMe(bool shoot = false); 
 
 public:
 

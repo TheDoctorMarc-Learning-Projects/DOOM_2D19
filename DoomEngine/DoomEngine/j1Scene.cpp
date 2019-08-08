@@ -208,6 +208,9 @@ void j1Scene::UnLoadScene()
 
 void j1Scene::LoadScene(SceneState sceneState, bool loadGUI)
 {
+	if (App->fade->GetCurrentStep() != fade_step::none)  // prevention
+		return; 
+
 	nextSceneState = sceneState; 
 	this->loadGUI = loadGUI; 
 

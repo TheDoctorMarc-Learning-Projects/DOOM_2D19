@@ -93,7 +93,7 @@ bool j1EnemyCacodemon::Move(float dt)
 	{
 		DoMeleeAttack();
 
-		if (j1Enemy::isWallBetweenPlayerAndMe() == false)
+		if (j1Enemy::isWallBetweenPlayerAndMe(true) == false)
 			DoLongRangeAttack();
 	
 	}

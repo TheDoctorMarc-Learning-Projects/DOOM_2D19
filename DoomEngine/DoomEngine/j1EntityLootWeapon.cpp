@@ -326,10 +326,6 @@ void j1EntityLootWeapon::CalculateStrike()
 	}
 
 
-
-	//shot->SetPos(position.x, position.y); 
-
-
 }
 
 

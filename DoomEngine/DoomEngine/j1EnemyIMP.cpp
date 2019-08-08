@@ -91,9 +91,11 @@ bool j1EnemyIMP::Move(float dt)
 
 	if (j1Enemy::Move(dt))
 	{
-		if (state.movement.at(1) != eMovementState::JUMP)
-			Jump();
+		if(MoveConditions() == true) 
+			if (state.movement.at(1) != eMovementState::JUMP)
+				Jump();
 
+		
 	}
 
 	if (state.combat != eCombatState::DYING && state.combat != eCombatState::DEAD)
@@ -107,6 +109,17 @@ bool j1EnemyIMP::Move(float dt)
 	return true;
 }
 
+bool j1EnemyIMP::MoveConditions()
+{
+	if (isWallBetweenPlayerAndMe() == true)
+	{
+		state.path = ePathState::AWAIT;
+		currentAnimation = &idle; 
+		return false; 
+	}
+		
+	return true; 
+}
 
 void j1EnemyIMP::Jump()
 {

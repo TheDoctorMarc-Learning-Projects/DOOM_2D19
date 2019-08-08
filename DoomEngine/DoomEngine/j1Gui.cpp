@@ -84,7 +84,7 @@ bool j1Gui::PostUpdate()
 		debug = !debug;
 
 	if(currentCanvas != nullptr)
-		if(App->fade->GetCurrentStep() == fade_step::none)
+		if(App->fade->GetCurrentStep() == fade_step::none)  // do not draw gui until fade is complete
 			currentCanvas->DrawChildren();
 
 

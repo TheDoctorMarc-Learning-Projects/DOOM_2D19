@@ -113,7 +113,7 @@ bool j1EnemyBaronOfHell::LongRangeConditions()
 
 	// no walls between player and myself :) 
 
-	if (j1Enemy::isWallBetweenPlayerAndMe() == true)
+	if (j1Enemy::isWallBetweenPlayerAndMe(true) == true)
 		return false;
 
 

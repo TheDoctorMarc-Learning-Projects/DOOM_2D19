@@ -34467,7 +34467,7 @@
     <property name="scope" type="float" value="5000"/>
    </properties>
   </object>
-  <object id="29" name="weapon" x="285.333" y="506.667" width="32" height="32">
+  <object id="29" name="weapon" x="288" y="512" width="32" height="32">
    <properties>
     <property name="cadence" type="int" value="60"/>
     <property name="damage" type="float" value="100"/>
@@ -34897,7 +34897,7 @@
     <property name="classicType" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="231" name="win" x="8736" y="480" width="64" height="64"/>
+  <object id="231" name="win" x="8736" y="416" width="64" height="128"/>
   <object id="232" name="health" x="2400" y="512" width="32" height="32"/>
   <object id="233" name="health" x="4192" y="416" width="32" height="32"/>
   <object id="235" name="armor" x="3968" y="512" width="32" height="32"/>

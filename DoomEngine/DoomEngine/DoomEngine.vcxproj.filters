@@ -156,9 +156,6 @@
     <ClCompile Include="j1EntityFactory.cpp">
       <Filter>Code\Core\In-Game\Entities\core</Filter>
     </ClCompile>
-    <ClCompile Include="j1EntityPlayer.cpp">
-      <Filter>Code\Core\In-Game\Entities\core</Filter>
-    </ClCompile>
     <ClCompile Include="j1EnemyHellKnight.cpp">
       <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClCompile>
@@ -206,6 +203,9 @@
     </ClCompile>
     <ClCompile Include="j1FadeToBlack.cpp">
       <Filter>Code\Core\In-Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EntityPlayer.cpp">
+      <Filter>Code\Core\In-Game\Entities\animated</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -314,9 +314,6 @@
     <ClInclude Include="j1EnemyBaronOfHell.h">
       <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="j1EntityPlayer.h">
-      <Filter>Code\Core\In-Game\Entities\core</Filter>
-    </ClInclude>
     <ClInclude Include="j1EnemyHellKnight.h">
       <Filter>Code\Core\In-Game\Entities\animated\Enemies</Filter>
     </ClInclude>
@@ -364,6 +361,9 @@
     </ClInclude>
     <ClInclude Include="j1FadeToBlack.h">
       <Filter>Code\Core\In-Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityPlayer.h">
+      <Filter>Code\Core\In-Game\Entities\animated</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -251,12 +251,13 @@ void j1App::FinishUpdate()
 		prev_last_sec_frame_count = last_sec_frame_count;
 		last_sec_frame_count = 0;
 
+		// update the death timer once each second (do not do it yet if fading) 
 		if (App->gui->IsEnabled() == true)
 			if(App->gui->GetCurrentCanvas() && App->gui->GetCurrentCanvas()->myScene == sceneTypeGUI::LEVEL)
-				App->gui->UpdateDeathTimer();
-			
-
+				if(App->fade->GetCurrentStep() == fade_step::none)
+					App->gui->UpdateDeathTimer();
 	}
+
 	seconds_since_startup = startup_time.ReadSec();
 	float avg_fps = float(frame_count) / seconds_since_startup;
 	uint32 last_frame_ms = frame_time.Read();

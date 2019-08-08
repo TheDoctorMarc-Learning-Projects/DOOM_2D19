@@ -254,9 +254,10 @@ bool j1Collision::PreUpdate()
 		}
 		else if(colliders[i] != nullptr)
 		{
-			if (colliders[i]->volatileOutOfScreen)  // delete whe out of camera limits 
+			/*if (colliders[i]->volatileOutOfScreen)  // delete whe out of camera limits 
 			{
-				if (colliders[i]->lifetime.Read() > VOLATILE_LIFE)
+				uint now = colliders[i]->lifetime.Read(); 
+				if (now > VOLATILE_LIFE)
 				{
 					if (colliders[i]->owner != nullptr)
 						colliders[i]->owner->to_delete = true;   // if it has an owner, delete the owner too
@@ -266,7 +267,7 @@ bool j1Collision::PreUpdate()
 					continue; 
 				}
 			
-			}
+			}*/
 
 
 				if (colliders[i]->hasSpeed)
@@ -508,8 +509,7 @@ bool j1Collision::CleanUp()
 
 			colliders[i] = nullptr;
 		}
-		/*else
-			break;    // one you encounter a nullptr pos, do not proceed until MAX_COLLIDERS*/
+
 	}
 
 	return ret; 
@@ -526,12 +526,12 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* 
 		if (colliders[i] == nullptr)
 		{
 			ret = colliders[i] = new Collider(rect, type, callback, speed, volatileOutOfScreen);
-			break;
+			return ret;
 		}
 	}
   
 
-	return ret;
+	return nullptr;
 }
 
 

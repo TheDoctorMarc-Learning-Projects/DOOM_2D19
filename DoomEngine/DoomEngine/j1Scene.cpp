@@ -14,6 +14,7 @@
 #include "j1Collision.h"        
 #include "j1EntityFactory.h"
 #include "j1BloodManager.h"
+#include "j1FadeToBlack.h"
 #include "j1Gui.h"
                                     
 #include "Brofiler/Brofiler.h"
@@ -208,19 +209,27 @@ void j1Scene::UnLoadScene()
 void j1Scene::LoadScene(SceneState sceneState, bool loadGUI)
 {
 	nextSceneState = sceneState; 
+	this->loadGUI = loadGUI; 
 
 	UnLoadScene();   // 1) First unload every needed module
 
-	switch (sceneState)
-	{                                                          // 2) Then call load map (which has encapsulated entity data)
+	// Make a fade, do NOT create anything until fade allows it 
+	App->fade->FadeToBlack(sceneSwapColor);
+}
 
-	case SceneState::LEVEL1: 
-		App->audio->PlayMusic("sound/music/Arch Enemy First Day In Hell.ogg", -1);  
-		LoadNewMap("maps/level 1.tmx");                           
+
+void j1Scene::CreateScene()
+{
+	switch (nextSceneState)
+	{                           // 2) Then call load map (which has encapsulated entity data)
+
+	case SceneState::LEVEL1:
+		App->audio->PlayMusic("sound/music/Arch Enemy First Day In Hell.ogg", -1);
+		LoadNewMap("maps/level 1.tmx");
 		break;
 
 	case SceneState::LEVEL2:
-		LoadNewMap("maps/level 2.tmx");  
+		LoadNewMap("maps/level 2.tmx");
 		App->audio->PlayMusic("sound/music/soil-halo.ogg", -1);
 		break;
 	default:
@@ -228,11 +237,11 @@ void j1Scene::LoadScene(SceneState sceneState, bool loadGUI)
 	}
 
 	// 3) then load modules
- 
-	App->audio->Start();
-	App->render->ResetCamera(); 
 
-	if (sceneState == SceneState::LEVEL1 || sceneState == SceneState::LEVEL2)
+	App->audio->Start();
+	App->render->ResetCamera();
+
+	if (nextSceneState == SceneState::LEVEL1 || nextSceneState == SceneState::LEVEL2)
 	{
 		if (App->pathfinding->IsEnabled() == false)
 			App->pathfinding->Enable();
@@ -252,16 +261,15 @@ void j1Scene::LoadScene(SceneState sceneState, bool loadGUI)
 
 		App->map->active = true;
 	}
- 
-	// Finally load the GUI when map swap comes from collider win, or ingame esc. Do NOT load it when coming from button (which already executes the load)
 
-	if(loadGUI == true)                                   
-		App->gui->LoadGuiDefined(convertSceneTypeToGui(sceneState));
-	
-	state = sceneState; 
+	// 4) load the GUI when map swap comes from collider win, or ingame esc. Do NOT load it when coming from button (which already executes the load)
+
+	if (loadGUI == true)
+		App->gui->LoadGuiDefined(convertSceneTypeToGui(nextSceneState));
+
+	state = nextSceneState;
 
 }
-
 
 sceneTypeGUI j1Scene::convertSceneTypeToGui(SceneState state)
 {

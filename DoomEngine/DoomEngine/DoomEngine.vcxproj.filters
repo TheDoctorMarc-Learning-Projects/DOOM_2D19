@@ -204,6 +204,9 @@
     <ClCompile Include="UiItem_Face.cpp">
       <Filter>Code\Core\In-Screen\GUI\Items\special</Filter>
     </ClCompile>
+    <ClCompile Include="j1FadeToBlack.cpp">
+      <Filter>Code\Core\In-Screen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h">
@@ -358,6 +361,9 @@
     </ClInclude>
     <ClInclude Include="UiItem_Face.h">
       <Filter>Code\Core\In-Screen\GUI\Items\special</Filter>
+    </ClInclude>
+    <ClInclude Include="j1FadeToBlack.h">
+      <Filter>Code\Core\In-Screen</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

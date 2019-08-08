@@ -33,7 +33,7 @@ enum class sceneTypeGUI : int    // coordination with GUI needed for a generic X
 };
 
 
-
+struct SDL_Color; 
 
 class j1Scene : public j1Module
 {
@@ -65,17 +65,17 @@ public:
 	bool Save(pugi::xml_node&) const;
 	bool Load(pugi::xml_node&);
 
-
 	SceneState GetCurrentSceneState() const { return state; }; 
 	SceneState GetNextSceneState() const { return nextSceneState; };  // when transitioning 
 private:
 	SDL_Texture* debug_tex = nullptr;
-
 	SceneState state = SceneState::LEVEL1;
 	SceneState nextSceneState = SceneState::LEVEL1; 
-
-
 	sceneTypeGUI convertSceneTypeToGui(SceneState state); 
+
+	SDL_Color sceneSwapColor = { 30, 0, 0, 255 }; 
+	bool loadGUI = false; 
+	
 
 public:
 	pugi::xml_node sceneNode;
@@ -86,6 +86,7 @@ public:
 	void LoadNewMap(const char* mapName);
 	void UnLoadScene();
 	void LoadScene(SceneState sceneState, bool loadGUI);  
+	void CreateScene();
 
 };
 

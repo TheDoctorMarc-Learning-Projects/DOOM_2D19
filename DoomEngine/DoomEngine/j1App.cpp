@@ -19,6 +19,7 @@
 #include "j1Particles.h"
 #include "j1EntityFactory.h"
 #include "j1BloodManager.h"
+#include "j1FadeToBlack.h"
 #include "j1Gui.h"
 
 #include "Brofiler/Brofiler.h"
@@ -26,6 +27,7 @@
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
+
 #ifdef _DEBUG
 #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
 // Replace _NORMAL_BLOCK with _CLIENT_BLOCK if you want the
@@ -33,6 +35,9 @@
 #else
 #define DBG_NEW new
 #endif
+
+#define ReportMemoryLeaks() _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF)
+
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -52,6 +57,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	entityFactory = DBG_NEW j1EntityFactory();
 	bloodManager = DBG_NEW j1BloodManager(); 
 	gui = DBG_NEW j1Gui(); 
+	fade = DBG_NEW j1FadeToBlack(); 
 
 	// Ordered for awake / Start / Update
 
@@ -64,6 +70,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(font);
 	AddModule(gui);
+	AddModule(fade); 
 
 	modules.push_back(map);
 	map->startInitialized = false; 
@@ -245,7 +252,7 @@ void j1App::FinishUpdate()
 		last_sec_frame_count = 0;
 
 		if (App->gui->IsEnabled() == true)
-			if(App->gui->GetCurrentCanvas()->myScene == sceneTypeGUI::LEVEL)
+			if(App->gui->GetCurrentCanvas() && App->gui->GetCurrentCanvas()->myScene == sceneTypeGUI::LEVEL)
 				App->gui->UpdateDeathTimer();
 			
 

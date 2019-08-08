@@ -57,7 +57,9 @@ public:
 	}
 
 
-	UiItem* GetCurrentCanvas() const { return currentCanvas; };
+	UiItem* GetCurrentCanvas() const { 
+		return currentCanvas; 
+	};
 	std::map<sceneTypeGUI, UiItem*> GetCanvases() const { return canvases; }; 
 	SDL_Texture* GetAtlas() const { return atlas; };
 	float GetSpriteGlobalScale() const { return spriteScale; };   // TODO: alter this when needed, pass the items a specific scale if needed

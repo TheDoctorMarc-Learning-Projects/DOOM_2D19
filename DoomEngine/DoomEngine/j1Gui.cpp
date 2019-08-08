@@ -8,6 +8,7 @@
 #include "j1Map.h"
 #include "j1Window.h"
 #include "j1EntityFactory.h"
+#include "j1FadeToBlack.h"
 #include "p2Log.h"
 #include "Brofiler/Brofiler.h"
 #include "j1Scene.h"
@@ -83,7 +84,9 @@ bool j1Gui::PostUpdate()
 		debug = !debug;
 
 	if(currentCanvas != nullptr)
-		currentCanvas->DrawChildren();
+		if(App->fade->GetCurrentStep() == fade_step::none)
+			currentCanvas->DrawChildren();
+
 
 
 	return true;
@@ -132,7 +135,7 @@ void LoadGui(UiItem* callback)
 		App->gui->ChangeCurrentCanvas(DBG_NEW UiItem(App->scene->sceneGuiXMLIndexes.at(callback->targetSceneGui), callback->targetSceneGui), false);
 
 
-	// finally, call scene swap
+	// finally, call scene swap (it will call fade, and then it'll create the scene)
 	App->scene->LoadScene(callback->targetScene, false); 
 
 

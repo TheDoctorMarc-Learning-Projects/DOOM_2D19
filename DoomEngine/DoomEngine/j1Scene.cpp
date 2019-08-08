@@ -220,14 +220,14 @@ void j1Scene::LoadScene(SceneState sceneState, bool loadGUI)
 		break;
 
 	case SceneState::LEVEL2:
-		LoadNewMap("maps/level 2.tmx"); // LoadNewMap("maps/level 1 for testing.tmx");
+		LoadNewMap("maps/level 2.tmx");  
 		App->audio->PlayMusic("sound/music/soil-halo.ogg", -1);
 		break;
 	default:
 		break;
 	}
 
-	// 3) then load modulesa
+	// 3) then load modules
  
 	App->audio->Start();
 	App->render->ResetCamera(); 
@@ -253,7 +253,7 @@ void j1Scene::LoadScene(SceneState sceneState, bool loadGUI)
 		App->map->active = true;
 	}
  
-	// load the GUI when map swap comes from collider win, or ingame esc. Do NOT load it when coming from button (which already executes the load)
+	// Finally load the GUI when map swap comes from collider win, or ingame esc. Do NOT load it when coming from button (which already executes the load)
 
 	if(loadGUI == true)                                   
 		App->gui->LoadGuiDefined(convertSceneTypeToGui(sceneState));
@@ -266,31 +266,27 @@ void j1Scene::LoadScene(SceneState sceneState, bool loadGUI)
 sceneTypeGUI j1Scene::convertSceneTypeToGui(SceneState state)
 {
 
-	switch (state)
-	{
-	case SceneState::MAINMENU:
-		return sceneTypeGUI::MAINMENU; 
-		break;
-	case SceneState::LEVEL1:
-		return sceneTypeGUI::LEVEL;
-		break;
-	case SceneState::LEVEL2:
-		return sceneTypeGUI::LEVEL;
-		break;
-	case SceneState::CREDITS:
-		return sceneTypeGUI::CREDITS;
-		break;
-	case SceneState::SETTINGS:
-		return sceneTypeGUI::SETTINGS;
-		break;
-	case SceneState::NO_SCENE:
-		return sceneTypeGUI::NO_SCENE;
-		break;
-	default:
-		return sceneTypeGUI::NO_SCENE;
-		break;
-	}
-		
+	if ((int)state <= 2)
+		return (sceneTypeGUI)(int)state;
+	else
+		switch (state)
+		{
+		case SceneState::LEVEL1:
+			return sceneTypeGUI::LEVEL;
+			break;
+		case SceneState::LEVEL2:
+			return sceneTypeGUI::LEVEL;
+			break;
+		case SceneState::SETTINGS:
+			return sceneTypeGUI::SETTINGS;
+			break;
+		case SceneState::IN_GAME_SETTINGS:
+			return sceneTypeGUI::SETTINGS;
+			break;
+
+		}
+
+	return sceneTypeGUI::NO_SCENE;
 
 }
 

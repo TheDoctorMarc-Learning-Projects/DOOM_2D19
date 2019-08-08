@@ -10,30 +10,26 @@
 
 struct SDL_Texture;
 
-enum class SceneState  // the proper scene state
+enum class SceneState : int // the proper scene state
 {
+	NO_SCENE,
 	MAINMENU,
+	CREDITS,
 	LEVEL1,
 	LEVEL2,
-	CREDITS,
 	SETTINGS,
-	NO_SCENE	
+	IN_GAME_SETTINGS
+		
 };
 
 
-enum class sceneType   // two base types so that the scene transitions code is more generic
+enum class sceneTypeGUI : int    // coordination with GUI needed for a generic XML load 
 {
-	MENU,
-	LEVEL
-};
-
-enum class sceneTypeGUI    // coordination with GUI needed for a generic XML load 
-{
+	NO_SCENE,
 	MAINMENU,
-	LEVEL,
 	CREDITS,
-	SETTINGS,
-	NO_SCENE
+	LEVEL,
+	SETTINGS
 };
 
 

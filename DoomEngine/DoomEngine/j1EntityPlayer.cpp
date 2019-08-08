@@ -619,20 +619,14 @@ void j1EntityPlayer::WarnOtherModules()
 
 	// - - - - - - - - - - - - - - - - >> Render 
 	int speed = -15; 
-
-	if (pointingDir == LEFT)
-		speed = -speed; 
-
-	if ((lastSpeed.x > 0 || onDynamicplatform) && -(int)position.x < App->render->camera.x - App->render->camera.w + (int)App->render->screenDivisions.lateralValue)
+ 
+	if (-(int)position.x < App->render->camera.x - App->render->camera.w + (int)App->render->screenDivisions.lateralValue)
 	{
-		if (speed > 0) // prevent weird case in the end of the map going left
-			return; 
-
 		App->render->SetCameraScroll(cameraScrollType::GRADUAL, direction::RIGHT, speed, 650); 
 	}
-	else if ((lastSpeed.x < 0|| onDynamicplatform) && -(int)position.x > App->render->camera.x - (int)App->render->screenDivisions.lateralValue && (int)previousPosition.x > (int)App->render->screenDivisions.lateralValue)
+	else if (-(int)position.x > App->render->camera.x - (int)App->render->screenDivisions.lateralValue && (int)previousPosition.x > (int)App->render->screenDivisions.lateralValue)
 	{
-		App->render->SetCameraScroll(cameraScrollType::GRADUAL, direction::LEFT, speed, 650);
+		App->render->SetCameraScroll(cameraScrollType::GRADUAL, direction::LEFT, -speed, 650);
 	}
 }
 

@@ -32544,7 +32544,7 @@
     <property name="levelsUp" type="int" value="2"/>
    </properties>
   </object>
-  <object id="78" name="enemy" x="3168" y="64" width="32" height="32">
+  <object id="78" name="enemy" x="3168" y="96" width="32" height="32">
    <properties>
     <property name="type" value="EnemyCacodemon"/>
    </properties>

@@ -365,5 +365,13 @@
     <ClInclude Include="j1EntityPlayer.h">
       <Filter>Code\Core\In-Game\Entities\animated</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DoomEngine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico" />
+    <Image Include="..\Game\gui\icon.ico" />
   </ItemGroup>
 </Project>

@@ -37,7 +37,7 @@ void j1Gui::FillFunctionsMap()
 		{ "ammoLabel", 0},
 		{ "oldCollectibleLabel", 0},
 		{ "newCollectibleLabel", 0},
-		{ "deathTimerCounter", 30},
+		{ "deathTimerCounter", 40},
 	}; 
 }
 

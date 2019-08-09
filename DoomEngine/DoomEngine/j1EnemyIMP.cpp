@@ -18,7 +18,7 @@ j1EnemyIMP::j1EnemyIMP(int posX, int posY, std::string name) : j1Enemy(posX, pos
 	mass = 1.f;
 	gravityFactor = DEFAULT_GRAV / mass;
 	tileDetectionRange = 20;
-	damageValues.melee = 30;
+	damageValues.melee = 50;
 	cadenceValues.melee = 1200; 
 	pathType = enemyPathType::ALL_ROUND; 
 	dataAnimFx.hasSecondDeathAnim = true; 
@@ -135,6 +135,10 @@ void j1EnemyIMP::Jump()
 
 	if (onPlatform && App->entityFactory->player->onPlatform)  // both on plat 
 	{
+
+		if (App->entityFactory->player->onDynamicplatform == true)
+			return; 
+
 		bool enoughOffset = false;
 
 		

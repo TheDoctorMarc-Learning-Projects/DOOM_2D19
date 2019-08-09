@@ -33,7 +33,7 @@
  <tileset firstgid="75" name="iconOfSin" tilewidth="32" tileheight="32" tilecount="16" columns="4">
   <image source="textures/iconOfSin.png" width="128" height="128"/>
  </tileset>
- <layer id="8" name="Walkability" width="310" height="26">
+ <layer id="8" name="Walkability" width="310" height="26" visible="0">
   <properties>
    <property name="Navigation" type="int" value="1"/>
   </properties>
@@ -8100,7 +8100,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="9" name="BackgroundBack" width="310" height="26">
+ <layer id="9" name="BackgroundBack" width="310" height="26" visible="0">
   <properties>
    <property name="parallaxSpeed" type="float" value="1.1"/>
   </properties>
@@ -16167,7 +16167,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="10" name="BackgroundMiddle" width="310" height="26">
+ <layer id="10" name="BackgroundMiddle" width="310" height="26" visible="0">
   <properties>
    <property name="parallaxSpeed" type="float" value="1.1"/>
   </properties>
@@ -24234,7 +24234,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="11" name="BackgroundFront" width="310" height="26">
+ <layer id="11" name="BackgroundFront" width="310" height="26" visible="0">
   <data>
    <tile/>
    <tile/>
@@ -32639,17 +32639,7 @@
     <property name="heightLevel" type="int" value="1"/>
    </properties>
   </object>
-  <object id="117" name="enemy" x="4544" y="416" width="32" height="32">
-   <properties>
-    <property name="type" value="EnemyIMP"/>
-   </properties>
-  </object>
   <object id="118" name="enemy" x="4704" y="416" width="32" height="32">
-   <properties>
-    <property name="type" value="EnemyIMP"/>
-   </properties>
-  </object>
-  <object id="119" name="enemy" x="4608" y="416" width="32" height="32">
    <properties>
     <property name="type" value="EnemyIMP"/>
    </properties>
@@ -32660,16 +32650,6 @@
    </properties>
   </object>
   <object id="121" name="enemy" x="4768" y="512" width="32" height="32">
-   <properties>
-    <property name="type" value="EnemyIMP"/>
-   </properties>
-  </object>
-  <object id="122" name="enemy" x="4544" y="512" width="32" height="32">
-   <properties>
-    <property name="type" value="EnemyIMP"/>
-   </properties>
-  </object>
-  <object id="123" name="enemy" x="4608" y="512" width="32" height="32">
    <properties>
     <property name="type" value="EnemyIMP"/>
    </properties>
@@ -32704,7 +32684,7 @@
   <object id="132" name="weapon" x="4928" y="544" width="32" height="32">
    <properties>
     <property name="cadence" type="int" value="800"/>
-    <property name="damage" type="float" value="10"/>
+    <property name="damage" type="float" value="15"/>
     <property name="firingType" value="auto"/>
     <property name="maxBullets" type="int" value="200"/>
     <property name="name" value="machineGun"/>
@@ -32724,11 +32704,6 @@
   <object id="136" name="staticPlatform" x="5856" y="192" width="96" height="32">
    <properties>
     <property name="heightLevel" type="int" value="4"/>
-   </properties>
-  </object>
-  <object id="137" name="enemy" x="5536" y="512" width="32" height="32">
-   <properties>
-    <property name="type" value="EnemyIMP"/>
    </properties>
   </object>
   <object id="138" name="enemy" x="5824" y="512" width="32" height="32">
@@ -32823,11 +32798,6 @@
     <property name="heightLevel" type="int" value="2"/>
    </properties>
   </object>
-  <object id="173" name="enemy" x="5472" y="512" width="32" height="32">
-   <properties>
-    <property name="type" value="EnemyIMP"/>
-   </properties>
-  </object>
   <object id="174" name="enemy" x="5696" y="512" width="32" height="32">
    <properties>
     <property name="type" value="EnemyIMP"/>
@@ -32844,7 +32814,7 @@
    </properties>
   </object>
  </objectgroup>
- <layer id="12" name="Floor" width="310" height="26">
+ <layer id="12" name="Floor" width="310" height="26" visible="0">
   <data>
    <tile/>
    <tile/>

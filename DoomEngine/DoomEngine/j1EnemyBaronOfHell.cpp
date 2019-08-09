@@ -10,7 +10,7 @@ j1EnemyBaronOfHell::j1EnemyBaronOfHell(int posX, int posY, std::string name) : j
 	type = ENEMY_BARON_OF_HELL;
 	this->name = name;
 	powerLevel = 4U;
-	maxLife = 500;
+	maxLife = 300;
 	life = (float)maxLife;
 	size.create(44, 70);
 	speed = 80.33f;
@@ -20,8 +20,8 @@ j1EnemyBaronOfHell::j1EnemyBaronOfHell(int posX, int posY, std::string name) : j
 	tileDetectionRange = 15;
 	cadenceValues.melee = 2500;
 	cadenceValues.longRange = 2500;
-	damageValues.melee = 120;
-	damageValues.longRange = 60;
+	damageValues.melee = 200;
+	damageValues.longRange = 150;
 	longRangeShootData.msWaitFromAnimStartToShot = 250;
 	longRangeShootData.relativeOffsetPos.create(0, 26); // assuming spritescale is 1.0f
 	longRangeShootData.shotSpeed = 350;

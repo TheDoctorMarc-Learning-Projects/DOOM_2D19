@@ -257,6 +257,8 @@ void UiItem_Face::SetCurrentAnim(std::string karma)
 		return; 
 	if (karma == "death")
 		currentAnimation.anim = death;
+	if (App->entityFactory->player->life < 0)
+		return; 
 
 
 	// calculations 

@@ -72,6 +72,15 @@ public:
 	bool isPlayingFx(std::string name); 
 	bool isPausedFx(std::string name); 
 
+	// check if and fx exitst in the map
+	bool existsFx(std::string name) const
+	{
+		auto item = fxMap.find(name);
+		if (item != fxMap.end())
+			return true;
+		return false; 
+	}
+
 private:
 
 	_Mix_Music*			music = nullptr;

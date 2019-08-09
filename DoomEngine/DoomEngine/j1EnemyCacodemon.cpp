@@ -11,7 +11,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	type = ENEMY_CACODEMON;
 	this->name = name;
 	powerLevel = 3U;
-	maxLife = 480;
+	maxLife = 300;
 	life = (float)maxLife;
 	size.create(62, 67);
 	speed = 50.75f;
@@ -21,7 +21,7 @@ j1EnemyCacodemon::j1EnemyCacodemon(int posX, int posY, std::string name) : j1Ene
 	cadenceValues.melee = 3000;
 	cadenceValues.longRange = 3000; 
 	damageValues.melee = 120;
-	damageValues.longRange = 45; 
+	damageValues.longRange = 120; 
 	longRangeShootData.msWaitFromAnimStartToShot = 800;
 	longRangeShootData.relativeOffsetPos.create(10, size.y / 2); // assuming spritescale is 1.0f
 	longRangeShootData.shotSpeed = 200;

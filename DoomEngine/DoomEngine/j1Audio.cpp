@@ -157,7 +157,6 @@ bool j1Audio::CleanUp()
 		
 	fxMap.clear(); 
 
-
 	Mix_CloseAudio();
 	Mix_Quit();
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
@@ -246,9 +245,11 @@ unsigned int j1Audio::LoadFx(const char* path, std::string wantedName)
 // Play WAV
 bool j1Audio::PlayFx(std::string name, int repeat, bool prioritary, float volume, float musReduc, float fxsReduc)
 {
-	bool ret = false;
-
+	
 	if(!active)
+		return false;
+
+	if (existsFx(name) == false)
 		return false;
 	
 	if (prioritary == true)
@@ -265,11 +266,10 @@ bool j1Audio::PlayFx(std::string name, int repeat, bool prioritary, float volume
 
 	int channel = 0;
 
-	if (fxMap.at(name).chunk) // TODO: future prevention here
-		channel = Mix_PlayChannel(fxMap.at(name).actualChannel, fxMap.at(name).chunk, repeat);
+	channel = Mix_PlayChannel(fxMap.at(name).actualChannel, fxMap.at(name).chunk, repeat);
 
 
-	return ret;
+	return true;
 }
 
 bool j1Audio::SetSpecificFxVolume(std::string name, float volume)
@@ -284,7 +284,7 @@ bool j1Audio::SetSpecificFxVolume(std::string name, float volume)
 		final_fx_volume = (final_fx_volume < 0.0f) ? 0.0f : MIX_MAX_VOLUME;
 
 
-	if (fxMap.at(name).chunk) // TODO: future prevention here
+	if (existsFx(name) == true)  
 		Mix_VolumeChunk(fxMap.at(name).chunk, final_fx_volume);
 
 	return ret;
@@ -334,7 +334,6 @@ void j1Audio::SetFxVolume(float volume)
 
 void j1Audio::UnLoadAudio()
 {
-
 	Mix_AllocateChannels(0); 
 
 	if (music != NULL)
@@ -343,7 +342,6 @@ void j1Audio::UnLoadAudio()
 		music = NULL;
 	}
 
-
 	for (auto& fx : fxMap)
 	{
 		Mix_FreeChunk(fx.second.chunk);
@@ -351,16 +349,22 @@ void j1Audio::UnLoadAudio()
 	}
 	fxMap.clear(); 
 
-
-
+	prioritaryChunk = "empty";
+	toUpdate = false;
 }
 
 void j1Audio::StopSpecificFx(std::string name)
 {
+	// prevention
+	auto item = fxMap.find(name);
+	if (item == fxMap.end())
+		return;
+
+
 	if (fxMap.at(name).chunk)
 	{
-		if(isPlayingFx(name) == true)
-			Mix_HaltChannel(fxMap.at(name).actualChannel);
+		if(isPlayingFx((*item).first) == true)
+			Mix_HaltChannel((*item).second.actualChannel);
 	
 	}
 		
@@ -369,35 +373,49 @@ void j1Audio::StopSpecificFx(std::string name)
 
 void j1Audio::PauseSpecificFx(std::string name)
 {
-	if (fxMap.at(name).chunk)
-	{
-		if (isPlayingFx(name) == true)
-			Mix_Pause(fxMap.at(name).actualChannel);
-	
-	}
+	// prevention
+	auto item = fxMap.find(name);
+	if (item == fxMap.end())
+		return;
+
+	if (isPlayingFx((*item).first) == true)
+			Mix_Pause((*item).second.actualChannel);
+
 	
 }
 
 void j1Audio::ResumeSpecificFx(std::string name)
 {
-	if (fxMap.at(name).chunk)
-	{
-		if (isPausedFx(name))
-			Mix_Resume(fxMap.at(name).actualChannel);
-	}
-		
+	// prevention
+	auto item = fxMap.find(name);
+	if (item == fxMap.end())
+		return;
+
+	if (isPausedFx((*item).first))
+		Mix_Resume((*item).second.actualChannel);
+
 }
 
 bool j1Audio::isPlayingFx(std::string name)
 {
-	if (Mix_Playing(fxMap.at(name).actualChannel) == 0)
+	// prevention
+	auto item = fxMap.find(name); 
+	if ( item == fxMap.end())
+		return false; 
+
+	if (Mix_Playing((*item).second.actualChannel) == 0)
 		return false;
 	return true;
 }
 
 bool j1Audio::isPausedFx(std::string name)
 {
-	if (Mix_Paused(fxMap.at(name).actualChannel) == 0)
+	// prevention
+	auto item = fxMap.find(name);
+	if (item == fxMap.end())
+		return false;
+
+	if (Mix_Paused((*item).second.actualChannel) == 0)
 		return false;
 	return true;
 }

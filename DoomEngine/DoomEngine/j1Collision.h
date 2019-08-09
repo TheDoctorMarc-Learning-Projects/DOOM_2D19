@@ -5,9 +5,9 @@
 #include "p2Point.h"
 #include "j1Timer.h"
 #include <list>
+#include <vector>
 
 #include "SDL/include/SDL_rect.h"
-#define MAX_COLLIDERS 1000
 #define VOLATILE_LIFE 10000
 
 enum COLLIDER_TYPE
@@ -48,6 +48,7 @@ struct Collider
 	fPoint speed = fPoint(0, 0); 
 	fPoint initialPos = fPoint(0, 0);  // needed sometimes like shot, to compare first and last pos
 
+	Collider() {}
 	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, j1Entity* callback = nullptr, fPoint speed = fPoint(0,0), bool volatileOutOfScreen = false) :
 		rect(rectangle),
 		type(type),
@@ -86,6 +87,9 @@ struct Collider
 	}
 
 	bool CheckCollision(const SDL_Rect& r);
+
+	void FreeOnCollision(); 
+	void UpdateStatus(); 
 };
 
 class j1Collision : public j1Module
@@ -100,7 +104,7 @@ public:
 	bool CleanUp(); 
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* callback = nullptr, fPoint speed = fPoint(0,0), bool volatileOutOfScreen = false);
 	void DebugDraw();
-	
+
 	
 	void doCollisionAssignment(Collider* c1, Collider* c2);
 	void doCollisionDeAssignment(Collider* c1, Collider* c2);
@@ -110,7 +114,7 @@ private:
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
 	bool debug = false;
 public: 
-	Collider* colliders[MAX_COLLIDERS];
+	std::vector<Collider*> colliders; 
 	
 };
 

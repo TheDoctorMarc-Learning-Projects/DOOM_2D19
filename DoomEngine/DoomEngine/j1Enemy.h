@@ -132,14 +132,17 @@ public:
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);
-	virtual bool DoDie() {             // not a cleanup, because texture is still there, its just to delete anything extra
+	virtual bool DoDie() {        // not a cleanup, because texture is still there, its just to delete anything extra
 
 		if (onDynamicplatform == false)  // we need to keep the colldier if the enemy dies in the dynamic platform
 		{
-			if (deathPosGround.IsZero() == false)  // when dying in the air, keep the collider until it arrives to the ground
+			if (deathPosGround.IsZero() == false)  // only when arriving to the ground the colldier must be deleted
 			{
-				colliderActive = false;
-				collider->to_delete = true;
+				if (colliderActive == true)
+				{
+					colliderActive = false;
+					collider->to_delete = true;
+				}
 			}
 			
 		}
@@ -181,11 +184,12 @@ public:
 
 	virtual void CheckDeathFinished() override
 	{
+
 		if (currentAnimation->Finished() == true)
 		{
 			state.combat = eCombatState::DEAD;
 			
-			//to_delete = true;   // TODO: create the corpse here 
+			//to_delete = true;   // create the corpse here 
 			DoDie(); 
 		}
 	}

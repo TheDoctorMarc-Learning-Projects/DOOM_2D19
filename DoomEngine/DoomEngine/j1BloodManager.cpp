@@ -52,11 +52,8 @@ bool j1BloodManager::Update(float dt)
 				{
 					if (!(*bloodDrop)->to_delete)
 					{
-
 						(*bloodDrop)->Update(dt);
-
 						++bloodDrop;
-
 					}
 					else
 					{
@@ -95,12 +92,11 @@ bool j1BloodManager::PostUpdate()
 	BROFILER_CATEGORY("Blood PostUpdate", Profiler::Color::WhiteSmoke);
 
 
-	for (auto stream : bloodStreams)
-		for(auto drop : stream->myBloodDrops)
-			if (!drop->to_delete)
-				if (App->render->IsOnCamera(drop->position.x, drop->position.y, drop->size.x, drop->size.y))
-					drop->Draw();
-		
+	for (const auto& stream : bloodStreams)
+		for(const auto& drop : stream->myBloodDrops)
+			if (App->render->IsOnCamera(drop->position.x, drop->position.y, drop->size.x, drop->size.y))
+				drop->Draw();
+				
 
 
 	return true;
@@ -110,17 +106,17 @@ bool j1BloodManager::CleanUp()
 {
 	bool ret = true;
 
-	// for each blood stream celar each blood drop (collider to delete), then clear the blood stream itself from the global list
+	// for each blood stream clear each blood drop (collider to delete), then clear the blood stream itself from the global list
 
-	for (auto stream = bloodStreams.begin(); stream != bloodStreams.end(); ++stream)
+	for (auto& stream : bloodStreams)
 	{
-		for (auto bloodDrop = (*stream)->myBloodDrops.begin(); bloodDrop != (*stream)->myBloodDrops.end(); ++bloodDrop)
+		for (auto& bloodDrop : stream->myBloodDrops)
 		{
-			(*bloodDrop)->CleanUp();   // check entity cleanup is ineed called; 
-			RELEASE(*bloodDrop); 
-			*bloodDrop = nullptr; 
+			bloodDrop->CleanUp();   // check entity cleanup is ineed called; 
+			RELEASE(bloodDrop); 
+			bloodDrop = nullptr; 
 		}
-		(*stream)->myBloodDrops.clear(); 
+		stream->myBloodDrops.clear(); 
 	}
 	bloodStreams.clear(); 
 	
@@ -163,8 +159,7 @@ void j1BloodManager::CreateTargetedBloodSteam(SDL_Rect enemyRect, float damage, 
 		CreateRandomBloodStream(enemyRect, 0.5F, numberOfBloodDrops);
 		return; 
 	}
-		
-
+	
 	bloodStream* stream = DBG_NEW bloodStream;
 
 	// for the random stream, get a central area inside the enemy rect; 
@@ -318,7 +313,22 @@ uint j1BloodManager::CalculateNumberOfBloodDropsToBeSpawned(float damage, float 
 	if (damage == 0.0f || shotsPerSec == 0.0f)  // prevention for the next line divisions
 		return 0U;  
 
-	drops = (damage * (damage / (damage * 5.f))) * (1.f / shotsPerSec);
+	if (!App->entityFactory->player->myWeapons.empty())
+		if (App->entityFactory->player->currentWeapon->GetWeaponType() == WEAPON_TYPE::CHAINSAW
+			|| App->entityFactory->player->currentWeapon->GetWeaponType() == WEAPON_TYPE::MACHINE_GUN)   // cause why not??  
+		{
+			int prop = GetRandomIntValue(1, (int)shotsPerSec);
+
+			if (prop < 20)
+				return 1U;
+			else
+				return 0U;
+		}
+
+
+
+	drops = (damage * (damage / (damage * 7.f))) * (1.f / shotsPerSec);
+	drops /= 3; 
 
 	assert(drops < 1000 && "Too much blood drops!! Something went wrong :/");
 
@@ -330,12 +340,11 @@ uint j1BloodManager::CalculateNumberOfBloodDropsToBeSpawned(float damage, float 
 		int prop = GetRandomIntValue(1, (int)shotsPerSec);
 		prop = abs(prop); 
 
-		if (!App->entityFactory->player->myWeapons.empty())
-			if (App->entityFactory->player->currentWeapon->GetWeaponType() == WEAPON_TYPE::CHAINSAW)   // cause why not??  
-				return 1U; 
+		uint calc = 0U; 
 
- 
-		uint calc = (uint)(int)(shotsPerSec / (float)prop);
+		if (prop > 0U)
+			calc = (uint)(int)(shotsPerSec / (float)prop);
+
 
 		assert(calc < 1000 && "Too much blood drops!! Something went wrong :/");
 
@@ -343,7 +352,7 @@ uint j1BloodManager::CalculateNumberOfBloodDropsToBeSpawned(float damage, float 
 			return 0U; 
 
 		if (calc <= 1U)
-			calc = 5U; 
+			calc = 1U; 
 		return calc; 
 	}
 		

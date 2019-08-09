@@ -30,6 +30,10 @@ j1EntityBloodDrop::~j1EntityBloodDrop()
 void j1EntityBloodDrop::Draw()
 {
 
+	if (collider && collider->type != COLLIDER_BLOOD)
+		LOG("Blood has got a collider that it should not. Fatal Error");
+
+
 	App->render->DrawQuad({ (int)position.x, (int)position.y, size.x, size.y }, c.r, c.g, c.b, c.a, true);
 
 
@@ -37,6 +41,9 @@ void j1EntityBloodDrop::Draw()
 
 bool j1EntityBloodDrop::Update(float dt)
 {
+	if (colliderActive == false)
+		return false; 
+
 	lastPosCollider = collider->rect;
 
 	if (!floorReached)
@@ -219,8 +226,12 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 
 		}
 
-		collider->to_delete = true;   // no need to have it anymore; 
-		colliderActive = false;
+		if (colliderActive == true)
+		{
+			collider->to_delete = true;   // no need to have it anymore; 
+			colliderActive = false;
+		}
+		
 	}
 
 

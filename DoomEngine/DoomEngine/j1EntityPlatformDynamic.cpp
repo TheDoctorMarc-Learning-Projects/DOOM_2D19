@@ -226,6 +226,9 @@ void j1EntityPlatformDynamic::OnCollision(Collider* c1, Collider* c2)
 			if ((c1 == collider && c2 == AreaCollider) || (c2 == collider && c1 == AreaCollider))
 				return;
 
+			if (c1 == AreaCollider && c2->type == COLLIDER_WALL_DETECTION && c2->callback && c2->callback->type != ENTITY_DYNAMIC)  // if it encounters eg cacodemon wall detection
+				return; 
+
 			if (!endReached)
 			{
 

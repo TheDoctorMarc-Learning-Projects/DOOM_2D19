@@ -34460,7 +34460,7 @@
   <object id="28" name="weapon" x="3584" y="512" width="32" height="32">
    <properties>
     <property name="cadence" type="int" value="800"/>
-    <property name="damage" type="float" value="10"/>
+    <property name="damage" type="float" value="15"/>
     <property name="firingType" value="auto"/>
     <property name="maxBullets" type="int" value="200"/>
     <property name="name" value="machineGun"/>

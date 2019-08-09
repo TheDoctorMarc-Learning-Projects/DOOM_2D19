@@ -174,6 +174,9 @@ bool j1Particles::PostUpdate()//float dt)
 
 		if ((*p)->Update(App->GetDt()) == false)
 		{
+			if ((*p)->hasCollider)
+				(*p)->collider->to_delete = true; 
+
 			delete (*p);
 			(*p) = nullptr;
 			p = active.erase(p);
@@ -304,9 +307,6 @@ Particle::Particle(const Particle& p) :
 
 Particle::~Particle()
 {
-	if(hasCollider)
-		collider->to_delete = true;
-	
 }
 
 bool Particle::Update(float dt)

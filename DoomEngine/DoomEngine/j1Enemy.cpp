@@ -25,7 +25,6 @@ j1Enemy::j1Enemy(int posX, int posY) : j1Entity(ENEMY_STATIC, posX, posY, "enemy
 	state.movement.at(1) = eMovementState::NOT_ACTIVE;
 	state.path = ePathState::FOLLOW_PLAYER; 
 
-	
 }	
 
 j1Enemy::~j1Enemy()
@@ -82,12 +81,19 @@ bool j1Enemy::Save(pugi::xml_node &) const
 
 bool j1Enemy::Move(float dt)
 {
+	if (collider && collider->type != COLLIDER_ENEMY)
+		LOG("Enemy has got a collider that it should not. Fatal Error");
 
-	if (App->entityFactory->IsPlayerAlive() == false) // first line prevention _> TODO: maybe it is safer to just stop the entity factory, but the player weapon wouldn't fall to the floor then 
+	if (colliderActive == false)
+		return false; 
+
+	if (App->entityFactory->IsPlayerAlive() == false) 
 	{
 		return false;
 	}
 		
+	if (state.combat == eCombatState::DEAD)
+		return false;
 	
 
 	BROFILER_CATEGORY("Enemy Move", Profiler::Color::AliceBlue); 
@@ -1009,13 +1015,8 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 
 		}
 	}
-
 	
-
-	/*if (state.combat != eCombatState::DYING)
-	{*/
-		bool lastOnplatform = onPlatform;
-
+	bool lastOnplatform = onPlatform;
 
 	switch (c2->type)
 	{

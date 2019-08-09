@@ -8,10 +8,11 @@
 #include "Color.h"
 #include "j1Entity.h"
 
+
+
+
 j1Collision::j1Collision()
 {
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
-		colliders[i] = nullptr;
 	matrix[COLLIDER_PRESENTIAL][COLLIDER_PRESENTIAL] = false;
 	matrix[COLLIDER_PRESENTIAL][COLLIDER_ENEMY_SHOT] = false;
 	matrix[COLLIDER_PRESENTIAL][COLLIDER_WALL_DETECTION] = false;
@@ -177,7 +178,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_ENEMY][COLLIDER_GOD] = false;
 	matrix[COLLIDER_ENEMY][COLLIDER_WALL] = true;
 	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY] = false;
-	matrix[COLLIDER_ENEMY][COLLIDER_SHOT] = true;
+	matrix[COLLIDER_ENEMY][COLLIDER_SHOT] = false;
 	matrix[COLLIDER_ENEMY][COLLIDER_FLOOR] = true;
 	matrix[COLLIDER_ENEMY][COLLIDER_LOOT] = false;
 	matrix[COLLIDER_ENEMY][COLLIDER_BLOOD] = false;
@@ -209,94 +210,38 @@ bool j1Collision::PreUpdate()
 	BROFILER_CATEGORY("Collision PreUpdate", Profiler::Color::DarkSeaGreen);
 	bool ret = true; 
 	// Remove all colliders scheduled for deletion
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	for (auto collider = colliders.begin(); collider != colliders.end();)
 	{
-		if (colliders[i] != nullptr && colliders[i]->to_delete == true)
+		if ((*collider)->to_delete == false)
 		{
-
-			if (!colliders[i]->onCollisionWithMe.empty())
-			{
-				for (auto col = colliders[i]->onCollisionWithMe.begin(); col != colliders[i]->onCollisionWithMe.end();)    // put both pointers to each other to null when a col is deleted
-				{
-					bool deleteIt = false; 
-
-					if (!(*col)->onCollisionWithMe.empty())
-					{
-						for (auto colReverse = (*col)->onCollisionWithMe.begin(); colReverse != (*col)->onCollisionWithMe.end();)
-						{
-							if ((*colReverse) == colliders[i])  // is I find my self in another collider on collision with me, delete me from the list, and also delete it from my list
-							{
-								colReverse = (*col)->onCollisionWithMe.erase(colReverse);  // delete myself from ther other's lits
-								deleteIt = true;
-							}
-							else
-							{
-								++colReverse;
-							}
-						}
-					}
-					
-
-					if (deleteIt)
-					{
-						col = colliders[i]->onCollisionWithMe.erase(col);  // delete the other from my list
-
-					}
-					else
-					{
-						++col;
-					}
-				}
-					
-			}
-			delete colliders[i];
-			colliders[i] = nullptr;
+			(*collider)->UpdateStatus();
+			++collider;
 		}
-		else if(colliders[i] != nullptr)
-		{
-			/*if (colliders[i]->volatileOutOfScreen)  // delete whe out of camera limits 
-			{
-				uint now = colliders[i]->lifetime.Read(); 
-				if (now > VOLATILE_LIFE)
-				{
-					if (colliders[i]->owner != nullptr)
-						colliders[i]->owner->to_delete = true;   // if it has an owner, delete the owner too
-					else
-						colliders[i]->to_delete = true;
 
-					continue; 
-				}
+		else
+		{
+			(*collider)->FreeOnCollision();
+			RELEASE(*collider);
+			collider = colliders.erase(collider);
+
+		}
 			
-			}*/
-
-
-				if (colliders[i]->hasSpeed)
-					colliders[i]->SetPos(colliders[i]->rect.x + colliders[i]->speed.x, colliders[i]->rect.y + colliders[i]->speed.y);
-		
-				
-		}
 	}
+
+	// Calculate collisions
 
 	Collider* c1;
 	Collider* c2;
 
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	for (uint i = 0; i < colliders.size(); ++i)
 	{
-		// skip empty colliders
-		if (colliders[i] == nullptr)
-			continue;
+		c1 = colliders.at(i);
 
-		c1 = colliders[i];
-		
 		// avoid checking collisions already checked
-		for (uint k = i + 1; k < MAX_COLLIDERS; ++k)
+		for (uint k = i + 1; k < colliders.size(); ++k)
 		{
-			// skip empty colliders
-			if (colliders[k] == nullptr)
-				continue;
-
-			c2 = colliders[k];
-
+			c2 = colliders.at(k);
+			
 			if (c1->CheckCollision(c2->rect) == false)
 			{
 				// useful when colliders "exit" a collision
@@ -309,6 +254,7 @@ bool j1Collision::PreUpdate()
 			}
 			else     
 			{
+
 				if (matrix[c1->type][c2->type] && c1->callback)
 				{
 					c1->callback->OnCollision(c1, c2);
@@ -325,8 +271,6 @@ bool j1Collision::PreUpdate()
 		}
 	}
 
-	// Calculate collisions
-	
 
 	return ret;
 
@@ -334,51 +278,28 @@ bool j1Collision::PreUpdate()
 
 void j1Collision::doCollisionAssignment(Collider* c1, Collider* c2)
 {
-	if (!c1->onCollisionWithMe.empty())
-	{
-		bool assigned = false;
+	for (const auto& col : c1->onCollisionWithMe)
+		if (col == c2)
+			return;
 
-		std::list<Collider*>::iterator onCollisionCol = c1->onCollisionWithMe.begin();
-		for (; onCollisionCol != c1->onCollisionWithMe.end(); ++onCollisionCol)
-		{
-			if ((*onCollisionCol) == c2)
-			{
-				assigned = true;
-				break; 
-			}
-
-		}
-
-		if (!assigned)
-		{
-			c1->onCollisionWithMe.push_back(c2);
-
-		}
-		
-	}
-	else
-	{
-		c1->onCollisionWithMe.push_back(c2);
-
-	}
-	
+	c1->onCollisionWithMe.push_back(c2);
 }
 
 void j1Collision::doCollisionDeAssignment(Collider* c1, Collider* c2)
 {
+
 	if (!c1->onCollisionWithMe.empty())
 	{
-		std::list<Collider*>::iterator onCollisionCol = c1->onCollisionWithMe.begin();
-		for (; onCollisionCol != c1->onCollisionWithMe.end();)
+		for (auto col = c1->onCollisionWithMe.begin(); col != c1->onCollisionWithMe.end();)
 		{
-			if ((*onCollisionCol) == c2)
+			if ((*col) == c2)
 			{
-				onCollisionCol = c1->onCollisionWithMe.erase(onCollisionCol);
+				col = c1->onCollisionWithMe.erase(col);
 				c1->callback->OnCollisionExit(c1, c2);
 			}
 
 			else
-				++onCollisionCol;
+				++col;
 
 		}
 
@@ -407,52 +328,52 @@ void j1Collision::DebugDraw()
 	BROFILER_CATEGORY("Collision DebugDraw", Profiler::Color::DarkSlateGray);
 	
 	Uint8 alpha = 80;
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	for (const auto& collider : colliders)         // TDOO: draw only if on camera
 	{
-		if (colliders[i] == nullptr)
+		if (collider == nullptr)
 			continue;
 
-		switch (colliders[i]->type)
+		switch (collider->type)
 		{
 
 		case COLLIDER_NONE: // white
-			App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
+			App->render->DrawQuad(collider->rect, 255, 255, 255, alpha);
 			break;
 		case COLLIDER_WALL: // red
-			App->render->DrawQuad(colliders[i]->rect, 255, 0, 255, alpha);
+			App->render->DrawQuad(collider->rect, 255, 0, 255, alpha);
 			break;
 		case COLLIDER_PLAYER: // green
-			App->render->DrawQuad(colliders[i]->rect, 0, 255, 0, alpha);
+			App->render->DrawQuad(collider->rect, 0, 255, 0, alpha);
 			break;
-		case COLLIDER_DEATH: // blue
+		/*case COLLIDER_DEATH: // blue
 			App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
-			break;
+			break;*/
 		case COLLIDER_GOD: // violet
-			App->render->DrawQuad(colliders[i]->rect, 255, 0, 255, alpha);
+			App->render->DrawQuad(collider->rect, 255, 0, 255, alpha);
 			break;
 		case COLLIDER_WIN: 
-			App->render->DrawQuad(colliders[i]->rect, 255, 150, 255, alpha);
+			App->render->DrawQuad(collider->rect, 255, 150, 255, alpha);
 			break;
 		case COLLIDER_ENEMY:
-			App->render->DrawQuad(colliders[i]->rect, 255, 50, 255, alpha);
+			App->render->DrawQuad(collider->rect, 255, 50, 255, alpha);
 			break;
 		case COLLIDER_SHOT:
-			App->render->DrawQuad(colliders[i]->rect, 200, 250, 200, alpha);
+			App->render->DrawQuad(collider->rect, 0, 0, 0, alpha);
 			break;
 		case COLLIDER_FLOOR:
-			App->render->DrawQuad(colliders[i]->rect, 50, 50, 255, alpha);
+			App->render->DrawQuad(collider->rect, 50, 50, 255, alpha);
 			break;
 		case COLLIDER_LOOT:
-			App->render->DrawQuad(colliders[i]->rect, 150, 230, 200, alpha);
+			App->render->DrawQuad(collider->rect, 150, 230, 200, alpha);
 			break;
 		case COLLIDER_WALL_DETECTION:
-			App->render->DrawQuad(colliders[i]->rect, 0, 30, 30, alpha);
+			App->render->DrawQuad(collider->rect, 0, 30, 30, alpha);
 			break;
 		case COLLIDER_ENEMY_SHOT:
-			App->render->DrawQuad(colliders[i]->rect, 110, 170, 200, alpha);
+			App->render->DrawQuad(collider->rect, 110, 170, 200, alpha);
 			break;
 		case COLLIDER_PRESENTIAL:
-			App->render->DrawQuad(colliders[i]->rect, 25, 70, 20, alpha);
+			App->render->DrawQuad(collider->rect, 25, 70, 20, alpha);
 			break;
 
 		}
@@ -466,51 +387,12 @@ bool j1Collision::CleanUp()
 	bool ret = true;
 	LOG("Freeing all colliders");
 
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	for (auto& collider : colliders)
 	{
-		if (colliders[i] != nullptr)
-		{
-			if (!colliders[i]->onCollisionWithMe.empty())
-			{
-				for (auto col = colliders[i]->onCollisionWithMe.begin(); col != colliders[i]->onCollisionWithMe.end();)    // put both pointers to each other to null when a col is deleted
-				{
-					bool deleteIt = false;
-
-					if (!(*col)->onCollisionWithMe.empty())
-					{
-						for (auto colReverse = (*col)->onCollisionWithMe.begin(); colReverse != (*col)->onCollisionWithMe.end();)
-						{
-							if ((*colReverse) == colliders[i])  // is I find my self in another collider on collision with me, delete me from the list, and also delete it from my list
-							{
-								colReverse = (*col)->onCollisionWithMe.erase(colReverse);  // delete myself from ther other's lits
-								deleteIt = true;
-							}
-							else
-							{
-								++colReverse;
-							}
-						}
-					}
-
-
-					if (deleteIt)
-					{
-						col = colliders[i]->onCollisionWithMe.erase(col);  // delete the other from my list
-
-					}
-					else
-					{
-						++col;
-					}
-				}
-
-			}
-			delete colliders[i];
-
-			colliders[i] = nullptr;
-		}
-
+		collider->FreeOnCollision();
+		RELEASE(collider);
 	}
+	colliders.clear(); 
 
 	return ret; 
 }
@@ -521,17 +403,10 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* 
 	BROFILER_CATEGORY("Collision AddCollider", Profiler::Color::DeepPink);
 	Collider* ret = nullptr;
 
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
-	{
-		if (colliders[i] == nullptr)
-		{
-			ret = colliders[i] = new Collider(rect, type, callback, speed, volatileOutOfScreen);
-			return ret;
-		}
-	}
-  
+	ret = DBG_NEW Collider(rect, type, callback, speed, volatileOutOfScreen);
+	colliders.push_back(ret); 
 
-	return nullptr;
+	return ret;
 }
 
 
@@ -557,3 +432,58 @@ bool Collider::CheckCollision(const SDL_Rect& r)
 	return ret;
 }
 
+void Collider::FreeOnCollision()
+{
+	if (onCollisionWithMe.empty() == false)
+	{
+		for (auto col = onCollisionWithMe.begin(); col != onCollisionWithMe.end();)    // go through my oncollisionlist...
+		{
+			bool iWasDeleted = false;
+
+			if ((*col)->onCollisionWithMe.empty() == false) 
+			{
+				for (auto colReverse = (*col)->onCollisionWithMe.begin(); colReverse != (*col)->onCollisionWithMe.end();)  // my oncollision list has colliders, and those colliders have their own list, where I CAN be 
+				{
+					if ((*colReverse) == this)  // is I find my self in another collider on collision with me list, delete myself from the list
+					{
+						colReverse = (*col)->onCollisionWithMe.erase(colReverse);
+						iWasDeleted = true;
+					}
+					else
+					{
+						++colReverse;
+					}
+				}
+			}
+
+			if (iWasDeleted == true)  // if I have been deleted from the other's list, then delete the other from my list too 
+				col = onCollisionWithMe.erase(col);
+			else
+				++col;
+		
+		}
+
+	}
+}
+
+
+void Collider::UpdateStatus()
+{
+	if (volatileOutOfScreen)  // delete whe out of camera limits
+	{
+		uint deltaTime = lifetime.Read();
+		if (deltaTime > VOLATILE_LIFE)              // TODO: do this rather with is on camera ?
+		{
+			if (owner != nullptr)
+				owner->to_delete = true;   // if it has an owner, delete the owner too
+			else
+				to_delete = true;
+
+		}
+
+	}
+
+
+	if (hasSpeed == true)
+		SetPos(rect.x + speed.x, rect.y + speed.y);
+}

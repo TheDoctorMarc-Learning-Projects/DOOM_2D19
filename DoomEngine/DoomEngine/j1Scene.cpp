@@ -53,7 +53,7 @@ bool j1Scene::Awake(pugi::xml_node& node)
 // Called before the first frame
 bool j1Scene::Start()
 {
-	LoadScene(SceneState::LEVEL2, true);  // todo, do not load anything at first, rather main menu :)
+	LoadScene(SceneState::LEVEL1, true);  // todo, do not load anything at first, rather main menu :)
 
 	return true;
 
@@ -91,7 +91,7 @@ bool j1Scene::Update(float dt)
 		x += -App->render->camera.x;
 
 		
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	/*if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		App->entityFactory->CreateEntity(ENEMY_IMP, x, y, "EnemyIMP");
 	}
@@ -108,12 +108,7 @@ bool j1Scene::Update(float dt)
 	{
 		App->entityFactory->CreateEntity(ENEMY_HELL_KNIGHT, x, y, "EnemyHellKnight");
 	}
-
-
-	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
-	{
-		UnLoadScene(); 
-	}
+	*/
 
 	if (App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
 	{

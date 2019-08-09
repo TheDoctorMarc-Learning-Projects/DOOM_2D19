@@ -122,7 +122,7 @@ public:
 
 
 	std::list<encapsulatedEnemyData*> enemiesToBeSpawned; 
-	int enemyKillTimeBonusFactor = 4;
+	int enemyKillTimeBonusFactor = 2;
 
 };
 

@@ -69,11 +69,6 @@ bool j1Entity::CleanUp()
 
 	colliderActive = false; 
 
-	/*if (entityTex != nullptr)    // loaded and unloaded in atlas 
-	{
-		App->tex->UnLoad(entityTex);
-	}*/
-
 	return true;
 }
 

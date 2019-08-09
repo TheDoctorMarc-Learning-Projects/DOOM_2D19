@@ -447,6 +447,7 @@ void j1EntityPlayer::ChangeWeapon(SDL_GameControllerButton button)
 				(*weapon)->weaponData.weaponState = WEAPON_STATE::INACTIVE;
 				(*weapon)->drawActive = false;
 				(*weapon)->collider->to_delete = true; 
+				(*weapon)->colliderActive = false; 
 
 				if ((*weapon)->firing)
 					(*weapon)->firing = false; 
@@ -497,6 +498,8 @@ void j1EntityPlayer::ChangeWeapon(SDL_GameControllerButton button)
 					myWeapons.at(desiredIndex)->collider = App->collision->AddCollider({ myWeapons.at(desiredIndex)->section.x, myWeapons.at(desiredIndex)->section.y,
 						(int)((float)myWeapons.at(desiredIndex)->section.w * myWeapons.at(desiredIndex)->spriteScale),
 						(int)((float)myWeapons.at(desiredIndex)->section.h * myWeapons.at(desiredIndex)->spriteScale) }, COLLIDER_TYPE::COLLIDER_LOOT, myWeapons.at(desiredIndex));
+
+					myWeapons.at(desiredIndex)->colliderActive = true; 
 
 					// chainsaw needs a hotspot collider to do damage: 
 					if (myWeapons.at(desiredIndex)->GetWeaponType() == WEAPON_TYPE::CHAINSAW)
@@ -635,8 +638,6 @@ void j1EntityPlayer::WarnOtherModules()
 void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 {
 	bool lastOnplatform = onPlatform;
-	float ShotsPerSec = 0.0f;
-
 	switch (c2->type)
 	{
 		
@@ -1042,8 +1043,9 @@ void j1EntityPlayer::PickWeapon(Collider* c2)
 			if (weapon->weaponData.weaponState == WEAPON_STATE::ACTIVE)
 			{
 				weapon->weaponData.weaponState = WEAPON_STATE::INACTIVE;  // if other was active, put it to inactive
-				weapon->drawActive = false;       // do not draw it --> TODO: when swappig weapon put to active both variables
+				weapon->drawActive = false;      
 				weapon->collider->to_delete = true;
+				weapon->colliderActive = false; 
 				currentWeapon = nullptr;
 			}
 

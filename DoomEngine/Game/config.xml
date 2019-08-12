@@ -120,6 +120,37 @@
 		
 		
     </InGameUI> 
-  </scene>
+    <MainMenuUI>
+	<images>
+        <image name="background">
+		  <position x="0" y="0" />
+          <section x="150" y="207" w="440" h="247"/>
+		  <scaleFactor value = "3.1"/>
+        </image>
+	 </images>	
+	 <labels>
+        <label name="gameName">
+          <position x="505" y="20"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="DOOM 2D19"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="60"/>
+		  <scaleFactor value = "2.1"/>
+        </label>
+      </labels>
+	   <buttons>
+        <button name="playButton">
+          <position x="200" y="200"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="Play"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="LoadGUI"/>
+		  <targetScene value="3"/>
+        </button>
+      </buttons>
+	</MainMenuUI>
+ </scene>
 
 </config>

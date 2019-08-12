@@ -354,14 +354,14 @@ Sint16 j1Input::GetControllerAxis(SDL_GameControllerAxis axis) {
 
 uint j1Input::GetCurrentMouseButtonDown()
 {
-	for (uint iter = 0; iter < NUM_MOUSE_BUTTONS; iter++)
+	for (uint I = 0; I < NUM_MOUSE_BUTTONS; I++)
 	{
-		if (mouse_buttons[iter] == KEY_DOWN)
+		if (mouse_buttons[I] == KEY_DOWN)
 		{
-			return iter + 1;
+			return I + 1;
 		}
 	}
-	return 0;
+	return (UINT)INT_MAX;
 }
 
 void j1Input::DoGamePadRumble(float strength, uint32 duration) const

@@ -68,12 +68,13 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(scene);
+	AddModule(map); 
 	AddModule(font);
 	AddModule(gui);
 	AddModule(fade); 
 
-	modules.push_back(map);
-	map->startInitialized = false; 
+	/*modules.push_back(map);
+	map->startInitialized = false; */
 	modules.push_back(particles); 
 	particles->startInitialized = false;
 	modules.push_back(pathfinding);  

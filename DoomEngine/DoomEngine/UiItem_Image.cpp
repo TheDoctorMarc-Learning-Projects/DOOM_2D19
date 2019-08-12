@@ -41,8 +41,6 @@ UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, std::string
 	else
 		this->scaleFactor = App->gui->GetSpriteGlobalScale();
 
-	// the parent
-	AssignParentChild(parent); 
 
 }
 
@@ -58,15 +56,10 @@ UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, UiItem* con
 	this->hitBox.h = section->h;
 
 
-
 	this->hitBox.x = position.x;
 	this->hitBox.y = position.y;
 
 
-	// the parent
-	AssignParentChild(parent);
-
-	 
 
  
 }

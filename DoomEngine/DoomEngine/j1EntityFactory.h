@@ -93,6 +93,11 @@ public:
 		return { (float)rect->x + (float)rect->w / 2.F, (float)rect->y + (float)rect->h / 2.F };
 	}
 
+	bool isPointInsideRect(const iPoint* p, const SDL_Rect* r) const {
+		const SDL_Point P = { p->x, p->y }; 
+		return SDL_PointInRect(&P, r);
+	}
+
 	bool IsPlayerAlive() const { return playerAlive; }; 
 
 private: 

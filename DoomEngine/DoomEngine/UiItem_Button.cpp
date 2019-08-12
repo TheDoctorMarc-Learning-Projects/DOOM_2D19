@@ -1,4 +1,3 @@
-
 #include "UiItem_Button.h"
 #include "j1App.h"
 #include "j1Render.h"
@@ -8,45 +7,58 @@
 #include "j1Map.h"
 #include "j1Audio.h"
 
-
-// TODO: Define the function name in the XML 
-UiItem_Button::UiItem_Button(iPoint position, std::string functionName, std::string name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click, const SDL_Rect* hover,
-	sceneTypeGUI targetSceneGUI, SceneState targetScene) :UiItem(position, name, parent)
+UiItem_Button::UiItem_Button(iPoint position, std::string functionName, std::string name, std::string text, SDL_Color color, TTF_Font * font, UiItem* const parent, float spriteScale, SceneState targetScene) :UiItem(position, name, parent)
 {
 	assert(parent != nullptr);
-	frames[IDLE] = *idle;
 
-	if (click)
-		frames[CLICK] = *click;
-	else
-		frames[CLICK] = *idle;
-
-	if (hover)
-		frames[HOVER] = *hover;
-	else
-		frames[HOVER] = *idle;
-
+	// Basic info
+	this->name = name; 
 	this->guiType = GUI_TYPES::BUTTON;
-	hitBox.w = idle->w;
-	hitBox.h = idle->h;
+	this->tabbable = true; 
  
-	// assign the function pointer here
+	// Assign the function pointer 
 	this->function = App->gui->GetFunctionsMap().at(functionName);
-	this->targetSceneGui = targetSceneGUI;
 	this->targetScene = targetScene; 
+	this->targetSceneGui = App->scene->convertSceneTypeToGui(targetScene);
 
-	// the parent
-	AssignParentChild(parent);
+	// Create the label 
+	this->textLabel = App->gui->AddLabel(this->name + "Label", text, color, font, position, this, spriteScale);
+	this->defaultLabelColor = color; 
+
+	// Generate the button hitbox according to label dimensions
+	this->hitBox.w = this->textureDimensions.x = this->textLabel->textureDimensions.x;
+	this->hitBox.h = this->textureDimensions.y = this->textLabel->textureDimensions.y;
 
 }
 
+
+void UiItem_Button::OnHover()
+{
+	SDL_Color c = { 230, 243, 4, 255 };
+	this->textLabel->ChangeTextureIdle("", &c, NULL);
+}
+
  
-void UiItem_Button::DoLogicClicked()
+void UiItem_Button::OnClickDown()
 {
 	this->function(this); 
+	SDL_Color c = { 246, 220, 4, 255 }; 
+	this->textLabel->ChangeTextureIdle("", &c, NULL);
 }
 
-void UiItem_Button::Draw()
+void UiItem_Button::OnClickUp()
+{
+	this->textLabel->ChangeTextureIdle("", &defaultLabelColor, NULL);
+}
+
+
+void UiItem_Button::OnHoverExit()
+{
+	this->textLabel->ChangeTextureIdle("", &defaultLabelColor, NULL);
+}
+
+
+void UiItem_Button::Draw()   // not drawn for the mom, label draws itself 
 {
 	//App->render->BlitGui(App->gui->GetAtlas(), hitBox.x, hitBox.y, &frames[state], 0.0F);
 }

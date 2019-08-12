@@ -21,7 +21,15 @@ j1Map::j1Map() : j1Module(), map_loaded(false)
 
 // Destructor
 j1Map::~j1Map()
-{}
+{
+	for (auto tex : entityTextureMap)
+	{
+		App->tex->UnLoad(tex.second);
+		tex.second = nullptr;
+	}
+	entityTextureMap.clear();
+
+}
 
 // Called before render is available
 bool j1Map::Awake(pugi::xml_node& config)
@@ -37,6 +45,17 @@ bool j1Map::Awake(pugi::xml_node& config)
 	//pixelTileOffset.create(0,-16);//-64 * 0.5f, -32 * 0.5f);
 
 	return ret;
+}
+
+bool j1Map::Start()
+{
+
+	// object textures
+	entityTextureMap.insert(std::make_pair("loot", App->tex->Load("textures/loot/loot.png")));
+	entityTextureMap.insert(std::make_pair("platform1", App->tex->Load("maps/textures/plat1.png")));
+	entityTextureMap.insert(std::make_pair("platform2", App->tex->Load("maps/textures/plat2.png")));
+
+	return true; 
 }
 
 void j1Map::Draw()
@@ -214,21 +233,6 @@ bool j1Map::CleanUp()
 
 
 
-	for (auto tex : entityTextureMap)
-	{
-		App->tex->UnLoad(tex.second);
-		tex.second = nullptr; 
-	}
-	entityTextureMap.clear();
-
-
-
-
-	// what is this: 
-
-	App->tex->UnLoad(texture);
-	texture = nullptr;
-
 	map_loaded = false;
 	// Clean up the pugui tree
 	map_file.reset();
@@ -238,16 +242,6 @@ bool j1Map::CleanUp()
 // Load new map
 bool j1Map::Load(const char* file_name)
 {
-	
-	// object textures
-	entityTextureMap.insert(std::make_pair("loot", App->tex->Load("textures/loot/loot.png")));
-	entityTextureMap.insert(std::make_pair("platform1", App->tex->Load("maps/textures/plat1.png")));  
-	entityTextureMap.insert(std::make_pair("platform2", App->tex->Load("maps/textures/plat2.png")));
-
-
-
-
-
 
 	bool ret = true;
 	pugi::xml_parse_result result = map_file.load_file(file_name);

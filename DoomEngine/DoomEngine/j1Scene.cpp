@@ -29,16 +29,26 @@ j1Scene::j1Scene() : j1Module()
 	sceneGuiXMLIndexes =
 	{
 		 {sceneTypeGUI::LEVEL, "InGameUI"},
+		 {sceneTypeGUI::MAINMENU, "MainMenuUI"},
 	};
 
-
 	// TODO: keep updating this scene-gui index map
+
+	sceneMusics =
+	{
+		 {SceneState::LEVEL1, "sound/music/Arch Enemy First Day In Hell.ogg"},
+		 {SceneState::LEVEL2, "sound/music/soil-halo.ogg"},
+		 {SceneState::MAINMENU, "sound/music/Manimal - Black Plague.ogg"},
+	}; 
+
 }
 
 // Destructor
 j1Scene::~j1Scene()
 {
 	sceneGuiXMLIndexes.clear(); 
+	sceneMusics.clear(); 
+
 }
 
 // Called before render is available
@@ -53,7 +63,6 @@ bool j1Scene::Awake(pugi::xml_node& node)
 // Called before the first frame
 bool j1Scene::Start()
 {
-	LoadScene(SceneState::LEVEL1, true);  // todo, do not load anything at first, rather main menu :)
 
 	return true;
 
@@ -197,7 +206,7 @@ void j1Scene::UnLoadScene()
 		App->collision->Disable();
 
  
-	App->audio->UnLoadAudio(); 
+	//App->audio->UnLoadAudio(); // why? xd 
  
 }
 
@@ -216,19 +225,19 @@ void j1Scene::LoadScene(SceneState sceneState, bool loadGUI)
 }
 
 
-void j1Scene::CreateScene()
+void j1Scene::CreateScene()  // called by fade 
 {
+	App->audio->PlayMusic(sceneMusics.at(nextSceneState), -1); 
+
 	switch (nextSceneState)
 	{                           // 2) Then call load map (which has encapsulated entity data)
 
 	case SceneState::LEVEL1:
-		App->audio->PlayMusic("sound/music/Arch Enemy First Day In Hell.ogg", -1);
 		LoadNewMap("maps/level 1.tmx");
 		break;
 
 	case SceneState::LEVEL2:
 		LoadNewMap("maps/level 2.tmx");
-		App->audio->PlayMusic("sound/music/soil-halo.ogg", -1);
 		break;
 	default:
 		break;
@@ -236,7 +245,8 @@ void j1Scene::CreateScene()
 
 	// 3) then load modules
 
-	App->audio->Start();
+	//App->audio->Start(); // why? xd 
+ 
 	App->render->ResetCamera();
 
 	if (nextSceneState == SceneState::LEVEL1 || nextSceneState == SceneState::LEVEL2)

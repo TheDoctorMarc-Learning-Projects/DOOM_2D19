@@ -49,21 +49,18 @@ return ret;
 bool j1EntityFactory::Start()
 {
 
-	// TODO: textures
-
 	entityTextureMap.insert(std::make_pair("player", App->tex->Load("textures/player/player.png")));
 	entityTextureMap.insert(std::make_pair("EnemyIMP", App->tex->Load("textures/enemies/IMP/IMP.png")));
 	entityTextureMap.insert(std::make_pair("EnemyCacodemon", App->tex->Load("textures/enemies/Cacodemon/Cacodemon.png")));
 	entityTextureMap.insert(std::make_pair("EnemyBaronOfHell", App->tex->Load("textures/enemies/BaronOfHell/BaronOfHell.png")));
 	entityTextureMap.insert(std::make_pair("EnemyHellKnight", App->tex->Load("textures/enemies/HellKnight/HellKnight.png")));
 
- 
-	enemyTypeMap.insert(std::make_pair("EnemyIMP", ENEMY_IMP)); 
+
+	enemyTypeMap.insert(std::make_pair("EnemyIMP", ENEMY_IMP));
 	enemyTypeMap.insert(std::make_pair("EnemyCacodemon", ENEMY_CACODEMON));
 	enemyTypeMap.insert(std::make_pair("EnemyBaronOfHell", ENEMY_BARON_OF_HELL));
 	enemyTypeMap.insert(std::make_pair("EnemyHellKnight", ENEMY_HELL_KNIGHT));
 
-	// TODO: KEEP UPDATING THIS with new types of enemies... 
 
 	// ENEMIES (tiled): 
 
@@ -182,7 +179,7 @@ void j1EntityFactory::Debug()
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
 		debug = !debug; 
 
-	if (debug)
+	if (debug == true)
 	{
 		for(const auto& entity : entities)
 			if(entity->isEnemy)
@@ -223,16 +220,19 @@ bool j1EntityFactory::CleanUp()
 	entities.clear();
 
 
-	// TODO: unload Atlas texture
+	
 
 	for (auto tex : entityTextureMap)
 	{
 		App->tex->UnLoad(tex.second);
-		tex.second = nullptr; 
+		tex.second = nullptr;
 	}
-	
+
 	entityTextureMap.clear();
-	enemyTypeMap.clear(); 
+	enemyTypeMap.clear();
+
+
+
 
 	return ret;
 }

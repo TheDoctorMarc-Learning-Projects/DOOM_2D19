@@ -102,9 +102,6 @@ public:
 
 	j1KeyState GetJoystickPulsation(j1JoyStickSide joystickSide, j1JoyDir joyButtonDir) const;
 
-
-
-
 	// Check if a certain window event happened
 	bool GetWindowEvent(int code);
 

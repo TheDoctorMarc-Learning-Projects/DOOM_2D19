@@ -1,15 +1,11 @@
 #include "UiItem_Label.h"
 #include "UiItem.h"
-
 #include "j1App.h"
 #include "j1Fonts.h"
 #include "j1Scene.h"
 #include "j1Textures.h"
 #include "j1Render.h"
 #include "j1Gui.h"
-#include <assert.h>
-
-
 #include "j1EntityFactory.h"
 
 
@@ -29,7 +25,6 @@ UiItem_Label::UiItem_Label(std::string name, std::string text, SDL_Color color, 
 	if (texture)
 	{
 		SDL_QueryTexture(texture, NULL, NULL, &textureDimensions.x, &textureDimensions.y);
-
 		section = { 0, 0, textureDimensions.x, textureDimensions.y }; 
 	}
 
@@ -37,9 +32,6 @@ UiItem_Label::UiItem_Label(std::string name, std::string text, SDL_Color color, 
 		this->scaleFactor = SpriteScale;
 	else
 		this->scaleFactor = App->gui->GetSpriteGlobalScale();
-
-	// the parent
-	AssignParentChild(parent);
 
 }
 
@@ -84,14 +76,14 @@ void UiItem_Label::CleanUp()
 	}
 }
 
-bool UiItem_Label::ChangeTextureIdle(std::string textIdle, const SDL_Color* color, const TTF_Font* font, uint numberOfDecimals)
+bool UiItem_Label::ChangeTextureIdle(std::string textIdle, const SDL_Color* color, const TTF_Font* font)
 {
 	bool ret = false;
-
+	std::string text = (textIdle != "") ? textIdle : this->text;
 	SDL_Color col = (color != NULL) ? *color : this->color;
 	TTF_Font * f = (font != NULL) ? (TTF_Font *)font : this->font;
 
-	SDL_Texture* aux = App->font->Print(textIdle.data(), col, f);
+	SDL_Texture* aux = App->font->Print(text.data(), col, f);
 	if(aux != nullptr)
 		assert(aux != nullptr);
 
@@ -102,7 +94,6 @@ bool UiItem_Label::ChangeTextureIdle(std::string textIdle, const SDL_Color* colo
 	}
 
 	texture = aux;
-	text = textIdle; 
 
 	if (texture)
 	{

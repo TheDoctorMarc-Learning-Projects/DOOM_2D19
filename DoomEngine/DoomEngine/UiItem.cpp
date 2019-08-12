@@ -8,24 +8,28 @@
 #include "Brofiler/Brofiler.h"
  
 
-UiItem::UiItem(const iPoint & pos, UiItem * const parent)
+UiItem::UiItem(const iPoint pos, UiItem * const parent)
 {
 	originPos = pos; 
 	hitBox.x = pos.x;
 	hitBox.y = pos.y;
-	if (parent != nullptr)
-		this->parent = parent;
+
+
+	// the parent
+	AssignParentChild(parent);
 
 }
 
-UiItem::UiItem(const iPoint& pos, std::string& name, UiItem* const parent)
+UiItem::UiItem(const iPoint pos, std::string name, UiItem* const parent)
 {
 	originPos = pos;
 	hitBox.x = pos.x;
 	hitBox.y = pos.y;
 	this->name = name;
-	if (parent != nullptr)
-		this->parent = parent;
+
+
+	// the parent
+	AssignParentChild(parent);
 
 }
 
@@ -33,8 +37,8 @@ UiItem::UiItem(const iPoint& pos, std::string& name, UiItem* const parent)
 UiItem::UiItem(UiItem * const parent)
 {
 
-	if (parent != nullptr)
-		this->parent = parent;
+	// the parent
+	AssignParentChild(parent);
 }
 
 UiItem::UiItem(std::string name, sceneTypeGUI myscene)
@@ -78,19 +82,5 @@ void UiItem::DebugDraw()
 	App->render->DrawQuad(hitBox, 0, 0, 255, 255, true, true); 
 }
 
-
-/*                                        // TODO: do this in gui cpp: have a nice cursor when on menus. Disable it ingame ( the original skull cursor?) 
-void UiItem::Draw_Cursor(float dt) {
-	int x, y;
-	x = y = 0;
-	App->input->GetMousePosition(x, y);
-	x *= App->win->GetScale();
-	y *= App->win->GetScale();
-
-
-	SDL_Rect section = { 252,638,25,32 };       // TODO: replace this cursor coordinates with the new one
-	App->render->BlitGui(App->gui->GetAtlas(), x, y, &section, 0.0F);
-
-
-
-}*/
+ 
+ 

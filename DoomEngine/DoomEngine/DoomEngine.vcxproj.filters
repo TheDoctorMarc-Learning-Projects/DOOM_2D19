@@ -73,6 +73,9 @@
     <Filter Include="Code\Core\In-Screen\GUI\Items\special">
       <UniqueIdentifier>{a10e1346-01a4-44b7-89b8-851df77ce7cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Core\In-Screen\help">
+      <UniqueIdentifier>{24667537-3381-46c1-9aee-ee8d678937d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="j1App.cpp">

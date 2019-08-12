@@ -67,11 +67,12 @@ public:
 
 	SceneState GetCurrentSceneState() const { return state; }; 
 	SceneState GetNextSceneState() const { return nextSceneState; };  // when transitioning 
+	sceneTypeGUI convertSceneTypeToGui(SceneState state);
+
 private:
 	SDL_Texture* debug_tex = nullptr;
-	SceneState state = SceneState::LEVEL1;
-	SceneState nextSceneState = SceneState::LEVEL1; 
-	sceneTypeGUI convertSceneTypeToGui(SceneState state); 
+	SceneState state = SceneState::MAINMENU;
+	SceneState nextSceneState = SceneState::NO_SCENE; 
 
 	SDL_Color sceneSwapColor = { 30, 0, 0, 255 }; 
 	bool loadGUI = false; 
@@ -81,6 +82,7 @@ public:
 	pugi::xml_node sceneNode;
 
 	std::map<sceneTypeGUI, std::string> sceneGuiXMLIndexes;
+	std::map<SceneState, const char*> sceneMusics;   // will come in handy, as usual with maps :)
  
 
 	void LoadNewMap(const char* mapName);

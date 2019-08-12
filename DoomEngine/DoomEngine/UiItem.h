@@ -30,8 +30,8 @@ class UiItem
  
 public:
 	UiItem(std::string name, sceneTypeGUI myscene); 
-	UiItem(const iPoint& pos, UiItem* const parent);
-	UiItem(const iPoint& pos, std::string& name, UiItem* const parent);
+	UiItem(const iPoint pos, UiItem* const parent);
+	UiItem(const iPoint pos, std::string name, UiItem* const parent);
 	UiItem(UiItem* const parent);
 	~UiItem();
 	virtual void Draw() {};
@@ -44,9 +44,11 @@ public:
 	}
 
 	virtual void CleanUp() {}; 
-	//virtual bool Update(float dt){};
-
-	//void Draw_Cursor(float dt);
+	 
+	virtual void OnClickDown() {};
+	virtual void OnHover() {};
+	virtual void OnHoverExit() {};
+	virtual void OnClickUp() {};
 
 public: 
 	std::string name;
@@ -60,8 +62,10 @@ public:
 	iPoint textureDimensions = iPoint(0, 0);
 	iPoint originPos = iPoint(0, 0); 
 	float scaleFactor = 0.F;
+	uint mouseState = 0; 
 
 	bool slidable = false;
+	bool draggable = true; 
 	bool tabbable = false;
 	bool enable = true;
 	bool hide = false;

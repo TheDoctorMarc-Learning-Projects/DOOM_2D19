@@ -5,21 +5,23 @@
 #include "p2Point.h"
 #include "j1Scene.h"
 #include "j1Textures.h"
+#include "UiItem_Label.h"
 #include <string>
 
 class UiItem_Button :public UiItem
 {
-protected:
-	SDL_Rect frames[MAX_STATES];
-	std::string functionName;
-
-
 public:
-	UiItem_Button(iPoint position, std::string functionName, std::string name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click = nullptr, const SDL_Rect* hover = nullptr, 
-		sceneTypeGUI targetSceneGUI = sceneTypeGUI::NO_SCENE, SceneState targetScene = SceneState::NO_SCENE);
-	void DoLogicClicked();
+	UiItem_Button(iPoint position, std::string functionName, std::string name, std::string text, SDL_Color color, TTF_Font * font,  UiItem* const parent, float spriteScale, SceneState targetScene = SceneState::NO_SCENE);
+	void OnClickDown();
+	void OnHover();
+	void OnHoverExit(); 
+	void OnClickUp();
 	void Draw();
- 
+
+
+private: 
+	UiItem_Label* textLabel = nullptr; 
+	SDL_Color defaultLabelColor; 
 };
 
 #endif

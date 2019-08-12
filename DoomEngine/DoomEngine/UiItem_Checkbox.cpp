@@ -30,19 +30,13 @@ UiItem_Checkbox::UiItem_Checkbox(iPoint position, std::string function, std::str
 	else
 		frames[HOVER] = *idle;
 
-	
-
-	
 	this->tick_section = *tick_section;
 	this->guiType = GUI_TYPES::CHECKBOX;
 
 	hitBox.x = position.x;
 	hitBox.y = position.y;
 
-	
 
-	// the parent
-	AssignParentChild(parent);
 
 
 }

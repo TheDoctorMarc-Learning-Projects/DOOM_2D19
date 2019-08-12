@@ -60,13 +60,73 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 bool j1Gui::Start()
 {
 	atlas = App->tex->Load(atlas_file_name.data());
+
+	// load the main menu GUI 
+	LoadGuiDefined(sceneTypeGUI::MAINMENU); 
+	App->audio->PlayMusic(App->scene->sceneMusics.at(SceneState::MAINMENU), -1);
+
+
 	return true;
 }
 
 
 bool j1Gui::Update(float dt)
 {
-//	DoLogicSelected(); // TODO: this must only consider current canvas children !! 
+	BROFILER_CATEGORY("Update_Gui.cpp", Profiler::Color::Coral)
+		this->dt = dt;
+	iPoint mousePos;
+	App->input->GetMousePosition(mousePos.x, mousePos.y);
+	uint mouseState = App->input->GetCurrentMouseButtonDown();
+
+
+	// for the moment, this won't update the grandsons (not needed) 
+
+	for  (auto& item : currentCanvas->children)
+	{
+		/*if (item->draggable && thisItem->data->mouseButtonDown != 0)
+		{
+			iPoint mouseMotion;
+			App->input->GetMouseMotion(mouseMotion);
+			if (thisItem->data->HaveParent())
+			{
+				thisItem->data->AddToPos(mouseMotion);
+			}
+		}*/
+		
+		if (App->entityFactory->isPointInsideRect(&mousePos, &item->hitBox) == true)
+		{
+			item->mouseState = mouseState;
+
+			if (item->state != CLICK && App->input->GetMouseButtonDown(item->mouseState) == KEY_DOWN)
+			{
+				item->OnClickDown();
+				item->state = CLICK;
+			}
+
+			if (item->state == CLICK && App->input->GetMouseButtonDown(item->mouseState) == KEY_UP)
+			{
+				item->OnClickUp();
+				item->state = HOVER;
+			}
+
+			else if (item->state == IDLE)
+			{
+				item->OnHover(); 
+				item->state = HOVER;
+			}
+				
+
+
+		}
+		else if (item->state != IDLE)
+		{
+			item->OnHoverExit(); 
+			item->state = IDLE;
+		}
+			
+	 
+
+	}
 
 	return true;
 }
@@ -135,7 +195,7 @@ void LoadGui(UiItem* callback)
 		App->gui->ChangeCurrentCanvas(DBG_NEW UiItem(App->scene->sceneGuiXMLIndexes.at(callback->targetSceneGui), callback->targetSceneGui), false);
 
 
-	// finally, call scene swap (it will call fade, and then it'll create the scene)
+	// finally, call scene swap (it will call fade, and then fade will call create scene)
 	App->scene->LoadScene(callback->targetScene, false); 
 
 
@@ -197,7 +257,8 @@ void j1Gui::ChangeCurrentCanvas(UiItem* newCanvas, bool exists)
 
 void j1Gui::LoadXMLGUI(pugi::xml_node& menuNode)
 {
-	for (pugi::xml_node uiNode = menuNode.child("images").child("image"); uiNode; uiNode = uiNode.next_sibling("image"))
+	// images 
+	for (auto uiNode = menuNode.child("images").child("image"); uiNode; uiNode = uiNode.next_sibling("image"))
 	{
 		std::string name = uiNode.attribute("name").as_string();
 		SDL_Rect section = { uiNode.child("section").attribute("x").as_int(), uiNode.child("section").attribute("y").as_int(), uiNode.child("section").attribute("w").as_int(), uiNode.child("section").attribute("h").as_int() };
@@ -207,13 +268,14 @@ void j1Gui::LoadXMLGUI(pugi::xml_node& menuNode)
 		SDL_Texture* newTexture = nullptr; 
 		if (textureName != "")
 			newTexture = App->map->entityTextureMap.at(textureName); 
+		float scaleFactor = uiNode.child("scaleFactor").attribute("value").as_float();
 
-	    App->gui->AddImage(position, &section, name, NULL, false, newTexture, 0.0F, textureName);
+	    App->gui->AddImage(position, &section, name, NULL, false, newTexture, scaleFactor, textureName);
 	}
 
 
 	// labels
-	for (pugi::xml_node uiNode = menuNode.child("labels").child("label"); uiNode; uiNode = uiNode.next_sibling("label"))
+	for (auto uiNode = menuNode.child("labels").child("label"); uiNode; uiNode = uiNode.next_sibling("label"))
 	{
 		std::string name = uiNode.attribute("name").as_string();
 		iPoint position = { uiNode.child("position").attribute("x").as_int(), uiNode.child("position").attribute("y").as_int() };
@@ -228,11 +290,34 @@ void j1Gui::LoadXMLGUI(pugi::xml_node& menuNode)
 
 	}
 
+	// buttons
+	for (auto uiNode = menuNode.child("buttons").child("button"); uiNode; uiNode = uiNode.next_sibling("button"))
+	{
+		iPoint position = { uiNode.child("position").attribute("x").as_int(), uiNode.child("position").attribute("y").as_int() };
+		std::string name = uiNode.attribute("name").as_string();
+		std::string functionName = uiNode.child("functionName").attribute("value").as_string();
+		std::string text = uiNode.child("text").attribute("value").as_string();
+		std::string font = uiNode.child("font").attribute("value").as_string();
+		SDL_Color color = { uiNode.child("color").attribute("R").as_uint(),uiNode.child("color").attribute("G").as_uint(),uiNode.child("color").attribute("B").as_uint(),uiNode.child("color").attribute("A").as_uint() };
+		const char* fontPath = uiNode.child("path").attribute("p").as_string();
+		uint fontSize = uiNode.child("size").attribute("s").as_int();
+		float scaleFactor = uiNode.child("scaleFactor").attribute("value").as_float();
+		int targetScene = uiNode.child("targetScene").attribute("value").as_int();
+
+		App->gui->AddButton(position, functionName, name, text.data(), color, App->font->Load(fontPath, fontSize), NULL, scaleFactor, (SceneState)targetScene);
+
+	}
+
 	// face
-	pugi::xml_node uiNode = menuNode.child("face"); 
+	std::string menuName = menuNode.name(); 
+	if (menuName == "InGameUI")
+	{
+		auto uiNode = menuNode.child("face");
 		std::string name = uiNode.attribute("name").as_string();
 		iPoint position = { uiNode.child("position").attribute("x").as_int(), uiNode.child("position").attribute("y").as_int() };
 		App->gui->AddFace(position, name, NULL, 0.0F);
+
+	}
 	
 
 
@@ -295,8 +380,6 @@ UiItem_Bar* j1Gui::AddBar(iPoint position, std::string name, const SDL_Rect * se
 	else
 		newUIItem = DBG_NEW UiItem_Bar(position, name, section, thumb_section, image_idle, image_hover, parent);
 
-
-
 	listOfItems.push_back(newUIItem);
 
 	return (UiItem_Bar*)newUIItem;
@@ -304,21 +387,19 @@ UiItem_Bar* j1Gui::AddBar(iPoint position, std::string name, const SDL_Rect * se
 
 
 
-UiItem_Button* j1Gui::AddButton(iPoint position, std::string function, std::string name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click, const SDL_Rect* hover,
-	sceneTypeGUI targetSceneGui, SceneState targetScene)
+UiItem_Button* j1Gui::AddButton(iPoint position, std::string functionName, std::string name, std::string text, SDL_Color color, TTF_Font * font, UiItem* const parent, float spriteScale, SceneState targetScene)
 {
 	UiItem* newUIItem = nullptr;
 
 	if (parent == NULL)
-		newUIItem = DBG_NEW UiItem_Button(position, function, name, idle, currentCanvas, click, hover, targetSceneGui, targetScene);
+		newUIItem = DBG_NEW UiItem_Button(position, functionName, name, text, color, font, currentCanvas, spriteScale, targetScene);
 	else
-		newUIItem = DBG_NEW UiItem_Button(position, function, name, idle, parent, click, hover);
+		newUIItem = DBG_NEW UiItem_Button(position, functionName, name, text, color, font, parent, spriteScale, targetScene);
 
 	listOfItems.push_back(newUIItem);
 
 	UiItem_Button * button = (UiItem_Button*)newUIItem;
  
-
 	return (UiItem_Button*)newUIItem;
 }
 
@@ -363,6 +444,7 @@ UiItem* j1Gui::AddEmptyElement(iPoint pos, UiItem * const parent)
 		newUIItem = DBG_NEW UiItem(pos, parent);
 
 	listOfItems.push_back(newUIItem);
+
 	return newUIItem;
 }
 

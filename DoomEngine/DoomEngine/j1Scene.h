@@ -14,22 +14,24 @@ enum class SceneState : int // the proper scene state
 {
 	NO_SCENE,
 	MAINMENU,
+	DIFFICULTY_SELECTOR,
 	CREDITS,
-	LEVEL1,
-	LEVEL2,
 	SETTINGS,
-	IN_GAME_SETTINGS
-		
+	IN_GAME_SETTINGS,
+	LEVEL1,
+	LEVEL2
 };
 
 
-enum class sceneTypeGUI : int    // coordination with GUI needed for a generic XML load 
+enum class sceneTypeGUI : int    // coordination with GUI needed 
 {
 	NO_SCENE,
 	MAINMENU,
+	DIFFICULTY_SELECTOR,
 	CREDITS,
-	LEVEL,
-	SETTINGS
+	SETTINGS,
+	IN_GAME_SETTINGS,  // it is different from settings because it has back to play and back to main :/
+	LEVEL
 };
 
 

@@ -57,6 +57,9 @@ bool j1Audio::Awake(pugi::xml_node& config)
 
 bool j1Audio::Start()
 {
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - GUI
+	LoadFx("sound/fx/dsswtchn.wav", "buttonClick");
+	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - coins
 	LoadFx("sound/fx/figurePickUp.wav", "figurePickUp");
 	LoadFx("sound/fx/dsitemup.wav", "itemPickUp");

@@ -30,6 +30,7 @@ j1Scene::j1Scene() : j1Module()
 	{
 		 {sceneTypeGUI::LEVEL, "InGameUI"},
 		 {sceneTypeGUI::MAINMENU, "MainMenuUI"},
+		 {sceneTypeGUI::DIFFICULTY_SELECTOR, "DifficultySelectorUI"},
 	};
 
 	// TODO: keep updating this scene-gui index map
@@ -39,6 +40,7 @@ j1Scene::j1Scene() : j1Module()
 		 {SceneState::LEVEL1, "sound/music/Arch Enemy First Day In Hell.ogg"},
 		 {SceneState::LEVEL2, "sound/music/soil-halo.ogg"},
 		 {SceneState::MAINMENU, "sound/music/Manimal - Black Plague.ogg"},
+		 {SceneState::DIFFICULTY_SELECTOR, "sound/music/Slipknot - Duality.ogg"},
 	}; 
 
 }
@@ -282,7 +284,7 @@ void j1Scene::CreateScene()  // called by fade
 sceneTypeGUI j1Scene::convertSceneTypeToGui(SceneState state)
 {
 
-	if ((int)state <= 2)
+	if ((int)state <= 5)
 		return (sceneTypeGUI)(int)state;
 	else
 		switch (state)
@@ -293,13 +295,6 @@ sceneTypeGUI j1Scene::convertSceneTypeToGui(SceneState state)
 		case SceneState::LEVEL2:
 			return sceneTypeGUI::LEVEL;
 			break;
-		case SceneState::SETTINGS:
-			return sceneTypeGUI::SETTINGS;
-			break;
-		case SceneState::IN_GAME_SETTINGS:
-			return sceneTypeGUI::SETTINGS;
-			break;
-
 		}
 
 	return sceneTypeGUI::NO_SCENE;

@@ -30,7 +30,7 @@ void j1EntityLootArmor::OnPickUp()
 {
 	App->audio->PlayFx("itemPickUp", 0, false, 1.f);
 
-	App->entityFactory->AddArmorToPlayer(0.3f); 
+	App->entityFactory->AddArmorToPlayer(0.3f * App->entityFactory->currentDifficultyMultiplier.lootAmmout);
  
 	to_delete = true;
 

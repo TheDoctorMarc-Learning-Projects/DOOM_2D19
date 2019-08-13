@@ -23,7 +23,7 @@ void j1EntityLootHealth::OnPickUp()
 {
 	 App->audio->PlayFx("itemPickUp", 0, false, 1.f);
 
-	 App->entityFactory->AddLifeToPlayer(0.25f);
+	 App->entityFactory->AddLifeToPlayer(0.25f * App->entityFactory->currentDifficultyMultiplier.lootAmmout);
 	 
 	 to_delete = true;
 

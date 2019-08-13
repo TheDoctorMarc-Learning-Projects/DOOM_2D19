@@ -124,13 +124,13 @@
 	<images>
         <image name="background">
 		  <position x="0" y="0" />
-          <section x="150" y="207" w="440" h="247"/>
-		  <scaleFactor value = "3.1"/>
+          <section x="0" y="845" w="1522" h="855"/>
+		  <scaleFactor value = "1.0"/>
         </image>
 	 </images>	
 	 <labels>
         <label name="gameName">
-          <position x="505" y="20"/>
+          <position x="750" y="16"/>
           <color R="255" G="255" B="255" A="255"/>
           <text value="DOOM 2D19"/>
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
@@ -147,10 +147,189 @@
           <size s="48"/>
 		  <scaleFactor value="1.0"/>
 		  <functionName value="LoadGUI"/>
+		  <targetScene value="6"/>
+        </button>
+		
+		<button name="continueButton">
+          <position x="200" y="260"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="Continue"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="LoadGUI"/>
+		  <targetScene value="0"/>
+        </button>
+		
+		
+		<button name="difficultyButton">
+          <position x="200" y="320"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="Select difficulty"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="LoadGUI"/>
+		  <targetScene value="2"/>
+        </button>
+		
+		<button name="settingsButton">
+          <position x="200" y="380"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="Settings"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="LoadGUI"/>
+		  <targetScene value="4"/>
+        </button>
+		
+		<button name="creditsButton">
+          <position x="200" y="440"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="Credits"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="LoadGUI"/>
 		  <targetScene value="3"/>
         </button>
+		
+		
+		<button name="exitButton">
+          <position x="200" y="500"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="Exit"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="ExitGame"/>
+		  <targetScene value="0"/>
+        </button>
+		
       </buttons>
 	</MainMenuUI>
- </scene>
+    <DifficultySelectorUI>
+	<labels>
+        <label name="title">
+          <position x="495" y="16"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="Choose your difficulty"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="60"/>
+		  <scaleFactor value = "1.0"/>
+        </label>
+      </labels>
+	  
+	 <images>
+        <image name="background">
+		  <position x="0" y="0" />
+          <section x="323" y="0" w="1361" h="840"/>
+		  <scaleFactor value = "1.7"/>
+        </image>
+		
+		<image name="face1">
+		  <position x="500" y="200" />
+          <section x="0" y="485" w="24" h="30"/>
+		  <scaleFactor value = "1.7"/>
+        </image>
+		
+			<image name="face2">
+		  <position x="500" y="260" />
+          <section x="26" y="485" w="24" h="30"/>
+		  <scaleFactor value = "1.7"/>
+        </image>
+		
+			<image name="face3">
+		  <position x="500" y="320" />
+          <section x="52" y="485" w="24" h="30"/>
+		  <scaleFactor value = "1.7"/>
+        </image>
+		
+			<image name="face4">
+		  <position x="500" y="380" />
+          <section x="78" y="485" w="24" h="30"/>
+		  <scaleFactor value = "1.7"/>
+        </image>
+		
+			<image name="face5">
+		  <position x="500" y="440" />
+          <section x="104" y="485" w="24" h="30"/>
+		  <scaleFactor value = "1.7"/>
+        </image>
+		
+	 </images>	
+	 
+      <buttons>
+        <button name="difficulty1Button">
+          <position x="550" y="200"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="I AM A CASUAL GAMER"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="SetDifficulty"/>
+		  <targetScene value="0"/>
+        </button>
+		
+		<button name="difficulty2Button">
+          <position x="550" y="260"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="I PLAYED DARK SOULS ONCE"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="SetDifficulty"/>
+		  <targetScene value="0"/>
+        </button>
+		
+		
+		<button name="difficulty3Button">
+          <position x="550" y="320"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="I FANTASIZE ABOUT DYING"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="SetDifficulty"/>
+		  <targetScene value="0"/>
+        </button>
+		
+		<button name="difficulty4Button">
+          <position x="550" y="380"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="THEY CALL ME DARK LORD"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="SetDifficulty"/>
+		  <targetScene value="0"/>
+        </button>
+		
+		<button name="difficulty5Button">
+          <position x="550" y="440"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="I LISTEN TO DEATH METAL"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="SetDifficulty"/>
+		  <targetScene value="0"/>
+        </button>
+		
+		<button name="backFromDifficultyButton">
+          <position x="80" y="600"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="BACK"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="LoadGUI"/>
+		  <targetScene value="1"/>
+        </button>
+		
+      </buttons>
+    </DifficultySelectorUI>	  
+    </scene>
 
 </config>

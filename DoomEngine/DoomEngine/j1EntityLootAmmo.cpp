@@ -24,7 +24,7 @@ void j1EntityLootAmmo::OnPickUp()
 {
 	App->audio->PlayFx("itemPickUp", 0, false, 1.f);
 
-	App->entityFactory->AddAmmoToPlayer(0.25f); 
+	App->entityFactory->AddAmmoToPlayer(0.25f * App->entityFactory->currentDifficultyMultiplier.lootAmmout); 
 	App->gui->UpDateInGameUISlot("ammoLabel", App->entityFactory->player->currentWeapon->currentBullets);
 
 	to_delete = true;

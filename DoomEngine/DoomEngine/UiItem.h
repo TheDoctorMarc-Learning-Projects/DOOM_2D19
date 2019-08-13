@@ -76,6 +76,7 @@ public:
 
  
 	void(*function) (UiItem*) = nullptr;
+	std::string functionName = "empty"; 
 	SceneState targetScene = SceneState::NO_SCENE; 
 	sceneTypeGUI targetSceneGui = sceneTypeGUI::NO_SCENE;
 	sceneTypeGUI myScene = sceneTypeGUI::NO_SCENE;

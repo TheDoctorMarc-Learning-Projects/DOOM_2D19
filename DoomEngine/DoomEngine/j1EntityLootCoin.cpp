@@ -1,4 +1,5 @@
 #include "j1EntityLootCoin.h"
+#include "j1EntityFactory.h"
 #include "j1Gui.h"
 #include <string>   
 
@@ -40,13 +41,11 @@ void j1EntityLootCoin::OnPickUp()
 
 			App->audio->PlayFx("figurePickUp", 0, true, 1.f, 0.15f, 0.15f);
 			App->gui->UpDateInGameUISlot(name + "Label", coins, section);
-			App->gui->UpdateDeathTimer(timeBonus);
+			App->gui->UpdateDeathTimer((int)((float)timeBonus * App->entityFactory->currentDifficultyMultiplier.deathTimerUpdate));
 
 			to_delete = true;
 		}
 		else
 			assert(false); 
-
-	
 
 }

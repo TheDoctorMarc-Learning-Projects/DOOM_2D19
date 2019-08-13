@@ -191,7 +191,7 @@ bool j1App::Update()
 	bool ret = true;
 	PrepareUpdate();
 
-	if(input->GetWindowEvent(WE_QUIT) == true || (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN))
+	if(input->GetWindowEvent(WE_QUIT) == true || (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) || buttonClosesApp == true)
 		ret = false;
 
 	if(ret == true)

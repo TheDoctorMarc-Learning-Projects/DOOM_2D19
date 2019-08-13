@@ -41,7 +41,27 @@ bool j1EntityFactory::Awake(pugi::xml_node & node)
 {
 bool ret = true;
 
+    difficultyMultipliers.at(0).enemyDamage = 0.65f; 
+	difficultyMultipliers.at(0).deathTimerUpdate = 3.f;
+	difficultyMultipliers.at(0).lootAmmout = 2.f;
 
+	difficultyMultipliers.at(1).enemyDamage = 0.85f;
+	difficultyMultipliers.at(1).deathTimerUpdate = 1.5f;
+	difficultyMultipliers.at(1).lootAmmout = 1.5f;
+
+	difficultyMultipliers.at(2).enemyDamage = 1.f;                   // normal difficulty 
+	difficultyMultipliers.at(2).deathTimerUpdate = 1.f;
+	difficultyMultipliers.at(2).lootAmmout = 1.f;
+
+	difficultyMultipliers.at(3).enemyDamage = 1.5f;
+	difficultyMultipliers.at(3).deathTimerUpdate = 1.f;
+	difficultyMultipliers.at(3).lootAmmout = 0.5f;
+
+	difficultyMultipliers.at(4).enemyDamage = 2.5f;
+	difficultyMultipliers.at(4).deathTimerUpdate = 0.8f;
+	difficultyMultipliers.at(4).lootAmmout = 0.2f;
+
+	currentDifficultyMultiplier = difficultyMultipliers.at(2); 
 
 return ret;
 }
@@ -402,6 +422,9 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 	}
 	else
 	{
+		// take into account the difficulty
+		damage *= currentDifficultyMultiplier.enemyDamage; 
+
 		float previousArmor = player->armor;
 		float previousLife = player->life;
 		
@@ -454,7 +477,7 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 		if (ent != player)  
 		{
 			// add time to the death countdown
-			App->gui->UpdateDeathTimer((int)dynamic_cast<j1Enemy*>(ent)->powerLevel * enemyKillTimeBonusFactor); 
+			App->gui->UpdateDeathTimer((int)((float)(int)dynamic_cast<j1Enemy*>(ent)->powerLevel * enemyKillTimeBonusFactor * currentDifficultyMultiplier.deathTimerUpdate)); 
 
 			// warn the GUI
 			dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("kill");
@@ -529,4 +552,10 @@ void j1EntityFactory::AddArmorToPlayer(float maxArmorPercentatge)
 
 
 	App->gui->UpDateInGameUISlot("armorLabel", player->armor);
+}
+
+
+void j1EntityFactory::SetDifficultyMultiplier(int difficultyLevel)
+{
+	currentDifficultyMultiplier = difficultyMultipliers.at(difficultyLevel - 1); 
 }

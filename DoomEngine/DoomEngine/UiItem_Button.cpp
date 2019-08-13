@@ -17,6 +17,7 @@ UiItem_Button::UiItem_Button(iPoint position, std::string functionName, std::str
 	this->tabbable = true; 
  
 	// Assign the function pointer 
+	this->functionName = functionName; 
 	this->function = App->gui->GetFunctionsMap().at(functionName);
 	this->targetScene = targetScene; 
 	this->targetSceneGui = App->scene->convertSceneTypeToGui(targetScene);
@@ -41,6 +42,7 @@ void UiItem_Button::OnHover()
  
 void UiItem_Button::OnClickDown()
 {
+	App->audio->PlayFx("buttonClick"); 
 	this->function(this); 
 	SDL_Color c = { 246, 220, 4, 255 }; 
 	this->textLabel->ChangeTextureIdle("", &c, NULL);

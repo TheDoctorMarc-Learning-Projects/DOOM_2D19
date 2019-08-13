@@ -123,6 +123,7 @@ public:
 	bool				vsync = false;
 	bool				pause = false;
 	bool                cleaningUp = false;
+	bool                buttonClosesApp = false; 
 
 	std::string			title;
 private:

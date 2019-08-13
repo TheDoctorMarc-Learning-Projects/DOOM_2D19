@@ -33,6 +33,14 @@ struct encapsulatedEnemyData  // needed to load enemies from tiled, because text
 	explicit encapsulatedEnemyData(iPoint pos, std::string name) : position(pos), name(name) {};
 };
 
+struct DifficultyMultiplier
+{
+	float enemyDamage = 0.f; 
+	float deathTimerUpdate = 0.f;
+	float lootAmmout = 0.f; 
+};
+
+ 
 
 class j1EntityFactory : public j1Module
 {
@@ -52,7 +60,9 @@ public:
 	void DoDamagetoEntity(j1Entity* ent, float damage, float shotsPerSecond, fPoint shotSpeed = fPoint(0,0));   // to do: capture shot dir and enemy rect for the blood functionality
 	void AddLifeToPlayer(float maxLifePercentatge = 0.0f);
 	void AddAmmoToPlayer(float maxBulletPercentage = 0.0f); 
-	void AddArmorToPlayer(float maxArmorPercentage = 0.0f); 
+	void AddArmorToPlayer(float maxArmorPercentage = 0.0f);
+
+	void SetDifficultyMultiplier(int difficultyLevel);
 
 	/*bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;*/  // TODO (xd) 
@@ -119,6 +129,8 @@ public:
 	std::map<std::string, SDL_Texture*> entityTextureMap; 
 	std::map<std::string, ENTITY_TYPE> enemyTypeMap; 
 	std::array<int, 5> platFormLevelHeights; 
+	std::array<DifficultyMultiplier, 5> difficultyMultipliers;
+	DifficultyMultiplier currentDifficultyMultiplier; 
 	j1EntityPlayer* player = nullptr; 
 	bool playerAlive = false; 
 	iPoint playerSpawnPos = iPoint(0, 0); 
@@ -127,7 +139,7 @@ public:
 
 
 	std::list<encapsulatedEnemyData*> enemiesToBeSpawned; 
-	int enemyKillTimeBonusFactor = 2;
+	float enemyKillTimeBonusFactor = 2.f;
 
 };
 

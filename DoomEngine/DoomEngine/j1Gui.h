@@ -16,6 +16,8 @@
  
 
 void LoadGui(UiItem* callback = nullptr);
+void ExitGame(UiItem* callback = nullptr);
+void SetDifficulty(UiItem* callback = nullptr);
  
 class j1Gui : public j1Module
 {
@@ -59,6 +61,7 @@ public:
 	UiItem* GetCurrentCanvas() const { 
 		return currentCanvas; 
 	};
+ 
 	std::map<sceneTypeGUI, UiItem*> GetCanvases() const { return canvases; }; 
 	SDL_Texture* GetAtlas() const { return atlas; };
 	float GetSpriteGlobalScale() const { return spriteScale; };   // TODO: alter this when needed, pass the items a specific scale if needed

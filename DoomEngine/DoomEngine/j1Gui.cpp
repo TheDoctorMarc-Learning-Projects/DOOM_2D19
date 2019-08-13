@@ -27,6 +27,8 @@ void j1Gui::FillFunctionsMap()
 {
 	functionsMap = {
 	 { "LoadGUI", &LoadGui},
+	 { "ExitGame", &ExitGame},
+	 { "SetDifficulty", &SetDifficulty},
 	};
 
 	// TODO: keep updating this function map
@@ -174,6 +176,25 @@ bool j1Gui::CleanUp()
 	canvases.clear();
 
 	return true;
+}
+
+
+void ExitGame(UiItem* callback)
+{
+	App->buttonClosesApp = true; 
+}
+
+void SetDifficulty(UiItem* callback)
+{
+	int diffLevel = 1; 
+
+	for (const auto& item : App->gui->GetCurrentCanvas()->children)   // search which difficulty level the button is related to according to the Y pos
+		if(item->functionName == "SetDifficulty")
+			if (item->hitBox.y < callback->hitBox.y)
+				diffLevel++;
+
+		
+	App->entityFactory->SetDifficultyMultiplier(diffLevel); 
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - create a canvas from a button action

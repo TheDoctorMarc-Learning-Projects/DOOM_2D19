@@ -71,6 +71,8 @@ public:
 	SceneState GetNextSceneState() const { return nextSceneState; };  // when transitioning 
 	sceneTypeGUI convertSceneTypeToGui(SceneState state);
 
+
+
 private:
 	SDL_Texture* debug_tex = nullptr;
 	SceneState state = SceneState::MAINMENU;
@@ -78,7 +80,7 @@ private:
 
 	SDL_Color sceneSwapColor = { 30, 0, 0, 255 }; 
 	bool loadGUI = false; 
-	
+	bool toUpdate = false; 
 
 public:
 	pugi::xml_node sceneNode;
@@ -91,7 +93,11 @@ public:
 	void UnLoadScene();
 	void LoadScene(SceneState sceneState, bool loadGUI);  
 	void CreateScene();
-
+	void SetTargetScene(SceneState sceneState)
+	{
+		nextSceneState = sceneState; 
+		toUpdate = true; 
+	}
 };
 
 #endif // __j1SCENE_H__

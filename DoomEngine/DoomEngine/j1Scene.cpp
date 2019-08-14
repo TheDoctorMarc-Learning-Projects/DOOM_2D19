@@ -75,8 +75,13 @@ bool j1Scene::Start()
 bool j1Scene::PreUpdate()
 {
 	BROFILER_CATEGORY("PreUpdate Scene", Profiler::Color::Turquoise);
-	// debug pathfing ------------------
+ 
 
+	if (toUpdate == true)
+	{
+		LoadScene(nextSceneState, true);
+		toUpdate = false; 
+	}
 
 	return true;
 }
@@ -189,24 +194,13 @@ void j1Scene::LoadNewMap(const char* mapName)
 
 void j1Scene::UnLoadScene()
 {
-	if (App->map->IsEnabled())
-		App->map->Disable();
 
-	if (App->pathfinding->IsEnabled())
-		App->pathfinding->Disable();
-
-	if (App->entityFactory->IsEnabled())
-		App->entityFactory->Disable();
-
-	if (App->bloodManager->IsEnabled())
-		App->bloodManager->Disable();
-
-	if (App->particles->IsEnabled())
-		App->particles->Disable();
-
-	if (App->collision->IsEnabled())
-		App->collision->Disable();
-
+	App->map->Disable();
+	App->pathfinding->Disable();
+	App->entityFactory->Disable();
+	App->bloodManager->Disable();
+	App->particles->Disable();
+	App->collision->Disable();
  
 	//App->audio->UnLoadAudio(); // why? xd 
  
@@ -253,21 +247,11 @@ void j1Scene::CreateScene()  // called by fade
 
 	if (nextSceneState == SceneState::LEVEL1 || nextSceneState == SceneState::LEVEL2)
 	{
-		if (App->pathfinding->IsEnabled() == false)
-			App->pathfinding->Enable();
-
-		if (App->entityFactory->IsEnabled() == false)
-			App->entityFactory->Enable();
-
-		if (App->bloodManager->IsEnabled() == false)
-			App->bloodManager->Enable();
-
-		if (App->particles->IsEnabled() == false)
-			App->particles->Enable();
-
-		if (App->collision->IsEnabled() == false)
-			App->collision->Enable();
-
+		App->pathfinding->Enable();
+		App->entityFactory->Enable();
+		App->bloodManager->Enable();
+		App->particles->Enable();
+		App->collision->Enable();
 
 		App->map->active = true;
 	}

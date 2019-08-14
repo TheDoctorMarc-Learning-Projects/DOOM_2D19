@@ -41,7 +41,7 @@ bool j1EntityFactory::Awake(pugi::xml_node & node)
 {
 bool ret = true;
 
-    difficultyMultipliers.at(0).enemyDamage = 0.65f; 
+    difficultyMultipliers.at(0).enemyDamage = 0.45f; 
 	difficultyMultipliers.at(0).deathTimerUpdate = 3.f;
 	difficultyMultipliers.at(0).lootAmmout = 2.f;
 
@@ -93,7 +93,6 @@ bool j1EntityFactory::Start()
 	
 	// for the moment, create player here 
 	player = (j1EntityPlayer*)CreateEntity(PLAYER, playerSpawnPos.x, playerSpawnPos.y, "player");
-
 
 	std::list<j1Entity*>::iterator item = entities.begin();
 	for (; item != entities.end(); ++item)
@@ -238,9 +237,6 @@ bool j1EntityFactory::CleanUp()
 
 	}
 	entities.clear();
-
-
-	
 
 	for (auto tex : entityTextureMap)
 	{
@@ -484,8 +480,29 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 		}
 		else
 		{
+
+			playerAlive = false;
+			playerLives--;
+
 			// warn the GUI
 			dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("death");
+
+			// finally check the remaining lives and switch scene according
+			if (playerLives > 0)
+			{
+				//App->scene->LoadScene(App->scene->GetCurrentSceneState(), true);
+				App->scene->SetTargetScene(App->scene->GetCurrentSceneState()); 
+				return; 
+			}
+				
+			else
+			{
+				playerLives = 3; 
+			//	App->scene->LoadScene(SceneState::MAINMENU, true);
+				App->scene->SetTargetScene(SceneState::MAINMENU);
+				return; 
+			}
+		
 		}
 			
 			

@@ -924,8 +924,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 	case COLLIDER_TYPE::COLLIDER_WIN:
 		if (App->scene->GetCurrentSceneState() == SceneState::LEVEL1)
 			App->scene->LoadScene(SceneState::LEVEL2, true); 
-		if (App->scene->GetCurrentSceneState() == SceneState::LEVEL2)                     // TODO: level 2 loads main menu again
-			App->scene->LoadScene(SceneState::LEVEL1, true);
+		if (App->scene->GetCurrentSceneState() == SceneState::LEVEL2)                  
+			App->scene->LoadScene(SceneState::MAINMENU, true);
 		break;
 
 	}
@@ -1089,8 +1089,6 @@ void j1EntityPlayer::SetDyingState(bool brutal)
 
 	if (state.combat == combatState::DYING || state.combat == combatState::DEAD)
 		return;
-
-	App->entityFactory->playerAlive = false;
 
 	state.combat = combatState::DYING;
 

@@ -728,6 +728,9 @@ void j1Enemy::SolveMove(fPoint Direction, float dt)
 
 bool j1Enemy::isPlayerOnMeleeRange() const 
 {
+	if (App->entityFactory->IsPlayerAlive() == false)
+		return false;
+
 	iPoint tilePos = App->map->WorldToMap((int)position.x, (int)position.y) + iPoint(0, 1);
 	iPoint playerTilePos = App->map->WorldToMap((int)App->entityFactory->player->position.x, (int)App->entityFactory->player->position.y) + iPoint(0, 1);
 	return tilePos.DistanceManhattan(playerTilePos) <= myMeleeRange; 
@@ -736,6 +739,8 @@ bool j1Enemy::isPlayerOnMeleeRange() const
 
 bool j1Enemy::isPlayerOnMyZone() const
 {
+	if (App->entityFactory->IsPlayerAlive() == false)
+		return false;
 
 	if (hasMaxDistanceFromOrigin == false)
 		return true; 
@@ -747,6 +752,9 @@ bool j1Enemy::isPlayerOnMyZone() const
 
 bool j1Enemy::isPlayerOnSamePlatform() const
 {
+	if (App->entityFactory->IsPlayerAlive() == false)
+		return false;
+
 	return onPlatform == true && App->entityFactory->player->onPlatform == true && lastPlatform == App->entityFactory->player->lastPlatform; 
 }
 
@@ -755,8 +763,9 @@ bool j1Enemy::isPlayerOnSamePlatform() const
 
 bool j1Enemy::DoMeleeAttack()
 {
-	// RESET MELEE ATTACK 
 
+	if (App->entityFactory->IsPlayerAlive() == false)
+		return false;
 
 	if (state.combat == eCombatState::DYING)
 		return false;
@@ -846,6 +855,8 @@ bool j1Enemy::DoMeleeAttack()
 
 bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long range attack anim or audio ???? 
 {
+	if (App->entityFactory->IsPlayerAlive() == false)
+		return false;
 
 	if (state.combat == eCombatState::DYING)
 		return false; 
@@ -929,6 +940,8 @@ bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long r
 
 void j1Enemy::SpawnShotParticle()
 {
+	if (App->entityFactory->IsPlayerAlive() == false)
+		return; 
 
 	fPoint dir = GetShotDir();
 	fPoint speed = GetShotSpeed(dir);
@@ -997,6 +1010,8 @@ fPoint j1Enemy::GetShotDir()
 
 void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 {
+	if (App->entityFactory->IsPlayerAlive() == false)
+		return; 
 
 	if (c1->type == COLLIDER_ENEMY_SHOT)
 	{
@@ -1265,6 +1280,9 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 
 void j1Enemy::OnCollisionExit(Collider* c1, Collider* c2)
 {
+	if (App->entityFactory->IsPlayerAlive() == false)
+		return;
+
 
 	switch (c2->type)
 	{
@@ -1400,6 +1418,9 @@ POINTING_DIR j1Enemy::GetDirection()
 
 bool j1Enemy::Go_A_to_B()
 {
+	if (App->entityFactory->IsPlayerAlive() == false)
+		return false;
+
 
 	if (onPlatform == true)
 	{
@@ -1436,6 +1457,9 @@ bool j1Enemy::Go_A_to_B()
 bool j1Enemy::isWallBetweenPlayerAndMe(bool shoot)
 {
 	//capture player and enemy positions : take into account shot offset and shot hieght
+	if (App->entityFactory->IsPlayerAlive() == false)
+		return false;
+
 
 	fPoint p1 = fPoint(0, 0); 
 	if (shoot == true)

@@ -133,6 +133,7 @@ public:
 	DifficultyMultiplier currentDifficultyMultiplier; 
 	j1EntityPlayer* player = nullptr; 
 	bool playerAlive = false; 
+	uint playerLives = 3; 
 	iPoint playerSpawnPos = iPoint(0, 0); 
 
 	bool debug = false;

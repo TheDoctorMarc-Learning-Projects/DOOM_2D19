@@ -78,37 +78,55 @@ bool j1Gui::Update(float dt)
 		this->dt = dt;
 	iPoint mousePos;
 	App->input->GetMousePosition(mousePos.x, mousePos.y);
-	uint mouseState = App->input->GetCurrentMouseButtonDown();
+	uint mouseState = App->input->GetMouseButtonDown(SDL_BUTTON_LEFT);
 
 
 	// for the moment, this won't update the grandsons (not needed) 
 
 	for  (auto& item : currentCanvas->children)
 	{
-		/*if (item->draggable && thisItem->data->mouseButtonDown != 0)
+		if (App->entityFactory->isPointInsideRect(&mousePos, &item->hitBox) == true)   // MOUSE INSIDE HITBOX
 		{
-			iPoint mouseMotion;
-			App->input->GetMouseMotion(mouseMotion);
-			if (thisItem->data->HaveParent())
-			{
-				thisItem->data->AddToPos(mouseMotion);
-			}
-		}*/
-		
-		if (App->entityFactory->isPointInsideRect(&mousePos, &item->hitBox) == true)
-		{
-			item->mouseState = mouseState;
 
-			if (item->state != CLICK && App->input->GetMouseButtonDown(item->mouseState) == KEY_DOWN)
+
+			if (item->state == DRAG)
+				item->MoveWithMouse(mousePos); 
+
+			if (item->state != CLICK && mouseState == KEY_DOWN)
 			{
-				item->OnClickDown();
-				item->state = CLICK;
+				
+				if (selectedItem == nullptr && item->accionable == true)
+				{
+					item->OnClickDown();
+					item->state = CLICK;
+					selectedItem = item;
+				}
+					
 			}
 
-			if (item->state == CLICK && App->input->GetMouseButtonDown(item->mouseState) == KEY_UP)
+			if (item->state != DRAG && mouseState == KEY_REPEAT)
 			{
+				if (selectedItem == item)
+				{
+					if (item->draggable == true)
+					{
+						item->state = DRAG;
+						item->OnDrag();
+					}
+						
+				}
+				
+			}
+
+
+			if ((item->state == CLICK || item->state == DRAG) && mouseState == KEY_UP)
+			{
+				if (item->state == DRAG && item->focusable == false)
+					item->SetOriginPos(); 
+
 				item->OnClickUp();
 				item->state = HOVER;
+				selectedItem = nullptr;
 			}
 
 			else if (item->state == IDLE)
@@ -120,15 +138,40 @@ bool j1Gui::Update(float dt)
 
 
 		}
-		else if (item->state != IDLE)
+		else if (item->state != IDLE)  // MOUSE OUTSIDE HITBOX
 		{
-			item->OnHoverExit(); 
-			item->state = IDLE;
+			if (item->focusable == true)
+			{
+				if (item->state == DRAG)          // keep it on drag state until key up
+				{
+					if(mouseState != KEY_UP)
+						item->MoveWithMouse(mousePos);
+					else
+					{
+						item->OnClickUp();
+						item->state = IDLE;
+						
+					}
+
+				}
+			}
+			else
+			{
+				if (item->state == DRAG)
+					item->SetOriginPos();
+
+				item->OnHoverExit();
+				item->state = IDLE;
+				selectedItem = nullptr;
+			}
+		
 		}
 			
 	 
 
 	}
+
+	lastMousePos = mousePos; 
 
 	return true;
 }

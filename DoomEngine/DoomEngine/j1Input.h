@@ -93,23 +93,17 @@ public:
 		return controller[id];
 	}
 
-	void SetControllerButtonState(int button, j1KeyState state);
 
 	j1KeyState GetControllerAxisPulsation(int id) const
 	{
 		return controller_axis[id];
 	}
 
-	j1KeyState GetJoystickPulsation(j1JoyStickSide joystickSide, j1JoyDir joyButtonDir) const;
-
-	// Check if a certain window event happened
-	bool GetWindowEvent(int code);
 
 	// Get mouse / axis position
 	void GetMousePosition(int &x, int &y);
 	void GetMouseMotion(int& x, int& y);
 
-	uint GetCurrentMouseButtonDown(); 
 
 	void DoGamePadRumble(float strength, uint32 duration) const;
 

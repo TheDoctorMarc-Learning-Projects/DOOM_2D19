@@ -11,6 +11,7 @@ enum UI_STATES
 	IDLE,
 	HOVER,
 	CLICK,
+	DRAG,
 	MAX_STATES,
 };
 
@@ -43,10 +44,29 @@ public:
 		parent->children.push_back(this); 
 	}
 
+	void MoveWithMouse(iPoint mousePos);
+
+	void SetPos(iPoint pos) {
+		hitBox.x = pos.x; 
+		hitBox.y = pos.y; 
+	}
+
+	void SetOriginPos() {
+
+		SetPos(originPos); 
+
+		if (children.size() > 0)
+			for (auto item : children)
+				item->SetOriginPos();
+	}
+
+	iPoint GetPos() const { return iPoint(hitBox.x, hitBox.y); }; 
+
 	virtual void CleanUp() {}; 
 	 
 	virtual void OnClickDown() {};
 	virtual void OnHover() {};
+	virtual void OnDrag() {};
 	virtual void OnHoverExit() {};
 	virtual void OnClickUp() {};
 
@@ -65,15 +85,15 @@ public:
 	uint mouseState = 0; 
 
 	bool slidable = false;
-	bool draggable = true; 
+	bool draggable = false; 
 	bool tabbable = false;
 	bool enable = true;
 	bool hide = false;
 	bool to_delete = false;
 	bool useCamera = true;
 	bool selected = false;
-	
-
+	bool focusable = false; 
+	bool accionable = false; 
  
 	void(*function) (UiItem*) = nullptr;
 	std::string functionName = "empty"; 

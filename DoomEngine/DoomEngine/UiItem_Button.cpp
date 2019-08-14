@@ -15,6 +15,9 @@ UiItem_Button::UiItem_Button(iPoint position, std::string functionName, std::str
 	this->name = name; 
 	this->guiType = GUI_TYPES::BUTTON;
 	this->tabbable = true; 
+	this->draggable = true;
+	this->accionable = true; 
+
  
 	// Assign the function pointer 
 	this->functionName = functionName; 

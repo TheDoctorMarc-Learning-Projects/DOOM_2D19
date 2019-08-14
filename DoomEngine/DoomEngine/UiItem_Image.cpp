@@ -59,8 +59,6 @@ UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, UiItem* con
 	this->hitBox.x = position.x;
 	this->hitBox.y = position.y;
 
-
-
  
 }
 

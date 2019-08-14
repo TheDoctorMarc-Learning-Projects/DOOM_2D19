@@ -42,9 +42,7 @@ UiItem_Bar::UiItem_Bar(iPoint position, std::string name, const SDL_Rect* sectio
 	thumb->hitBox.w = thumb_section->w;
 	thumb->hitBox.h = thumb_section->h;
 
-
-	// the parent
-	this->parent = parent;
+	this->accionable = true;
 }
 
 UiItem_Bar::~UiItem_Bar()
@@ -62,9 +60,9 @@ void UiItem_Bar::Draw()
 
 
 
-void UiItem_Bar::DoLogicHovered() {
+void UiItem_Bar::OnDrag() {
 
-	/*image_bar->section = image_hover;   // TODO: code this better AND have a FOCUS
+	image_bar->section = image_hover;   // TODO: code this better AND have a FOCUS
 
 	if (!thumbReposition)
 	{
@@ -74,12 +72,12 @@ void UiItem_Bar::DoLogicHovered() {
 	Sint16 xAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_RIGHTX);
 
 	uint nexPosX = 0;
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT || xAxis>0 || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
 		nexPosX = thumb->hitBox.x + 2;
 	}
 	
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT || xAxis < 0 || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_DPAD_LEFT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
 		nexPosX = thumb->hitBox.x - 2;
 	}
@@ -87,10 +85,11 @@ void UiItem_Bar::DoLogicHovered() {
 	if (nexPosX >= (bar->hitBox.x - (thumb->hitBox.w*0.5)) && nexPosX <= (bar->hitBox.x + bar->hitBox.w) - (thumb->hitBox.w*0.5))
 	{
 		thumb->SetPos(iPoint(nexPosX, thumb->hitBox.y));
-	}*/
+	}
+
 }
 
-void UiItem_Bar::DoLogicAbandoned() {
+void UiItem_Bar::OnClickUp() {
 
 	if (thumbReposition)
 	{

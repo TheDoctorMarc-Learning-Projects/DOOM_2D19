@@ -82,5 +82,19 @@ void UiItem::DebugDraw()
 	App->render->DrawQuad(hitBox, 0, 0, 255, 255, true, true); 
 }
 
+
+void UiItem::MoveWithMouse(iPoint mousePos)
+{
+	iPoint mouseTravel = mousePos - App->gui->GetLastMousePos(); 
+	iPoint targetPos = iPoint(hitBox.x + mouseTravel.x, hitBox.y + mouseTravel.y); 
+	SetPos(targetPos);
+	
+	if (children.size() > 0)
+		for (const auto& child : children)
+			if (child->enable == true)
+			{
+				child->MoveWithMouse(mousePos);
+			}
+}
  
  

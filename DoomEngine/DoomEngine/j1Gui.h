@@ -61,6 +61,10 @@ public:
 	UiItem* GetCurrentCanvas() const { 
 		return currentCanvas; 
 	};
+
+	iPoint GetLastMousePos() const {
+		return lastMousePos; 
+	}
  
 	std::map<sceneTypeGUI, UiItem*> GetCanvases() const { return canvases; }; 
 	SDL_Texture* GetAtlas() const { return atlas; };
@@ -83,12 +87,11 @@ private:
 	std::list<UiItem*>	listOfItems;
 	std::map<sceneTypeGUI, UiItem*> canvases;
 	std::map<std::string, void(*)(UiItem* callback)> functionsMap;  // the functions have callback. So I can call them in button cpp etc without if / elses 
-
-	std::map<std::string, int> defaultInGameStats; 
-
+	std::map<std::string, int> defaultInGameStats;
 	std::string atlas_file_name;
 	float spriteScale = 0.0f; 
-
+	iPoint lastMousePos = iPoint(0, 0); 
+	UiItem* selectedItem = nullptr; 
 
 
 public: 

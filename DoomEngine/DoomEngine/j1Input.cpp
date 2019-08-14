@@ -70,9 +70,6 @@ bool j1Input::Start()
 {
 	SDL_StopTextInput();
 
-
-	//SDL_ShowCursor(0); // TODO: uncomment to hide cursor
-
 	return true;
 }
 
@@ -352,18 +349,6 @@ Sint16 j1Input::GetControllerAxis(SDL_GameControllerAxis axis) {
 }
 
 
-uint j1Input::GetCurrentMouseButtonDown()
-{
-	for (uint I = 0; I < NUM_MOUSE_BUTTONS; I++)
-	{
-		if (mouse_buttons[I] == KEY_DOWN)
-		{
-			return I + 1;
-		}
-	}
-	return (UINT)INT_MAX;
-}
-
 void j1Input::DoGamePadRumble(float strength, uint32 duration) const
 {
 	//SDL_GameControllerRumble() // TO bypass haptic etc and do the order directly to gamecontroller (for simple rumble)
@@ -372,12 +357,3 @@ void j1Input::DoGamePadRumble(float strength, uint32 duration) const
 
 }
 
-j1KeyState j1Input::GetJoystickPulsation(j1JoyStickSide joystickSide, j1JoyDir joyButtonDir) const
-{
-	return joystick[(int)joystickSide * ((int)j1JoyDir::JOYSTICK_DIR_MAX) + (int)joyButtonDir];
-}
-
-void j1Input::SetControllerButtonState(int button, j1KeyState state)
-{
-	controller[button] = state;
-}

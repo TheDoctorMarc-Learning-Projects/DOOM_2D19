@@ -15,9 +15,8 @@
 
 
 
-UiItem_Bar::UiItem_Bar(iPoint position, iPoint thumbOffset, std::string name, std::string functionName, const SDL_Rect* section, const SDL_Rect* thumb_section,  const SDL_Rect* sectioHover,
-	UiItem*const parent, float Spritescale) : UiItem(position, parent)
-
+UiItem_Bar::UiItem_Bar(iPoint position, iPoint thumbOffset, std::string name, std::string functionName, const SDL_Rect* section, const SDL_Rect* thumb_section, const SDL_Rect* sectioHover,
+	UiItem*const parent, float Spritescale, std::string labelText, std::string valueLabelText, SDL_Color textColor, SDL_Color valueColor, TTF_Font * font) : UiItem(position, parent)
 {
 	assert(parent != nullptr);
 
@@ -57,9 +56,11 @@ UiItem_Bar::UiItem_Bar(iPoint position, iPoint thumbOffset, std::string name, st
 
 	this->accionable = true;
 	     
+	// labels
+	this->textLabel = App->gui->AddLabel(this->name + "LabelText", labelText, textColor, font, position + iPoint(-65, 0) , this, Spritescale);
+	this->valueLabel = App->gui->AddLabel(this->name + "LabelValue", valueLabelText, valueColor, font, position + iPoint(hitBox.w + 20,0) , this, Spritescale);
 
-
-		// Assign the function pointer 
+	// Assign the function pointer 
 	this->functionName = functionName;
 	this->function = App->gui->GetFunctionsMap().at(functionName);
 }
@@ -96,20 +97,13 @@ void UiItem_Bar::OnDrag(iPoint mousePos)
 	else if(thumb->GetPos().x < thumb->originPos.x)
 		thumb->SetPos(iPoint(thumb->originPos.x, thumb->GetPos().y));
 
+	// update the value label
+	valueLabel->ChangeTextureIdle(std::to_string((uint)(int)(getThumbTravelFactor() * 100.f)), NULL, NULL);
+
 	// finally call the function 
 	this->function(this); 
 }
 
-
-void UiItem_Bar::CleanUp()   
-{
-	if(thumb)
-		thumb->to_delete = true;
-	if(bar) 
-		bar->to_delete = true; 
-
-	this->to_delete = true;
-}
 
 void UiItem_Bar::OnHover()
 {

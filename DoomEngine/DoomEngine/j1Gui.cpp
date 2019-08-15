@@ -415,7 +415,6 @@ void j1Gui::LoadXMLGUI(pugi::xml_node& menuNode)
 		std::string name = uiNode.attribute("name").as_string();
 		std::string functionName = uiNode.child("functionName").attribute("value").as_string();
 		std::string text = uiNode.child("text").attribute("value").as_string();
-		std::string font = uiNode.child("font").attribute("value").as_string();
 		SDL_Color color = { uiNode.child("color").attribute("R").as_uint(),uiNode.child("color").attribute("G").as_uint(),uiNode.child("color").attribute("B").as_uint(),uiNode.child("color").attribute("A").as_uint() };
 		const char* fontPath = uiNode.child("path").attribute("p").as_string();
 		uint fontSize = uiNode.child("size").attribute("s").as_int();
@@ -437,7 +436,15 @@ void j1Gui::LoadXMLGUI(pugi::xml_node& menuNode)
 		float scaleFactor = uiNode.child("scaleFactor").attribute("value").as_float();
 		iPoint thumbOffset = { uiNode.child("thumbOffset").attribute("x").as_int(), uiNode.child("thumbOffset").attribute("y").as_int() };
 
-		App->gui->AddBar(position, thumbOffset, name, functionName, &section, &thumbSection, &hoverSection, NULL, scaleFactor);
+		std::string text = uiNode.child("text").attribute("value").as_string();
+		std::string valueText = uiNode.child("valueText").attribute("value").as_string();
+		SDL_Color color = { uiNode.child("color").attribute("R").as_uint(),uiNode.child("color").attribute("G").as_uint(),uiNode.child("color").attribute("B").as_uint(),uiNode.child("color").attribute("A").as_uint() };
+		SDL_Color color2 = { uiNode.child("color2").attribute("R").as_uint(),uiNode.child("color2").attribute("G").as_uint(),uiNode.child("color2").attribute("B").as_uint(),uiNode.child("color2").attribute("A").as_uint() };
+		const char* fontPath = uiNode.child("path").attribute("p").as_string();
+		uint fontSize = uiNode.child("size").attribute("s").as_int();
+
+		App->gui->AddBar(position, thumbOffset, name, functionName, &section, &thumbSection, &hoverSection, NULL, scaleFactor, 
+			text, valueText, color, color2, App->font->Load(fontPath, fontSize));
 
 	}
 
@@ -487,14 +494,14 @@ UiItem_Image* j1Gui::AddImage(iPoint position, const SDL_Rect* section, std::str
 
 
 UiItem_Bar* j1Gui::AddBar(iPoint position, iPoint thumbOffset, std::string name, std::string functionName, const SDL_Rect* section, const SDL_Rect* thumb_section, const SDL_Rect* sectioHover,
-	UiItem*const parent, float Spritescale)
+	UiItem*const parent, float Spritescale, std::string labelText, std::string valueLabelText, SDL_Color textColor, SDL_Color valueColor, TTF_Font * font)
 {
 	UiItem* newUIItem = nullptr;
 
 	if (parent == NULL)
-		newUIItem = DBG_NEW UiItem_Bar(position, thumbOffset, name, functionName, section, thumb_section, sectioHover, currentCanvas, Spritescale);
+		newUIItem = DBG_NEW UiItem_Bar(position, thumbOffset, name, functionName, section, thumb_section, sectioHover, currentCanvas, Spritescale , labelText, valueLabelText, textColor, valueColor, font);
 	else
-		newUIItem = DBG_NEW UiItem_Bar(position, thumbOffset, name, functionName, section, thumb_section, sectioHover, parent, Spritescale);
+		newUIItem = DBG_NEW UiItem_Bar(position, thumbOffset, name, functionName, section, thumb_section, sectioHover, parent, Spritescale, labelText, valueLabelText, textColor, valueColor, font);
 
 	listOfItems.push_back(newUIItem);
 

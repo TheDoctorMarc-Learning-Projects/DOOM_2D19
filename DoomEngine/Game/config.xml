@@ -331,6 +331,18 @@
       </buttons>
     </DifficultySelectorUI>	  
     <SettingsUI>
+	
+	<labels>
+        <label name="title">
+          <position x="550" y="16"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="SETTINGS"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="60"/>
+		  <scaleFactor value = "2.0"/>
+        </label>
+      </labels>
+	  
 	<images>
         <image name="background">
 		  <position x="0" y="0" />
@@ -348,6 +360,12 @@
 		  <thumbOffset x ="4" y="2"/>
 		  <scaleFactor value="1.0"/>
 		  <functionName value="SetVolume"/>
+		  <color R="255" G="255" B="0" A="255"/>
+		  <color2 R="0" G="255" B="0" A="255"/>
+          <text value="music"/>
+		  <valueText value="?"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="36"/>
         </slider>
      <slider name="fxsSlider">
           <position x="200" y="300"/>
@@ -357,6 +375,12 @@
 		  <thumbOffset x ="4" y="2"/>
 		  <scaleFactor value="1.0"/>
 		  <functionName value="SetVolume"/>
+		  <color R="255" G="255" B="0" A="255"/>
+		  <color2 R="0" G="255" B="0" A="255"/>
+          <text value="fxs"/>
+		  <valueText value="?"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="36"/>
         </slider>
     </sliders> 	
     <buttons>

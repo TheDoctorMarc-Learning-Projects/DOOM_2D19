@@ -3,16 +3,19 @@
 
 #include "UiItem.h"
 #include "UiItem_Image.h"
+#include "UiItem_Label.h"
 #include "p2Point.h"
+#include "SDL_ttf/include/SDL_ttf.h"
 #include "j1Textures.h"
 
 class UiItem_Image;
+
 
 class UiItem_Bar :public UiItem
 {
 public:
 	UiItem_Bar(iPoint position, iPoint thumbOffset, std::string name, std::string functionName, const SDL_Rect* section, const SDL_Rect* thumb_section, const SDL_Rect* sectioHover, 
-		UiItem*const parent, float Spritescale);
+		UiItem*const parent, float Spritescale, std::string labelText, std::string valueLabelText, SDL_Color textColor, SDL_Color valueColor, TTF_Font * font);
 	~UiItem_Bar();
 
 private:
@@ -39,6 +42,8 @@ public:
 
 public: 
 	UiItem_Image* thumb = nullptr;
+	UiItem_Label* textLabel = nullptr; 
+	UiItem_Label* valueLabel = nullptr; 
 
 	 void OnDrag(iPoint mousePos);
 	 void OnHover();
@@ -46,7 +51,7 @@ public:
 	 void OnClickDown(iPoint mousePos); 
 	 void OnClickUp(); 
 
-	void CleanUp();
+
 
 
 };

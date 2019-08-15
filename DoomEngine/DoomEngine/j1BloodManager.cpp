@@ -31,6 +31,9 @@ bool j1BloodManager::PreUpdate()
 {
 	BROFILER_CATEGORY("Blood PreUpdate", Profiler::Color::Wheat);
 
+	if (App->pause == true)
+		return true;
+
 	bool ret = true;
 
 	return true;
@@ -39,6 +42,10 @@ bool j1BloodManager::PreUpdate()
 bool j1BloodManager::Update(float dt)
 {
 	BROFILER_CATEGORY("Blood Update", Profiler::Color::White);
+
+
+	if (App->pause == true)
+		return true;
 
 	// update blood pos 
 

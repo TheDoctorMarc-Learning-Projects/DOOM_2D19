@@ -68,8 +68,12 @@ public:
 	bool Load(pugi::xml_node&);
 
 	void SetSceneState(SceneState state) { this->state = state; }; 
+	void SetPreviousSceneState(SceneState state) { this->previousSceneState = state; }; 
+
+	SceneState GetPreviousSceneState() const { return previousSceneState; };
 	SceneState GetCurrentSceneState() const { return state; }; 
-	SceneState GetNextSceneState() const { return nextSceneState; };  // when transitioning 
+	SceneState GetNextSceneState() const { return nextSceneState; }; 
+
 	sceneTypeGUI convertSceneTypeToGui(SceneState state);
 	sceneTypeGUI GetCurrentSceneTypeGui() { return convertSceneTypeToGui(state); };
 
@@ -78,6 +82,7 @@ private:
 	SDL_Texture* debug_tex = nullptr;
 	SceneState state = SceneState::MAINMENU;
 	SceneState nextSceneState = SceneState::NO_SCENE; 
+	SceneState previousSceneState = SceneState::NO_SCENE;
 
 	SDL_Color sceneSwapColor = { 30, 0, 0, 255 }; 
 	bool loadGUI = false; 

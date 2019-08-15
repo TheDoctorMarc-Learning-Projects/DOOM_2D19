@@ -27,6 +27,9 @@ bool j1PathFinding::Start()
 
 bool j1PathFinding::PostUpdate()
 {
+	if (App->pause == true)
+		return true;
+
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
 		debug = !debug;
 

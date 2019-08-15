@@ -39,6 +39,18 @@ public:
 	// Play a music file
 	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
 
+	// Stop the current muisc
+	void PauseMusic()
+	{
+		Mix_PauseMusic(); 
+	}
+
+	// Resume the current muisc
+	void ResumeMusic()
+	{
+		Mix_ResumeMusic();
+	}
+
 	// Load a WAV in memory
 	unsigned int LoadFx(const char* path, std::string wantedName);
 

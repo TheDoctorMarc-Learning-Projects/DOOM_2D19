@@ -396,6 +396,84 @@
         </button>
     </buttons>	
 	</SettingsUI>
+	<InGameSettingsUI>
+	
+	<labels>
+        <label name="title">
+          <position x="550" y="100"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="SETTINGS"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value = "2.0"/>
+        </label>
+      </labels>
+	  
+	<images>
+        <image name="background">
+		  <position x="100" y="50" />
+          <section x="0" y="1706" w="1533" h="873"/>
+		  <scaleFactor value = "0.7"/>
+        </image>
+	 </images>
+
+    <sliders>
+        <slider name="musSlider">
+          <position x="250" y="200"/>
+          <section x="118" y="211" w="177" h="31"/>
+		  <hoverSection x="118" y="249" w="177" h="31"/>
+		  <thumbSection x="26" y="196" w="24" h="29"/>
+		  <thumbOffset x ="4" y="2"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="SetVolume"/>
+		  <color R="255" G="255" B="0" A="255"/>
+		  <color2 R="0" G="255" B="0" A="255"/>
+          <text value="music"/>
+		  <valueText value="?"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="36"/>
+        </slider>
+     <slider name="fxsSlider">
+          <position x="250" y="300"/>
+          <section x="118" y="211" w="177" h="31"/>
+		  <hoverSection x="118" y="249" w="177" h="31"/>
+		  <thumbSection x="26" y="196" w="24" h="29"/>
+		  <thumbOffset x ="4" y="2"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="SetVolume"/>
+		  <color R="255" G="255" B="0" A="255"/>
+		  <color2 R="0" G="255" B="0" A="255"/>
+          <text value="fxs"/>
+		  <valueText value="?"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="36"/>
+        </slider>
+    </sliders> 	
+    <buttons>
+	<button name="backFromInGameToGameButton">
+          <position x="130" y="500"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="BACK"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="ChangeGamePause"/>
+		  <targetScene value="-1"/>
+        </button>
+		
+		<button name="backFromInGametoMainbutton">
+          <position x="130" y="570"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="BACK TO MAIN MENU"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="LoadGUI"/>
+		  <targetScene value="1"/>
+        </button>
+		
+    </buttons>	
+	</InGameSettingsUI>
 	</scene>
 
 </config>

@@ -69,9 +69,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(scene);
 	AddModule(map); 
-	AddModule(font);
-	AddModule(gui);
 	AddModule(fade); 
+	AddModule(font);
 
 	/*modules.push_back(map);
 	map->startInitialized = false; */
@@ -86,6 +85,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	modules.push_back(bloodManager);
 	bloodManager->startInitialized = false;
 
+	AddModule(gui);
 
 	// render last to swap buffer
 	AddModule(render);
@@ -191,7 +191,7 @@ bool j1App::Update()
 	bool ret = true;
 	PrepareUpdate();
 
-	if(input->GetWindowEvent(WE_QUIT) == true || (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) || buttonClosesApp == true)
+	if(input->GetWindowEvent(WE_QUIT) == true || buttonClosesApp == true)
 		ret = false;
 
 	if(ret == true)

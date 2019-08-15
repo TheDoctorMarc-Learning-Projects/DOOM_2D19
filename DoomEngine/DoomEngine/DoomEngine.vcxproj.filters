@@ -356,9 +356,6 @@
     <ClInclude Include="UiItem.h">
       <Filter>Code\Core\In-Screen\GUI\Core</Filter>
     </ClInclude>
-    <ClInclude Include="j1PathFinding.h">
-      <Filter>Code\Core\In-Screen</Filter>
-    </ClInclude>
     <ClInclude Include="UiItem_Face.h">
       <Filter>Code\Core\In-Screen\GUI\Items\special</Filter>
     </ClInclude>
@@ -369,6 +366,9 @@
       <Filter>Code\Core\In-Game\Entities\animated</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="j1PathFinding.h">
+      <Filter>Code\Core\In-Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DoomEngine.rc" />

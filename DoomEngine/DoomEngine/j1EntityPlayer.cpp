@@ -93,7 +93,6 @@ bool j1EntityPlayer::Start()
 
 bool j1EntityPlayer::PreUpdate()
 {
-	
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)   // TODO: God mode allows to fly around 
 	{
 		godMode = !godMode;

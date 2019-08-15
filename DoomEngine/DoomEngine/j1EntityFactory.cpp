@@ -108,6 +108,9 @@ bool j1EntityFactory::PreUpdate()
 {
 	BROFILER_CATEGORY("Entities PreUpdate", Profiler::Color::LavenderBlush);
 
+	if (App->pause == true)
+		return true;
+
 	bool ret = true;
 
 	// logic / collisions
@@ -126,6 +129,9 @@ bool j1EntityFactory::PreUpdate()
 bool j1EntityFactory::Update(float dt)
 {
 	BROFILER_CATEGORY("Entities Update", Profiler::Color::Fuchsia);
+
+	if (App->pause == true)
+		return true; 
 
 	std::list<j1Entity*>::iterator item = entities.begin();
 	for (; item != entities.end();)
@@ -177,7 +183,10 @@ bool j1EntityFactory::PostUpdate()
 
 	blitOrderEntities.clear(); 
 
-	 
+
+	if (App->pause == true)
+		return true;
+
 	Debug(); 
 				 
 				

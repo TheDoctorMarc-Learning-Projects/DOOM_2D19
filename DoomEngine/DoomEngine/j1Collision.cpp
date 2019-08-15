@@ -208,6 +208,10 @@ j1Collision::~j1Collision()
 bool j1Collision::PreUpdate()
 {
 	BROFILER_CATEGORY("Collision PreUpdate", Profiler::Color::DarkSeaGreen);
+
+	if (App->pause == true)
+		return true;
+
 	bool ret = true; 
 	// Remove all colliders scheduled for deletion
 	for (auto collider = colliders.begin(); collider != colliders.end();)
@@ -314,6 +318,9 @@ bool j1Collision::Update(float dt)
 	BROFILER_CATEGORY("Collision Update", Profiler::Color::DarkSlateBlue);
 	bool ret = true;
 	
+	if (App->pause == true)
+		return true;
+
 	if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
 		debug = !debug;
 

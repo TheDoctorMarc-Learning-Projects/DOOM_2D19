@@ -99,21 +99,9 @@ public:
 
 	POINTING_DIR GetDirection() override; 
 
-	bool IsAiming()
-	{
-		return aiming;
-	}
-
-	bool isParalized()
-
-	{
-		return isnan(paralizedDir) == false; 
-	}
-
-	void UnParalize()
-	{
-	    paralizedDir = std::numeric_limits<double>::quiet_NaN();
-	}
+	bool IsAiming()	const {	return aiming;	}
+	bool isParalized()	const { return isnan(paralizedDir) == false;	}
+	void UnParalize() { paralizedDir = std::numeric_limits<double>::quiet_NaN();  }
 
 public:
 
@@ -124,6 +112,7 @@ public:
 	Animation death2;
 
 private: 
+	bool inputReady = false; 
 	bool aiming = false;
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0); 

@@ -32,6 +32,7 @@ j1Scene::j1Scene() : j1Module()
 		 {sceneTypeGUI::MAINMENU, "MainMenuUI"},
 		 {sceneTypeGUI::DIFFICULTY_SELECTOR, "DifficultySelectorUI"},
 		 {sceneTypeGUI::SETTINGS, "SettingsUI"},
+		 {sceneTypeGUI::IN_GAME_SETTINGS, "InGameSettingsUI"},
 	};
 
 	// TODO: keep updating this scene-gui index map
@@ -43,6 +44,7 @@ j1Scene::j1Scene() : j1Module()
 		 {SceneState::MAINMENU, "sound/music/Manimal - Black Plague.ogg"},
 		 {SceneState::DIFFICULTY_SELECTOR, "sound/music/Slipknot - Duality.ogg"},
 		 {SceneState::SETTINGS, "sound/music/Disturbed - Stricken.ogg"},
+		 {SceneState::IN_GAME_SETTINGS, "sound/music/Disturbed - Stricken.ogg"},
 	}; 
 
 }
@@ -128,18 +130,7 @@ bool j1Scene::Update(float dt)
 	}
 	*/
 
-	if (App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
-	{
-		LoadScene(SceneState::LEVEL1, true);
-	}
-
-
-	if (App->input->GetKey(SDL_SCANCODE_KP_2) == KEY_DOWN)
-	{
-		LoadScene(SceneState::LEVEL2, true);
-	}
-
-
+ 
 	return true;
 }
 
@@ -210,6 +201,8 @@ void j1Scene::UnLoadScene()
 
 void j1Scene::LoadScene(SceneState sceneState, bool loadGUI)
 {
+	previousSceneState = state; 
+
 	if (App->fade->GetCurrentStep() != fade_step::none)  // prevention
 		return; 
 

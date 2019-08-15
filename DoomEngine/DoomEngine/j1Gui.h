@@ -19,6 +19,7 @@ void LoadGui(UiItem* callback = nullptr);
 void ExitGame(UiItem* callback = nullptr);
 void SetDifficulty(UiItem* callback = nullptr);
 void SetVolume(UiItem* callback = nullptr);
+void ChangeGamePause(UiItem* callback = nullptr);
  
 class j1Gui : public j1Module
 {
@@ -31,6 +32,7 @@ public:
 	bool Awake(pugi::xml_node&);
 	void FillFunctionsMap(); 
 	bool Start();
+	bool PreUpdate(); 
 	bool Update(float dt);
 //	void DoLogicSelected();
 

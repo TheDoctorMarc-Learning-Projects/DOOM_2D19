@@ -30,6 +30,7 @@ void j1Gui::FillFunctionsMap()
 	 { "ExitGame", &ExitGame},
 	 { "SetDifficulty", &SetDifficulty},
 	 { "SetVolume", &SetVolume},
+	 { "ChangeGamePause", &ChangeGamePause }
 	};
 
 	// TODO: keep updating this function map
@@ -73,6 +74,16 @@ bool j1Gui::Start()
 	return true;
 }
 
+bool j1Gui::PreUpdate()
+{
+
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		if(currentCanvas->myScene == sceneTypeGUI::LEVEL)
+			ChangeGamePause(nullptr);
+	
+
+	return true; 
+}
 
 bool j1Gui::Update(float dt)
 {
@@ -287,26 +298,52 @@ void SetVolume(UiItem* callback)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - create a canvas from a button action
 void LoadGui(UiItem* callback)   
 {
-	bool found = false; 
+	if (App->pause == true)
+		App->pause = false; 
+	
+	bool found = false;
 	for (auto& canvas : App->gui->GetCanvases())
 	{
 		if (canvas.second->myScene == callback->targetSceneGui)     // if there exists a current canvas with the scene
 		{
-			found = true; 
+			found = true;
 			App->gui->ChangeCurrentCanvas(canvas.second, true);   // just change the current canvas
 		}
 
 	}
 
 	// if not found, create it: 
-	if(found == false) 
+	if (found == false)
 		App->gui->ChangeCurrentCanvas(DBG_NEW UiItem(App->scene->sceneGuiXMLIndexes.at(callback->targetSceneGui), callback->targetSceneGui), false);
 
 
 	// finally, call scene swap (it will call fade, and then fade will call create scene)
-	App->scene->LoadScene(callback->targetScene, false); 
+	App->scene->LoadScene(callback->targetScene, false);
+}
+
+void ChangeGamePause(UiItem* callback)
+{
+
+	App->pause = !App->pause; 
+
+	// coming from InGame Settings --> get the scene before the change (a level) 
+	SceneState target = App->scene->GetPreviousSceneState(); 
+	sceneTypeGUI targetGUI = App->scene->convertSceneTypeToGui(target);
 
 
+	// coming from ingame ESC --> go to InGame Settings, set previous state as level
+	if (callback == nullptr)
+	{
+		App->scene->SetPreviousSceneState(App->scene->GetCurrentSceneState());
+		targetGUI = sceneTypeGUI::IN_GAME_SETTINGS;
+		target = SceneState::IN_GAME_SETTINGS;
+		App->audio->PauseMusic();
+	}
+	else
+		App->audio->ResumeMusic(); 
+
+	App->gui->LoadGuiDefined(targetGUI); 
+	App->scene->SetSceneState(target); 
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - create a canvas from external action, eg collider win, ingame ESC...
@@ -353,8 +390,13 @@ void j1Gui::ChangeCurrentCanvas(UiItem* newCanvas, bool exists)
 		if (currentCanvas)
 			currentCanvas->EnableChildren(false);
 
-		if (currentCanvas->myScene == sceneTypeGUI::LEVEL)  // TODO: do not reset gui if next scene state is ingame settings
-			ResetInGameUI();
+		// reset ingame ui if needed, or pause the app 
+		if (currentCanvas->myScene == sceneTypeGUI::LEVEL)   
+		{
+			if (newCanvas->myScene != sceneTypeGUI::IN_GAME_SETTINGS)
+				ResetInGameUI();
+		}
+		
 
 		currentCanvas = newCanvas; 
 		currentCanvas->EnableChildren(true);

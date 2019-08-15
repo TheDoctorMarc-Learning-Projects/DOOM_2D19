@@ -96,7 +96,6 @@ void UiItem_Bar::OnDrag(iPoint mousePos)
 	else if(thumb->GetPos().x < thumb->originPos.x)
 		thumb->SetPos(iPoint(thumb->originPos.x, thumb->GetPos().y));
 
-
 	// finally call the function 
 	this->function(this); 
 }

@@ -82,8 +82,7 @@ public:
 	void UpDateInGameUISlot(std::string name, float newValue = 0.0f, SDL_Rect newSection = { 0, 0, 0, 0 });
 	void UpdateDeathTimer(int value = -1);     // it is here just not to call the above function in app, maybe it is cleaner to call it from here; 
 
-private: 
-	void initializeGUI(); 
+private:  
 	void LoadXMLGUI(pugi::xml_node& menuNode);
 	void ResetInGameUI(); 
 

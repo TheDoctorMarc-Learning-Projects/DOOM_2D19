@@ -25,12 +25,17 @@ private:
 
 	uint getThumbMaxPos() const 
 	{
-		return hitBox.x + hitBox.w - thumbOffset.x - thumb->hitBox.w; 
+		float value = hitBox.x + hitBox.w - thumbOffset.x - thumb->hitBox.w;
+		return value; 
 	}
 
-	int getThumbTravelFactor() const
+public: 
+	float getThumbTravelFactor() const
 	{
-		return thumb->GetPos().x / getThumbMaxPos(); 
+		float travel = thumb->GetPos().x - thumb->originPos.x;
+		float maxTravel = getThumbMaxPos() - thumb->originPos.x; 
+		float value = travel / maxTravel;
+		return value; 
 	}
 
 public: 

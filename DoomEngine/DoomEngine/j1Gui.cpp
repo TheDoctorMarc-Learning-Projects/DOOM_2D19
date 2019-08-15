@@ -89,7 +89,7 @@ bool j1Gui::Update(float dt)
 
 	// for the moment, this won't update the grandsons (not needed) 
 
-	for  (auto& item : currentCanvas->GetChildrenRecursive())
+	for (auto& item : currentCanvas->GetChildrenRecursive())
 	{
 		if (item->enable == false || item->numb == true)
 			continue; 
@@ -253,8 +253,22 @@ void SetDifficulty(UiItem* callback)
 
 void SetVolume(UiItem* callback)
 {
+	// synchro with bars: the top one is mus and fx's are below
+	int pos = 1; 
 
+	for (const auto& child : App->gui->GetCurrentCanvas()->GetChildrenRecursive())
+		if (child->parent && child->parent->guiType == BAR)
+			if (child->hitBox.y < callback->hitBox.y)
+				pos++; 
+
+	float volume = dynamic_cast<UiItem_Bar*>(callback)->getThumbTravelFactor(); 
+
+	if (pos == 1)
+		App->audio->SetVolume(volume);
+	else
+		App->audio->SetFxVolume(volume); 
 }
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - create a canvas from a button action
 void LoadGui(UiItem* callback)   
 {

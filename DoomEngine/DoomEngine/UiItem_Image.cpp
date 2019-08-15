@@ -112,3 +112,10 @@ void UiItem_Image::OnClickDown(iPoint mousePos)
 	if (parent && parent->guiType == BAR)
 		parent->OnClickDown(mousePos);
 }
+
+void UiItem_Image::OnClickUp()
+{
+	if (parent && parent->guiType == BAR)
+		parent->OnClickUp();
+
+}

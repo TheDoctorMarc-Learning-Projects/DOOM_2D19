@@ -253,7 +253,7 @@ void SetDifficulty(UiItem* callback)
 
 void SetVolume(UiItem* callback)
 {
-	// synchro with bars: the top one is mus and fx's are below
+	// 1) synchro with bars: the top one is mus and fx's are below
 	int pos = 1; 
 
 	for (const auto& child : App->gui->GetCurrentCanvas()->GetChildrenRecursive())
@@ -261,12 +261,27 @@ void SetVolume(UiItem* callback)
 			if (child->hitBox.y < callback->hitBox.y)
 				pos++; 
 
+	// 2)  set the volume according to thumb: make a fx sound on top of the current music
 	float volume = dynamic_cast<UiItem_Bar*>(callback)->getThumbTravelFactor(); 
-
-	if (pos == 1)
-		App->audio->SetVolume(volume);
+	
+	if (App->audio->isPlayingFx(callback->name) == false)
+		App->audio->PlayFx(callback->name, 0, true, 1.f, 0.f, 0.f);
 	else
-		App->audio->SetFxVolume(volume); 
+		App->audio->SetSpecificFxVolume(callback->name, volume);
+
+	
+	// 3)  when releasing the slider, stop the current fx, reset the mus and fxs to previous state and then assign the last volume 
+	if (dynamic_cast<UiItem_Bar*>(callback)->thumb->state == IDLE)
+	{
+		App->audio->StopSpecificFx(callback->name); 
+		App->audio->ResetMusicAndFxVolumes();
+
+		if (pos == 1)
+			App->audio->SetVolume(volume);
+		else
+			App->audio->SetFxVolume(volume);
+	}
+
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - create a canvas from a button action

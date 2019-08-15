@@ -121,3 +121,7 @@ void UiItem_Bar::OnHoverExit()
 	bar->section = image_idle;
 }
 
+void UiItem_Bar::OnClickUp()
+{
+	this->function(this);
+}

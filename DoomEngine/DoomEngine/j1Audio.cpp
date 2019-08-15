@@ -59,6 +59,7 @@ bool j1Audio::Start()
 {
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - GUI
 	LoadFx("sound/fx/dsswtchn.wav", "buttonClick");
+	LoadFx("sound/fx/At Vance - Four Seasons - Summer.wav", "musSlider"); 
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - coins
 	LoadFx("sound/fx/figurePickUp.wav", "figurePickUp");

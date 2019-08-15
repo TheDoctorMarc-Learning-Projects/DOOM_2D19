@@ -29,7 +29,7 @@ public:
 	void OnHover();
 	void OnHoverExit();
 	void OnClickDown(iPoint mousePos);
-
+	void OnClickUp();
 
 	friend class UiItem_Bar; 
 };

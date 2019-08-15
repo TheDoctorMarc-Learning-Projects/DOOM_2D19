@@ -21,7 +21,6 @@ private:
 	SDL_Rect image_idle;
 	SDL_Rect image_hover;
 	iPoint thumbOffset; 
-	std::string name;
 
 	uint getThumbMaxPos() const 
 	{
@@ -45,6 +44,7 @@ public:
 	 void OnHover();
 	 void OnHoverExit();
 	 void OnClickDown(iPoint mousePos); 
+	 void OnClickUp(); 
 
 	void CleanUp();
 

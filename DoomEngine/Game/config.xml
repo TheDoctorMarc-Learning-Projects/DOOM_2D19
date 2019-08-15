@@ -349,7 +349,15 @@
 		  <scaleFactor value="1.0"/>
 		  <functionName value="SetVolume"/>
         </slider>
-
+     <slider name="fxsSlider">
+          <position x="200" y="300"/>
+          <section x="118" y="211" w="177" h="31"/>
+		  <hoverSection x="118" y="249" w="177" h="31"/>
+		  <thumbSection x="26" y="196" w="24" h="29"/>
+		  <thumbOffset x ="4" y="2"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="SetVolume"/>
+        </slider>
     </sliders> 	
     <buttons>
 	<button name="backFromSettingsButton">

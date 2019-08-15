@@ -18,6 +18,7 @@
 void LoadGui(UiItem* callback = nullptr);
 void ExitGame(UiItem* callback = nullptr);
 void SetDifficulty(UiItem* callback = nullptr);
+void SetVolume(UiItem* callback = nullptr);
  
 class j1Gui : public j1Module
 {
@@ -35,15 +36,13 @@ public:
 
 	bool PostUpdate();
 	bool CleanUp();
-
-private: 
-	void destroyElement(UiItem*);
 	 
 public: 
 	UiItem_Label* AddLabel(std::string name, std::string text, SDL_Color color, TTF_Font* font, p2Point<int> position, UiItem* const parent, float SpriteScale = 0.0f);
 	UiItem_Image* AddImage(iPoint position, const SDL_Rect* section, std::string name, UiItem* const parent, bool isTabbable = false, SDL_Texture* specialTex = nullptr, float spriteScale = 0.0f,
 		std::string newTextureName = "");
-	UiItem_Bar* AddBar(iPoint position, std::string name, const SDL_Rect* section, const SDL_Rect* thumb_section, const SDL_Rect* image_idle, const SDL_Rect* image_hover, UiItem* const parent);  
+	UiItem_Bar* AddBar(iPoint position, iPoint thumbOffset, std::string name, std::string functionName, const SDL_Rect* section, const SDL_Rect* thumb_section, const SDL_Rect* sectioHover,
+		UiItem*const parent, float Spritescale);
 	UiItem_Button* AddButton(iPoint position, std::string functionName, std::string name, std::string text, SDL_Color color, TTF_Font * font, UiItem* const parent, float spriteScale, SceneState targetScene);
 	UiItem* AddEmptyElement(iPoint pos, UiItem* const parent = nullptr);
 	UiItem_Checkbox* AddCheckbox(iPoint position, std::string function, std::string name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click = nullptr, const SDL_Rect* hover = nullptr, const SDL_Rect* tick_section = nullptr);
@@ -65,6 +64,15 @@ public:
 	iPoint GetLastMousePos() const {
 		return lastMousePos; 
 	}
+	UiItem* GetSelectedItem() const {
+		return selectedItem; 
+	}
+	void SetSelectedItem(UiItem* item)
+	{
+		if (item == nullptr)
+			return; 
+		selectedItem = item; 
+	}
  
 	std::map<sceneTypeGUI, UiItem*> GetCanvases() const { return canvases; }; 
 	SDL_Texture* GetAtlas() const { return atlas; };
@@ -83,7 +91,6 @@ private:
 private:
 	SDL_Texture* atlas = nullptr;
 	UiItem* currentCanvas = nullptr;
-	UiItem* selected_object = nullptr;
 	std::list<UiItem*>	listOfItems;
 	std::map<sceneTypeGUI, UiItem*> canvases;
 	std::map<std::string, void(*)(UiItem* callback)> functionsMap;  // the functions have callback. So I can call them in button cpp etc without if / elses 

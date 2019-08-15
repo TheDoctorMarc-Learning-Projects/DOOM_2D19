@@ -183,9 +183,6 @@
     <ClCompile Include="j1Gui.cpp">
       <Filter>Code\Core\In-Screen\GUI\Core</Filter>
     </ClCompile>
-    <ClCompile Include="UiItem_Bar.cpp">
-      <Filter>Code\Core\In-Screen\GUI\Items</Filter>
-    </ClCompile>
     <ClCompile Include="UiItem_Button.cpp">
       <Filter>Code\Core\In-Screen\GUI\Items</Filter>
     </ClCompile>
@@ -209,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="j1EntityPlayer.cpp">
       <Filter>Code\Core\In-Game\Entities\animated</Filter>
+    </ClCompile>
+    <ClCompile Include="UiItem_Bar.cpp">
+      <Filter>Code\Core\In-Screen\GUI\Items</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

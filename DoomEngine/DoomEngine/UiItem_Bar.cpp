@@ -11,30 +11,43 @@
 #include "p2Point.h"
 #include "p2log.h"
 #include "j1Audio.h"
+#include "j1EntityFactory.h"
 
 
 
-UiItem_Bar::UiItem_Bar(iPoint position, std::string name, const SDL_Rect* section, const SDL_Rect* thumb_section, const SDL_Rect* image_idle, const SDL_Rect* image_hover, UiItem*const parent) : UiItem(position, parent)
+UiItem_Bar::UiItem_Bar(iPoint position, iPoint thumbOffset, std::string name, std::string functionName, const SDL_Rect* section, const SDL_Rect* thumb_section,  const SDL_Rect* sectioHover,
+	UiItem*const parent, float Spritescale) : UiItem(position, parent)
 
 {
 	assert(parent != nullptr);
 
+
+	if (Spritescale != 0.F)
+		this->scaleFactor = Spritescale;
+	else
+		this->scaleFactor = App->gui->GetSpriteGlobalScale();
+
+
 	this->section = *section;
 	this->guiType = GUI_TYPES::BAR;
-	this->image_idle = *image_idle;
-	this->image_hover = *image_hover;
+	this->image_idle = *section;
+	this->image_hover = *sectioHover;
 	this->hitBox.x = position.x;
 	this->hitBox.y = position.y;
 	this->name = name;
+	
 	// bar 
-	bar = App->gui->AddImage(position, section, name, this);   
+	bar = App->gui->AddImage(position, section, name, this, false, nullptr, this->scaleFactor);   
     // thumb
-	iPoint thumbPos(position.x + (section->w*0.5) - (thumb_section->w*0.5), position.y - (section->h*0.09));
-
-	thumb = App->gui->AddImage(thumbPos, thumb_section, name, this);    
-
-	image_bar = App->gui->AddImage({ position.x - 100, position.y }, &this->image_idle, name, this);
+	this->thumbOffset = thumbOffset; 
+	iPoint thumbPos(position.x + thumbOffset.x, position.y + thumbOffset.y);
+	thumb = App->gui->AddImage(thumbPos, thumb_section, name, this, false, nullptr, this->scaleFactor);
 	thumb->slidable = true;
+	thumb->draggable = true;
+	thumb->accionable = true;
+	thumb->numb = false; 
+	thumb->focusable = true; 
+
  
 	// to check mouse 
 	this->hitBox.w = section->w;
@@ -43,6 +56,12 @@ UiItem_Bar::UiItem_Bar(iPoint position, std::string name, const SDL_Rect* sectio
 	thumb->hitBox.h = thumb_section->h;
 
 	this->accionable = true;
+	     
+
+
+		// Assign the function pointer 
+	this->functionName = functionName;
+	this->function = App->gui->GetFunctionsMap().at(functionName);
 }
 
 UiItem_Bar::~UiItem_Bar()
@@ -50,73 +69,56 @@ UiItem_Bar::~UiItem_Bar()
 	
 }
 
-void UiItem_Bar::Draw()
+void UiItem_Bar::OnClickDown(iPoint mousePos)
 {
-
-	//App->render->Blit(App->gui->GetAtlas(), hitBox.x, hitBox.y, &this->section, 0.0F, SDL_FLIP_NONE);
+	if (App->entityFactory->isPointInsideRect(&mousePos, &thumb->hitBox) == true)
+	{
+		App->gui->SetSelectedItem(thumb);
+		thumb->state = CLICK;
+	}
 }
 
-
-
-
-
-void UiItem_Bar::OnDrag() {
-
-	image_bar->section = image_hover;   // TODO: code this better AND have a FOCUS
-
-	if (!thumbReposition)
-	{
-		thumbReposition = !thumbReposition;
-	}
-
-	Sint16 xAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_RIGHTX);
-
-	uint nexPosX = 0;
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-	{
-		nexPosX = thumb->hitBox.x + 2;
-	}
-	
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-	{
-		nexPosX = thumb->hitBox.x - 2;
-	}
-
-	if (nexPosX >= (bar->hitBox.x - (thumb->hitBox.w*0.5)) && nexPosX <= (bar->hitBox.x + bar->hitBox.w) - (thumb->hitBox.w*0.5))
-	{
-		thumb->SetPos(iPoint(nexPosX, thumb->hitBox.y));
-	}
-
-}
-
-void UiItem_Bar::OnClickUp() {
-
-	if (thumbReposition)
-	{
-		thumbReposition = !thumbReposition;
-	}
-	bar->section = this->section;
-	image_bar->section = this->image_idle;
-}
-
-void UiItem_Bar::CleanUp()
+void UiItem_Bar::OnDrag(iPoint mousePos) 
 {
-	if (thumb != nullptr && image_bar != nullptr && bar != nullptr)
+	if (App->gui->GetSelectedItem() == this)
 	{
+		UiItem::OnDrag(mousePos);
+		return; 
+	}
+	 
+	// for the mom we asume that only horizontal ones are used
+	thumb->MoveWithMouse(mousePos);
+	thumb->SetPos(iPoint(thumb->GetPos().x, thumb->originPos.y)); // keep the X delta movement, but cap the Y movement to origin pos
+
+	// check thumb inside X limits 
+	if (thumb->GetPos().x > getThumbMaxPos())
+		thumb->SetPos(iPoint(getThumbMaxPos(), thumb->GetPos().y)); 
+	else if(thumb->GetPos().x < thumb->originPos.x)
+		thumb->SetPos(iPoint(thumb->originPos.x, thumb->GetPos().y));
+
+
+	// finally call the function 
+	this->function(this); 
+}
+
+
+void UiItem_Bar::CleanUp()   
+{
+	if(thumb)
 		thumb->to_delete = true;
-		image_bar->to_delete = true;
-		bar->to_delete = true;
+	if(bar) 
+		bar->to_delete = true; 
 
-		this->to_delete = true; 
-	}
+	this->to_delete = true;
 }
 
-
-float UiItem_Bar::GetBarValue()
+void UiItem_Bar::OnHover()
 {
-	float ipos_bar = thumb->hitBox.x + (thumb->section.w / 2);
-	float fixed_pos = bar->hitBox.x + (thumb->section.w / 2);
-	float fpos_bar = bar->hitBox.x + bar->section.w - (thumb->section.w / 2);
-	float final_pos = (ipos_bar - fixed_pos) / (fpos_bar - fixed_pos);
-	return final_pos;
+	bar->section = image_hover; 
 }
+
+void UiItem_Bar::OnHoverExit()
+{
+	bar->section = image_idle;
+}
+

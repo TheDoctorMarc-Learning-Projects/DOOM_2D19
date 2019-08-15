@@ -2,6 +2,7 @@
 #define UIITEM_BAR_H
 
 #include "UiItem.h"
+#include "UiItem_Image.h"
 #include "p2Point.h"
 #include "j1Textures.h"
 
@@ -10,24 +11,35 @@ class UiItem_Image;
 class UiItem_Bar :public UiItem
 {
 public:
-	UiItem_Bar(iPoint position, std::string name, const SDL_Rect* section, const SDL_Rect* thumb_section, const SDL_Rect* image_idle, const SDL_Rect* image_hover, UiItem*const parent);
+	UiItem_Bar(iPoint position, iPoint thumbOffset, std::string name, std::string functionName, const SDL_Rect* section, const SDL_Rect* thumb_section, const SDL_Rect* sectioHover, 
+		UiItem*const parent, float Spritescale);
 	~UiItem_Bar();
-	void Draw();
-	float GetBarValue();
 
 private:
-	UiItem_Image* image_bar = nullptr;
 	UiItem_Image* bar = nullptr;
-	UiItem_Image* thumb = nullptr;
 	SDL_Rect section;
 	SDL_Rect image_idle;
 	SDL_Rect image_hover;
+	iPoint thumbOffset; 
 	std::string name;
-	bool thumbReposition = false;
+
+	uint getThumbMaxPos() const 
+	{
+		return hitBox.x + hitBox.w - thumbOffset.x - thumb->hitBox.w; 
+	}
+
+	int getThumbTravelFactor() const
+	{
+		return thumb->GetPos().x / getThumbMaxPos(); 
+	}
 
 public: 
-	 void OnDrag();
-	 void OnClickUp();
+	UiItem_Image* thumb = nullptr;
+
+	 void OnDrag(iPoint mousePos);
+	 void OnHover();
+	 void OnHoverExit();
+	 void OnClickDown(iPoint mousePos); 
 
 	void CleanUp();
 

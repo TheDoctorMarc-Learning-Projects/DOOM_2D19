@@ -25,6 +25,12 @@ public:
 	SDL_Texture* specialTex = nullptr; 
 	std::string newTextureName = ""; 
 
+	void OnDrag(iPoint mousePos);
+	void OnHover();
+	void OnHoverExit();
+	void OnClickDown(iPoint mousePos);
+
+
 	friend class UiItem_Bar; 
 };
 

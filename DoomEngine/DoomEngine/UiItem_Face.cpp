@@ -252,11 +252,17 @@ void UiItem_Face::SetCurrentAnim(std::string karma)
 	// First of all discard extreme cases where no calculations are needed
 	
 	if (karma == "win")
+	{
 		currentAnimation.anim = win;
+		return; 
+	}
 	if (App->entityFactory->playerAlive == false || (App->entityFactory->playerAlive == true && App->entityFactory->player->godMode == true))
 		return; 
 	if (karma == "death")
+	{
 		currentAnimation.anim = death;
+		return; 
+	}
 	if (App->entityFactory->player->life <= 0)
 		return; 
 

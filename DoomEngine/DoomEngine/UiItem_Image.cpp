@@ -23,6 +23,7 @@ UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, std::string
 	this->hitBox.y = position.y;
 
 	tabbable = isTabbable;
+	this->numb = true; 
 
 	if (name == "tick")   // this is rather for checkbox purposes 
 		this->hide = true;
@@ -85,4 +86,29 @@ void UiItem_Image::CleanUp()
 {
 	if (specialTex != nullptr)
 		specialTex = nullptr; 
+}
+
+
+void UiItem_Image::OnDrag(iPoint mousePos)
+{
+	if (parent && parent->guiType == BAR)
+		parent->OnDrag(mousePos); 
+}
+void UiItem_Image::OnHover()
+{
+	if (parent && parent->guiType == BAR)
+		parent->OnHover();
+
+}
+void UiItem_Image::OnHoverExit()
+{
+	if (parent && parent->guiType == BAR)
+		parent->OnHoverExit();
+
+}
+
+void UiItem_Image::OnClickDown(iPoint mousePos)
+{
+	if (parent && parent->guiType == BAR)
+		parent->OnClickDown(mousePos);
 }

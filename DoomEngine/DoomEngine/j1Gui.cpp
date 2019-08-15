@@ -29,6 +29,7 @@ void j1Gui::FillFunctionsMap()
 	 { "LoadGUI", &LoadGui},
 	 { "ExitGame", &ExitGame},
 	 { "SetDifficulty", &SetDifficulty},
+	 { "SetVolume", &SetVolume},
 	};
 
 	// TODO: keep updating this function map
@@ -65,6 +66,7 @@ bool j1Gui::Start()
 
 	// load the main menu GUI 
 	LoadGuiDefined(sceneTypeGUI::MAINMENU); 
+	App->scene->SetSceneState(SceneState::MAINMENU); 
 	App->audio->PlayMusic(App->scene->sceneMusics.at(SceneState::MAINMENU), -1);
 
 
@@ -75,6 +77,10 @@ bool j1Gui::Start()
 bool j1Gui::Update(float dt)
 {
 	BROFILER_CATEGORY("Update_Gui.cpp", Profiler::Color::Coral)
+
+	if (App->scene->GetCurrentSceneTypeGui() == sceneTypeGUI::LEVEL)
+		return true; 
+
 		this->dt = dt;
 	iPoint mousePos;
 	App->input->GetMousePosition(mousePos.x, mousePos.y);
@@ -83,23 +89,26 @@ bool j1Gui::Update(float dt)
 
 	// for the moment, this won't update the grandsons (not needed) 
 
-	for  (auto& item : currentCanvas->children)
+	for  (auto& item : currentCanvas->GetChildrenRecursive())
 	{
+		if (item->enable == false || item->numb == true)
+			continue; 
+
 		if (App->entityFactory->isPointInsideRect(&mousePos, &item->hitBox) == true)   // MOUSE INSIDE HITBOX
 		{
 
 
 			if (item->state == DRAG)
-				item->MoveWithMouse(mousePos); 
+				item->OnDrag(mousePos);
 
 			if (item->state != CLICK && mouseState == KEY_DOWN)
 			{
 				
 				if (selectedItem == nullptr && item->accionable == true)
 				{
-					item->OnClickDown();
 					item->state = CLICK;
 					selectedItem = item;
+					item->OnClickDown(mousePos);
 				}
 					
 			}
@@ -111,7 +120,7 @@ bool j1Gui::Update(float dt)
 					if (item->draggable == true)
 					{
 						item->state = DRAG;
-						item->OnDrag();
+						item->OnDrag(mousePos);
 					}
 						
 				}
@@ -124,9 +133,10 @@ bool j1Gui::Update(float dt)
 				if (item->state == DRAG && item->focusable == false)
 					item->SetOriginPos(); 
 
-				item->OnClickUp();
 				item->state = HOVER;
 				selectedItem = nullptr;
+				item->OnClickUp();
+			
 			}
 
 			else if (item->state == IDLE)
@@ -145,12 +155,11 @@ bool j1Gui::Update(float dt)
 				if (item->state == DRAG)          // keep it on drag state until key up
 				{
 					if(mouseState != KEY_UP)
-						item->MoveWithMouse(mousePos);
+						item->OnDrag(mousePos);
 					else
 					{
-						item->OnClickUp();
 						item->state = IDLE;
-						
+						item->OnClickUp();
 					}
 
 				}
@@ -160,9 +169,9 @@ bool j1Gui::Update(float dt)
 				if (item->state == DRAG)
 					item->SetOriginPos();
 
-				item->OnHoverExit();
 				item->state = IDLE;
 				selectedItem = nullptr;
+				item->OnHoverExit();
 			}
 		
 		}
@@ -215,8 +224,9 @@ bool j1Gui::CleanUp()
 		}
 	}
 	listOfItems.clear();
-
 	canvases.clear();
+
+	selectedItem = nullptr; 
 
 	return true;
 }
@@ -240,6 +250,11 @@ void SetDifficulty(UiItem* callback)
 	App->entityFactory->SetDifficultyMultiplier(diffLevel); 
 }
 
+
+void SetVolume(UiItem* callback)
+{
+
+}
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - create a canvas from a button action
 void LoadGui(UiItem* callback)   
 {
@@ -291,8 +306,12 @@ void j1Gui::ChangeCurrentCanvas(UiItem* newCanvas, bool exists)
 
 	if (exists == false)                             
 	{
+		if(currentCanvas)
+			currentCanvas->EnableChildren(false);
+	
 		canvases.insert(std::make_pair(newCanvas->myScene, newCanvas));
 		currentCanvas = newCanvas;
+		currentCanvas->EnableChildren(true);
 
 		// finally load the GUI with the canvas name 
 		LoadXMLGUI((pugi::xml_node&)App->scene->sceneNode.child(currentCanvas->name.data()));   
@@ -302,14 +321,20 @@ void j1Gui::ChangeCurrentCanvas(UiItem* newCanvas, bool exists)
 
 	else 
 	{
-		if (currentCanvas->myScene == sceneTypeGUI::LEVEL)  
+		if (currentCanvas)
+			currentCanvas->EnableChildren(false);
+
+		if (currentCanvas->myScene == sceneTypeGUI::LEVEL)  // TODO: do not reset gui if next scene state is ingame settings
 			ResetInGameUI();
 
-		currentCanvas = newCanvas;  
+		currentCanvas = newCanvas; 
+		currentCanvas->EnableChildren(true);
 
 	}
-	  	
-	 
+	
+	if(selectedItem)
+		selectedItem = nullptr;
+	
 
 	// hide the cursor if in game 
 /*	if(App->scene->GetCurrentSceneType() == sceneType::LEVEL)
@@ -371,6 +396,21 @@ void j1Gui::LoadXMLGUI(pugi::xml_node& menuNode)
 		App->gui->AddButton(position, functionName, name, text.data(), color, App->font->Load(fontPath, fontSize), NULL, scaleFactor, (SceneState)targetScene);
 
 	}
+	// sliders
+	for (auto uiNode = menuNode.child("sliders").child("slider"); uiNode; uiNode = uiNode.next_sibling("slider"))
+	{
+		iPoint position = { uiNode.child("position").attribute("x").as_int(), uiNode.child("position").attribute("y").as_int() };
+		std::string name = uiNode.attribute("name").as_string();
+		std::string functionName = uiNode.child("functionName").attribute("value").as_string();
+		SDL_Rect section = { uiNode.child("section").attribute("x").as_int(), uiNode.child("section").attribute("y").as_int(), uiNode.child("section").attribute("w").as_int(), uiNode.child("section").attribute("h").as_int() };
+		SDL_Rect hoverSection = { uiNode.child("hoverSection").attribute("x").as_int(), uiNode.child("hoverSection").attribute("y").as_int(), uiNode.child("hoverSection").attribute("w").as_int(), uiNode.child("hoverSection").attribute("h").as_int() };
+		SDL_Rect thumbSection = { uiNode.child("thumbSection").attribute("x").as_int(), uiNode.child("thumbSection").attribute("y").as_int(), uiNode.child("thumbSection").attribute("w").as_int(), uiNode.child("thumbSection").attribute("h").as_int() };
+		float scaleFactor = uiNode.child("scaleFactor").attribute("value").as_float();
+		iPoint thumbOffset = { uiNode.child("thumbOffset").attribute("x").as_int(), uiNode.child("thumbOffset").attribute("y").as_int() };
+
+		App->gui->AddBar(position, thumbOffset, name, functionName, &section, &thumbSection, &hoverSection, NULL, scaleFactor);
+
+	}
 
 	// face
 	std::string menuName = menuNode.name(); 
@@ -387,24 +427,6 @@ void j1Gui::LoadXMLGUI(pugi::xml_node& menuNode)
 
 }
 
-void j1Gui::destroyElement(UiItem * elem)   // TODO: delete children first :/ This ain't gonna work easily 
-{
-
-	for (auto item = listOfItems.begin(); item != listOfItems.end(); ++item)
-	{
-		if (elem != nullptr && (*item) == elem)
-		{
-			(*item)->CleanUp();
-			delete (*item);
-			(*item) = nullptr;
-			item = listOfItems.erase(item);
-			break;
-
-		}
-
-	}
-
-}
 
 UiItem_Label * j1Gui::AddLabel(std::string name, std::string text, SDL_Color color, TTF_Font * font, p2Point<int> position, UiItem * const parent, float SpriteScale)
 {
@@ -435,14 +457,15 @@ UiItem_Image* j1Gui::AddImage(iPoint position, const SDL_Rect* section, std::str
  
 
 
-UiItem_Bar* j1Gui::AddBar(iPoint position, std::string name, const SDL_Rect * section, const SDL_Rect * thumb_section, const SDL_Rect * image_idle, const SDL_Rect * image_hover, UiItem * const parent)
+UiItem_Bar* j1Gui::AddBar(iPoint position, iPoint thumbOffset, std::string name, std::string functionName, const SDL_Rect* section, const SDL_Rect* thumb_section, const SDL_Rect* sectioHover,
+	UiItem*const parent, float Spritescale)
 {
 	UiItem* newUIItem = nullptr;
 
 	if (parent == NULL)
-		newUIItem = DBG_NEW UiItem_Bar(position, name, section, thumb_section, image_idle, image_hover, currentCanvas);
+		newUIItem = DBG_NEW UiItem_Bar(position, thumbOffset, name, functionName, section, thumb_section, sectioHover, currentCanvas, Spritescale);
 	else
-		newUIItem = DBG_NEW UiItem_Bar(position, name, section, thumb_section, image_idle, image_hover, parent);
+		newUIItem = DBG_NEW UiItem_Bar(position, thumbOffset, name, functionName, section, thumb_section, sectioHover, parent, Spritescale);
 
 	listOfItems.push_back(newUIItem);
 

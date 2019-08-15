@@ -31,6 +31,7 @@ j1Scene::j1Scene() : j1Module()
 		 {sceneTypeGUI::LEVEL, "InGameUI"},
 		 {sceneTypeGUI::MAINMENU, "MainMenuUI"},
 		 {sceneTypeGUI::DIFFICULTY_SELECTOR, "DifficultySelectorUI"},
+		 {sceneTypeGUI::SETTINGS, "SettingsUI"},
 	};
 
 	// TODO: keep updating this scene-gui index map
@@ -41,6 +42,7 @@ j1Scene::j1Scene() : j1Module()
 		 {SceneState::LEVEL2, "sound/music/soil-halo.ogg"},
 		 {SceneState::MAINMENU, "sound/music/Manimal - Black Plague.ogg"},
 		 {SceneState::DIFFICULTY_SELECTOR, "sound/music/Slipknot - Duality.ogg"},
+		 {SceneState::SETTINGS, "sound/music/Disturbed - Stricken.ogg"},
 	}; 
 
 }

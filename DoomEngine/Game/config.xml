@@ -330,6 +330,40 @@
 		
       </buttons>
     </DifficultySelectorUI>	  
-    </scene>
+    <SettingsUI>
+	<images>
+        <image name="background">
+		  <position x="0" y="0" />
+          <section x="0" y="1706" w="1533" h="873"/>
+		  <scaleFactor value = "1.0"/>
+        </image>
+	 </images>
+
+    <sliders>
+        <slider name="musSlider">
+          <position x="200" y="200"/>
+          <section x="118" y="211" w="177" h="31"/>
+		  <hoverSection x="118" y="249" w="177" h="31"/>
+		  <thumbSection x="26" y="196" w="24" h="29"/>
+		  <thumbOffset x ="4" y="2"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="SetVolume"/>
+        </slider>
+
+    </sliders> 	
+    <buttons>
+	<button name="backFromSettingsButton">
+          <position x="80" y="600"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="BACK"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="LoadGUI"/>
+		  <targetScene value="1"/>
+        </button>
+    </buttons>	
+	</SettingsUI>
+	</scene>
 
 </config>

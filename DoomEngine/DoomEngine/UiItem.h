@@ -44,6 +44,40 @@ public:
 		parent->children.push_back(this); 
 	}
 
+	void EnableChildren(bool enable)
+	{
+		if(children.size() > 0)
+			for (auto& child : children)
+			{
+				child->enable = enable; 
+
+				if (child->children.size() > 0)
+					child->EnableChildren(enable); 
+			}
+				
+	}
+
+	std::list<UiItem*> GetChildrenRecursive()
+	{
+		std::list<UiItem*> listChildren; 
+
+		for (const auto& child : this->children)
+		{
+			listChildren.push_back(child);
+
+			if (child->children.size() > 0)
+			{
+				std::list<UiItem*> listGrandChildren;
+				listGrandChildren = child->GetChildrenRecursive();
+				listChildren.splice(listChildren.end(), listGrandChildren); 
+			}
+			
+
+		}
+			
+		return listChildren; 
+	}
+
 	void MoveWithMouse(iPoint mousePos);
 
 	void SetPos(iPoint pos) {
@@ -64,9 +98,11 @@ public:
 
 	virtual void CleanUp() {}; 
 	 
-	virtual void OnClickDown() {};
+	virtual void OnClickDown(iPoint mousePos) {};
 	virtual void OnHover() {};
-	virtual void OnDrag() {};
+	virtual void OnDrag(iPoint mousePos) {
+		MoveWithMouse(mousePos);
+	};
 	virtual void OnHoverExit() {};
 	virtual void OnClickUp() {};
 
@@ -94,6 +130,7 @@ public:
 	bool selected = false;
 	bool focusable = false; 
 	bool accionable = false; 
+	bool numb = false; 
  
 	void(*function) (UiItem*) = nullptr;
 	std::string functionName = "empty"; 

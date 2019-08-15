@@ -67,10 +67,11 @@ public:
 	bool Save(pugi::xml_node&) const;
 	bool Load(pugi::xml_node&);
 
+	void SetSceneState(SceneState state) { this->state = state; }; 
 	SceneState GetCurrentSceneState() const { return state; }; 
 	SceneState GetNextSceneState() const { return nextSceneState; };  // when transitioning 
 	sceneTypeGUI convertSceneTypeToGui(SceneState state);
-
+	sceneTypeGUI GetCurrentSceneTypeGui() { return convertSceneTypeToGui(state); };
 
 
 private:

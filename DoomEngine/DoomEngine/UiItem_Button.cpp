@@ -43,7 +43,7 @@ void UiItem_Button::OnHover()
 }
 
  
-void UiItem_Button::OnClickDown()
+void UiItem_Button::OnClickDown(iPoint mousePos)
 {
 	App->audio->PlayFx("buttonClick"); 
 	this->function(this); 

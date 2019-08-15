@@ -12,7 +12,7 @@ class UiItem_Button :public UiItem
 {
 public:
 	UiItem_Button(iPoint position, std::string functionName, std::string name, std::string text, SDL_Color color, TTF_Font * font,  UiItem* const parent, float spriteScale, SceneState targetScene = SceneState::NO_SCENE);
-	void OnClickDown();
+	void OnClickDown(iPoint mousePos);
 	void OnHover();
 	void OnHoverExit(); 
 	void OnClickUp();

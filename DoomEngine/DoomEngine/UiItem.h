@@ -26,6 +26,15 @@ enum GUI_TYPES
 	UNKNOWN
 };
 
+
+struct targetPosData
+{
+	bool toUpdatePos = false;
+	iPoint targetPos = iPoint(0, 0);
+	iPoint speed = iPoint(0,0); 
+};
+
+
 class UiItem
 {
  
@@ -116,9 +125,11 @@ public:
 	SDL_Rect hitBox = { 0,0,0,0 };
 	SDL_Rect section = { 0,0,0,0 };
 	iPoint textureDimensions = iPoint(0, 0);
+	iPoint offsetWithMouse = iPoint(0, 0); 
 	iPoint originPos = iPoint(0, 0); 
 	float scaleFactor = 0.F;
 	uint mouseState = 0; 
+	targetPosData targPosData;
 
 	bool slidable = false;
 	bool draggable = false; 
@@ -131,7 +142,7 @@ public:
 	bool focusable = false; 
 	bool accionable = false; 
 	bool numb = false; 
- 
+
 	void(*function) (UiItem*) = nullptr;
 	std::string functionName = "empty"; 
 	SceneState targetScene = SceneState::NO_SCENE; 

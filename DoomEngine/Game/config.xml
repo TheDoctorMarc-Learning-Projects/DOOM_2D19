@@ -474,6 +474,72 @@
 		
     </buttons>	
 	</InGameSettingsUI>
+	<CreditsUI>
+	
+	<images>
+        <image name="background">
+		  <position x="0" y="0" />
+          <section x="0" y="2587" w="1530" h="865"/>
+		  <scaleFactor value = "1.0"/>
+        </image>
+		
+		 <image name="license">
+		  <position x="450" y="0" />
+          <section x="1611" y="2067" w="548" h="1405"/>
+		  <scaleFactor value = "1.0"/>
+        </image>
+		
+	 </images>	
+	 
+	 <labels>
+        <label name="title">
+          <position x="80" y="50"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="Credits"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="60"/>
+		  <scaleFactor value = "1.0"/>
+        </label>
+      </labels>
+	  
+	<buttons>
+	<button name="backFromCreditsButton">
+          <position x="80" y="600"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="BACK"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="LoadGUI"/>
+		  <targetScene value="1"/>
+        </button>
+		
+		<button name="creditScrollButton">
+          <position x="1150" y="550"/>
+          <color R="3" G="40" B="50" A="255"/>
+          <text value="SCROLL"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="ClippingScroll"/>
+        </button>
+		
+		<button name="creditScrollResetButton">
+          <position x="1150" y="620"/>
+          <color R="3" G="40" B="50" A="255"/>
+          <text value="RESET"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="ClippingScroll"/>
+        </button>
+		
+		
+    </buttons>
+	
+	
+	 
+	</CreditsUI>
 	</scene>
 
 </config>

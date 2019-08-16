@@ -33,6 +33,7 @@ j1Scene::j1Scene() : j1Module()
 		 {sceneTypeGUI::DIFFICULTY_SELECTOR, "DifficultySelectorUI"},
 		 {sceneTypeGUI::SETTINGS, "SettingsUI"},
 		 {sceneTypeGUI::IN_GAME_SETTINGS, "InGameSettingsUI"},
+	     {sceneTypeGUI::CREDITS, "CreditsUI"},
 	};
 
 	// TODO: keep updating this scene-gui index map
@@ -45,6 +46,7 @@ j1Scene::j1Scene() : j1Module()
 		 {SceneState::DIFFICULTY_SELECTOR, "sound/music/Slipknot - Duality.ogg"},
 		 {SceneState::SETTINGS, "sound/music/Disturbed - Stricken.ogg"},
 		 {SceneState::IN_GAME_SETTINGS, "sound/music/Disturbed - Stricken.ogg"},
+		 {SceneState::CREDITS, "sound/music/Arch Enemy - Set Flame to the Night.ogg"},
 	}; 
 
 }

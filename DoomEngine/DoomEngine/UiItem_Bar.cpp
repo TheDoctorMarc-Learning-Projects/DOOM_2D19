@@ -88,20 +88,25 @@ void UiItem_Bar::OnDrag(iPoint mousePos)
 	}
 	 
 	// for the mom we asume that only horizontal ones are used
-	thumb->MoveWithMouse(mousePos);
-	thumb->SetPos(iPoint(thumb->GetPos().x, thumb->originPos.y)); // keep the X delta movement, but cap the Y movement to origin pos
 
-	// check thumb inside X limits 
-	if (thumb->GetPos().x > getThumbMaxPos())
-		thumb->SetPos(iPoint(getThumbMaxPos(), thumb->GetPos().y)); 
-	else if(thumb->GetPos().x < thumb->originPos.x)
-		thumb->SetPos(iPoint(thumb->originPos.x, thumb->GetPos().y));
+	if (mousePos.x >= (thumb->originPos.x)  && mousePos.x <= (getThumbMaxPos() + thumb->hitBox.w))
+	{
+		thumb->MoveWithMouse(mousePos);
+		thumb->SetPos(iPoint(thumb->GetPos().x, thumb->originPos.y)); // keep the X delta movement, but cap the Y movement to origin pos
 
-	// update the value label
-	valueLabel->ChangeTextureIdle(std::to_string((uint)(int)(getThumbTravelFactor() * 100.f)), NULL, NULL);
+		// check thumb inside X limits 
+		if (thumb->GetPos().x > getThumbMaxPos())
+			thumb->SetPos(iPoint(getThumbMaxPos(), thumb->GetPos().y));
+		else if (thumb->GetPos().x < thumb->originPos.x)
+			thumb->SetPos(iPoint(thumb->originPos.x, thumb->GetPos().y));
 
-	// finally call the function 
-	this->function(this); 
+		// update the value label
+		valueLabel->ChangeTextureIdle(std::to_string((uint)(int)(getThumbTravelFactor() * 100.f)), NULL, NULL);
+
+		// finally call the function 
+		this->function(this);
+	}
+
 }
 
 

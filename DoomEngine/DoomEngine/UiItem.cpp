@@ -85,9 +85,9 @@ void UiItem::DebugDraw()
 
 void UiItem::MoveWithMouse(iPoint mousePos)
 {
-	iPoint offset = iPoint(0, 0); 
+	iPoint offset = iPoint(0, 0);
 	if (state == CLICK)
-		offset = mousePos - iPoint(hitBox.x, hitBox.y);
+		offset = offsetWithMouse = mousePos - iPoint(hitBox.x, hitBox.y);  // store offset in the offsetwithmouse header variable
 
 	iPoint mouseTravel = mousePos - App->gui->GetLastMousePos(); 
 	iPoint targetPos = iPoint(hitBox.x + mouseTravel.x - offset.x, hitBox.y + mouseTravel.y - offset.y);

@@ -30,7 +30,8 @@ void j1Gui::FillFunctionsMap()
 	 { "ExitGame", &ExitGame},
 	 { "SetDifficulty", &SetDifficulty},
 	 { "SetVolume", &SetVolume},
-	 { "ChangeGamePause", &ChangeGamePause }
+	 { "ChangeGamePause", &ChangeGamePause },
+	 { "ClippingScroll", &ClippingScroll }
 	};
 
 	// TODO: keep updating this function map
@@ -81,6 +82,19 @@ bool j1Gui::PreUpdate()
 		if(currentCanvas->myScene == sceneTypeGUI::LEVEL)
 			ChangeGamePause(nullptr);
 	
+	for (auto& item : currentCanvas->GetChildrenRecursive())
+		if (item->enable == true)
+			if (item->targPosData.toUpdatePos == true)
+			{
+				item->hitBox.x += item->targPosData.speed.x;
+				item->hitBox.y += item->targPosData.speed.y;
+
+				if (item->GetPos() == item->targPosData.targetPos)
+					item->targPosData.toUpdatePos = false;
+			}
+	
+
+
 
 	return true; 
 }
@@ -272,19 +286,22 @@ void SetVolume(UiItem* callback)
 			if (child->hitBox.y < callback->hitBox.y)
 				pos++; 
 
-	// 2)  set the volume according to thumb: make a fx sound on top of the current music
+	
 	float volume = dynamic_cast<UiItem_Bar*>(callback)->getThumbTravelFactor(); 
 	
-	if (App->audio->isPlayingFx(callback->name) == false)
-		App->audio->PlayFx(callback->name, 0, true, 1.f, 0.f, 0.f);
-	else
-		App->audio->SetSpecificFxVolume(callback->name, volume);
 
-	
-	// 3)  when releasing the slider, stop the current fx, reset the mus and fxs to previous state and then assign the last volume 
-	if (dynamic_cast<UiItem_Bar*>(callback)->thumb->state == IDLE)
+	// 2)  set the volume according to thumb: make a fx sound on top of the current music
+    if (dynamic_cast<UiItem_Bar*>(callback)->thumb->state != IDLE && dynamic_cast<UiItem_Bar*>(callback)->thumb->state != HOVER)
 	{
-		App->audio->StopSpecificFx(callback->name); 
+
+	   if (App->audio->isPlayingFx(callback->name) == false)
+		   App->audio->PlayFx(callback->name, 0, true, 1.f, 0.f, 0.f);
+	   else
+		   App->audio->SetSpecificFxVolume(callback->name, volume);
+	}
+	else 	// 3)  when releasing the slider, stop the current fx, reset the mus and fxs to previous state and then assign the last volume 
+	{
+		App->audio->StopSpecificFx(callback->name);
 		App->audio->ResetMusicAndFxVolumes();
 
 		if (pos == 1)
@@ -293,6 +310,30 @@ void SetVolume(UiItem* callback)
 			App->audio->SetFxVolume(volume);
 	}
 
+}
+
+// no need to do anything generic here, will be done just once 
+// (could have smth defined in xml to bond the button and the related image)
+void ClippingScroll(UiItem* callback)
+{
+	UiItem* targetItem = App->gui->GetItemByName("license");
+
+	if (callback->name == "creditScrollButton")
+	{
+		if (targetItem->targPosData.toUpdatePos == true)
+			return; 
+
+		targetItem->targPosData.targetPos = iPoint(targetItem->GetPos().x, -670);
+		targetItem->targPosData.speed = iPoint(0, -1);
+		targetItem->targPosData.toUpdatePos = true;
+	}
+	else if (callback->name == "creditScrollResetButton")
+	{
+		targetItem->hitBox.y = targetItem->originPos.y; 
+		targetItem->targPosData.toUpdatePos = false;
+	}
+	
+ 
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - create a canvas from a button action

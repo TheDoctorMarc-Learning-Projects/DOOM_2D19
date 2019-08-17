@@ -250,11 +250,6 @@
     <Image Include="..\Game\gui\icon.ico" />
     <Image Include="icon1.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Game\gui\curs.cur" />
-    <None Include="..\game\gui\cursor1.cur" />
-    <None Include="..\game\gui\cursor2.cur" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

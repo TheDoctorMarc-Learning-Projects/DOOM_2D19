@@ -236,10 +236,14 @@ void j1EntityPlayer::HorizonatlMovement(float dt)
 			xAxis = SDL_JOYSTICK_AXIS_MAX; 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 			xAxis = -SDL_JOYSTICK_AXIS_MAX;
-
 		// - - - - - - - - - - - - - - - - - - horizontal movement
 		if (xAxis > 0 || xAxis < 0)
 		{
+			float targetSpeed = speed; 
+
+			if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT || 
+				App->input->GetControllerAxisPulsation(SDL_CONTROLLER_AXIS_TRIGGERLEFT) == KEY_REPEAT)
+				targetSpeed *= 1.3f;
 
 
 			currentAnimation = &run;
@@ -247,13 +251,13 @@ void j1EntityPlayer::HorizonatlMovement(float dt)
 			if (state.movement.at(1) != MovementState::NOT_ACTIVE)
 			{
 				if (state.movement.at(1) == MovementState::JUMP)
-					lastSpeed.x = (xAxis * speed) * jumpInfo.speedXIncrementJump* dt;
+					lastSpeed.x = (xAxis * targetSpeed) * jumpInfo.speedXIncrementJump* dt;
 				else if (state.movement.at(1) == MovementState::FALL)
-					lastSpeed.x = (xAxis * speed) * jumpInfo.speedXIncrementFall* dt;
+					lastSpeed.x = (xAxis * targetSpeed) * jumpInfo.speedXIncrementFall* dt;
 
 			}
 			else
-				lastSpeed.x = (xAxis * speed) * dt;
+				lastSpeed.x = (xAxis * targetSpeed) * dt;
 
 			// check not paralized
 			if ((lastSpeed.x > 0 && paralizedDir == 1) || (lastSpeed.x < 0 && paralizedDir == -1))

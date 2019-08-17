@@ -371,9 +371,4 @@
     <Image Include="icon1.ico" />
     <Image Include="..\Game\gui\icon.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\game\gui\cursor1.cur" />
-    <None Include="..\game\gui\cursor2.cur" />
-    <None Include="..\Game\gui\curs.cur" />
-  </ItemGroup>
 </Project>

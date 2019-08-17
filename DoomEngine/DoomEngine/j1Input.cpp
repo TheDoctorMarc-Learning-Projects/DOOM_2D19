@@ -100,12 +100,11 @@ bool j1Input::PreUpdate()
 			}
 		}
 	}
-	// TRIGGERS/JOYSTICKS GENERAL STATE (for joysticks better use GetJoystickPulsation to differentiate directions
-	// for triggers this is good
+	// TRIGGERS/JOYSTICKS GENERAL STATE 
 	for (int i = 0; i < SDL_CONTROLLER_AXIS_MAX; ++i)
 	{
-		//if (SDL_GameControllerGetAxis(gamePad1, (SDL_GameControllerAxis)i) > 0)
-		if(GetControllerAxis((SDL_GameControllerAxis)i)) // filtered with dead zone too
+		
+		if(GetControllerAxis((SDL_GameControllerAxis)i)) 
 		{
 			if (controller_axis[i] == KEY_IDLE)
 				controller_axis[i] = KEY_DOWN;
@@ -127,11 +126,7 @@ bool j1Input::PreUpdate()
 	for (int i = SDL_CONTROLLER_AXIS_LEFTX; i < SDL_CONTROLLER_AXIS_TRIGGERLEFT; ++i)
 	{
 		// we need to track for each axis two directions -/+
-		Sint16 joy_value = GetControllerAxis((SDL_GameControllerAxis)i); // filtered with dead zone too
-
-		// negative values for "this" axis, ie: SDL_CONTROLLER_AXIS_LEFTX, directly to joydir enum order, dir "left"
-		// ie: SDL_CONTROLLER_AXIS_RIGHTX, axis direction counter = 2, pointing to joydir UP, wich needs a negative value from getaxis
-		// etc
+		Sint16 joy_value = GetControllerAxis((SDL_GameControllerAxis)i); 
 
 		if (joy_value < 0)
 		{
@@ -150,7 +145,6 @@ bool j1Input::PreUpdate()
 
 		++axis_direction_counter;
 
-		// positive values  for "this" axis, ie: SDL_CONTROLLER_AXIS_LEFTX, dir "right" (axis direction counter 1)
 		if (joy_value > 0)
 		{
 			if (joystick[axis_direction_counter] == KEY_IDLE)
@@ -211,14 +205,12 @@ bool j1Input::PreUpdate()
 		case SDL_WINDOWEVENT:
 			switch (event.window.event)
 			{
-				//case SDL_WINDOWEVENT_LEAVE:
 			case SDL_WINDOWEVENT_HIDDEN:
 			case SDL_WINDOWEVENT_MINIMIZED:
 			case SDL_WINDOWEVENT_FOCUS_LOST:
 				windowEvents[WE_HIDE] = true;
 				break;
 
-				//case SDL_WINDOWEVENT_ENTER:
 			case SDL_WINDOWEVENT_SHOWN:
 			case SDL_WINDOWEVENT_FOCUS_GAINED:
 			case SDL_WINDOWEVENT_MAXIMIZED:
@@ -230,12 +222,10 @@ bool j1Input::PreUpdate()
 
 		case SDL_MOUSEBUTTONDOWN:
 			mouse_buttons[event.button.button - 1] = KEY_DOWN;
-			//LOG("Mouse button %d down", event.button.button-1);
 			break;
 
 		case SDL_MOUSEBUTTONUP:
 			mouse_buttons[event.button.button - 1] = KEY_UP;
-			//LOG("Mouse button %d up", event.button.button-1);
 			break;
 
 		case SDL_MOUSEMOTION:
@@ -245,7 +235,6 @@ bool j1Input::PreUpdate()
 			mouse_motion_y = event.motion.yrel / scale;
 			mouse_x = event.motion.x / scale;
 			mouse_y = event.motion.y / scale;
-			//LOG("Mouse motion x %d y %d", mouse_motion_x, mouse_motion_y);
 		}
 		break;
 
@@ -255,35 +244,8 @@ bool j1Input::PreUpdate()
 			for (int i = 0; i < SDL_NumJoysticks(); ++i) {
 				if (SDL_IsGameController(i)) {
 					gamePad1 = SDL_GameControllerOpen(i);
-					if (gamePad1) {
-
-						if (SDL_JoystickIsHaptic(SDL_GameControllerGetJoystick(gamePad1)) > 0)
-						{
-							haptic = SDL_HapticOpenFromJoystick(SDL_GameControllerGetJoystick(gamePad1));
-
-							if (haptic != nullptr)
-							{
-								LOG("HAPTIC SUCCESS");
-								//Get initialize rumble 
-								if (SDL_HapticRumbleInit(haptic) < 0) // initialize simple rumble
-								{
-									LOG("Warning: Unable to initialize rumble! SDL Error: %s\n", SDL_GetError());
-								}
-
-								if (SDL_HapticRumblePlay(haptic, 0.3f, 1000) < 0)
-								{
-									LOG("rumble play error");
-								}
-							}
-						}
-						else
-						{
-							LOG("haptic error! SDL_Error: %s\n", SDL_GetError());
-						}
-					}
-					else {
+					if (gamePad1 == nullptr) 
 						LOG("gamepad awake assign failed");
-					}
 				}
 			}
 			break;
@@ -293,8 +255,6 @@ bool j1Input::PreUpdate()
 			LOG("disconnected gamepad");
 			if (gamePad1 != nullptr)
 			{
-				SDL_HapticClose(haptic);
-				haptic = nullptr;
 				SDL_GameControllerClose(gamePad1);
 				gamePad1 = nullptr;
 				break;
@@ -311,11 +271,8 @@ bool j1Input::PreUpdate()
 bool j1Input::CleanUp()
 {
 	LOG("Quitting SDL event subsystem");
-	SDL_QuitSubSystem(SDL_INIT_EVENTS);
-	SDL_HapticStopAll(haptic);
-	SDL_HapticClose(haptic);
-	SDL_QuitSubSystem(SDL_INIT_HAPTIC);
-	//SDL_GameControllerClose(gamePad1);
+	SDL_QuitSubSystem(SDL_INIT_EVENTS); 
+	SDL_GameControllerClose(gamePad1);
 	SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
 
 	return true;
@@ -348,12 +305,4 @@ Sint16 j1Input::GetControllerAxis(SDL_GameControllerAxis axis) {
 	return 0;
 }
 
-
-void j1Input::DoGamePadRumble(float strength, uint32 duration) const
-{
-	//SDL_GameControllerRumble() // TO bypass haptic etc and do the order directly to gamecontroller (for simple rumble)
-	// for simple rumble too (for now)
-	SDL_HapticRumblePlay(haptic, strength, duration);
-
-}
 

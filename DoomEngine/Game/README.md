@@ -39,6 +39,7 @@ a more responsive movement).
 
 Controller: 
 Move = left joystick
+Sprint = L2
 Jump = X button 
 Shoot = R2
 Previous Weapon = L1
@@ -46,6 +47,7 @@ Next Weapon = R1
 
 Keyboard:
 Move = A (left), D (right)
+Sprint = space 
 Jump = W
 Shoot = K
 Previous Weapon = J

@@ -120,7 +120,7 @@ public:
 	int			mouse_y;
 
 	SDL_GameController* gamePad1 = nullptr;
-	SDL_Haptic* haptic = nullptr;
+	//SDL_Haptic* haptic = nullptr;
 private:
 	
 

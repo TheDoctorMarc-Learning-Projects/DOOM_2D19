@@ -79,7 +79,27 @@ void UiItem::DrawChildren()    // what about "to_delete"? is it needed for the g
 
 void UiItem::DebugDraw()
 {
-	App->render->DrawQuad(hitBox, 0, 0, 255, 255, true, true); 
+	if (parent == nullptr)
+		return; 
+
+	SDL_Rect target = hitBox; 
+	fPoint dimensions = fPoint((float)target.w * scaleFactor, (float)target.h * scaleFactor); 
+
+	target.w = dimensions.x;
+	target.h = dimensions.y; 
+
+	if (target.w == 0 || target.h == 0)
+	{
+		target.w = section.w;
+		target.h = section.h;
+
+		fPoint dimensions = fPoint((float)target.w * scaleFactor, (float)target.h * scaleFactor);
+
+		target.w = dimensions.x;
+		target.h = dimensions.y;
+	}
+
+	App->render->DrawQuad(target, 0, 0, 255, 50, true, true);
 }
 
 

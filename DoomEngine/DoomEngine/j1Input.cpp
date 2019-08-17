@@ -272,7 +272,6 @@ bool j1Input::CleanUp()
 {
 	LOG("Quitting SDL event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS); 
-	SDL_GameControllerClose(gamePad1);
 	SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
 
 	return true;

@@ -220,7 +220,7 @@ bool j1Gui::PostUpdate()
 	BROFILER_CATEGORY("UI PostUpdate", Profiler::Color::Yellow);
  
  
-	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)    // TODO: change with proper UI debug key
+	if (App->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN)    // TODO: change with proper UI debug key
 		debug = !debug;
 
 	if(currentCanvas != nullptr)

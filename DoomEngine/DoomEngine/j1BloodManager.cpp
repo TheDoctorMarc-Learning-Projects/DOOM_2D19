@@ -121,9 +121,9 @@ bool j1BloodManager::CleanUp()
 		{
 			bloodDrop->CleanUp();   // check entity cleanup is ineed called; 
 			RELEASE(bloodDrop); 
-			bloodDrop = nullptr; 
 		}
 		stream->myBloodDrops.clear(); 
+		RELEASE(stream);
 	}
 	bloodStreams.clear(); 
 	

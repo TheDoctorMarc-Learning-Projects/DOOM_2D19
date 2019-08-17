@@ -300,6 +300,7 @@ void j1Collision::doCollisionDeAssignment(Collider* c1, Collider* c2)
 			{
 				col = c1->onCollisionWithMe.erase(col);
 				c1->callback->OnCollisionExit(c1, c2);
+				break; 
 			}
 
 			else
@@ -422,13 +423,6 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* 
 bool Collider::CheckCollision(const SDL_Rect& r) 
 {
 	BROFILER_CATEGORY("Collision CheckCollision", Profiler::Color::DeepSkyBlue);
-	/*bool ret = false;
-
-	if (r.x + r.w > rect.x && r.x < rect.x + rect.w && r.y + r.h > rect.y && r.y < rect.h + rect.y)
-		ret = true;
-
-	return ret;*/
-
 	bool ret = true;
 
 	if (r.x + r.w < rect.x) ret = false;
@@ -478,14 +472,15 @@ void Collider::UpdateStatus()
 {
 	if (volatileOutOfScreen)  // delete whe out of camera limits
 	{
-		uint deltaTime = lifetime.Read();
-		if (deltaTime > VOLATILE_LIFE)              // TODO: do this rather with is on camera ?
+		
+		if (App->render->isRectOnCamera(this->rect) == false)              // TODO: do this rather with is on camera ?
 		{
 			if (owner != nullptr)
 				owner->to_delete = true;   // if it has an owner, delete the owner too
 			else
 				to_delete = true;
 
+			return; 
 		}
 
 	}

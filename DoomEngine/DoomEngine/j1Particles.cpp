@@ -138,17 +138,10 @@ bool j1Particles::CleanUp()
 	//removing active particles
 	if (!active.empty())
 	{
-		std::list<Particle*>::iterator particles = active.begin();
-
-		for (; particles != active.end();)
-		{
-			delete (*particles);
-			(*particles) = nullptr;
-			particles = active.erase(particles);
-		}
+		for (auto& particle : active)
+			RELEASE(particle); 
 		active.clear();
 	}
-
 
 	particleMap.clear(); // check if content is stil there
 

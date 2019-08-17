@@ -186,9 +186,6 @@
     <ClCompile Include="UiItem_Button.cpp">
       <Filter>Code\Core\In-Screen\GUI\Items</Filter>
     </ClCompile>
-    <ClCompile Include="UiItem_Checkbox.cpp">
-      <Filter>Code\Core\In-Screen\GUI\Items</Filter>
-    </ClCompile>
     <ClCompile Include="UiItem_Image.cpp">
       <Filter>Code\Core\In-Screen\GUI\Items</Filter>
     </ClCompile>
@@ -344,9 +341,6 @@
     <ClInclude Include="UiItem_Button.h">
       <Filter>Code\Core\In-Screen\GUI\Items</Filter>
     </ClInclude>
-    <ClInclude Include="UiItem_Checkbox.h">
-      <Filter>Code\Core\In-Screen\GUI\Items</Filter>
-    </ClInclude>
     <ClInclude Include="UiItem_Image.h">
       <Filter>Code\Core\In-Screen\GUI\Items</Filter>
     </ClInclude>
@@ -376,5 +370,10 @@
   <ItemGroup>
     <Image Include="icon1.ico" />
     <Image Include="..\Game\gui\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\game\gui\cursor1.cur" />
+    <None Include="..\game\gui\cursor2.cur" />
+    <None Include="..\Game\gui\curs.cur" />
   </ItemGroup>
 </Project>

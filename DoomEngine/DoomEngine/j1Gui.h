@@ -8,7 +8,6 @@
 #include "UiItem.h"
 #include "UiItem_Image.h"
 #include "UiItem_Label.h"
-#include "UiItem_Checkbox.h"
 #include "UiItem_Button.h"
 #include "UiItem_Bar.h"
 #include "UiItem_Button.h"
@@ -41,14 +40,13 @@ public:
 	bool CleanUp();
 	 
 public: 
-	UiItem_Label* AddLabel(std::string name, std::string text, SDL_Color color, TTF_Font* font, p2Point<int> position, UiItem* const parent, float SpriteScale = 0.0f);
+	UiItem_Label* AddLabel(std::string name, std::string text, SDL_Color color, TTF_Font* font, p2Point<int> position, UiItem* const parent, float SpriteScale = 0.0f, bool resetable = false);
 	UiItem_Image* AddImage(iPoint position, const SDL_Rect* section, std::string name, UiItem* const parent, bool isTabbable = false, SDL_Texture* specialTex = nullptr, float spriteScale = 0.0f,
 		std::string newTextureName = "");
 	UiItem_Bar* AddBar(iPoint position, iPoint thumbOffset, std::string name, std::string functionName, const SDL_Rect* section, const SDL_Rect* thumb_section, const SDL_Rect* sectioHover,
 		UiItem*const parent, float Spritescale, std::string labelText, std::string valueLabelText, SDL_Color textColor, SDL_Color valueColor, TTF_Font * font);
 	UiItem_Button* AddButton(iPoint position, std::string functionName, std::string name, std::string text, SDL_Color color, TTF_Font * font, UiItem* const parent, float spriteScale, SceneState targetScene);
 	UiItem* AddEmptyElement(iPoint pos, UiItem* const parent = nullptr);
-	UiItem_Checkbox* AddCheckbox(iPoint position, std::string function, std::string name, const SDL_Rect* idle, UiItem* const parent, const SDL_Rect* click = nullptr, const SDL_Rect* hover = nullptr, const SDL_Rect* tick_section = nullptr);
 	UiItem_Face* AddFace(iPoint position, std::string name, UiItem* const parent, float spriteScale = 0.0f);
 
 	void LoadGuiDefined(sceneTypeGUI targetScene); 
@@ -80,7 +78,14 @@ public:
 	std::map<sceneTypeGUI, UiItem*> GetCanvases() const { return canvases; }; 
 	SDL_Texture* GetAtlas() const { return atlas; };
 	float GetSpriteGlobalScale() const { return spriteScale; };   // TODO: alter this when needed, pass the items a specific scale if needed
-	UiItem* GetItemByName(std::string name, UiItem* parent = nullptr) const;
+	UiItem* GetCanvasItemByName(std::string name, UiItem* parent = nullptr) const;
+	UiItem* GetItemByName(std::string name) const {
+		for (const auto& item : listOfItems)
+			if (item->name == name)
+				return item; 
+
+		return nullptr; 
+	}
 
 	void UpDateInGameUISlot(std::string name, float newValue = 0.0f, SDL_Rect newSection = { 0, 0, 0, 0 });
 	void UpdateDeathTimer(int value = -1);     // it is here just not to call the above function in app, maybe it is cleaner to call it from here; 

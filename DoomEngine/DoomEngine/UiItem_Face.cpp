@@ -229,8 +229,6 @@ UiItem_Face::~UiItem_Face()
 
 void UiItem_Face::Draw()
 {
-	uint ms = currentAnimation.myTimer.timer.Read(); 
-	uint ms2 = currentAnimation.myTimer.actionTime; 
 
 	// if the kil, weapon etc state is over, go to idle anim
 	if (toUpdate == true)

@@ -284,9 +284,6 @@ void j1EnemyCacodemon::SetDeviation(bool horizontal, Collider* c2)
 {
 	if (state.path != ePathState::TEMPORAL_DEVIATION && state.path != ePathState::AWAIT)
 	{
-		int offset = 3;
-		int yOffset = 5;
-
 		if (horizontal)
 		{
 

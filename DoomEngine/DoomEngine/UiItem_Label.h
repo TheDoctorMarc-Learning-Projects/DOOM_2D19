@@ -10,7 +10,7 @@
 class UiItem_Label : public UiItem
 {
 public:
-	UiItem_Label(std::string name, std::string text, SDL_Color color, TTF_Font * font, p2Point<int> position, UiItem*const parent, float SpriteScale);
+	UiItem_Label(std::string name, std::string text, SDL_Color color, TTF_Font * font, p2Point<int> position, UiItem*const parent, float SpriteScale, bool resetable);
 	~UiItem_Label();
 
 	/*UiItem_Label(std::string text, SDL_Color color, TTF_Font * font, bool typewriter, p2Point<int> position, UiItem*const parent);*/

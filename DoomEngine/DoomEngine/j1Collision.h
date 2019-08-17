@@ -3,12 +3,10 @@
 
 #include "j1Module.h"
 #include "p2Point.h"
-#include "j1Timer.h"
 #include <list>
 #include <vector>
 
 #include "SDL/include/SDL_rect.h"
-#define VOLATILE_LIFE 10000
 
 enum COLLIDER_TYPE
 {
@@ -39,7 +37,6 @@ struct Collider
 	SDL_Rect rect;
 	bool to_delete = false;
 	COLLIDER_TYPE type;
-	j1Timer lifetime; 
 	j1Entity* callback = nullptr;
 	Particle* owner = nullptr; // eg shot creates collider, but callback is instead the enemy
 	bool hasCallback = false; 
@@ -65,8 +62,6 @@ struct Collider
 		if (callback != nullptr)
 			hasCallback = true; 
 
-		if (volatileOutOfScreen == true)
-			lifetime.Start(); 
 	}
 
 	void SetPos(int x, int y)

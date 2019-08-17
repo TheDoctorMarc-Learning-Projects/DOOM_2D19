@@ -58,6 +58,7 @@
           <text value="500"/>
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
           <size s="24"/>
+		  <resetable value = "true"/>   
         </label>
 		
 		<label name="armorLabel">
@@ -66,6 +67,7 @@
           <text value="0"/>
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
           <size s="24"/>
+		  <resetable value = "true"/>   
         </label>
 		
 		<label name="ammoLabel">
@@ -74,6 +76,7 @@
           <text value="0"/>
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
           <size s="24"/>
+		  <resetable value = "true"/>   
         </label>
 		
 		
@@ -83,6 +86,7 @@
           <text value="0"/>
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
           <size s="24"/>
+		  <resetable value = "true"/>   
         </label>
 		
 		<label name="newCollectibleLabel">
@@ -91,6 +95,7 @@
           <text value="0"/>
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
           <size s="24"/>
+		  <resetable value = "true"/>   
         </label>
 		
 		<label name="deathTimerLabel">
@@ -109,8 +114,48 @@
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
           <size s="60"/>
 		  <scaleFactor value="1.0"/>
+		  <resetable value = "true"/>   
         </label>
 		
+		
+		<label name="Time">
+          <position x="50" y="8" />
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="Total time: "/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="36"/>
+		  <scaleFactor value="1.0"/>
+        </label>
+		
+		<label name="TimeCounter">
+          <position x="190" y="8" />
+          <color R="255" G="255" B="200" A="255"/>
+          <text value="0"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="36"/>
+		  <scaleFactor value="1.0"/>
+		  <resetable value = "true"/>   
+        </label>
+		
+		
+		<label name="Lives">
+          <position x="230" y="8" />
+          <color R="255" G="255" B="200" A="255"/>
+          <text value="Lives: "/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="36"/>
+		  <scaleFactor value="1.0"/>
+        </label>
+		
+		<label name="LiveCounter">
+          <position x="300" y="8" />
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="3"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="36"/>
+		  <scaleFactor value="1.0"/>
+		  <resetable value = "true"/>   
+        </label>
 		
       </labels>
 

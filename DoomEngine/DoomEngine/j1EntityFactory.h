@@ -63,6 +63,7 @@ public:
 	void AddArmorToPlayer(float maxArmorPercentage = 0.0f);
 
 	void SetDifficultyMultiplier(int difficultyLevel);
+	void PlayerDeathLogic(); 
 
 	/*bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;*/  // TODO (xd) 

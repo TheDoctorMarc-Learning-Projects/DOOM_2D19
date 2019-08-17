@@ -185,7 +185,6 @@
     <ClCompile Include="UiItem.cpp" />
     <ClCompile Include="UiItem_Bar.cpp" />
     <ClCompile Include="UiItem_Button.cpp" />
-    <ClCompile Include="UiItem_Checkbox.cpp" />
     <ClCompile Include="UiItem_Face.cpp" />
     <ClCompile Include="UiItem_Image.cpp" />
     <ClCompile Include="UiItem_Label.cpp" />
@@ -240,7 +239,6 @@
     <ClInclude Include="UiItem.h" />
     <ClInclude Include="UiItem_Bar.h" />
     <ClInclude Include="UiItem_Button.h" />
-    <ClInclude Include="UiItem_Checkbox.h" />
     <ClInclude Include="UiItem_Face.h" />
     <ClInclude Include="UiItem_Image.h" />
     <ClInclude Include="UiItem_Label.h" />
@@ -251,6 +249,11 @@
   <ItemGroup>
     <Image Include="..\Game\gui\icon.ico" />
     <Image Include="icon1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Game\gui\curs.cur" />
+    <None Include="..\game\gui\cursor1.cur" />
+    <None Include="..\game\gui\cursor2.cur" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

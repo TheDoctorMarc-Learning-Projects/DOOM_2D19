@@ -32,7 +32,7 @@ j1EntityLootCoin::j1EntityLootCoin(float posX, float posY, LOOT_TYPE loot_type, 
 
 void j1EntityLootCoin::OnPickUp()
 {
-	    UiItem_Label* myLabel = (UiItem_Label*)App->gui->GetItemByName(name + "Label"); 
+	    UiItem_Label* myLabel = (UiItem_Label*)App->gui->GetCanvasItemByName(name + "Label"); 
 
 		if (myLabel != nullptr)
 		{

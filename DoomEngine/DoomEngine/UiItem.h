@@ -130,6 +130,7 @@ public:
 	float scaleFactor = 0.F;
 	uint mouseState = 0; 
 	targetPosData targPosData;
+	SDL_Rect clipRect = { 0,0,0,0 }; 
 
 	bool slidable = false;
 	bool draggable = false; 
@@ -142,6 +143,7 @@ public:
 	bool focusable = false; 
 	bool accionable = false; 
 	bool numb = false; 
+	bool resetable = false; 
 
 	void(*function) (UiItem*) = nullptr;
 	std::string functionName = "empty"; 

@@ -85,6 +85,7 @@ bool j1EnemyBaronOfHell::Move(float dt)
 	{
 		if (isPlayerOnMeleeRange() == true && state.combat != eCombatState::SHOOT && lastSpeed.IsZero() == true)
 			currentAnimation = &idle;
+ 
 
 		if(App->entityFactory->player->onPlatform == false || (App->entityFactory->player->onPlatform == true && lastPlatform != App->entityFactory->player->lastPlatform))
 			Go_A_to_B();

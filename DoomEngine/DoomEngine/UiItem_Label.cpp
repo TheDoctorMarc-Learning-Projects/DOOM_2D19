@@ -10,7 +10,7 @@
 
 
 
-UiItem_Label::UiItem_Label(std::string name, std::string text, SDL_Color color, TTF_Font * font, p2Point<int> position, UiItem*const parent, float SpriteScale) :UiItem(position, parent)
+UiItem_Label::UiItem_Label(std::string name, std::string text, SDL_Color color, TTF_Font * font, p2Point<int> position, UiItem*const parent, float SpriteScale, bool resetable) :UiItem(position, parent)
 {
 	assert(parent != nullptr);
 	this->name = name; 
@@ -21,7 +21,7 @@ UiItem_Label::UiItem_Label(std::string name, std::string text, SDL_Color color, 
 	this->color = color;
 	this->font = font;
 
-
+	this->resetable = resetable; 
 	if (texture)
 	{
 		SDL_QueryTexture(texture, NULL, NULL, &textureDimensions.x, &textureDimensions.y);

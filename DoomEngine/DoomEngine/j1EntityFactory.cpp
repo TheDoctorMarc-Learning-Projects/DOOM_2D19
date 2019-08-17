@@ -94,11 +94,11 @@ bool j1EntityFactory::Start()
 	// for the moment, create player here 
 	player = (j1EntityPlayer*)CreateEntity(PLAYER, playerSpawnPos.x, playerSpawnPos.y, "player");
 
-	std::list<j1Entity*>::iterator item = entities.begin();
-	for (; item != entities.end(); ++item)
+	 
+	for (const auto& item : entities)
 	{
-		if ((*item) != nullptr)
-			(*item)->Start();
+		if (item != nullptr)
+			item->Start();
 	}
 
 	return true;
@@ -246,6 +246,8 @@ bool j1EntityFactory::CleanUp()
 
 	}
 	entities.clear();
+
+	player = nullptr; 
 
 	for (auto tex : entityTextureMap)
 	{
@@ -463,7 +465,7 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 			App->gui->UpDateInGameUISlot("healthLabel", player->life);
 
 		// warn the GUI
-		dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("damaged");
+		dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("damaged");
 			
 	}
 		
@@ -485,34 +487,11 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 			App->gui->UpdateDeathTimer((int)((float)(int)dynamic_cast<j1Enemy*>(ent)->powerLevel * enemyKillTimeBonusFactor * currentDifficultyMultiplier.deathTimerUpdate)); 
 
 			// warn the GUI
-			dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("kill");
+			dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("kill");
 		}
 		else
-		{
-
-			playerAlive = false;
-			playerLives--;
-
-			// warn the GUI
-			dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("death");
-
-			// finally check the remaining lives and switch scene according
-			if (playerLives > 0)
-			{
-				//App->scene->LoadScene(App->scene->GetCurrentSceneState(), true);
-				App->scene->SetTargetScene(App->scene->GetCurrentSceneState()); 
-				return; 
-			}
-				
-			else
-			{
-				playerLives = 3; 
-			//	App->scene->LoadScene(SceneState::MAINMENU, true);
-				App->scene->SetTargetScene(SceneState::MAINMENU);
-				return; 
-			}
-		
-		}
+			PlayerDeathLogic(); 
+	
 			
 			
 	}
@@ -584,4 +563,26 @@ void j1EntityFactory::AddArmorToPlayer(float maxArmorPercentatge)
 void j1EntityFactory::SetDifficultyMultiplier(int difficultyLevel)
 {
 	currentDifficultyMultiplier = difficultyMultipliers.at(difficultyLevel - 1); 
+}
+
+void j1EntityFactory::PlayerDeathLogic()
+{
+	playerAlive = false;
+	playerLives--;
+
+	// warn the GUI
+	App->gui->UpDateInGameUISlot("LiveCounter", playerLives);
+	dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("death");
+
+	// finally check the remaining lives and switch scene according
+	if (playerLives > 0)
+		App->scene->SetTargetScene(App->scene->GetCurrentSceneState());
+
+	else
+	{
+		playerLives = 3;
+		App->gui->UpDateInGameUISlot("LiveCounter", 3);
+		App->scene->SetTargetScene(SceneState::MAINMENU);
+	}
+
 }

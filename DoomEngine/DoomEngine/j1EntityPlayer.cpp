@@ -98,9 +98,9 @@ bool j1EntityPlayer::PreUpdate()
 		godMode = !godMode;
 
 		if(godMode)
-			dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("win");
+			dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("win");
 		else
-			dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("idle");
+			dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("idle");
 		
 	}
 		
@@ -921,6 +921,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 		break;
 
 	case COLLIDER_TYPE::COLLIDER_WIN:
+		App->entityFactory->playerLives = 3; 
+		App->gui->UpDateInGameUISlot("LiveCounter", 3);
 		if (App->scene->GetCurrentSceneState() == SceneState::LEVEL1)
 			App->scene->LoadScene(SceneState::LEVEL2, true); 
 		if (App->scene->GetCurrentSceneState() == SceneState::LEVEL2)                  
@@ -1065,7 +1067,7 @@ void j1EntityPlayer::PickWeapon(Collider* c2)
 		App->audio->PlayFx("weaponPickUp");
 
 		App->gui->UpDateInGameUISlot("ammoLabel", currentWeapon->currentBullets);
-		if (App->gui->GetItemByName("weaponImage") == nullptr)                    // create the weapon image
+		if (App->gui->GetCanvasItemByName("weaponImage") == nullptr)                    // create the weapon image
 		{
 			SDL_Rect section = { currentWeapon->section.x, currentWeapon->section.y, currentWeapon->section.w, currentWeapon->section.h};
 			iPoint pos = iPoint(272, 615);
@@ -1076,7 +1078,7 @@ void j1EntityPlayer::PickWeapon(Collider* c2)
 		else
 			App->gui->UpDateInGameUISlot("weaponImage", 0.0f, currentWeapon->section);   // change the weapon image section to the new weapon's sections 
 		
-		dynamic_cast<UiItem_Face*>(App->gui->GetItemByName("face"))->SetCurrentAnim("weapon");   // change the ui face 
+		dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("weapon");   // change the ui face 
 
 	}
 }

@@ -107,7 +107,7 @@ bool j1Audio::Start()
 	LoadFx("sound/fx/dsslop.wav", "playerDeath2");
 
 
-	int i = 0; 
+	int i = 1; 
 	for (auto chunk = fxMap.begin(); chunk != fxMap.end(); ++chunk)
 	{
 		(*chunk).second.actualChannel = i; 
@@ -365,14 +365,9 @@ void j1Audio::StopSpecificFx(std::string name)
 	if (item == fxMap.end())
 		return;
 
-
-	if (fxMap.at(name).chunk)
-	{
-		if(isPlayingFx((*item).first) == true)
-			Mix_HaltChannel((*item).second.actualChannel);
+	if (isPlayingFx((*item).first) == true)
+		Mix_HaltChannel((*item).second.actualChannel);
 	
-	}
-		
 }
 
 

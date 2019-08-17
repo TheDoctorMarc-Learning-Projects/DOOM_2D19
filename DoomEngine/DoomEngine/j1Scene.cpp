@@ -132,6 +132,20 @@ bool j1Scene::Update(float dt)
 	}
 	*/
 
+
+	if (App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN) // TODO: change ALL debug keys to the proper ones
+	{
+		App->entityFactory->playerLives = 3; 
+		App->gui->UpDateInGameUISlot("LiveCounter", 3);
+		App->scene->LoadScene(SceneState::LEVEL1, true);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_KP_2) == KEY_DOWN) // TODO: change ALL debug keys to the proper ones
+	{
+		App->entityFactory->playerLives = 3;
+		App->gui->UpDateInGameUISlot("LiveCounter", 3);
+		App->scene->LoadScene(state, true);
+	}
  
 	return true;
 }

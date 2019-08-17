@@ -43,6 +43,8 @@ void j1Gui::FillFunctionsMap()
 		{ "oldCollectibleLabel", 0},
 		{ "newCollectibleLabel", 0},
 		{ "deathTimerCounter", 40},
+		{ "LiveCounter", 3},
+		{ "TimeCounter", 0},
 	}; 
 }
 
@@ -112,8 +114,7 @@ bool j1Gui::Update(float dt)
 	uint mouseState = App->input->GetMouseButtonDown(SDL_BUTTON_LEFT);
 
 
-	// for the moment, this won't update the grandsons (not needed) 
-
+    // go through all current canvas family tree 
 	for (auto& item : currentCanvas->GetChildrenRecursive())
 	{
 		if (item->enable == false || item->numb == true)
@@ -316,7 +317,7 @@ void SetVolume(UiItem* callback)
 // (could have smth defined in xml to bond the button and the related image)
 void ClippingScroll(UiItem* callback)
 {
-	UiItem* targetItem = App->gui->GetItemByName("license");
+	UiItem* targetItem = App->gui->GetCanvasItemByName("license");
 
 	if (callback->name == "creditScrollButton")
 	{
@@ -339,8 +340,13 @@ void ClippingScroll(UiItem* callback)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - create a canvas from a button action
 void LoadGui(UiItem* callback)   
 {
-	if (App->pause == true)
-		App->pause = false; 
+	if (App->pause == true)  // Extra: when coming from InGame Settings, unPause and reset lives 
+	{
+		App->pause = false;
+		App->entityFactory->playerLives = 3;
+		App->gui->UpDateInGameUISlot("LiveCounter", 3);
+	}
+		
 	
 	bool found = false;
 	for (auto& canvas : App->gui->GetCanvases())
@@ -432,12 +438,12 @@ void j1Gui::ChangeCurrentCanvas(UiItem* newCanvas, bool exists)
 			currentCanvas->EnableChildren(false);
 
 		// reset ingame ui if needed, or pause the app 
-		if (currentCanvas->myScene == sceneTypeGUI::LEVEL)   
-		{
-			if (newCanvas->myScene != sceneTypeGUI::IN_GAME_SETTINGS)
-				ResetInGameUI();
-		}
-		
+		if ((currentCanvas->myScene == sceneTypeGUI::LEVEL && newCanvas->myScene == sceneTypeGUI::IN_GAME_SETTINGS)
+			|| (currentCanvas->myScene == sceneTypeGUI::IN_GAME_SETTINGS && newCanvas->myScene == sceneTypeGUI::LEVEL))
+			LOG("Do not reset InGame UI!"); 
+		else
+			ResetInGameUI();
+
 
 		currentCanvas = newCanvas; 
 		currentCanvas->EnableChildren(true);
@@ -486,8 +492,8 @@ void j1Gui::LoadXMLGUI(pugi::xml_node& menuNode)
 		const char* path = uiNode.child("path").attribute("p").as_string();
 		uint size = uiNode.child("size").attribute("s").as_int();
 		float scaleFactor = uiNode.child("scaleFactor").attribute("value").as_float(); 
-
-		App->gui->AddLabel(name, text.data(), color, App->font->Load(path, size), position, NULL, scaleFactor);
+		bool resetable = uiNode.child("resetable").attribute("value").as_bool();
+		App->gui->AddLabel(name, text.data(), color, App->font->Load(path, size), position, NULL, scaleFactor, resetable);
 
 	}
 
@@ -547,13 +553,13 @@ void j1Gui::LoadXMLGUI(pugi::xml_node& menuNode)
 }
 
 
-UiItem_Label * j1Gui::AddLabel(std::string name, std::string text, SDL_Color color, TTF_Font * font, p2Point<int> position, UiItem * const parent, float SpriteScale)
+UiItem_Label * j1Gui::AddLabel(std::string name, std::string text, SDL_Color color, TTF_Font * font, p2Point<int> position, UiItem * const parent, float SpriteScale, bool resetable)
 {
 	UiItem* newUIItem = nullptr;
 	if (parent == NULL)
-		newUIItem = DBG_NEW UiItem_Label(name, text, color, font, position, currentCanvas, SpriteScale);
+		newUIItem = DBG_NEW UiItem_Label(name, text, color, font, position, currentCanvas, SpriteScale, resetable);
 	else
-		newUIItem = DBG_NEW UiItem_Label(name, text, color, font, position, parent, SpriteScale); 
+		newUIItem = DBG_NEW UiItem_Label(name, text, color, font, position, parent, SpriteScale, resetable);
 
 	listOfItems.push_back(newUIItem);
 	return (UiItem_Label*)newUIItem;
@@ -610,21 +616,6 @@ UiItem_Button* j1Gui::AddButton(iPoint position, std::string functionName, std::
 }
 
 
-UiItem_Checkbox * j1Gui::AddCheckbox(iPoint position, std::string function, std::string name, const SDL_Rect * idle, UiItem * const parent, const SDL_Rect * click, const SDL_Rect * hover, const SDL_Rect * tick_section)
-{
-	UiItem* newUIItem = nullptr;
-
-	if (parent == NULL)
-		newUIItem = DBG_NEW UiItem_Checkbox(position, function, name, idle, currentCanvas, click, hover, tick_section);
-	else
-		newUIItem = DBG_NEW UiItem_Checkbox(position, function, name, idle, parent, click, hover, tick_section);
-
-	listOfItems.push_back(newUIItem);
-
-	return (UiItem_Checkbox*)newUIItem;
-}
-
-
 
 UiItem_Face* j1Gui::AddFace(iPoint position, std::string name, UiItem* const parent, float spriteScale)
 {
@@ -654,7 +645,7 @@ UiItem* j1Gui::AddEmptyElement(iPoint pos, UiItem * const parent)
 	return newUIItem;
 }
 
-UiItem* j1Gui::GetItemByName(std::string name, UiItem* parent) const  // searches item only in the current canvas childhood 
+UiItem* j1Gui::GetCanvasItemByName(std::string name, UiItem* parent) const  // searches item only in the current canvas childhood 
 {
 	if (parent == nullptr)   // if parent is not defined, start searching from canvas 
 		parent = currentCanvas;
@@ -666,12 +657,13 @@ UiItem* j1Gui::GetItemByName(std::string name, UiItem* parent) const  // searche
 		else
 			if (item->children.size() > 0)   // do a recursive call with the child's children
 			{
-				UiItem* success = GetItemByName(name, item);
+				UiItem* success = GetCanvasItemByName(name, item);
 
 				if (success != nullptr)
 					return success;
 			}
 	}
+
 
 	return nullptr;
 	
@@ -713,39 +705,64 @@ void j1Gui::UpdateDeathTimer(int value)
 	if (App->entityFactory->IsPlayerAlive() == false)
 		return; 
 
+
+	UiItem_Label* totalTimeLabel = (UiItem_Label*)GetCanvasItemByName("TimeCounter");
+
+	if (currentCanvas->myScene == sceneTypeGUI::LEVEL)
+		UpDateInGameUISlot("TimeCounter", std::stoi(totalTimeLabel->text) + 1);
+
+
 	if (App->entityFactory->player->godMode == true)
 		return; 
 
-	UiItem_Label* myLabel = (UiItem_Label*)App->gui->GetItemByName("deathTimerCounter");
+	UiItem_Label* countdownLabel = (UiItem_Label*)GetCanvasItemByName("deathTimerCounter");
 
-	int time = std::stoi(myLabel->text);
+	int time = std::stoi(countdownLabel->text);
 	time += value;
 
 	if (time >= 0)
 	{
 		UpDateInGameUISlot("deathTimerCounter", time);
-		if(time == 0)
-			App->entityFactory->player->SetDyingState();
+		if (time == 0)
+			App->entityFactory->PlayerDeathLogic(); 
+			
 	}
 
+	
 
 }
 
 
 void j1Gui::ResetInGameUI()
 {
+ 
 	// reset the stats do default values
-	for (auto& item : currentCanvas->children)
-		if(item->name != "panel" && item->name != "oldCollectible" && item->name != "newCollectible" && item->name != "deathTimerLabel" && item->name != "face" && item->name != "weaponImage")
-			UpDateInGameUISlot(item->name, defaultInGameStats.at(item->name));
+	for (auto& item : listOfItems)
+		if (item->resetable == true)
+		{
+			// do not reset the player lives when level to level (dying)
+			if (item->name == "LiveCounter")
+			{
+				if (App->scene->GetCurrentSceneTypeGui() != sceneTypeGUI::LEVEL)
+					UpDateInGameUISlot(item->name, defaultInGameStats.at(item->name));
+			}
+			else
+				UpDateInGameUISlot(item->name, defaultInGameStats.at(item->name));
+		}
+			
 		
 	// The texture map in map cpp, where the loot texture was, has been created again after map swap, so update the items that get the texture from it
-	for (auto& item : currentCanvas->children)
+	for (auto& item : listOfItems)
 		if (item->guiType == GUI_TYPES::IMAGE)
 			if(dynamic_cast<UiItem_Image*>(item)->specialTex != nullptr)
 				dynamic_cast<UiItem_Image*>(item)->ReAssignSpecialTexture();
 			
+	
+	
 
-	// finally reset the face: 
+
+
+	// finally reset the face 
+	// !!! (do not call get from canvas, because you can be in ingame settings and the face belongs to ingame) 
 	dynamic_cast<UiItem_Face*>(GetItemByName("face"))->SetCurrentAnim("idle");
 }

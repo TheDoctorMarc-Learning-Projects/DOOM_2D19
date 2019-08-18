@@ -45,6 +45,22 @@ public:
 	bool Draw(); 
 	bool CleanUp();     // blood are just quads drawn in render, no texture indeed
 
+
+	bool Load(pugi::xml_node& node) {
+		for (auto& stream : bloodStreams)
+			for (auto& drop : stream->myBloodDrops)
+				drop->Load(node);
+
+		return true;
+	}
+	bool Save(pugi::xml_node& node) const {
+		for (auto& stream : bloodStreams)
+			for (auto& drop : stream->myBloodDrops)
+				drop->Save(node);
+
+		return true;
+	}
+
 public: 
 
 	void CreateTargetedBloodSteam(SDL_Rect enemyRect, float damage, uint numberOfBloodDrops, fPoint shotSpeed); // TODO: direction(base, and then a cone speed between them, with a 2D sratings area)

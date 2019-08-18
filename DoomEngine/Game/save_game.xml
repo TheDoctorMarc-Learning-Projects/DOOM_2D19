@@ -1,0 +1,1025 @@
+<?xml version="1.0"?>
+<game_state>
+	<input />
+	<window />
+	<textures />
+	<audio />
+	<scene />
+	<map />
+	<fade />
+	<fonts />
+	<particles />
+	<pathfinding />
+	<collision />
+	<entities>
+		<entity>
+			<name value="platform" />
+			<ID value="0" />
+			<position x="96" y="320" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="1" />
+			<position x="416" y="224" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="2" />
+			<position x="416" y="416" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="3" />
+			<position x="960" y="256" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="4" />
+			<position x="-32" y="512" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="5" />
+			<position x="1568" y="256" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform1" />
+			<ID value="6" />
+			<position x="1317.66418" y="256" />
+			<previousPosition x="1315.99756" y="256" />
+			<direction value="right" />
+			<lastSpeed x="1.66666675" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform1" />
+			<ID value="7" />
+			<position x="4736" y="247.666626" />
+			<previousPosition x="4736" y="245.999954" />
+			<direction value="down" />
+			<lastSpeed x="0" y="1.66666675" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="8" />
+			<position x="992" y="416" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="chainsaw" />
+			<ID value="9" />
+			<position x="1984" y="128" />
+			<previousPosition x="1984" y="128" />
+			<direction value="right" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="machineGun" />
+			<ID value="10" />
+			<position x="3552" y="480" />
+			<previousPosition x="3552" y="480" />
+			<direction value="right" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="shotgun" />
+			<ID value="11" />
+			<position x="536.219116" y="479" />
+			<previousPosition x="256" y="480" />
+			<direction value="right" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="12" />
+			<position x="2112" y="256" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="13" />
+			<position x="2112" y="416" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="14" />
+			<position x="1920" y="160" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="15" />
+			<position x="1728" y="352" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="16" />
+			<position x="2816" y="416" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="17" />
+			<position x="2624" y="320" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="18" />
+			<position x="2816" y="224" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="19" />
+			<position x="3232" y="224" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="20" />
+			<position x="3008" y="320" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform1" />
+			<ID value="21" />
+			<position x="3732.33276" y="320" />
+			<previousPosition x="3733.99951" y="320" />
+			<direction value="left" />
+			<lastSpeed x="-1.66666675" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="22" />
+			<position x="3424" y="320" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="23" />
+			<position x="4032" y="320" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform1" />
+			<ID value="24" />
+			<position x="708" y="376.332977" />
+			<previousPosition x="708" y="374.666321" />
+			<direction value="down" />
+			<lastSpeed x="0" y="1.66666675" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="25" />
+			<position x="4992" y="224" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="26" />
+			<position x="4992" y="416" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="27" />
+			<position x="3648" y="416" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="28" />
+			<position x="5280" y="224" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="29" />
+			<position x="5952" y="224" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="30" />
+			<position x="6336" y="352" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="31" />
+			<position x="5280" y="352" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="32" />
+			<position x="5888" y="416" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="33" />
+			<position x="5920" y="320" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="34" />
+			<position x="6592" y="256" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="35" />
+			<position x="6720" y="320" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="36" />
+			<position x="6848" y="416" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="37" />
+			<position x="7168" y="320" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="38" />
+			<position x="7552" y="416" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="39" />
+			<position x="8192" y="416" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="40" />
+			<position x="7616" y="352" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="41" />
+			<position x="8288" y="352" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="42" />
+			<position x="8352" y="256" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="43" />
+			<position x="2144" y="96" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="platform" />
+			<ID value="44" />
+			<position x="6432" y="224" />
+			<previousPosition x="0" y="0" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="oldCollectible" />
+			<ID value="45" />
+			<position x="1648" y="489" />
+			<previousPosition x="1632" y="480" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="oldCollectible" />
+			<ID value="46" />
+			<position x="3760" y="489" />
+			<previousPosition x="3744" y="480" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="newCollectible" />
+			<ID value="47" />
+			<position x="5360" y="489" />
+			<previousPosition x="5344" y="480" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="oldCollectible" />
+			<ID value="48" />
+			<position x="6992" y="489" />
+			<previousPosition x="6976" y="480" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="oldCollectible" />
+			<ID value="49" />
+			<position x="8432" y="489" />
+			<previousPosition x="8416" y="480" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="health" />
+			<ID value="50" />
+			<position x="2371" y="493" />
+			<previousPosition x="2368" y="480" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="health" />
+			<ID value="51" />
+			<position x="4163" y="397" />
+			<previousPosition x="4160" y="384" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="armor" />
+			<ID value="52" />
+			<position x="3937" y="495" />
+			<previousPosition x="3936" y="480" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="ammo" />
+			<ID value="53" />
+			<position x="3537" y="313" />
+			<previousPosition x="3520" y="288" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="armor" />
+			<ID value="54" />
+			<position x="6657" y="239" />
+			<previousPosition x="6656" y="224" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="ammo" />
+			<ID value="55" />
+			<position x="6769" y="313" />
+			<previousPosition x="6752" y="288" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="ammo" />
+			<ID value="56" />
+			<position x="6897" y="313" />
+			<previousPosition x="6880" y="288" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="armor" />
+			<ID value="57" />
+			<position x="6113" y="495" />
+			<previousPosition x="6112" y="480" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="health" />
+			<ID value="58" />
+			<position x="3139" y="301" />
+			<previousPosition x="3136" y="288" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyBaronOfHell" />
+			<ID value="59" />
+			<position x="7072" y="320" />
+			<previousPosition x="7072" y="320" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyCacodemon" />
+			<ID value="60" />
+			<position x="2496" y="160" />
+			<previousPosition x="2496" y="160" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyHellKnight" />
+			<ID value="61" />
+			<position x="2304" y="320" />
+			<previousPosition x="2304" y="320" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyBaronOfHell" />
+			<ID value="62" />
+			<position x="7712" y="256" />
+			<previousPosition x="7712" y="256" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyBaronOfHell" />
+			<ID value="63" />
+			<position x="8032" y="256" />
+			<previousPosition x="8032" y="256" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyCacodemon" />
+			<ID value="64" />
+			<position x="4352" y="160" />
+			<previousPosition x="4352" y="160" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="65" />
+			<position x="873.348083" y="463.439362" />
+			<previousPosition x="875.027222" y="463.439362" />
+			<direction value="left" />
+			<lastSpeed x="-1.67916679" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="66" />
+			<position x="1920" y="288" />
+			<previousPosition x="1920" y="288" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="67" />
+			<position x="1888" y="448" />
+			<previousPosition x="1888" y="448" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyHellKnight" />
+			<ID value="68" />
+			<position x="2688" y="256" />
+			<previousPosition x="2688" y="256" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyHellKnight" />
+			<ID value="69" />
+			<position x="3072" y="224" />
+			<previousPosition x="3072" y="224" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyHellKnight" />
+			<ID value="70" />
+			<position x="3360" y="160" />
+			<previousPosition x="3360" y="160" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyHellKnight" />
+			<ID value="71" />
+			<position x="2880" y="160" />
+			<previousPosition x="2880" y="160" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyHellKnight" />
+			<ID value="72" />
+			<position x="5056" y="160" />
+			<previousPosition x="5056" y="160" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyHellKnight" />
+			<ID value="73" />
+			<position x="5056" y="352" />
+			<previousPosition x="5056" y="352" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyHellKnight" />
+			<ID value="74" />
+			<position x="5376" y="160" />
+			<previousPosition x="5376" y="160" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="75" />
+			<position x="2176" y="352" />
+			<previousPosition x="2176" y="352" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="76" />
+			<position x="2208" y="192" />
+			<previousPosition x="2208" y="192" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="77" />
+			<position x="2656" y="448" />
+			<previousPosition x="2656" y="448" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="78" />
+			<position x="2848" y="448" />
+			<previousPosition x="2848" y="448" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="79" />
+			<position x="3008" y="448" />
+			<previousPosition x="3008" y="448" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="80" />
+			<position x="3168" y="448" />
+			<previousPosition x="3168" y="448" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="81" />
+			<position x="3264" y="448" />
+			<previousPosition x="3264" y="448" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="82" />
+			<position x="3456" y="448" />
+			<previousPosition x="3456" y="448" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="83" />
+			<position x="3364" y="446" />
+			<previousPosition x="3364" y="446" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="84" />
+			<position x="4448" y="256" />
+			<previousPosition x="4448" y="256" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="85" />
+			<position x="5664" y="448" />
+			<previousPosition x="5664" y="448" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="86" />
+			<position x="5472" y="448" />
+			<previousPosition x="5472" y="448" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyHellKnight" />
+			<ID value="87" />
+			<position x="6432" y="288" />
+			<previousPosition x="6432" y="288" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="88" />
+			<position x="4704" y="278.001038" />
+			<previousPosition x="4704" y="278.001038" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="89" />
+			<position x="4608" y="448" />
+			<previousPosition x="4608" y="448" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="90" />
+			<position x="5792" y="448" />
+			<previousPosition x="5792" y="448" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="91" />
+			<position x="2752" y="448" />
+			<previousPosition x="2752" y="448" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="92" />
+			<position x="1984" y="448" />
+			<previousPosition x="1984" y="448" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyHellKnight" />
+			<ID value="93" />
+			<position x="6176" y="160" />
+			<previousPosition x="6176" y="160" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="94" />
+			<position x="1670" y="182" />
+			<previousPosition x="1670" y="182" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="95" />
+			<position x="992" y="207.054108" />
+			<previousPosition x="992" y="207.054108" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyCacodemon" />
+			<ID value="96" />
+			<position x="7840" y="160" />
+			<previousPosition x="7840" y="160" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="97" />
+			<position x="5440" y="160" />
+			<previousPosition x="5440" y="160" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="98" />
+			<position x="5312" y="160" />
+			<previousPosition x="5312" y="160" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity>
+			<name value="EnemyIMP" />
+			<ID value="99" />
+			<position x="5728" y="160" />
+			<previousPosition x="5728" y="160" />
+			<direction value="left" />
+			<lastSpeed x="0" y="0" />
+			<colliderActive value="true" />
+			<to_delete value="false" />
+		</entity>
+		<entity />
+	</entities>
+	<blood />
+	<gui />
+	<renderer>
+		<cameraPos x="0" y="0" />
+		<scrollData>
+			<state state="available" speed="0" worldDistance="0" originPos="0" />
+		</scrollData>
+	</renderer>
+</game_state>

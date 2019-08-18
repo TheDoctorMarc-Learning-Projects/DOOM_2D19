@@ -16,17 +16,23 @@ j1Entity::j1Entity(ENTITY_TYPE type, float positionX, float positionY,std::strin
 
 
 	this->name = name; 
+
+	ID = App->entityFactory->NumberOfSpawns; 
 }
 
 
 j1Entity::j1Entity(ENTITY_TYPE type, std::string name) : type(type), name(name)
 {
+
+	ID = App->entityFactory->NumberOfSpawns;
 }
 
 
 
 j1Entity::j1Entity(float positionX, float positionY) : position(positionX, positionY)
 {
+
+	ID = App->entityFactory->NumberOfSpawns;
 }
 
 // TODO, not here, but in each individual entity, do a size.create with the collider dimensions, it will be used in the entity factory PostUpdate Draw() calls
@@ -136,4 +142,86 @@ void j1Entity::ResetGravity()
 		dynamic_cast<j1EnemyIMP*>(this)->jumpInfo.currenJumpPower = dynamic_cast<j1EnemyIMP*>(this)->jumpInfo.jumpPower;
 
 }
+
+
+// - - - - - - - - - - - - - - - - - - - - - - all entities have common variables to already be save and loaded here
+
+bool j1Entity::Load(pugi::xml_node& node)  // the node is the entitynode (captured for entities that I want with a special name (eg blood)) 
+{
+	position.x = node.child("position").attribute("x").as_float();
+	position.y = node.child("position").attribute("y").as_float();
+
+	previousPosition.x = node.child("previousPosition").attribute("x").as_float();
+	previousPosition.y = node.child("previousPosition").attribute("y").as_float();
+
+	auto directionString = node.child("direction").attribute("value").as_string();
+	 
+	if (directionString == "right")
+		pointingDir = RIGHT; 
+	else if (directionString == "left")
+		pointingDir = LEFT;
+	else if (directionString == "up")
+		pointingDir = UP;
+	else if (directionString == "down")
+		pointingDir = DOWN;
+
+	lastSpeed.x = node.child("lastSpeed").attribute("x").as_float();
+	lastSpeed.y = node.child("lastSpeed").attribute("y").as_float();
+
+	colliderActive = node.child("colliderActive").attribute("value").as_bool();
+	to_delete = node.child("to_delete").attribute("value").as_bool();
+
+	return true;
+}
+
+
+bool j1Entity::Save(pugi::xml_node& node) const  // it recieves the netity node and fills the data
+{
+	entityNode = node;
+
+	auto n = entityNode.append_child("name"); 
+	n.append_attribute("value") = name.c_str();
+
+	auto identification = entityNode.append_child("ID");
+	identification.append_attribute("value") = ID;
+
+	auto pos = entityNode.append_child("position");
+	pos.append_attribute("x") = position.x;
+	pos.append_attribute("y") = position.y; 
+
+	auto previouspos = entityNode.append_child("previousPosition");
+	previouspos.append_attribute("x") = previousPosition.x;
+	previouspos.append_attribute("y") = previousPosition.y;
+
+	auto direction = entityNode.append_child("direction");
+
+	switch (pointingDir)
+	{
+	case RIGHT:
+		direction.append_attribute("value") = "right";
+		break;
+	case LEFT:
+		direction.append_attribute("value") = "left";
+		break;
+	case UP:
+		direction.append_attribute("value") = "up";
+		break;
+	case DOWN:
+		direction.append_attribute("value") = "down";
+		break;
+	}
+	
+	auto lSpeed = entityNode.append_child("lastSpeed");
+	lSpeed.append_attribute("x") = lastSpeed.x;
+	lSpeed.append_attribute("y") = lastSpeed.y;
+
+	auto colActive = entityNode.append_child("colliderActive");
+	colActive.append_attribute("value") = colliderActive; 
+
+	auto del = entityNode.append_child("to_delete");
+	del.append_attribute("value") = to_delete;
+
+	return true;
+}
+
 

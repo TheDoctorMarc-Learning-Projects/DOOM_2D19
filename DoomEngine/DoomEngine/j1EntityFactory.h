@@ -42,6 +42,7 @@ struct DifficultyMultiplier
 
  
 
+
 class j1EntityFactory : public j1Module
 {
 public:
@@ -65,8 +66,8 @@ public:
 	void SetDifficultyMultiplier(int difficultyLevel);
 	void PlayerDeathLogic(); 
 
-	/*bool Load(pugi::xml_node&);
-	bool Save(pugi::xml_node&) const;*/  // TODO (xd) 
+	bool Load(pugi::xml_node& node); 
+	bool Save(pugi::xml_node& node) const; 
 
 
 	// entities constructors -------
@@ -115,10 +116,6 @@ private:
 
 	static bool isBlitOrderHigherThanPreviousEntity(const j1Entity* ent1, const j1Entity* ent2); 
 
-	/*Enemy* CreateEnemy(EnemyType etype, iPoint pos, bool dummy = false);                            // TODO: rework this when enemies available
-	std::vector<j1Entity*> CreateEnemiesGroup(std::vector<EnemyType> enemyTypes, SDL_Rect zone, uint minNum, uint maxNum, uint groupLevel = 0);*/
-	//void LoadSpawnGroups();
-
  
 
 
@@ -136,6 +133,7 @@ public:
 	bool playerAlive = false; 
 	uint playerLives = 3; 
 	iPoint playerSpawnPos = iPoint(0, 0); 
+	uint NumberOfSpawns = 0U; 
 
 	bool debug = false;
 

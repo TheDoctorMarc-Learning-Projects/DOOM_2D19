@@ -33,6 +33,11 @@ public:
 	bool Update(float dt); 
 	bool CleanUp() override; 
 
+	virtual bool Load(pugi::xml_node&);
+	virtual bool Save(pugi::xml_node&) const;
+
+
+
 	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
 

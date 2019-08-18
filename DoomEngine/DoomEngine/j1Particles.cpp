@@ -134,14 +134,7 @@ bool j1Particles::CleanUp()
 		texture = nullptr;
 	}
 
-
-	//removing active particles
-	if (!active.empty())
-	{
-		for (auto& particle : active)
-			RELEASE(particle); 
-		active.clear();
-	}
+	RemoveActive(); 
 
 	particleMap.clear(); // check if content is stil there
 
@@ -287,6 +280,35 @@ Particle* j1Particles::AddParticleRet(std::string nameAtMap, int x, int y, j1Ent
 
 }
 
+
+void j1Particles::RemoveActive()
+{
+	if (!active.empty())
+	{
+		for (auto& particle : active)
+			RELEASE(particle);
+		active.clear();
+	}
+
+}
+/*
+bool j1Particles::Load(pugi::xml_node& node)
+{
+ 
+
+
+}
+
+bool j1Particles::Save(pugi::xml_node& node) const
+{
+	 
+	for (auto& particle : active)
+		particle->Save(node);
+
+	return true;
+}
+*/
+
 Particle::Particle()
 {
 	position.SetToZero();
@@ -322,10 +344,10 @@ bool Particle::Update(float dt)
 
 	position.x += speed.x * dt;
 	position.y += speed.y * dt;
-
-	/*if (collider != nullptr)
-		collider->SetPos(position.x, position.y);*/
+ 
 
 	return ret;
 }
+
+
 

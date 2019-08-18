@@ -55,28 +55,6 @@ bool j1Enemy::PostUpdate()
 	return true;
 }
 
-/*bool j1Enemy::CleanUp()
-{
-
-	collider->to_delete = true;
-
-	if (entityTex != nullptr)          // MAJOR TODO: do not delete texture, first create the entity corpse and pass it the texture 
-		App->tex->UnLoad(entityTex);
-
-
-	return true;
-}*/
-
-bool j1Enemy::Load(pugi::xml_node &)
-{
-	return true;
-}
-
-bool j1Enemy::Save(pugi::xml_node &) const
-{
-	return true;
-}
-
 
 
 bool j1Enemy::Move(float dt)
@@ -1540,3 +1518,19 @@ void j1Enemy::SetDyingState(bool brutal)
 	}
 
 }
+
+// =================================================>>>>>>   TODO: save load: onplatform, life, etc (same as player) 
+
+
+bool j1Enemy::Load(pugi::xml_node &node)
+{
+	j1Entity::Load(node);
+	return true;
+}
+
+bool j1Enemy::Save(pugi::xml_node &node) const
+{
+	j1Entity::Save(node);
+	return true;
+}
+

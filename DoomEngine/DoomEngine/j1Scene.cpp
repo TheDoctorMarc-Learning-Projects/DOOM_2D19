@@ -147,7 +147,44 @@ bool j1Scene::Update(float dt)
 		App->scene->LoadScene(state, true);
 	}
  
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)         // TODO: change ALL debug keys to the proper ones
+		SaveLoadLogic(true); 
+
+	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)         // TODO: change ALL debug keys to the proper ones
+		SaveLoadLogic(false);
+
 	return true;
+}
+
+void j1Scene::SaveLoadLogic(bool save)
+{
+	bool doIt = false; 
+
+	if (GetCurrentSceneTypeGui() == sceneTypeGUI::LEVEL)
+		if (App->fade->GetCurrentStep() == fade_step::none)
+			if(App->entityFactory->playerAlive == true)
+				doIt = true;
+		
+	if (doIt == true)
+	{
+		if (save)
+		{
+			App->SaveGame("save_game.xml");
+			previousSceneState = state;
+		}
+			
+		else
+		{
+			if (App->DoesSaveGameFileExist() == true)
+			{
+				App->LoadGame("save_game.xml");
+				previousSceneState = state;
+			}
+
+		}
+				
+	}
+
 }
 
 // Called each loop iteration
@@ -172,13 +209,15 @@ bool j1Scene::CleanUp()
 
 bool j1Scene::Save(pugi::xml_node &node) const
 {
+	savedState = state; 
 
+	// TODO: do I have to preserve the previous state variable?? 
 	return true;
 }
 
 bool j1Scene::Load(pugi::xml_node &node)
 {
-
+	LoadScene(savedState, true, true); 
 	return true;
 }
 
@@ -215,7 +254,7 @@ void j1Scene::UnLoadScene()
  
 }
 
-void j1Scene::LoadScene(SceneState sceneState, bool loadGUI)
+void j1Scene::LoadScene(SceneState sceneState, bool loadGUI, bool saveLoad)
 {
 	previousSceneState = state; 
 
@@ -227,8 +266,14 @@ void j1Scene::LoadScene(SceneState sceneState, bool loadGUI)
 
 	UnLoadScene();   // 1) First unload every needed module
 
-	// Make a fade, do NOT create anything until fade allows it 
-	App->fade->FadeToBlack(sceneSwapColor);
+
+	if (saveLoad == false)
+	{
+		// Make a fade, do NOT create anything until fade allows it 
+		App->fade->FadeToBlack(sceneSwapColor);
+	}
+	else
+		CreateScene(); 
 }
 
 

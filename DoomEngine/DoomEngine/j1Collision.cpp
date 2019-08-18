@@ -13,6 +13,8 @@
 
 j1Collision::j1Collision()
 {
+	name.assign("collision");
+
 	matrix[COLLIDER_PRESENTIAL][COLLIDER_PRESENTIAL] = false;
 	matrix[COLLIDER_PRESENTIAL][COLLIDER_ENEMY_SHOT] = false;
 	matrix[COLLIDER_PRESENTIAL][COLLIDER_WALL_DETECTION] = false;

@@ -70,7 +70,7 @@ public:
 
 	uint32  GetFPS() { return frames_on_last_update;  };
 
-	bool ExistDocument(std::string doc);
+	bool DoesSaveGameFileExist() const { return saveDocumentExists; };
 private:
 
 	// Load config file
@@ -111,7 +111,7 @@ public:
 	j1Audio*			audio = nullptr;
 	j1Scene*			scene = nullptr;
 	j1Map*				map = nullptr;
-	j1Particles* particles = nullptr;
+	j1Particles*        particles = nullptr;
 	j1PathFinding*		pathfinding = nullptr; 
 	j1Fonts*			font = nullptr;
 	j1Collision*  		collision = nullptr; 
@@ -124,6 +124,7 @@ public:
 	bool				pause = false;
 	bool                cleaningUp = false;
 	bool                buttonClosesApp = false; 
+	mutable bool        saveDocumentExists = false; 
 
 	std::string			title;
 private:

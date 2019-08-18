@@ -246,21 +246,18 @@ bool j1EntityFactory::CleanUp()
 
 	}
 	entities.clear();
-
 	player = nullptr; 
+	NumberOfSpawns = 0U;
 
 	for (auto tex : entityTextureMap)
 	{
 		App->tex->UnLoad(tex.second);
 		tex.second = nullptr;
 	}
-
 	entityTextureMap.clear();
 	enemyTypeMap.clear();
 
-
-
-
+	
 	return ret;
 }
 
@@ -294,8 +291,11 @@ j1Entity* j1EntityFactory::CreateEntity(ENTITY_TYPE type, int positionX, int pos
 	}
 
 	if (ret)
-		entities.push_back(ret); 
-
+	{
+		NumberOfSpawns++;
+		entities.push_back(ret);
+	}
+		
 	return ret;
 }
 
@@ -320,7 +320,10 @@ j1Entity* j1EntityFactory::CreatePlatform(ENTITY_TYPE type, SDL_Rect placing, in
 	}
 
 	if (ret)
+	{
+		NumberOfSpawns++;
 		entities.push_back(ret);
+	}
 
 	return ret;
 }
@@ -332,8 +335,10 @@ j1Entity* j1EntityFactory::CreateWeapon(ENTITY_TYPE type, int positionX, int pos
 	ret = DBG_NEW j1EntityLootWeapon(positionX, positionY, LOOT_TYPE::WEAPON, name, weaponData);
 
 	if (ret)
+	{
+		NumberOfSpawns++;
 		entities.push_back(ret);
-
+	}
 	return ret;
 }
 
@@ -343,10 +348,12 @@ j1Entity* j1EntityFactory::CreateCoin(ENTITY_TYPE type, int positionX, int posit
 	j1Entity* ret = nullptr;
 
 	ret = DBG_NEW j1EntityLootCoin(positionX, positionY, LOOT_TYPE::COIN, name, classic);
-
+	
 	if (ret)
+	{
+		NumberOfSpawns++;
 		entities.push_back(ret);
-
+	}
 	return ret;
 }
 
@@ -358,7 +365,10 @@ j1Entity* j1EntityFactory::CreateHealth(ENTITY_TYPE type, int positionX, int pos
 	ret = DBG_NEW j1EntityLootHealth(positionX, positionY, LOOT_TYPE::HEALTH, name);
 
 	if (ret)
+	{
+		NumberOfSpawns++;
 		entities.push_back(ret);
+	}
 
 	return ret;
 }
@@ -372,7 +382,10 @@ j1Entity* j1EntityFactory::CreateAmmo(ENTITY_TYPE type, int positionX, int posit
 	ret = DBG_NEW j1EntityLootAmmo(positionX, positionY, LOOT_TYPE::AMMO, name);
 
 	if (ret)
+	{
+		NumberOfSpawns++;
 		entities.push_back(ret);
+	}
 
 	return ret;
 }
@@ -386,8 +399,10 @@ j1Entity* j1EntityFactory::CreateArmor(ENTITY_TYPE type, int positionX, int posi
 	ret = DBG_NEW j1EntityLootArmor(positionX, positionY, LOOT_TYPE::ARMOR, name);
 
 	if (ret)
+	{
+		NumberOfSpawns++;
 		entities.push_back(ret);
-
+	}
 	return ret;
 }
 
@@ -585,4 +600,33 @@ void j1EntityFactory::PlayerDeathLogic()
 		App->scene->SetTargetScene(SceneState::MAINMENU);
 	}
 
+}
+
+bool j1EntityFactory::Load(pugi::xml_node& node)   // TODO: caution, the blood is with another name, do it in BloodManager with its proper name
+{
+	for (pugi::xml_node entityNode = node.child("entity"); entityNode; entityNode = entityNode.next_sibling("entity"))
+	{
+		uint ID = entityNode.child("ID").attribute("value").as_uint();
+
+		for (auto& entity : entities)
+		{
+			if (entity->ID == ID)
+			{
+				entity->Load(entityNode);
+				break;
+			}
+
+		}
+			
+	}
+		
+	return true; 
+}
+
+bool j1EntityFactory::Save(pugi::xml_node& node) const
+{
+	for (const auto& entity : entities)
+		entity->Save((pugi::xml_node&) node.append_child("entity"));
+
+	return true;
 }

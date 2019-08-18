@@ -1,7 +1,7 @@
 #include "j1EntityBloodDrop.h"
 #include "j1EntityFactory.h"
 #include "j1BloodManager.h"
-
+#include "j1Entity.h"
 
 
 j1EntityBloodDrop::j1EntityBloodDrop(int posX, int posY, fPoint Speed, Color c) : j1Entity(posX, posY)
@@ -277,3 +277,17 @@ bool j1EntityBloodDrop::CleanUp()
 	return true;
 }
 
+bool j1EntityBloodDrop::Load(pugi::xml_node& node)
+{
+	j1Entity::Load(node);
+
+	return true;
+}
+
+bool j1EntityBloodDrop::Save(pugi::xml_node& node) const
+{
+	j1Entity::Save(node); 
+	entityNode.set_name("bloodEntity");    // just change the name to have blood drops visible 
+
+	return true;
+}

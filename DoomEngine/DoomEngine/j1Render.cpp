@@ -119,26 +119,6 @@ bool j1Render::CleanUp()
 	return true;
 }
 
-// Load Game State
-bool j1Render::Load(pugi::xml_node& data)
-{
-	/*camera.x = data.child("camera").attribute("x").as_int();
-	camera.y = data.child("camera").attribute("y").as_int();*/
-
-	return true;
-}
-
-// Save Game State
-bool j1Render::Save(pugi::xml_node& data) const
-{
-	pugi::xml_node cam = data.append_child("camera");
-
-	/*cam.append_attribute("x") = camera.x;
-	cam.append_attribute("y") = camera.y;*/
-
-	return true;
-}
-
 void j1Render::SetBackgroundColor(SDL_Color color)
 {
 	background = color;
@@ -392,3 +372,52 @@ void j1Render::DoScroll()
 
 }
 
+
+
+bool j1Render::Load(pugi::xml_node& node)
+{
+	// load the camera pos: 
+	camera.x = node.child("cameraPos").attribute("x").as_uint();
+	camera.y = node.child("cameraPos").attribute("y").as_uint();
+
+	// load the scroll state: 
+	auto scrollNode = node.child("scrollData"); 
+
+	auto scrollString = scrollNode.child("state").attribute("state").as_string();
+	if (scrollString == "available")
+		scrollState = AVAILABLE; 
+	else if (scrollString == "scrolling")
+		scrollState = SCROLLING;
+
+	return true;
+}
+
+bool j1Render::Save(pugi::xml_node& node) const
+{
+	// save the camera pos: 
+	auto pos = node.append_child("cameraPos");
+	pos.append_attribute("x") = camera.x;
+	pos.append_attribute("y") = camera.y;
+
+	// save the state: it can be scrolling
+	auto scrollNode = node.append_child("scrollData");
+
+	auto scState = scrollNode.append_child("state");
+	switch (scrollState)
+	{
+	case AVAILABLE:
+		scState.append_attribute("state") = "available";
+		break;
+	case SCROLLING:
+		scState.append_attribute("state") = "scrolling";
+		break;
+	default:
+		break;
+	}
+
+	scState.append_attribute("speed") = scrollValues.speed;
+	scState.append_attribute("worldDistance") = scrollValues.worldDistance;
+	scState.append_attribute("originPos") = scrollValues.originPos;
+   
+	return true;
+}

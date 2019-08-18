@@ -49,7 +49,7 @@ enum ENTITY_TYPE  // todo, pass to class
 		BLOOD,
 };
 
-enum POINTING_DIR
+enum POINTING_DIR 
 {
 	RIGHT,
 	LEFT,
@@ -77,6 +77,11 @@ public:
 	virtual bool Update(float dt);
 	virtual bool PostUpdate();
 	virtual bool CleanUp();
+	virtual bool Load(pugi::xml_node&); 
+	virtual bool Save(pugi::xml_node&) const; 
+	
+
+
 	virtual void SetDyingState(bool brutal = false) {};
 	virtual void CheckDeathFinished() {};
 
@@ -85,14 +90,13 @@ public:
 	virtual void OnCollision(Collider* c1, Collider* c2) {};
 
 	virtual void OnCollisionExit(Collider* c1, Collider* c2) {};
-//	iPoint GetTilePos() const;
+
 	iPoint GetTilePosition() const {
 		return iPoint(App->map->WorldToMap((int)position.x, (int)position.y)) + iPoint(0, 1); 
 	}
 
-//	bool ChangedTile() const; 
 	virtual POINTING_DIR GetDirection(); 
-	//virtual void LoadEntitydata(pugi::xml_node&);
+
 
 	void ResetGravity(); 
 
@@ -101,7 +105,6 @@ public:
 	SDL_Rect                section = { 0, 0, 0, 0 }; 
 	bool                    isEnemy = false; 
 	bool					to_delete = false;
-	bool					to_die = false; 
 	bool                    drawActive = true; 
 	bool                    onPlatform = false; 
 	bool                    useRenderFlip = false; 
@@ -128,6 +131,8 @@ public:
 	iPoint                  rotationPivots = iPoint(INT_MAX, INT_MAX); 
 	bool                    colliderActive = true; 
 	uint                    blitOrder = 0U; 
+	uint                    ID = (uint)INT_MAX; // to save and load 
+	pugi::xml_node&         entityNode = App->config; // to save and load 
 };
 
 #endif

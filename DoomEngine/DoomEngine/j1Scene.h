@@ -64,6 +64,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void SaveLoadLogic(bool save); 
+
 	bool Save(pugi::xml_node&) const;
 	bool Load(pugi::xml_node&);
 
@@ -84,6 +86,8 @@ private:
 	SceneState nextSceneState = SceneState::NO_SCENE; 
 	SceneState previousSceneState = SceneState::NO_SCENE;
 
+	mutable SceneState savedState = SceneState::NO_SCENE;
+
 	SDL_Color sceneSwapColor = { 30, 0, 0, 255 }; 
 	bool loadGUI = false; 
 	bool toUpdate = false; 
@@ -97,7 +101,7 @@ public:
 
 	void LoadNewMap(const char* mapName);
 	void UnLoadScene();
-	void LoadScene(SceneState sceneState, bool loadGUI);  
+	void LoadScene(SceneState sceneState, bool loadGUI, bool saveLoad = false);  
 	void CreateScene();
 	void SetTargetScene(SceneState sceneState)
 	{

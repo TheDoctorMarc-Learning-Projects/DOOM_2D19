@@ -448,7 +448,7 @@ void j1App::GetSaveGames(std::list<std::string>& list_to_fill) const
 
 bool j1App::LoadGameNow()
 {
-	/*BROFILER_CATEGORY("App LoadGame", Profiler::Color::Chocolate);
+	BROFILER_CATEGORY("App LoadGame", Profiler::Color::Chocolate);
 
 	bool ret = false;
 
@@ -463,19 +463,16 @@ bool j1App::LoadGameNow()
 
 		root = data.child("game_state");
 
-		std::list<j1Module*>::iterator item;
-		item = modules.begin();
+		auto item = modules.begin();
 		ret = true;
 
 		while(item != modules.end() && ret == true)
 		{
-		
-		    ret = (*item)->LoadPortal(root.child((*item)->name.data()));
-		
-			
+		    ret = (*item)->Load((pugi::xml_node&)root.child((*item)->name.data()));
 			++item;
 		}
 		data.reset();
+
 		if(ret == true)
 			LOG("...finished loading");
 		else
@@ -488,57 +485,41 @@ bool j1App::LoadGameNow()
 	want_to_load = false;
 
 
-	return ret;*/
-
-
-	return false; 
+	return ret;
 }
 
 bool j1App::SavegameNow() const
 {
-	/*BROFILER_CATEGORY("App FinishUpdate", Profiler::Color::Coral);
-	BROFILER_CATEGORY("App LoadGame", Profiler::Color::Chocolate);
 
-	bool ret = false;
+	bool ret = true;
+
+	LOG("Saving Game State to %s...", "save_game.xml");
 
 	pugi::xml_document data;
 	pugi::xml_node root;
 
-	pugi::xml_parse_result result = data.load_file(load_game.data());
+	root = data.append_child("game_state");
 
-	if (result != NULL)
+	auto item = modules.begin();
+
+	while (item != modules.end() && ret == true)
 	{
-		LOG("Loading new Game State from %s...", load_game.data());
+		ret = (*item)->Save((pugi::xml_node&)root.append_child((*item)->name.data()));
+		++item; 
+	}
 
-		root = data.child("game_state");
-
-		std::list<j1Module*>::iterator item;
-		item = modules.begin();
-		ret = true;
-
-		while (item != modules.end() && ret == true)
-		{
-			
-		ret = (*item)->Load(root.child((*item)->name.data()));
-
-			++item;
-		}
-		data.reset();
-		if (ret == true)
-			LOG("...finished loading");
-		else
-			LOG("...loading process interrupted with error on module %s", (*item != NULL) ? (*item)->name.data() : "unknown");
+	if (ret == true)
+	{
+		data.save_file("save_game.xml");
+		saveDocumentExists = true; 
+		LOG("... finished saving");
 	}
 	else
-		LOG("Could not parse game state xml file %s. pugi error: %s", load_game.data(), result.description());
+		LOG("Save process halted from an error in module %s", ((*item) != NULL) ? (*item)->name.data() : "unknown");
 
-
-
-
-	return ret;*/
-
-
-	return false;
+	data.reset();
+	want_to_save = false;
+	return ret;
 }
 
 
@@ -547,21 +528,6 @@ float j1App::GetDt()
 	return dt;
 }
 
-bool j1App::ExistDocument(std::string doc)
-{
-	bool ret = false;
-
-	pugi::xml_document	save_file;
-	pugi::xml_parse_result result = save_file.load_file(doc.data());
-
-	if (result == NULL)
-		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
-	else
-		ret = true;
-
-	return ret;
-
-}
 
 //float j1App::GetGameTime()
 //{

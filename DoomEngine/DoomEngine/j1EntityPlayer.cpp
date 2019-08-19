@@ -893,7 +893,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 		if (c2->hasCallback)
 		{
 			if (dynamic_cast<j1EntityLoot*>(c2->callback)->GetType() == LOOT_TYPE::WEAPON)
-				PickWeapon(c2);
+				PickWeapon((j1EntityLootWeapon*)c2->callback);
 
 			else if (dynamic_cast<j1EntityLoot*>(c2->callback)->GetType() == LOOT_TYPE::COIN)
 				dynamic_cast<j1EntityLootCoin*>(c2->callback)->OnPickUp(); 
@@ -1016,9 +1016,9 @@ POINTING_DIR j1EntityPlayer::GetDirection()
 
 
 
-void j1EntityPlayer::PickWeapon(Collider* c2)
+void j1EntityPlayer::PickWeapon(j1EntityLootWeapon* callback)
 {
-	if (dynamic_cast<j1EntityLootWeapon*>(c2->callback)->weaponData.weaponState == WEAPON_STATE::AWAIT)   // pick weapon only if I don't have it
+	if (callback->weaponData.weaponState == WEAPON_STATE::AWAIT)   // pick weapon only if I don't have it
 	{
 
 		// first check if another weapon is active 
@@ -1033,8 +1033,8 @@ void j1EntityPlayer::PickWeapon(Collider* c2)
 				currentWeapon = nullptr;
 			}
 
-		myWeapons.push_back(dynamic_cast<j1EntityLootWeapon*>(c2->callback));
-		currentWeapon = dynamic_cast<j1EntityLootWeapon*>(c2->callback);
+		myWeapons.push_back(callback);
+		currentWeapon = callback;
 
 		// chainsaw needs a hotspot collider to do damage: 
 		if (currentWeapon->weaponData.weaponType == WEAPON_TYPE::CHAINSAW)
@@ -1186,20 +1186,24 @@ bool j1EntityPlayer::Load(pugi::xml_node& node)
 
 	}
 
-	// WEAPONS ---> check how they are originalyy equipped and change the state, etc accordingly 
-	//         ---> this does NOT save other weapons that are not in player weapons list, because they remaing just there static !!
+	 
 
-	uint currentWeaponID = node.child("related_entities_data").child("current_weapon_ID").attribute("value").as_uint();
-	currentWeapon = (j1EntityLootWeapon*)App->entityFactory->GetEntityFromID(currentWeaponID);
- 
+
+	// WEAPONS ---> The ones in the map awaiting to be picked are blatantly ignored, no need to load 'em
+	//         ---> Make a "fake" weapon equip with every weapon that was inactive and lastly make and equip with last current weapon (the active one) 
+
+
 	auto allWeaponsNode = node.child("related_entities_data").child("all_weapons_ID");
 
 	for (auto weaponIDNode = allWeaponsNode.child("weapon_ID"); weaponIDNode; weaponIDNode = weaponIDNode.next_sibling("weapon_ID"))
 	{
 		uint weaponID = weaponIDNode.attribute("value").as_uint(); 
-		myWeapons.push_back((j1EntityLootWeapon*)App->entityFactory->GetEntityFromID(weaponID));
+		PickWeapon((j1EntityLootWeapon*)App->entityFactory->GetEntityFromID(weaponID)); 
 	}
 		
+	uint currentWeaponID = node.child("related_entities_data").child("current_weapon_ID").attribute("value").as_uint();
+	PickWeapon((j1EntityLootWeapon*)App->entityFactory->GetEntityFromID(currentWeaponID));
+
 
 
 	return true;

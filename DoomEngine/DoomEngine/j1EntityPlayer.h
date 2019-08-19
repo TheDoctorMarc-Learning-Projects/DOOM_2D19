@@ -78,7 +78,7 @@ public:
 	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
 	void WarnOtherModules();
-	void PickWeapon(Collider* c2); 
+	void PickWeapon(j1EntityLootWeapon* callback); 
 	void WeaponLogic(); 
 	void ChangeWeapon(SDL_GameControllerButton button);
 	void AimWeapon(); 

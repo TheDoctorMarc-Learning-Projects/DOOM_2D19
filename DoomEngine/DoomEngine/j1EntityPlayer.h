@@ -117,7 +117,6 @@ private:
 	fPoint lastGroundPos = fPoint(0, 0);
 	fPoint lastAirPos = fPoint(0, 0); 
 	fPoint deathPosGround = fPoint(0, 0);
-	SDL_Rect deathColllider = { 0, 0, 0, 0 };
 	double paralizedDir = std::numeric_limits<double>::quiet_NaN();   // when colliding with enemy, he can't ho in that dir (it can be 1, -1 or nan)
 
 	jumpData jumpInfo; 

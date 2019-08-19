@@ -5,6 +5,7 @@
 #include "p2Point.h"
 #include <list>
 #include <vector>
+#include <memory>
 
 #include "SDL/include/SDL_rect.h"
 
@@ -99,7 +100,7 @@ public:
 	bool CleanUp(); 
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* callback = nullptr, fPoint speed = fPoint(0,0), bool volatileOutOfScreen = false);
 	void DebugDraw();
-
+	void DestroyCollider(Collider* col); 
 	
 	void doCollisionAssignment(Collider* c1, Collider* c2);
 	void doCollisionDeAssignment(Collider* c1, Collider* c2);

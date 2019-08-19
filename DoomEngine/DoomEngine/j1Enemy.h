@@ -255,9 +255,7 @@ public:
 	TargetPos targetPos; 
 	iPoint originTilePos = iPoint(0, 0); 
 	fPoint deathPosGround = fPoint(0, 0);
-	fPoint currentTarget = fPoint(0, 0); 
 	POINTING_DIR lastShotDir = POINTING_DIR::RIGHT; 
-	SDL_Rect deathColllider = { 0, 0, 0, 0 }; 
 	iPoint specificDir = iPoint(0, 0); 
 	uint myMeleeRange = 1U; 
 	uint tileDetectionRange = 0U;

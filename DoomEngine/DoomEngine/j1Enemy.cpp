@@ -225,7 +225,6 @@ void j1Enemy::DieLogic(float dt)
 		if (onPlatform && deathPosGround.IsZero() == true)
 		{
 			deathPosGround.y = position.y + collider->rect.h;         // make so when enemy dies and anim changes, he visually stays inmovile in platform 
-		//	deathColllider = collider->rect;
 
 		}
 		else if (deathPosGround.IsZero() == false)
@@ -1525,12 +1524,391 @@ void j1Enemy::SetDyingState(bool brutal)
 bool j1Enemy::Load(pugi::xml_node &node)
 {
 	j1Entity::Load(node);
+
+	auto attackNode = node.child("attack_data");
+	std::string currentAttackValue = attackNode.child("current_attack").attribute("value").as_string();
+
+	//  - - - - - - - - - - - - - - - - ATTACK DATA
+
+	if (currentAttackValue == "melee")
+		currentAttackType = MELEE; 
+	else if (currentAttackValue == "long_range")
+		currentAttackType = LONG_RANGE;
+	else if (currentAttackValue == "no_attack_type")
+		currentAttackType = NO_ATTACK_TYPE;
+
+	currentAttackData.lastTimeMeleeAttack = attackNode.child("last_melee").attribute("value").as_uint();
+	currentAttackData.lastShooted = attackNode.child("last_shooted").attribute("value").as_uint();
+
+
+	if (damageValues.longRange != 0U)
+	{
+		currentAttackData.lastTimeLongRangeAttack = attackNode.child("last_long_range").attribute("value").as_uint();
+		std::string shotDir = attackNode.child("last_long_range_direction").attribute("value").as_string();
+
+		if (shotDir == "right")
+			lastShotDir = RIGHT;
+		else if (shotDir == "left")
+			lastShotDir = LEFT; 
+	}
+
+
+	//  - - - - - - - - - - - - - - - - ANIMATION DATA
+	std::string animNodeValue = node.child("animation_data").attribute("anim").as_string();
+
+	if (animNodeValue == "idle")
+		currentAnimation = &idle;
+	else if (animNodeValue == "run")
+		currentAnimation = &run; 
+	else if (animNodeValue == "attack")
+		currentAnimation = &attack;
+	else if (animNodeValue == "death1")
+		currentAnimation = &death1;
+	else if (animNodeValue == "death2")
+		currentAnimation = &death2;
+
+	std::string animNodeDir = node.child("animation_data").attribute("last_direction").as_string();
+
+	if (animNodeDir == "right")
+		lastPointingDir = RIGHT; 
+	else if (animNodeDir == "left")
+		lastPointingDir = LEFT;
+
+	float animFrame = node.child("animation_data").attribute("current_animation_frame").as_float(); 
+	currentAnimation->SetCurrentFrame(animFrame);
+
+	//  - - - - - - - - - - - - - - - - EXTRA POSITION DATA
+	auto posInfo = node.child("extra_position_data");
+	auto lastGround = posInfo.child("last_ground_pos");
+	lastGroundPos.x = lastGround.attribute("x").as_float();
+	lastGroundPos.y = lastGround.attribute("y").as_float();
+	auto lastAir = posInfo.child("last_air_pos");
+	lastAirPos.x = lastAir.attribute("x").as_float();
+	lastAirPos.y = lastAir.attribute("y").as_float();
+
+	auto targetPosNode = posInfo.child("target_pos_data");
+	auto targetPosValue = targetPosNode.child("target_pos_value");
+	targetPos.value.x = targetPosValue.attribute("x").as_float();
+	targetPos.value.y = targetPosValue.attribute("y").as_float();
+
+ 
+	std::string targetPosTypeValue = targetPosNode.child("target_pos_type").attribute("value").as_string();
+
+	if (targetPosTypeValue == "X")
+		targetPos.type = TargetPos::targetPosType::X; 
+	else if (targetPosTypeValue == "Y")
+		targetPos.type = TargetPos::targetPosType::Y;
+	else if (targetPosTypeValue == "XY")
+		targetPos.type = TargetPos::targetPosType::XY;
+
+
+	auto deathGround = posInfo.child("death_ground_pos");
+	deathPosGround.x = deathGround.attribute("x").as_float(); 
+	deathPosGround.y = deathGround.attribute("y").as_float();
+
+	auto specificDirection = posInfo.child("specific_dir");
+	specificDir.x =	specificDirection.attribute("x").as_int();
+	specificDir.y = specificDirection.attribute("y").as_int();
+
+	//  - - - - - - - - - - - - - - - - STATE DATA
+	auto stateNode = node.child("state_data");
+	std::string combatStateNodeValue = stateNode.child("combat").attribute("value").as_string();
+
+	if (combatStateNodeValue == "dead")
+		state.combat = eCombatState::DEAD; 
+	else if (combatStateNodeValue == "dying")
+			state.combat = eCombatState::DYING;
+	else if (combatStateNodeValue == "idle")
+		state.combat = eCombatState::IDLE;
+	else if (combatStateNodeValue == "shoot")
+		state.combat = eCombatState::SHOOT;
+
+	std::string movementStateNodeValue0 = stateNode.child("movement").attribute("value_0").as_string();
+
+	if (movementStateNodeValue0 == "idle")
+		state.movement.at(0) = eMovementState::IDLE; 
+	else if (movementStateNodeValue0 == "input_right")
+		state.movement.at(0) = eMovementState::INPUT_RIGHT;
+	else if (movementStateNodeValue0 == "input_left")
+		state.movement.at(0) = eMovementState::INPUT_LEFT;
+	else if (movementStateNodeValue0 == "run")
+		state.movement.at(0) = eMovementState::RUN;
+
+	std::string movementStateNodeValue1 = stateNode.child("movement").attribute("value_1").as_string();
+
+	if (movementStateNodeValue1 == "fall")
+		state.movement.at(1) = eMovementState::FALL;
+	else if (movementStateNodeValue1 == "jump")
+		state.movement.at(1) = eMovementState::JUMP;
+	else if (movementStateNodeValue1 == "not_active")
+		state.movement.at(1) = eMovementState::NOT_ACTIVE;
+
+	std::string pathStateNodeValue = stateNode.child("path").attribute("value").as_string();
+
+	if (pathStateNodeValue == "await")
+		state.path = ePathState::AWAIT; 
+	else if (pathStateNodeValue == "temporal_deviation")
+		state.path = ePathState::TEMPORAL_DEVIATION;
+	else if (pathStateNodeValue == "follow player")
+		state.path = ePathState::FOLLOW_PLAYER;
+
+
+	//  - - - - - - - - - - - - - - - - OTHER DATA
+	auto other = node.child("other_data");
+	auto lastCol = other.child("last_pos_collider");
+	lastPosCollider.x = lastCol.attribute("x").as_int();
+	lastPosCollider.y = lastCol.attribute("y").as_int();
+	lastPosCollider.w =	lastCol.attribute("w").as_int();
+	lastPosCollider.h = lastCol.attribute("h").as_int();
+
+	playerNearby = other.child("player_nearby").attribute("value").as_bool();
+	playerInsideZone = 	other.child("player_inside_zone").attribute("value").as_bool();
+	onPlatform = other.child("on_platform").attribute("value").as_bool();
+	onDynamicplatform = other.child("on_dynamic_platform").attribute("value").as_bool();
+
+
+	if (this->type == ENTITY_TYPE::ENEMY_IMP)
+	{
+		doJump = other.child("do_jump").attribute("value").as_bool();
+		jumpInfo.currenJumpPower = other.child("current_jump_power").attribute("value").as_float();
+	}
+
+	if (this->pathType == enemyPathType::A_TO_B)
+		resetAtoB = other.child("reset_a_to_b").attribute("value").as_bool();
+
+	stopLogic = other.child("stop_logic").attribute("value").as_bool();
+
+
+
+	//  - - - - - - - - - - - - - - - - RELATED ENTIIES DATA
+
+	// get last saved platform entity ID and retrieve it from the factory: 
+	if (onPlatform == true)
+	{
+		uint lastPlatformID = node.child("related_entities_data").child("last_platform_ID").attribute("value").as_uint();
+		lastPlatform = (j1EntityPlatform*)App->entityFactory->GetEntityFromID(lastPlatformID); 
+	
+	}
+
 	return true;
+
 }
 
 bool j1Enemy::Save(pugi::xml_node &node) const
 {
 	j1Entity::Save(node);
+
+	auto attackNode = node.append_child("attack_data"); 
+	auto currentAttack = attackNode.append_child("current_attack");
+
+	//  - - - - - - - - - - - - - - - - ATTACK DATA
+	switch (currentAttackType)
+	{
+	case MELEE:
+		currentAttack.append_attribute("value") = "melee";
+		break;
+	case LONG_RANGE:
+		currentAttack.append_attribute("value") = "long_range";
+		break;
+	case NO_ATTACK_TYPE:
+		currentAttack.append_attribute("value") = "no_attack_type";
+		break;
+	default:
+		break;
+	}
+	 
+	attackNode.append_child("last_melee").append_attribute("value") = currentAttackData.lastTimeMeleeAttack;
+	attackNode.append_child("last_shooted").append_attribute("value") = currentAttackData.lastShooted;
+
+	if (damageValues.longRange != 0U)
+	{
+		attackNode.append_child("last_long_range").append_attribute("value") = currentAttackData.lastTimeLongRangeAttack;
+		auto shotDir = attackNode.append_child("last_long_range_direction"); 
+		switch (lastShotDir)
+		{
+		case RIGHT:
+			shotDir.append_attribute("value") = "right";
+			break;
+		case LEFT:
+			shotDir.append_attribute("value") = "left";
+			break;
+		default:
+			break;
+		}
+	}
+		
+
+	//  - - - - - - - - - - - - - - - - ANIMATION DATA
+	auto animNode = node.append_child("animation_data");
+	 
+	if(currentAnimation == &idle)
+		animNode.append_attribute("anim") = "idle";
+	else if (currentAnimation == &run)
+		animNode.append_attribute("anim") = "run";
+	else if (currentAnimation == &attack)
+		animNode.append_attribute("anim") = "attack";
+	else if (currentAnimation == &death1)
+		animNode.append_attribute("anim") = "death1";
+	else if (currentAnimation == &death2)
+		animNode.append_attribute("anim") = "death2";
+
+	 
+	switch (lastPointingDir)
+	{
+	case RIGHT:
+		animNode.append_attribute("last_direction") = "right";
+		break;
+	case LEFT:
+		animNode.append_attribute("last_direction") = "left";
+		break;
+	default:
+		break;
+	}
+
+	animNode.append_attribute("current_animation_frame") = currentAnimation->GetCurrentFloatFrame();
+
+
+	//  - - - - - - - - - - - - - - - - EXTRA POSITION DATA
+	auto posInfo = node.append_child("extra_position_data");
+	auto lastGround = posInfo.append_child("last_ground_pos"); 
+	lastGround.append_attribute("x") = lastGroundPos.x;
+	lastGround.append_attribute("y") = lastGroundPos.y;
+	auto lastAir = posInfo.append_child("last_air_pos");
+	lastAir.append_attribute("x") = lastAirPos.x;
+	lastAir.append_attribute("y") = lastAirPos.y;
+   
+	auto targetPosNode = posInfo.append_child("target_pos_data");
+	auto targetPosValue = targetPosNode.append_child("target_pos_value");
+	targetPosValue.append_attribute("x") = targetPos.value.x;
+	targetPosValue.append_attribute("y") = targetPos.value.y;
+	auto targetPosType = targetPosNode.append_child("target_pos_type");
+	switch (targetPos.type) 
+	{
+	case TargetPos::targetPosType::X:
+		targetPosType.append_attribute("value") = "X";
+		break; 
+	case TargetPos::targetPosType::Y:
+		targetPosType.append_attribute("value") = "Y";
+		break;
+	case TargetPos::targetPosType::XY:
+		targetPosType.append_attribute("value") = "XY";
+		break;
+	default:
+		break;
+	}
+
+	auto deathGround = posInfo.append_child("death_ground_pos");
+	deathGround.append_attribute("x") = deathPosGround.x;
+	deathGround.append_attribute("y") = deathPosGround.y;
+ 
+	auto specificDirection = posInfo.append_child("specific_dir");
+	specificDirection.append_attribute("x") = specificDir.x;
+	specificDirection.append_attribute("y") = specificDir.y;
+
+	//  - - - - - - - - - - - - - - - - STATE DATA
+	auto stateNode = node.append_child("state_data");
+	auto combatStateNode = stateNode.append_child("combat");
+	switch (state.combat)
+	{
+	case eCombatState::DEAD:
+		combatStateNode.append_attribute("value") = "dead";
+		break; 
+	case eCombatState::DYING:
+		combatStateNode.append_attribute("value") = "dying";
+		break;
+	case eCombatState::IDLE:
+		combatStateNode.append_attribute("value") = "idle";
+		break;
+	case eCombatState::SHOOT:
+		combatStateNode.append_attribute("value") = "shoot";
+		break;
+	default:
+		break;
+	}
+	auto movementStateNode = stateNode.append_child("movement");
+
+	switch (state.movement.at(0))
+	{
+	case eMovementState::IDLE: 
+		movementStateNode.append_attribute("value_0") = "idle";
+		break; 
+	case eMovementState::INPUT_LEFT: 
+		movementStateNode.append_attribute("value_0") = "input_left";
+		break; 
+	case eMovementState::INPUT_RIGHT:
+		movementStateNode.append_attribute("value_0") = "input_right";
+		break;
+	case eMovementState::RUN:
+		movementStateNode.append_attribute("value_0") = "run";
+		break;
+	default:
+		break;
+	}
+
+	switch (state.movement.at(1))
+	{
+	case eMovementState::FALL:
+		movementStateNode.append_attribute("value_1") = "fall";
+		break;
+	case eMovementState::JUMP:
+		movementStateNode.append_attribute("value_1") = "jump";
+		break;
+	case eMovementState::NOT_ACTIVE:
+		movementStateNode.append_attribute("value_1") = "not_active";
+		break;
+	default:
+		break;
+	}
+
+	auto pathStateNode = stateNode.append_child("path");
+
+
+	switch (state.path)
+	{
+	case ePathState::AWAIT:
+		pathStateNode.append_attribute("value") = "await";
+		break; 
+	case ePathState::TEMPORAL_DEVIATION:
+		pathStateNode.append_attribute("value") = "temporal_deviation";
+		break;
+	case ePathState::FOLLOW_PLAYER:
+		pathStateNode.append_attribute("value") = "follow_player";
+		break;
+	default:
+		break;
+	}
+	//  - - - - - - - - - - - - - - - - RELATED ENTIIES DATA
+	auto relatedEntities = node.append_child("related_entities_data");
+
+	if (lastPlatform != nullptr)
+		relatedEntities.append_child("last_platform_ID").append_attribute("value") = lastPlatform->ID; 
+ 
+	//  - - - - - - - - - - - - - - - - OTHER DATA
+	auto other = node.append_child("other_data");
+	auto lastCol = other.append_child("last_pos_collider");
+	lastCol.append_attribute("x") = lastPosCollider.x;
+	lastCol.append_attribute("y") = lastPosCollider.y;
+	lastCol.append_attribute("w") = lastPosCollider.w;
+	lastCol.append_attribute("h") = lastPosCollider.h;
+
+	other.append_child("player_nearby").append_attribute("value") = playerNearby;
+	other.append_child("player_inside_zone").append_attribute("value") = playerInsideZone;
+	other.append_child("on_platform").append_attribute("value") = onPlatform;
+	other.append_child("on_dynamic_platform").append_attribute("value") = onDynamicplatform;
+
+	if(this->type == ENTITY_TYPE::ENEMY_IMP)
+	{
+		other.append_child("do_jump").append_attribute("value") = doJump;
+		other.append_child("current_jump_power").append_attribute("value") = jumpInfo.currenJumpPower;
+	}
+
+	if(this->pathType == enemyPathType::A_TO_B)
+		other.append_child("reset_a_to_b").append_attribute("value") = resetAtoB;
+	other.append_child("stop_logic").append_attribute("value") = stopLogic;
+
 	return true;
-}
+
+};
+
+
 

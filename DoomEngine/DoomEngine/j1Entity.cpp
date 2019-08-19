@@ -148,13 +148,15 @@ void j1Entity::ResetGravity()
 
 bool j1Entity::Load(pugi::xml_node& node)  // the node is the entitynode (captured for entities that I want with a special name (eg blood)) 
 {
+
+	// POSITION, SPEED, DIRECTION
 	position.x = node.child("position").attribute("x").as_float();
 	position.y = node.child("position").attribute("y").as_float();
 
-	previousPosition.x = node.child("previousPosition").attribute("x").as_float();
-	previousPosition.y = node.child("previousPosition").attribute("y").as_float();
+	previousPosition.x = node.child("previous_position").attribute("x").as_float();
+	previousPosition.y = node.child("previous_position").attribute("y").as_float();
 
-	auto directionString = node.child("direction").attribute("value").as_string();
+	std::string directionString = node.child("direction").attribute("value").as_string();
 	 
 	if (directionString == "right")
 		pointingDir = RIGHT; 
@@ -165,10 +167,15 @@ bool j1Entity::Load(pugi::xml_node& node)  // the node is the entitynode (captur
 	else if (directionString == "down")
 		pointingDir = DOWN;
 
-	lastSpeed.x = node.child("lastSpeed").attribute("x").as_float();
-	lastSpeed.y = node.child("lastSpeed").attribute("y").as_float();
+	lastSpeed.x = node.child("last_speed").attribute("x").as_float();
+	lastSpeed.y = node.child("last_speed").attribute("y").as_float();
 
-	colliderActive = node.child("colliderActive").attribute("value").as_bool();
+	// BOOLS
+	colliderActive = node.child("collider_active").attribute("value").as_bool();
+
+	if (colliderActive == false)
+		App->collision->DestroyCollider(collider); 
+
 	to_delete = node.child("to_delete").attribute("value").as_bool();
 
 	return true;
@@ -179,6 +186,7 @@ bool j1Entity::Save(pugi::xml_node& node) const  // it recieves the netity node 
 {
 	entityNode = node;
 
+	// POSITION, SPEED, DIRECTION
 	auto n = entityNode.append_child("name"); 
 	n.append_attribute("value") = name.c_str();
 
@@ -189,7 +197,7 @@ bool j1Entity::Save(pugi::xml_node& node) const  // it recieves the netity node 
 	pos.append_attribute("x") = position.x;
 	pos.append_attribute("y") = position.y; 
 
-	auto previouspos = entityNode.append_child("previousPosition");
+	auto previouspos = entityNode.append_child("previous_position");
 	previouspos.append_attribute("x") = previousPosition.x;
 	previouspos.append_attribute("y") = previousPosition.y;
 
@@ -211,11 +219,12 @@ bool j1Entity::Save(pugi::xml_node& node) const  // it recieves the netity node 
 		break;
 	}
 	
-	auto lSpeed = entityNode.append_child("lastSpeed");
+	auto lSpeed = entityNode.append_child("last_speed");
 	lSpeed.append_attribute("x") = lastSpeed.x;
 	lSpeed.append_attribute("y") = lastSpeed.y;
 
-	auto colActive = entityNode.append_child("colliderActive");
+	// BOOLS
+	auto colActive = entityNode.append_child("collider_active");
 	colActive.append_attribute("value") = colliderActive; 
 
 	auto del = entityNode.append_child("to_delete");

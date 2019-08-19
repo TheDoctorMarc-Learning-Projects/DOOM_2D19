@@ -112,6 +112,16 @@ public:
 
 	bool IsPlayerAlive() const { return playerAlive; }; 
 
+	j1Entity* GetEntityFromID(uint ID) const {
+		for(const auto& ent : entities)
+			if (ent->ID == ID)
+			{
+				return ent; 
+				break; 
+			}
+		return nullptr; 
+	}
+
 private: 
 
 	static bool isBlitOrderHigherThanPreviousEntity(const j1Entity* ent1, const j1Entity* ent2); 

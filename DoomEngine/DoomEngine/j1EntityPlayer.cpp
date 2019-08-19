@@ -124,17 +124,6 @@ bool j1EntityPlayer::PostUpdate()
 
 
 
-bool j1EntityPlayer::Load(pugi::xml_node &)
-{
-	return true;
-}
-
-bool j1EntityPlayer::Save(pugi::xml_node &) const
-{
-	return true;
-}
-
-
 
 bool j1EntityPlayer::Move(float dt)
 {
@@ -172,7 +161,6 @@ void j1EntityPlayer::DieLogic(float dt)
 	if (onPlatform && deathPosGround.IsZero() == true)
 	{
 		deathPosGround.y = position.y + collider->rect.h;         // make so when enemy dies and anim changes, he visually stays inmovile in platform 
-	//	deathColllider = collider->rect;
 
 	}
     if (deathPosGround.IsZero() == false)
@@ -1086,6 +1074,23 @@ void j1EntityPlayer::PickWeapon(Collider* c2)
 
 	}
 }
+
+
+
+bool j1EntityPlayer::Load(pugi::xml_node& node)
+{
+	j1Entity::Load(node); 
+
+	return true;
+}
+
+bool j1EntityPlayer::Save(pugi::xml_node& node) const
+{
+	j1Entity::Save(node);
+
+	return true;
+}
+
 
 
 

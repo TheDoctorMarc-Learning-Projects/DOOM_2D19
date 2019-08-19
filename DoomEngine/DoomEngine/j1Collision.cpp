@@ -419,6 +419,15 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* 
 	return ret;
 }
 
+void j1Collision::DestroyCollider(Collider* col)
+{
+	col->to_delete = true; 
+
+	/*col->FreeOnCollision();
+	RELEASE(col);
+	colliders.erase(std::remove(colliders.begin(), colliders.end(), col), colliders.end());*/
+}
+
 
 // -----------------------------------------------------
 

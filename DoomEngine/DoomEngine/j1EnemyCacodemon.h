@@ -38,7 +38,7 @@ public:
 	void OnCollision(Collider* c1, Collider* c2) override;        // TODO: cacodemon ignores jump, fall, onplatform etc
     void OnCollisionExit(Collider* c1, Collider* c2) override;    
 
-	bool CleanUp() override; 
+	bool CleanUp() override;
 	bool DoDie() override; 
 
 	void SetDeviation(bool horizontal, Collider* c2);

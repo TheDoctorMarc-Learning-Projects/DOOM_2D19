@@ -218,6 +218,8 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 		}
 	}
 
+	musTimer.Start(); 
+
 	LOG("Successfully playing %s", path);
 	return ret;
 }

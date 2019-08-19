@@ -6,6 +6,7 @@
 #include <list>
 #include <string>
 #include <map>
+#include "j1Timer.h"
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 
@@ -35,6 +36,23 @@ public:
 	bool Update(float dt); 
 	// Called before quitting
 	bool CleanUp();
+
+
+
+	bool Load(pugi::xml_node& node) {
+		
+		Mix_RewindMusic();
+		double musicPosSec = node.child("actual_music_time_sec").attribute("value").as_double(); 
+		Mix_SetMusicPosition(musicPosSec);
+
+		return true; 
+	}
+	bool Save(pugi::xml_node& node) const
+	{
+		node.append_child("actual_music_time_sec").append_attribute("value") = musTimer.ReadSec();
+
+		return true; 
+	}
 
 	// Play a music file
 	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
@@ -105,6 +123,8 @@ private:
 	float last_fx_volume = 0.0f; 
 	float previous_volume = 0.0f; 
 	float previous_fx_volume = 0.0f; 
+
+	j1Timer musTimer; 
 
 public: 
 	std::map<std::string, Mix_Chunk_Avanced> fxMap;

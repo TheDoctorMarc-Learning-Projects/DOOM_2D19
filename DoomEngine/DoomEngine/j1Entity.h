@@ -132,7 +132,6 @@ public:
 	bool                    colliderActive = true; 
 	uint                    blitOrder = 0U; 
 	uint                    ID = (uint)INT_MAX; // to save and load 
-	pugi::xml_node&         entityNode = App->config; // to save and load (initialized fakely xd)
 };
 
 #endif

@@ -287,7 +287,7 @@ bool j1EntityBloodDrop::Load(pugi::xml_node& node)
 bool j1EntityBloodDrop::Save(pugi::xml_node& node) const
 {
 	j1Entity::Save(node); 
-	entityNode.set_name("bloodEntity");    // just change the name to have blood drops visible 
+	node.set_name("bloodEntity");    // just change the name to have blood drops visible 
 
 	return true;
 }

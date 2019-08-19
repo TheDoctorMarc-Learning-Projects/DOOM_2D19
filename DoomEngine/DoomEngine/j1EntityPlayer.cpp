@@ -1016,7 +1016,7 @@ POINTING_DIR j1EntityPlayer::GetDirection()
 
 
 
-void j1EntityPlayer::PickWeapon(j1EntityLootWeapon* callback)
+void j1EntityPlayer::PickWeapon(j1EntityLootWeapon* callback, bool saveLoad)
 {
 	if (callback->weaponData.weaponState == WEAPON_STATE::AWAIT)   // pick weapon only if I don't have it
 	{
@@ -1047,7 +1047,9 @@ void j1EntityPlayer::PickWeapon(j1EntityLootWeapon* callback)
 
 
 		// other modules logic 
-		App->audio->PlayFx("weaponPickUp");
+		if(saveLoad == false)
+			App->audio->PlayFx("weaponPickUp");
+		
 
 		App->gui->UpDateInGameUISlot("ammoLabel", currentWeapon->currentBullets);
 		if (App->gui->GetCanvasItemByName("weaponImage") == nullptr)                    // create the weapon image
@@ -1186,23 +1188,19 @@ bool j1EntityPlayer::Load(pugi::xml_node& node)
 
 	}
 
-	 
-
-
 	// WEAPONS ---> The ones in the map awaiting to be picked are blatantly ignored, no need to load 'em
-	//         ---> Make a "fake" weapon equip with every weapon that was inactive and lastly make and equip with last current weapon (the active one) 
-
+	//         ---> Make a "fake" weapon equip with every weapon that was inactive and lastly equip last current weapon (the active one) 
 
 	auto allWeaponsNode = node.child("related_entities_data").child("all_weapons_ID");
 
 	for (auto weaponIDNode = allWeaponsNode.child("weapon_ID"); weaponIDNode; weaponIDNode = weaponIDNode.next_sibling("weapon_ID"))
 	{
 		uint weaponID = weaponIDNode.attribute("value").as_uint(); 
-		PickWeapon((j1EntityLootWeapon*)App->entityFactory->GetEntityFromID(weaponID)); 
+		PickWeapon((j1EntityLootWeapon*)App->entityFactory->GetEntityFromID(weaponID), true); 
 	}
 		
 	uint currentWeaponID = node.child("related_entities_data").child("current_weapon_ID").attribute("value").as_uint();
-	PickWeapon((j1EntityLootWeapon*)App->entityFactory->GetEntityFromID(currentWeaponID));
+	PickWeapon((j1EntityLootWeapon*)App->entityFactory->GetEntityFromID(currentWeaponID), true);
 
 
 
@@ -1328,7 +1326,9 @@ bool j1EntityPlayer::Save(pugi::xml_node& node) const
 
 	if (myWeapons.size() > 0)
 		for (const auto& weap : myWeapons)
-			allWeaponsNode.append_child("weapon_ID").append_attribute("value") = weap->ID; 
+			if(weap != currentWeapon)
+				allWeaponsNode.append_child("weapon_ID").append_attribute("value") = weap->ID;
+			
 
 	return true;
 }

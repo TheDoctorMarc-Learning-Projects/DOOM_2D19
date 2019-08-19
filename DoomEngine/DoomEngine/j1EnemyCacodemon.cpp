@@ -339,20 +339,20 @@ void j1EnemyCacodemon::OnCollisionExit(Collider* c1, Collider* c2)
 bool j1EnemyCacodemon::Load(pugi::xml_node &node)
 {
 	// first of all, if the collider was not active, also destroy the shield area collider: 
-	shieldActive = entityNode.child("particular_data").child("shield_collider_active").attribute("value").as_bool(); 
+	shieldActive = node.child("particular_data").child("shield_collider_active").attribute("value").as_bool();
 
 	if (shieldActive == false)
 		App->collision->DestroyCollider(shieldAreaCollider);
 
-	keepMovingAfterPlatform = entityNode.child("particular_data").child("keep_moving_after_platform").attribute("value").as_bool();
+	keepMovingAfterPlatform = node.child("particular_data").child("keep_moving_after_platform").attribute("value").as_bool();
 	
-	offPlatformPos.x = entityNode.child("particular_data").child("off_platform_pos").attribute("x").as_float();
-	offPlatformPos.y = entityNode.child("particular_data").child("off_platform_pos").attribute("y").as_float();
+	offPlatformPos.x = node.child("particular_data").child("off_platform_pos").attribute("x").as_float();
+	offPlatformPos.y = node.child("particular_data").child("off_platform_pos").attribute("y").as_float();
 
-	onPlatFormType.left = entityNode.child("particular_data").child("on_platform_type").child("left").attribute("value").as_bool();
-	onPlatFormType.right = entityNode.child("particular_data").child("on_platform_type").child("right").attribute("value").as_bool();
-	onPlatFormType.top = entityNode.child("particular_data").child("on_platform_type").child("top").attribute("value").as_bool();
-	onPlatFormType.bottom = entityNode.child("particular_data").child("on_platform_type").child("bottom").attribute("value").as_bool();
+	onPlatFormType.left = node.child("particular_data").child("on_platform_type").child("left").attribute("value").as_bool();
+	onPlatFormType.right = node.child("particular_data").child("on_platform_type").child("right").attribute("value").as_bool();
+	onPlatFormType.top = node.child("particular_data").child("on_platform_type").child("top").attribute("value").as_bool();
+	onPlatFormType.bottom = node.child("particular_data").child("on_platform_type").child("bottom").attribute("value").as_bool();
 
 	return true; 
 }

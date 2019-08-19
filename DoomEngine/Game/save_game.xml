@@ -75,8 +75,8 @@
 		<entity>
 			<name value="platform1" />
 			<ID value="6" />
-			<position x="1310.99768" y="256" />
-			<previous_position x="1309.33105" y="256" />
+			<position x="1314.33093" y="256" />
+			<previous_position x="1312.66431" y="256" />
 			<direction value="right" />
 			<last_speed x="1.66666675" y="0" />
 			<collider_active value="true" />
@@ -85,8 +85,8 @@
 		<entity>
 			<name value="platform1" />
 			<ID value="7" />
-			<position x="4736" y="254.333313" />
-			<previous_position x="4736" y="255.999985" />
+			<position x="4736" y="387.665863" />
+			<previous_position x="4736" y="389.33252" />
 			<direction value="up" />
 			<last_speed x="0" y="-1.66666675" />
 			<collider_active value="true" />
@@ -195,10 +195,10 @@
 		<entity>
 			<name value="platform1" />
 			<ID value="18" />
-			<position x="3705.66479" y="320" />
-			<previous_position x="3707.33154" y="320" />
-			<direction value="left" />
-			<last_speed x="-1.66666675" y="0" />
+			<position x="3762.33423" y="320" />
+			<previous_position x="3760.66748" y="320" />
+			<direction value="right" />
+			<last_speed x="1.66666675" y="0" />
 			<collider_active value="true" />
 			<to_delete value="false" />
 		</entity>
@@ -225,10 +225,10 @@
 		<entity>
 			<name value="platform1" />
 			<ID value="21" />
-			<position x="708" y="269.666962" />
-			<previous_position x="708" y="268.000305" />
-			<direction value="down" />
-			<last_speed x="0" y="1.66666675" />
+			<position x="708" y="309.666718" />
+			<previous_position x="708" y="311.333374" />
+			<direction value="up" />
+			<last_speed x="0" y="-1.66666675" />
 			<collider_active value="true" />
 			<to_delete value="false" />
 		</entity>
@@ -435,20 +435,20 @@
 		<entity>
 			<name value="shotgun" />
 			<ID value="42" />
-			<position x="261.459595" y="479.723022" />
+			<position x="1834.02673" y="244.349716" />
 			<previous_position x="320" y="480" />
-			<direction value="left" />
-			<last_speed x="0" y="0" />
+			<direction value="right" />
+			<last_speed x="3.60437059" y="1.81762803" />
 			<collider_active value="true" />
 			<to_delete value="false" />
 		</entity>
 		<entity>
 			<name value="EnemyIMP" />
 			<ID value="43" />
-			<position x="1006" y="490.439331" />
-			<previous_position x="1006" y="490.439331" />
+			<position x="922.043091" y="490.439331" />
+			<previous_position x="922.043091" y="490.439331" />
 			<direction value="left" />
-			<last_speed x="0" y="0" />
+			<last_speed x="-1.67916679" y="0" />
 			<collider_active value="false" />
 			<to_delete value="false" />
 			<attack_data>
@@ -456,12 +456,12 @@
 				<last_melee value="0" />
 				<last_shooted value="false" />
 			</attack_data>
-			<animation_data anim="death1" last_direction="left" current_animation_frame="4.86666107" />
+			<animation_data anim="death1" last_direction="left" current_animation_frame="4.17333221" />
 			<extra_position_data>
-				<last_ground_pos x="1006" y="490.439331" />
+				<last_ground_pos x="922.043091" y="490.439331" />
 				<last_air_pos x="1006" y="463.20166" />
 				<target_pos_data>
-					<target_pos_value x="327.191803" y="459.714203" />
+					<target_pos_value x="493.798065" y="459" />
 					<target_pos_type value="XY" />
 				</target_pos_data>
 				<death_ground_pos x="0" y="512.439331" />
@@ -476,7 +476,7 @@
 				<last_platform_ID value="4" />
 			</related_entities_data>
 			<other_data>
-				<last_pos_collider x="1006" y="490" w="54" h="22" />
+				<last_pos_collider x="922" y="490" w="54" h="22" />
 				<player_nearby value="true" />
 				<player_inside_zone value="true" />
 				<on_platform value="true" />
@@ -489,42 +489,42 @@
 		<entity>
 			<name value="EnemyIMP" />
 			<ID value="44" />
-			<position x="787.984009" y="248.177933" />
-			<previous_position x="787.984009" y="304.84433" />
-			<direction value="left" />
-			<last_speed x="-1.67916679" y="0" />
+			<position x="916.102051" y="459.245789" />
+			<previous_position x="916.102051" y="459.245789" />
+			<direction value="right" />
+			<last_speed x="2.51875019" y="0" />
 			<collider_active value="true" />
 			<to_delete value="false" />
 			<attack_data>
 				<current_attack value="no_attack_type" />
-				<last_melee value="0" />
+				<last_melee value="11013" />
 				<last_shooted value="false" />
 			</attack_data>
-			<animation_data anim="death1" last_direction="left" current_animation_frame="4.23833179" />
+			<animation_data anim="run" last_direction="right" current_animation_frame="2.87500191" />
 			<extra_position_data>
-				<last_ground_pos x="787.984009" y="304.84433" />
-				<last_air_pos x="868.582642" y="252.175217" />
+				<last_ground_pos x="916.102051" y="459.245789" />
+				<last_air_pos x="916.102051" y="458.833923" />
 				<target_pos_data>
-					<target_pos_value x="578.812805" y="358.626282" />
+					<target_pos_value x="1809.81799" y="220.767395" />
 					<target_pos_type value="XY" />
 				</target_pos_data>
-				<death_ground_pos x="0" y="400.177216" />
+				<death_ground_pos x="0" y="0" />
 				<specific_dir x="0" y="0" />
 			</extra_position_data>
 			<state_data>
-				<combat value="dead" />
-				<movement value_0="input_left" value_1="not_active" />
-				<path value="follow_player" />
+				<combat value="idle" />
+				<movement value_0="idle" value_1="not_active" />
+				<path value="await" />
 			</state_data>
 			<related_entities_data>
-				<last_platform_ID value="21" />
+				<last_platform_ID value="4" />
 			</related_entities_data>
 			<other_data>
-				<last_pos_collider x="708" y="326" w="54" h="22" />
+				<last_pos_collider x="916" y="459" w="31" h="53" />
 				<player_nearby value="true" />
 				<player_inside_zone value="true" />
 				<on_platform value="true" />
-				<on_dynamic_platform value="true" />
+				<on_dynamic_platform value="false" />
 				<do_jump value="false" />
 				<current_jump_power value="20.5" />
 				<stop_logic value="false" />
@@ -533,10 +533,10 @@
 		<entity>
 			<name value="player" />
 			<ID value="45" />
-			<position x="284.459595" y="459.723022" />
-			<previous_position x="284.459595" y="459.723022" />
-			<direction value="left" />
-			<last_speed x="0" y="0" />
+			<position x="1817.02673" y="224.349716" />
+			<previous_position x="1813.42236" y="222.532089" />
+			<direction value="right" />
+			<last_speed x="3.60437059" y="1.81762803" />
 			<collider_active value="true" />
 			<to_delete value="false" />
 		</entity>
@@ -544,34 +544,26 @@
 	<bloodEntity>
 		<name value="no name" />
 		<ID value="46" />
-		<position x="1000.39545" y="413.837708" />
+		<position x="1157.40552" y="509.186859" />
 		<previous_position x="0" y="0" />
 		<direction value="left" />
-		<last_speed x="5.18593407" y="2.44560814" />
+		<last_speed x="5.53632927" y="2.58802867" />
 		<collider_active value="false" />
 		<to_delete value="false" />
 		<name value="no name" />
 		<ID value="46" />
-		<position x="1006.73407" y="413.175781" />
+		<position x="1149.11267" y="509.909271" />
 		<previous_position x="0" y="0" />
 		<direction value="left" />
-		<last_speed x="5.79120636" y="2.43708014" />
-		<collider_active value="false" />
-		<to_delete value="false" />
-		<name value="no name" />
-		<ID value="46" />
-		<position x="881.77832" y="382.333344" />
-		<previous_position x="0" y="0" />
-		<direction value="left" />
-		<last_speed x="9.8618145" y="1.70455551" />
+		<last_speed x="5.53049946" y="2.44093561" />
 		<collider_active value="false" />
 		<to_delete value="false" />
 	</bloodEntity>
 	<gui />
 	<renderer>
-		<cameraPos x="0" y="0" />
+		<cameraPos x="-975" y="0" />
 		<scrollData>
-			<state state="available" speed="0" worldDistance="650" originPos="0" />
+			<state state="scrolling" speed="-15" worldDistance="650" originPos="-660" />
 		</scrollData>
 	</renderer>
 </game_state>

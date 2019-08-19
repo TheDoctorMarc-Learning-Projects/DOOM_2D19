@@ -383,11 +383,19 @@ bool j1Render::Load(pugi::xml_node& node)
 	// load the scroll state: 
 	auto scrollNode = node.child("scrollData"); 
 
-	auto scrollString = scrollNode.child("state").attribute("state").as_string();
+	std::string scrollString = scrollNode.child("state").attribute("state").as_string();
 	if (scrollString == "available")
 		scrollState = AVAILABLE; 
 	else if (scrollString == "scrolling")
+	{
+
+		scrollValues.speed = scrollNode.child("state").attribute("speed").as_int();
+		scrollValues.worldDistance = scrollNode.child("state").attribute("worldDistance").as_float();
+		scrollValues.originPos = scrollNode.child("state").attribute("originPos").as_int();
+
 		scrollState = SCROLLING;
+	}
+		
 
 	return true;
 }

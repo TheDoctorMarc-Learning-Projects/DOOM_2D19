@@ -37,8 +37,6 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-
-
 	bool Load(pugi::xml_node& node) {
 		
 		Mix_RewindMusic();

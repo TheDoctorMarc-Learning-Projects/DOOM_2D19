@@ -22,8 +22,7 @@ public:
 
 
 private:
-	
-; 
+
 	float defaultSpeed = 0.f; 
 
 };

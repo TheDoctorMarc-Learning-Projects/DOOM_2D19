@@ -185,3 +185,49 @@ void j1EnemyHellKnight::ResolvePathDeviation()
 
  
 }
+
+
+bool j1EnemyHellKnight::Load(pugi::xml_node& node)
+{
+	j1Enemy::Load(node);
+
+	uint lastTargetPlatformID = node.child("particular_data").child("last_target_platform_ID").attribute("value").as_uint();
+	targetPlatform = (j1EntityPlatform*)App->entityFactory->GetEntityFromID(lastTargetPlatformID);
+
+	std::string behaviourString = node.child("particular_data").child("behaviour_state").attribute("value").as_string(); 
+
+	if (behaviourString == "A_TO_B")
+		myState = BEHAVIOUR_STATE::A_TO_B; 
+	else if (behaviourString == "FOLLOW")
+		myState = BEHAVIOUR_STATE::FOLLOW;
+
+	return true;
+}
+
+bool j1EnemyHellKnight::Save(pugi::xml_node& node) const
+{
+	j1Enemy::Save(node);
+
+	auto myOwnData = node.append_child("particular_data");
+
+	if (targetPlatform != nullptr)
+		myOwnData.append_child("last_target_platform_ID").append_attribute("value") = targetPlatform->ID;
+
+
+	auto behaviour = myOwnData.append_child("behaviour_state"); 
+
+	switch (myState)
+	{
+	case BEHAVIOUR_STATE::A_TO_B:
+		behaviour.append_attribute("value") = "A_TO_B"; 
+		break;
+	case BEHAVIOUR_STATE::FOLLOW:
+		behaviour.append_attribute("value") = "FOLLOW";
+		break;
+	default:
+		break;
+	}
+
+	return true;
+
+}

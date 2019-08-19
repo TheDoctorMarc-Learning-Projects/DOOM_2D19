@@ -153,8 +153,8 @@ public:
 	
 	                     
 	bool PostUpdate();
-	bool Load(pugi::xml_node&);
-	bool Save(pugi::xml_node&) const;
+	virtual bool Load(pugi::xml_node&);
+	virtual bool Save(pugi::xml_node&) const;
 	// functionality ------
 	bool Move(float dt) override;
 	void OnCollision(Collider* c1, Collider* c2) override;

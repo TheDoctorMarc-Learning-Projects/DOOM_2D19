@@ -6,13 +6,6 @@
 
 #define extraPlatformTendencyOffset 5
 
-enum class CACODEMON_ATTACK_TYPE
-{
-	MELEE,
-	FIREBALL,
-	NO_ATTACK_TYPE
-};
-
 struct actualCollisionType
 {
 	bool top = false; 
@@ -40,6 +33,9 @@ public:
 
 	bool CleanUp() override;
 	bool DoDie() override; 
+
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
 
 	void SetDeviation(bool horizontal, Collider* c2);
 	void KeepMovingTendency(); 
@@ -70,7 +66,6 @@ private:
 	bool shieldActive = true; 
 	actualCollisionType onPlatFormType; 
 	uint stopNearPlayerRange = 10; 
-	CACODEMON_ATTACK_TYPE currentAttackType = CACODEMON_ATTACK_TYPE::NO_ATTACK_TYPE;
 	Collider* shieldAreaCollider = nullptr; 
 	j1EntityPlatform* lastPlatform = nullptr;
 };

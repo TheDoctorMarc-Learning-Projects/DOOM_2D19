@@ -226,3 +226,25 @@ void j1EnemyIMP::ResolvePathDeviation()
 	doJump = true;
 }
 
+
+bool j1EnemyIMP::Load(pugi::xml_node& node)
+{
+	j1Enemy::Load(node); 
+
+	uint lastTargetPlatformID = node.child("particular_data").child("last_target_platform_ID").attribute("value").as_uint();
+	targetPlatform = (j1EntityPlatform*)App->entityFactory->GetEntityFromID(lastTargetPlatformID);
+
+	return true;
+}
+bool j1EnemyIMP::Save(pugi::xml_node& node) const
+{
+	j1Enemy::Save(node);
+
+	auto myOwnData = node.append_child("particular_data");
+
+	if (targetPlatform != nullptr)
+		myOwnData.append_child("last_target_platform_ID").append_attribute("value") = targetPlatform->ID;
+
+	return true;
+
+}

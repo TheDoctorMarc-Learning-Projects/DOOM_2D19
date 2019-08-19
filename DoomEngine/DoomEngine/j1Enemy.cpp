@@ -1678,6 +1678,18 @@ bool j1Enemy::Load(pugi::xml_node &node)
 
 	stopLogic = other.child("stop_logic").attribute("value").as_bool();
 
+	auto raycastData = other.child("raycast_data");
+	auto ray = raycastData.child("ray");
+	lastRaycastInfo.lastRaycast.at(0) = ray.attribute("x1").as_int();
+	lastRaycastInfo.lastRaycast.at(1) = ray.attribute("y1").as_int();
+	lastRaycastInfo.lastRaycast.at(2) = ray.attribute("x2").as_int();
+	lastRaycastInfo.lastRaycast.at(3) = ray.attribute("y2").as_int();
+
+	auto color = raycastData.child("color");
+	lastRaycastInfo.Color.r = color.attribute("R").as_uint();
+	lastRaycastInfo.Color.g = color.attribute("G").as_uint();
+	lastRaycastInfo.Color.b = color.attribute("B").as_uint();
+	lastRaycastInfo.Color.a = color.attribute("A").as_uint();
 
 
 	//  - - - - - - - - - - - - - - - - RELATED ENTIIES DATA
@@ -1905,6 +1917,18 @@ bool j1Enemy::Save(pugi::xml_node &node) const
 	if(this->pathType == enemyPathType::A_TO_B)
 		other.append_child("reset_a_to_b").append_attribute("value") = resetAtoB;
 	other.append_child("stop_logic").append_attribute("value") = stopLogic;
+ 
+	auto raycastData = other.append_child("raycast_data");
+	auto ray = raycastData.append_child("ray"); 
+	ray.append_attribute("x1") = lastRaycastInfo.lastRaycast.at(0);
+	ray.append_attribute("y1") = lastRaycastInfo.lastRaycast.at(1);
+	ray.append_attribute("x2") = lastRaycastInfo.lastRaycast.at(2);
+	ray.append_attribute("y2") = lastRaycastInfo.lastRaycast.at(3);
+	auto color = raycastData.append_child("color");
+	color.append_attribute("R") = lastRaycastInfo.Color.r; 
+	color.append_attribute("G") = lastRaycastInfo.Color.g;
+	color.append_attribute("B") = lastRaycastInfo.Color.b;
+	color.append_attribute("A") = lastRaycastInfo.Color.a;
 
 	return true;
 

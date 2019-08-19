@@ -17,6 +17,9 @@ public:
 	j1EnemyHellKnight(int posX, int posY, std::string name);
 	~j1EnemyHellKnight();
 
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
 	// functionality ------
 	void ResolvePathDeviation();
 	void ChangeState(); 

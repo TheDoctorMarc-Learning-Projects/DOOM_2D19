@@ -11,6 +11,9 @@ public:
 	j1EnemyIMP(int posX, int posY, std::string name);
 	~j1EnemyIMP();
 
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
 	// functionality ------
 
 	void Jump(); 
@@ -24,7 +27,6 @@ private:
 
 	uint jumpTriggerTileRange = 3; 
 	uint extraJumpOffset = 3; 
-	float RampageDamageMultiplier = 3.f; 
 	float defaultSpeed = 0.f; 
 	j1EntityPlatform* targetPlatform = nullptr;
 };

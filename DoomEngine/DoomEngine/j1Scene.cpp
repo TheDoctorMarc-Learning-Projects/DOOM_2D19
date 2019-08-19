@@ -147,6 +147,13 @@ bool j1Scene::Update(float dt)
 		App->scene->LoadScene(state, true);
 	}
  
+	if (App->input->GetKey(SDL_SCANCODE_KP_3) == KEY_DOWN) // TODO: THIS KEY IS NOT NEEDED
+	{
+		App->entityFactory->playerLives = 3;
+		App->gui->UpDateInGameUISlot("LiveCounter", 3);
+		App->scene->LoadScene(SceneState::LEVEL2, true);
+	}
+
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)         // TODO: change ALL debug keys to the proper ones
 		SaveLoadLogic(true); 
 
@@ -285,8 +292,8 @@ void j1Scene::CreateScene()  // called by fade
 	{                           // 2) Then call load map (which has encapsulated entity data)
 
 	case SceneState::LEVEL1:
-		// LoadNewMap("maps/level 1.tmx");
-		LoadNewMap("maps/level 1 test.tmx");
+		LoadNewMap("maps/level 1.tmx");
+		//LoadNewMap("maps/level 1 test.tmx");
 		break;
 
 	case SceneState::LEVEL2:

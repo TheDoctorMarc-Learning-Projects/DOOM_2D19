@@ -114,10 +114,8 @@ public:
 private: 
 	bool inputReady = false; 
 	bool aiming = false;
-	fPoint lastGroundPos = fPoint(0, 0);
-	fPoint lastAirPos = fPoint(0, 0); 
 	fPoint deathPosGround = fPoint(0, 0);
-	double paralizedDir = std::numeric_limits<double>::quiet_NaN();   // when colliding with enemy, he can't ho in that dir (it can be 1, -1 or nan)
+	double paralizedDir = std::numeric_limits<double>::quiet_NaN();   // when colliding horizontally with enemy, player can't go in that dir (it can be 1, -1 or nan)
 
 	jumpData jumpInfo; 
 	float momentumFactor = 10.f; 

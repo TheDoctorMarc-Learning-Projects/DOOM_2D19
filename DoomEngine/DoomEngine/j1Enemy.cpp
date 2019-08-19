@@ -1652,6 +1652,9 @@ bool j1Enemy::Load(pugi::xml_node &node)
 	else if (pathStateNodeValue == "follow player")
 		state.path = ePathState::FOLLOW_PLAYER;
 
+	//  - - - - - - - - - - - - - - - -  COMBAT DATA
+	life = node.child("combat_data").child("life").attribute("value").as_float();
+
 
 	//  - - - - - - - - - - - - - - - - OTHER DATA
 	auto other = node.child("other_data");
@@ -1889,6 +1892,10 @@ bool j1Enemy::Save(pugi::xml_node &node) const
 	default:
 		break;
 	}
+
+	//  - - - - - - - - - - - - - - - -  COMBAT DATA
+	node.append_child("combat_data").append_child("life").append_attribute("value") = life;
+
 	//  - - - - - - - - - - - - - - - - RELATED ENTIIES DATA
 	auto relatedEntities = node.append_child("related_entities_data");
 

@@ -201,11 +201,6 @@ void j1EntityPlayer::SetPreviousFrameData()
 {
 	previousPosition = position;
 
-	if (onPlatform)
-		lastGroundPos = position;
-	else
-		lastAirPos = position;
-
 	if (!onPlatform)
 		onDynamicplatform = false;
 
@@ -1005,10 +1000,6 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 
 	previousPosition = position;
 
-	if (onPlatform)
-		lastGroundPos = position;
-	else
-		lastAirPos = position;
 	
 }
 
@@ -1076,24 +1067,6 @@ void j1EntityPlayer::PickWeapon(Collider* c2)
 }
 
 
-
-bool j1EntityPlayer::Load(pugi::xml_node& node)
-{
-	j1Entity::Load(node); 
-
-	return true;
-}
-
-bool j1EntityPlayer::Save(pugi::xml_node& node) const
-{
-	j1Entity::Save(node);
-
-	return true;
-}
-
-
-
-
 void j1EntityPlayer::SetDyingState(bool brutal)
 {
 
@@ -1123,3 +1096,237 @@ void j1EntityPlayer::SetDyingState(bool brutal)
 
 
 };
+
+
+bool j1EntityPlayer::Load(pugi::xml_node& node)
+{
+	j1Entity::Load(node);
+
+	//  - - - - - - - - - - - - - - - - ANIMATION DATA
+	std::string animNodeValue = node.child("animation_data").attribute("anim").as_string();
+
+	if (animNodeValue == "idle")
+		currentAnimation = &idle;
+	else if (animNodeValue == "run")
+		currentAnimation = &run;
+	/*else if (animNodeValue == "aimUp")
+		currentAnimation = &aimUp;
+	else if (animNodeValue == "aimDown")
+		currentAnimation = &aimDown;*/
+	else if (animNodeValue == "death1")
+		currentAnimation = &death1;
+	else if (animNodeValue == "death2")
+		currentAnimation = &death2;
+
+	float animFrame = node.child("animation_data").attribute("current_animation_frame").as_float();
+	currentAnimation->SetCurrentFrame(animFrame);
+
+
+	//  - - - - - - - - - - - - - - - - MOVEMENT DATA
+	deathPosGround.x = node.child("movement_data").child("death_ground_pos").attribute("x").as_float();
+	deathPosGround.y = node.child("movement_data").child("death_ground_pos").attribute("y").as_float();
+	paralizedDir = node.child("movement_data").child("paralized_dir").attribute("value").as_double();
+	jumpInfo.currenJumpPower = node.child("movement_data").child("current_jump_power").attribute("value").as_float();
+	 
+	lastPosCollider.x = node.child("movement_data").child("last_pos_collider").attribute("x").as_int();
+	lastPosCollider.y = node.child("movement_data").child("last_pos_collider").attribute("y").as_int();
+	lastPosCollider.w = node.child("movement_data").child("last_pos_collider").attribute("w").as_int();
+	lastPosCollider.h = node.child("movement_data").child("last_pos_collider").attribute("h").as_int();
+
+	//  - - - - - - - - - - - - - - - - "BOOLS" DATA
+	inputReady = node.child("bools_data").child("input_ready").attribute("value").as_bool();
+	aiming = node.child("bools_data").child("aiming").attribute("value").as_bool();
+	godMode = node.child("bools_data").child("god_mode").attribute("value").as_bool();
+	onPlatform = node.child("bools_data").child("on_platform").attribute("value").as_bool();
+	onDynamicplatform = node.child("bools_data").child("on_dynamic_platform").attribute("value").as_bool();
+
+
+	//  - - - - - - - - - - - - - - - - STATE DATA
+	auto stateNode = node.child("state_data");
+	std::string combatStateNodeValue = stateNode.child("combat").attribute("value").as_string();
+
+	if (combatStateNodeValue == "dead")
+		state.combat = combatState::DEAD;
+	else if (combatStateNodeValue == "dying")
+		state.combat = combatState::DYING;
+	else if (combatStateNodeValue == "idle")
+		state.combat = combatState::IDLE;
+	else if (combatStateNodeValue == "aim")
+		state.combat = combatState::AIM;
+
+	std::string movementStateNodeValue0 = stateNode.child("movement").attribute("value_0").as_string();
+
+	if (movementStateNodeValue0 == "idle")
+		state.movement.at(0) = MovementState::IDLE;
+	else if (movementStateNodeValue0 == "input_right")
+		state.movement.at(0) = MovementState::INPUT_RIGHT;
+	else if (movementStateNodeValue0 == "input_left")
+		state.movement.at(0) = MovementState::INPUT_LEFT;
+	else if (movementStateNodeValue0 == "run")
+		state.movement.at(0) = MovementState::RUN;
+
+	std::string movementStateNodeValue1 = stateNode.child("movement").attribute("value_1").as_string();
+
+	if (movementStateNodeValue1 == "fall")
+		state.movement.at(1) = MovementState::FALL;
+	else if (movementStateNodeValue1 == "jump")
+		state.movement.at(1) = MovementState::JUMP;
+	else if (movementStateNodeValue1 == "not_active")
+		state.movement.at(1) = MovementState::NOT_ACTIVE;
+
+	//  - - - - - - - - - - - - - - - -  COMBAT DATA
+	life = node.child("combat_data").child("life").attribute("value").as_float();
+	armor = node.child("combat_data").child("armor").attribute("value").as_float();
+
+	//  - - - - - - - - - - - - - - - - RELATED ENTIIES DATA
+	if (onPlatform == true)
+	{
+		uint lastPlatformID = node.child("related_entities_data").child("last_platform_ID").attribute("value").as_uint();
+		lastPlatform = (j1EntityPlatform*)App->entityFactory->GetEntityFromID(lastPlatformID);
+
+	}
+
+	// WEAPONS ---> check how they are originalyy equipped and change the state, etc accordingly 
+	//         ---> this does NOT save other weapons that are not in player weapons list, because they remaing just there static !!
+
+	uint currentWeaponID = node.child("related_entities_data").child("current_weapon_ID").attribute("value").as_uint();
+	currentWeapon = (j1EntityLootWeapon*)App->entityFactory->GetEntityFromID(currentWeaponID);
+ 
+	auto allWeaponsNode = node.child("related_entities_data").child("all_weapons_ID");
+
+	for (auto weaponIDNode = allWeaponsNode.child("weapon_ID"); weaponIDNode; weaponIDNode = weaponIDNode.next_sibling("weapon_ID"))
+	{
+		uint weaponID = weaponIDNode.attribute("value").as_uint(); 
+		myWeapons.push_back((j1EntityLootWeapon*)App->entityFactory->GetEntityFromID(weaponID));
+	}
+		
+
+
+	return true;
+}
+
+bool j1EntityPlayer::Save(pugi::xml_node& node) const
+{
+	j1Entity::Save(node);
+	//  - - - - - - - - - - - - - - - - ANIMATION DATA
+	auto animNode = node.append_child("animation_data");
+
+	if (currentAnimation == &idle)
+		animNode.append_attribute("anim") = "idle";
+	else if (currentAnimation == &run)
+		animNode.append_attribute("anim") = "run";
+	/*else if (currentAnimation == &aimUp)
+		animNode.append_attribute("anim") = "aimUp";
+	else if (currentAnimation == &aimDown)
+		animNode.append_attribute("anim") = "aimDown";*/
+	else if (currentAnimation == &death1)
+		animNode.append_attribute("anim") = "death1";
+	else if (currentAnimation == &death2)
+		animNode.append_attribute("anim") = "death2";
+
+	animNode.append_attribute("current_animation_frame") = currentAnimation->GetCurrentFloatFrame();
+
+
+	//  - - - - - - - - - - - - - - - - MOVEMENT DATA
+	auto posNode = node.append_child("movement_data");
+
+	auto groundDeathPos = posNode.append_child("death_ground_pos");
+	groundDeathPos.append_attribute("x") = deathPosGround.x; 
+	groundDeathPos.append_attribute("y") = deathPosGround.y;
+
+	posNode.append_child("paralized_dir").append_attribute("value") = paralizedDir;
+	posNode.append_child("current_jump_power").append_attribute("value") = jumpInfo.currenJumpPower;
+
+	auto colliderLastPos = posNode.append_child("last_pos_collider");
+	colliderLastPos.append_attribute("x") = lastPosCollider.x;
+	colliderLastPos.append_attribute("y") = lastPosCollider.y;
+	colliderLastPos.append_attribute("w") = lastPosCollider.w;
+	colliderLastPos.append_attribute("h") = lastPosCollider.h;
+
+	//  - - - - - - - - - - - - - - - - "BOOLS" DATA
+	auto boolsNode = node.append_child("bools_data");
+	boolsNode.append_child("input_ready ").append_attribute("value") = inputReady;
+	boolsNode.append_child("aiming").append_attribute("value") = aiming;
+	boolsNode.append_child("god_mode").append_attribute("value") = godMode;
+	boolsNode.append_child("on_platform").append_attribute("value") = onPlatform;
+	boolsNode.append_child("on_dynamic_platform").append_attribute("value") = onDynamicplatform;
+
+	//  - - - - - - - - - - - - - - - - STATE DATA
+	auto stateNode = node.append_child("state_data");
+	auto combatStateNode = stateNode.append_child("combat");
+	switch (state.combat)
+	{
+	case combatState::DEAD:
+		combatStateNode.append_attribute("value") = "dead";
+		break;
+	case combatState::DYING:
+		combatStateNode.append_attribute("value") = "dying";
+		break;
+	case combatState::IDLE:
+		combatStateNode.append_attribute("value") = "idle";
+		break;
+	case combatState::AIM:
+		combatStateNode.append_attribute("value") = "aim";
+		break;
+	default:
+		break;
+	}
+	auto movementStateNode = stateNode.append_child("movement");
+	
+	switch (state.movement.at(0))
+	{
+	case MovementState::IDLE:
+		movementStateNode.append_attribute("value_0") = "idle";
+		break;
+	case MovementState::INPUT_LEFT:
+		movementStateNode.append_attribute("value_0") = "input_left";
+		break;
+	case MovementState::INPUT_RIGHT:
+		movementStateNode.append_attribute("value_0") = "input_right";
+		break;
+	case MovementState::RUN:
+		movementStateNode.append_attribute("value_0") = "run";
+		break;
+	default:
+		break;
+	}
+
+	switch (state.movement.at(1))
+	{
+	case MovementState::FALL:
+		movementStateNode.append_attribute("value_1") = "fall";
+		break;
+	case MovementState::JUMP:
+		movementStateNode.append_attribute("value_1") = "jump";
+		break;
+	case MovementState::NOT_ACTIVE:
+		movementStateNode.append_attribute("value_1") = "not_active";
+		break;
+	default:
+		break;
+	}
+
+	//  - - - - - - - - - - - - - - - -  COMBAT DATA
+	auto combatNode = node.append_child("combat_data"); 
+	combatNode.append_child("life").append_attribute("value") = life;
+	combatNode.append_child("armor").append_attribute("value") = armor;
+
+	//  - - - - - - - - - - - - - - - - RELATED ENTIIES DATA
+	auto relatedEntities = node.append_child("related_entities_data");
+
+	if (lastPlatform != nullptr)
+		relatedEntities.append_child("last_platform_ID").append_attribute("value") = lastPlatform->ID;
+
+	if(currentWeapon)
+		relatedEntities.append_child("current_weapon_ID").append_attribute("value") = currentWeapon->ID;
+
+	auto allWeaponsNode = relatedEntities.append_child("all_weapons_ID"); 
+
+	if (myWeapons.size() > 0)
+		for (const auto& weap : myWeapons)
+			allWeaponsNode.append_child("weapon_ID").append_attribute("value") = weap->ID; 
+
+	return true;
+}
+
+

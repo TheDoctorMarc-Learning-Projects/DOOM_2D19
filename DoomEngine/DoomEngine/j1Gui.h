@@ -38,6 +38,10 @@ public:
 
 	bool PostUpdate();
 	bool CleanUp();
+
+
+	bool Load(pugi::xml_node& node);
+	bool Save(pugi::xml_node& node) const;
 	 
 public: 
 	UiItem_Label* AddLabel(std::string name, std::string text, SDL_Color color, TTF_Font* font, p2Point<int> position, UiItem* const parent, float SpriteScale = 0.0f, bool resetable = false);

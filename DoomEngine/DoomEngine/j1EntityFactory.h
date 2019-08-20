@@ -102,7 +102,7 @@ public:
 
 	fPoint GetRectCentralPoint(const SDL_Rect* rect) const {
 
-		return { (float)rect->x + (float)rect->w / 2.F, (float)rect->y + (float)rect->h / 2.F };
+		return { (float)rect->x + (float)rect->w * 0.5F, (float)rect->y + (float)rect->h * 0.5F };
 	}
 
 	bool isPointInsideRect(const iPoint* p, const SDL_Rect* r) const {

@@ -707,6 +707,8 @@ void j1Gui::UpdateDeathTimer(int value)
 
 
 	UiItem_Label* totalTimeLabel = (UiItem_Label*)GetCanvasItemByName("TimeCounter");
+	if (totalTimeLabel == nullptr)
+		return; 
 
 	if (currentCanvas->myScene == sceneTypeGUI::LEVEL)
 		UpDateInGameUISlot("TimeCounter", std::stoi(totalTimeLabel->text) + 1);
@@ -716,6 +718,8 @@ void j1Gui::UpdateDeathTimer(int value)
 		return; 
 
 	UiItem_Label* countdownLabel = (UiItem_Label*)GetCanvasItemByName("deathTimerCounter");
+	if (countdownLabel == nullptr)
+		return;
 
 	int time = std::stoi(countdownLabel->text);
 	time += value;
@@ -765,4 +769,37 @@ void j1Gui::ResetInGameUI()
 	// finally reset the face 
 	// !!! (do not call get from canvas, because you can be in ingame settings and the face belongs to ingame) 
 	dynamic_cast<UiItem_Face*>(GetItemByName("face"))->SetCurrentAnim("idle");
+}
+
+bool j1Gui::Load(pugi::xml_node& node)
+{
+	UpDateInGameUISlot(dynamic_cast<UiItem_Label*>(GetItemByName("TimeCounter"))->name, (float)std::stoi(node.child("total_time").attribute("value").as_string()));
+	UpDateInGameUISlot(dynamic_cast<UiItem_Label*>(GetItemByName("LiveCounter"))->name, (float)std::stoi(node.child("lives").attribute("value").as_string()));
+	UpDateInGameUISlot(dynamic_cast<UiItem_Label*>(GetItemByName("deathTimerCounter"))->name, (float)std::stoi(node.child("death_time").attribute("value").as_string()));
+	UpDateInGameUISlot(dynamic_cast<UiItem_Label*>(GetItemByName("ammoLabel"))->name, (float)std::stoi(node.child("ammo").attribute("value").as_string()));
+	UpDateInGameUISlot(dynamic_cast<UiItem_Label*>(GetItemByName("healthLabel"))->name, (float)std::stoi(node.child("health").attribute("value").as_string()));
+	UpDateInGameUISlot(dynamic_cast<UiItem_Label*>(GetItemByName("armorLabel"))->name, (float)std::stoi(node.child("armor").attribute("value").as_string()));
+	UpDateInGameUISlot(dynamic_cast<UiItem_Label*>(GetItemByName("newCollectibleLabel"))->name, (float)std::stoi(node.child("new_collectible_count").attribute("value").as_string()));
+	UpDateInGameUISlot(dynamic_cast<UiItem_Label*>(GetItemByName("oldCollectibleLabel"))->name, (float)std::stoi(node.child("old_collectible_count").attribute("value").as_string()));
+
+	return true; 
+}
+
+bool j1Gui::Save(pugi::xml_node& node) const
+{
+	// Labels ---> just a value 
+	node.append_child("total_time").append_attribute("value") = std::stoi(dynamic_cast<UiItem_Label*>(GetItemByName("TimeCounter"))->text); 
+	node.append_child("lives").append_attribute("value") = std::stoi(dynamic_cast<UiItem_Label*>(GetItemByName("LiveCounter"))->text);
+	node.append_child("death_time").append_attribute("value") = std::stoi(dynamic_cast<UiItem_Label*>(GetItemByName("deathTimerCounter"))->text);
+	node.append_child("ammo").append_attribute("value") = std::stoi(dynamic_cast<UiItem_Label*>(GetItemByName("ammoLabel"))->text);
+	node.append_child("health").append_attribute("value") = std::stoi(dynamic_cast<UiItem_Label*>(GetItemByName("healthLabel"))->text);
+	node.append_child("armor").append_attribute("value") = std::stoi(dynamic_cast<UiItem_Label*>(GetItemByName("armorLabel"))->text);
+	node.append_child("new_collectible_count").append_attribute("value") = std::stoi(dynamic_cast<UiItem_Label*>(GetItemByName("newCollectibleLabel"))->text);
+	node.append_child("old_collectible_count").append_attribute("value") = std::stoi(dynamic_cast<UiItem_Label*>(GetItemByName("oldCollectibleLabel"))->text);
+
+
+	// TODO: current weapon image and Face that saves current anim and time 
+
+
+	return true; 
 }

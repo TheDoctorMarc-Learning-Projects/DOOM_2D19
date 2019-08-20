@@ -4,6 +4,7 @@
 #include "j1Render.h"
 #include "j1Particles.h"
 #include "j1Audio.h"
+#include "j1EntityFactory.h"
 #include "Brofiler/Brofiler.h"
 #include "j1Window.h"
 //#include "SDL/include/SDL_timer.h"
@@ -194,15 +195,19 @@ void j1Particles::AddParticle(std::string nameAtMap, int x, int y, j1Entity* cal
 {
 	Particle* p = DBG_NEW Particle(particleMap.at(nameAtMap));
 
+	p->name = nameAtMap;
+
 	if (coltype != COLLIDER_TYPE::COLLIDER_NONE)
 	{
 		p->hasCollider = true; 
-		p->collider = App->collision->AddCollider(p->anim.GetCurrentFrame(), coltype, callback, { 0,0 }, true);   // TODO: like player, update the collider rect according to frame ??? or is it overkill ???
-		p->collider->SetPos(p->position.x, p->position.y);
-
-
+		SDL_Rect targetRect = { x, y, p->anim.GetCurrentFrame().w, p->anim.GetCurrentFrame().h }; 
+		p->collider = App->collision->AddCollider(targetRect, coltype, callback, { 0,0 }, true);    
+	
 		if (assignToCollider)
+		{
+			p->IOwnTheCollider = true;
 			p->collider->owner = p;
+		}
 	}
 		
 	
@@ -238,15 +243,21 @@ Particle* j1Particles::AddParticleRet(std::string nameAtMap, int x, int y, j1Ent
 {
 	Particle* p = DBG_NEW Particle(particleMap.at(nameAtMap));
 
+	p->name = nameAtMap; 
+
 	if (coltype != COLLIDER_TYPE::COLLIDER_NONE)
 	{
 		p->hasCollider = true;
-		p->collider = App->collision->AddCollider(p->anim.GetCurrentFrame(), coltype, callback, { 0,0 }, true);   // TODO: like player, update the collider rect according to frame ??? or is it overkill ???
-		p->collider->SetPos(p->position.x, p->position.y);
+		SDL_Rect targetRect = { x, y, p->anim.GetCurrentFrame().w, p->anim.GetCurrentFrame().h };
+		p->collider = App->collision->AddCollider(targetRect, coltype, callback, { 0,0 }, true);
 
 
 		if (assignToCollider)
+		{
+			p->IOwnTheCollider = true;
 			p->collider->owner = p;
+		}
+			
 	}
 
 
@@ -347,6 +358,155 @@ bool Particle::Update(float dt)
  
 
 	return ret;
+}
+
+
+bool j1Particles::Load(pugi::xml_node& node)
+{
+	for (auto particleNode = node.child("particle"); particleNode; particleNode = particleNode.next_sibling("particle"))
+	{
+		std::string pName = particleNode.child("name").attribute("value").as_string();
+		auto colliderNode = particleNode.child("collider");
+		bool hasCollider = colliderNode.child("has_collider").attribute("value").as_bool(); 
+		COLLIDER_TYPE cType = COLLIDER_NONE; 
+		if (hasCollider == true)
+		{
+			std::string colliderTypeString = colliderNode.child("collider_type").attribute("value").as_string(); 
+			if (colliderTypeString == "collider_enemy_shot")
+				cType = COLLIDER_ENEMY_SHOT;
+			else if (colliderTypeString == "collider_shot")
+				cType = COLLIDER_SHOT;
+			else if (colliderTypeString == "collider_presential")
+				cType = COLLIDER_PRESENTIAL; 
+		}
+		SDL_RendererFlip flip = SDL_FLIP_NONE; 
+		std::string renderFlipString = particleNode.child("render_flip").attribute("value").as_string();
+		if (renderFlipString == "horizontal")
+			flip = SDL_FLIP_HORIZONTAL; 
+		float angle = particleNode.child("angle").attribute("value").as_double();
+		float scale = particleNode.child("scale").attribute("value").as_float();
+		auto pivotNode = particleNode.child("pivot");
+		iPoint pivot = iPoint(pivotNode.attribute("x").as_int(), pivotNode.attribute("y").as_int()); 
+		float currentAnimFrame = particleNode.child("current_anim_frame").attribute("value").as_float();
+		auto posNode = particleNode.child("position");
+		iPoint position = iPoint(posNode.attribute("x").as_int(), posNode.attribute("y").as_int());
+		auto speedNode = particleNode.child("speed");
+		fPoint speed = fPoint(speedNode.attribute("x").as_int(), speedNode.attribute("y").as_int());
+		uint32 actualLife = particleNode.child("actual_life_time").attribute("value").as_uint();
+		bool fxPlayed = particleNode.child("fx_played").attribute("value").as_bool();
+		float parallaxSpeed = particleNode.child("parallax_speed").attribute("value").as_float();
+		bool useCameraScale = particleNode.child("use_camera_scale").attribute("value").as_bool();
+		bool onScreen = particleNode.child("on_screen").attribute("value").as_bool();
+		bool toDelete = particleNode.child("to_delete").attribute("value").as_bool();
+
+
+		// serious stuff xd
+		uint colliderCallbackID = particleNode.child("collider_entity_callback_ID").attribute("value").as_uint();
+		bool colliderOwner = particleNode.child("collider_owner").attribute("value").as_bool();
+		j1Entity* callback = App->entityFactory->GetEntityFromID(colliderCallbackID); 
+		
+		Particle* part = AddParticleRet(pName, position.x, position.y, callback, colliderOwner, cType, speed, 0U, flip, angle, pivot.x, pivot.y, scale, parallaxSpeed, useCameraScale, onScreen);
+		part->to_delete = toDelete; 
+
+		// finally set the current frame and the delta time 
+		part->anim.SetCurrentFrame(currentAnimFrame); 
+		part->born = SDL_GetTicks() - actualLife; 
+	}
+
+	return true; 
+}
+
+
+bool j1Particles::Save(pugi::xml_node& node) const
+{
+	for (const auto& particle : active)
+		particle->Save((pugi::xml_node&)node.append_child("particle"));
+
+	return true;
+}
+
+bool Particle::Save(pugi::xml_node& node) const
+{
+
+	node.append_child("name").append_attribute("value") = name.c_str();
+
+	auto colliderNode = node.append_child("collider"); 
+	colliderNode.append_child("has_collider").append_attribute("value") = hasCollider; 
+
+	if (hasCollider == true)
+	{
+		switch (collider->type)
+		{
+		case COLLIDER_SHOT:
+			colliderNode.append_child("collider_type").append_attribute("value") = "collider_shot";
+			break;
+		case COLLIDER_ENEMY_SHOT:
+			colliderNode.append_child("collider_type").append_attribute("value") = "collider_enemy_shot";
+			break;
+		case COLLIDER_PRESENTIAL:
+			colliderNode.append_child("collider_type").append_attribute("value") = "collider_presential";
+			break;
+		default:
+			break;
+		}
+
+	}
+
+	switch (renderFlip)
+	{
+	case SDL_FLIP_NONE:
+		node.append_child("render_flip").append_attribute("value") = "none"; 
+		break; 
+	case SDL_FLIP_HORIZONTAL:
+		node.append_child("render_flip").append_attribute("value") = "horizontal";
+		break;
+	default:
+		break;
+	}
+
+	node.append_child("angle").append_attribute("value") = angle;
+
+	node.append_child("scale ").append_attribute("value") = scale;
+
+	auto pivotNode = node.append_child("pivot"); 
+	pivotNode.append_attribute("x") = pivot.x; 
+	pivotNode.append_attribute("y") = pivot.y;
+
+	node.append_child("current_anim_frame").append_attribute("value") = anim.GetCurrentFloatFrame(); 
+
+	node.append_child("fx").append_attribute("value") = fx.c_str();
+
+	auto posNode = node.append_child("position");
+	posNode.append_attribute("x") = position.x;
+	posNode.append_attribute("y") = position.y;
+
+	auto speedNode = node.append_child("speed");
+	speedNode.append_attribute("x") = speed.x;
+	speedNode.append_attribute("y") = speed.y;
+
+	node.append_child("actual_life_time").append_attribute("value") = life; 
+
+	node.append_child("fx_played").append_attribute("value") = fx_played;
+
+	node.append_child("parallax_speed").append_attribute("value") = parallaxSpeed;
+
+	node.append_child("use_camera_scale").append_attribute("value") = useCameraScale;
+
+	node.append_child("on_screen").append_attribute("value") = onScreen;
+
+	node.append_child("to_delete").append_attribute("value") = to_delete;
+
+	node.append_child("collider_owner").append_attribute("value") = IOwnTheCollider;
+
+	// related entities: the collider has a callback (enemy or weapon) and an owner (myself)
+	if (hasCollider == true && collider && collider->callback)
+	{
+		uint colliderCallbackID = collider->callback->ID;
+		node.append_child("collider_entity_callback_ID").append_attribute("value") = collider->callback->ID; 
+	}
+
+
+	return true;
 }
 
 

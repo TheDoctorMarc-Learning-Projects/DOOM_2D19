@@ -782,6 +782,8 @@ bool j1Gui::Load(pugi::xml_node& node)
 	UpDateInGameUISlot(dynamic_cast<UiItem_Label*>(GetItemByName("newCollectibleLabel"))->name, (float)std::stoi(node.child("new_collectible_count").attribute("value").as_string()));
 	UpDateInGameUISlot(dynamic_cast<UiItem_Label*>(GetItemByName("oldCollectibleLabel"))->name, (float)std::stoi(node.child("old_collectible_count").attribute("value").as_string()));
 
+	// update player real life count
+	App->entityFactory->playerLives = (uint)(int)(float)std::stoi(dynamic_cast<UiItem_Label*>(GetItemByName("LiveCounter"))->text);
 
 	// the face 
 	dynamic_cast<UiItem_Face*>(GetItemByName("face"))->Load((pugi::xml_node&)node.child("face"));

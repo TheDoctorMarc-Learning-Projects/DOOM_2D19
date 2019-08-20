@@ -39,7 +39,7 @@ public:
 		frames[last_frame++] = rect;
 	}
 
-	float GetCurrentFloatFrame()
+	float GetCurrentFloatFrame() const
 	{
 		return current_frame;
 	}

@@ -483,7 +483,7 @@ void Collider::UpdateStatus()
 {
 	if (volatileOutOfScreen)  // delete whe out of camera limits
 	{
-		
+
 		if (App->render->isRectOnCamera(this->rect) == false)              // TODO: do this rather with is on camera ?
 		{
 			if (owner != nullptr)

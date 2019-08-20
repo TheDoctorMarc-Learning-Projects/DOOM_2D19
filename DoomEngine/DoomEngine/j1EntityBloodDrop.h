@@ -16,13 +16,6 @@ struct Viscosity
 	uint frameCounter = 0U; 
 };
 
-struct sideDynFloorType
-{
-	bool left = false; 
-	bool right = false; 
-	float sideOffset = 0.f; 
-};
-
 class j1EntityBloodDrop : public j1Entity
 {
 public:
@@ -33,10 +26,7 @@ public:
 	bool Update(float dt); 
 	bool CleanUp() override; 
 
-	virtual bool Load(pugi::xml_node&);
 	virtual bool Save(pugi::xml_node&) const;
-
-
 
 	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
@@ -45,19 +35,14 @@ private:
        // new collider in collision cpp, than can collide with floor, but ignores entitites for the mom
 	Color c;
 	fPoint initialSpeed = fPoint(0, 0); 
+	fPoint speedDecrement = fPoint(0.97f, 0.8f);
 	bool floorReached = false; 
 	bool roofReached = false; 
-	bool collidedWithVerticalWall = false;
-	sideDynFloorType sideDynPlatfColType;
 	SDL_Rect lastPosCollider = { 0,0,0,0 }; 
 	Viscosity viscosityData; 
 	j1EntityPlatformDynamic* dynGroundCallback = nullptr; 
-	j1EntityPlatformDynamic* lastDynPlatf = nullptr; 
 
 	friend class j1BloodManager;
-
-
-	bool otherBloodDropInFloor = false; 
 
 
 };

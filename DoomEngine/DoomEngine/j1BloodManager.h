@@ -20,9 +20,17 @@
 
 class j1EntityBloodDrop; 
 
-struct bloodStream
+class bloodStream
 {
+public: 
 	std::list<j1EntityBloodDrop*> myBloodDrops;
+public: 
+	
+	bool Save(pugi::xml_node& node) const {
+		for(const auto& drop : myBloodDrops)
+			drop->Save((pugi::xml_node&)node.append_child("blood_drop"));
+		return true; 
+	}
 };
 
 enum BloodStreamType
@@ -46,20 +54,8 @@ public:
 	bool CleanUp();     // blood are just quads drawn in render, no texture indeed
 
 
-	bool Load(pugi::xml_node& node) {
-		for (auto& stream : bloodStreams)
-			for (auto& drop : stream->myBloodDrops)
-				drop->Load(node);
-
-		return true;
-	}
-	bool Save(pugi::xml_node& node) const {
-		for (auto& stream : bloodStreams)
-			for (auto& drop : stream->myBloodDrops)
-				drop->Save(node);
-
-		return true;
-	}
+	bool Load(pugi::xml_node& node); 
+	bool Save(pugi::xml_node& node) const; 
 
 public: 
 

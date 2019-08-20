@@ -50,15 +50,12 @@ bool j1EntityBloodDrop::Update(float dt)
 	{
 		if (!roofReached)
 		{
-			static float decrementY = 0.8f;
-			static float decrementX = 0.97f;
-
-			float v1 = initialSpeed.y *= decrementY;
+			float v1 = initialSpeed.y *= speedDecrement.y;
 			float v2 = GravityCalc(gravityFactor, mass) * dt;  // when it has reached roof and has to fall, ONLY this should be considered
 
 			lastSpeed.y = v1 + v2;
 
-			lastSpeed.x *= decrementX;
+			lastSpeed.x *= speedDecrement.x;
 		}
 		else
 		{
@@ -72,9 +69,6 @@ bool j1EntityBloodDrop::Update(float dt)
 
 			viscosityData.frameCounter++;
 		}
-
-
-
 
 		position.x += lastSpeed.x;
 		position.y += lastSpeed.y;
@@ -277,17 +271,56 @@ bool j1EntityBloodDrop::CleanUp()
 	return true;
 }
 
-bool j1EntityBloodDrop::Load(pugi::xml_node& node)
-{
-	j1Entity::Load(node);
-
-	return true;
-}
 
 bool j1EntityBloodDrop::Save(pugi::xml_node& node) const
 {
-	j1Entity::Save(node); 
-	node.set_name("bloodEntity");    // just change the name to have blood drops visible 
+	// GENERAL DATA --> simialr to entity
+	node.append_child("name").append_attribute("value") = name.c_str();
+
+	auto pos = node.append_child("position");
+	pos.append_attribute("x") = position.x;
+	pos.append_attribute("y") = position.y;
+
+	auto lSpeed = node.append_child("last_speed");
+	lSpeed.append_attribute("x") = lastSpeed.x;
+	lSpeed.append_attribute("y") = lastSpeed.y;
+
+	
+	node.append_child("collider_active").append_attribute("value") = colliderActive;
+	node.append_child("to_delete").append_attribute("value") = to_delete;
+
+
+	// PARTICULAR DATA
+
+	auto colorNode = node.append_child("color");
+	colorNode.append_attribute("R") = c.r; 
+	colorNode.append_attribute("G") = c.g;
+	colorNode.append_attribute("B") = c.b;
+	colorNode.append_attribute("A") = c.a;
+
+	node.append_child("floor_reached").append_attribute("value") = floorReached; 
+	node.append_child("roof_reached").append_attribute("value") = roofReached;
+
+	auto lastPosColNode = node.append_child("last_position_collider");
+	lastPosColNode.append_attribute("x") = lastPosCollider.x; 
+	lastPosColNode.append_attribute("y") = lastPosCollider.y;
+	lastPosColNode.append_attribute("w") = lastPosCollider.w;
+	lastPosColNode.append_attribute("h") = lastPosCollider.h;
+
+	node.append_child("viscosity_actual_frame").append_attribute("value") = viscosityData.frameCounter; 
+
+	auto entitiesNode = node.append_child("related_entities_node");
+	auto dynGroundNode = entitiesNode.append_child("dynamic_ground_callback"); 
+
+	if (dynGroundCallback != nullptr)
+	{
+		dynGroundNode.append_child("has_dynamic_ground_callback").append_attribute("value") = true;
+		dynGroundNode.append_child("dynamic_ground_ID").append_attribute("value") = dynGroundCallback->ID;
+	}
+	else
+		dynGroundNode.append_child("has_dynamic_ground_callback").append_attribute("value") = false; 
+
+
 
 	return true;
 }

@@ -366,3 +366,75 @@ uint j1BloodManager::CalculateNumberOfBloodDropsToBeSpawned(float damage, float 
 	return (uint)(int)drops; 
 
 }
+
+
+bool j1BloodManager::Load(pugi::xml_node& node)
+{
+	for (auto streamNode = node.child("blood_stream"); streamNode; streamNode = streamNode.next_sibling("blood_stream"))
+	{
+		bloodStream* stream = DBG_NEW bloodStream;
+
+		// append blood
+		for (auto bloodDropNode = streamNode.child("blood_drop"); bloodDropNode; bloodDropNode = bloodDropNode.next_sibling("blood_drop"))
+		{
+			
+			auto posNode = bloodDropNode.child("position"); 
+			fPoint position = fPoint(posNode.attribute("x").as_float(), posNode.attribute("y").as_float()); 
+			auto speedNode = bloodDropNode.child("last_speed");
+			fPoint speed = fPoint(speedNode.attribute("x").as_float(), speedNode.attribute("y").as_float());
+			auto colorNode = bloodDropNode.child("color");
+			float r = colorNode.attribute("R").as_float(); 
+			float g = colorNode.attribute("G").as_float();
+			float b = colorNode.attribute("B").as_float();
+			float a = colorNode.attribute("A").as_float();
+			Color c = { r, g, b, a }; 
+
+			j1EntityBloodDrop* drop = DBG_NEW j1EntityBloodDrop(position.x, position.y, speed, c);
+
+
+			// now assign extra creation data that had been captured the previous gameplay
+			drop->colliderActive = bloodDropNode.child("collider_active").attribute("value").as_bool(); 
+			drop->to_delete = bloodDropNode.child("to_delete").attribute("value").as_bool();
+			drop->floorReached = bloodDropNode.child("floor_reached").attribute("value").as_bool();
+			drop->roofReached = bloodDropNode.child("roof_reached").attribute("value").as_bool();
+
+			auto lastPosColNode = node.child("last_position_collider");
+			drop->lastPosCollider.x = lastPosColNode.attribute("x").as_int(); 
+			drop->lastPosCollider.y = lastPosColNode.attribute("y").as_int();
+			drop->lastPosCollider.w = lastPosColNode.attribute("w").as_int();
+			drop->lastPosCollider.h = lastPosColNode.attribute("h").as_int();
+
+			drop->viscosityData.frameCounter = bloodDropNode.child("viscosity_actual_frame").attribute("value").as_uint(); 
+ 
+			auto entitiesNode = bloodDropNode.child("related_entities_node");
+			bool hasDynGroundCallback = entitiesNode.child("dynamic_ground_callback").child("has_dynamic_ground_callback").attribute("value").as_bool();
+
+			if (hasDynGroundCallback == true)
+			{
+				uint groundEntityID = entitiesNode.child("dynamic_ground_callback").child("dynamic_ground_ID").attribute("value").as_uint();
+				drop->dynGroundCallback = (j1EntityPlatformDynamic*)App->entityFactory->GetEntityFromID(groundEntityID); 
+			}
+
+			// then push it to the stream
+			if (drop != nullptr)
+				stream->myBloodDrops.push_back(drop);
+
+		}
+
+		// finally push the straem in the global list
+		bloodStreams.push_back(stream); 
+
+	}
+
+	return true; 
+}
+
+bool j1BloodManager::Save(pugi::xml_node& node) const 
+{
+	for (auto& stream : bloodStreams)
+		stream->Save((pugi::xml_node&)node.append_child("blood_stream"));
+
+	return true;
+}
+
+ 

@@ -782,6 +782,10 @@ bool j1Gui::Load(pugi::xml_node& node)
 	UpDateInGameUISlot(dynamic_cast<UiItem_Label*>(GetItemByName("newCollectibleLabel"))->name, (float)std::stoi(node.child("new_collectible_count").attribute("value").as_string()));
 	UpDateInGameUISlot(dynamic_cast<UiItem_Label*>(GetItemByName("oldCollectibleLabel"))->name, (float)std::stoi(node.child("old_collectible_count").attribute("value").as_string()));
 
+
+	// the face 
+	dynamic_cast<UiItem_Face*>(GetItemByName("face"))->Load((pugi::xml_node&)node.child("face"));
+
 	return true; 
 }
 
@@ -798,8 +802,9 @@ bool j1Gui::Save(pugi::xml_node& node) const
 	node.append_child("old_collectible_count").append_attribute("value") = std::stoi(dynamic_cast<UiItem_Label*>(GetItemByName("oldCollectibleLabel"))->text);
 
 
-	// TODO: current weapon image and Face that saves current anim and time 
 
+	// the face 
+	dynamic_cast<UiItem_Face*>(GetItemByName("face"))->Save((pugi::xml_node&)node.append_child("face")); 
 
 	return true; 
 }

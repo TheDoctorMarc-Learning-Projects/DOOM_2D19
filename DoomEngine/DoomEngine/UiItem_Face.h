@@ -34,6 +34,14 @@ struct Anims
 	std::map<std::string, advancedAnim> karmaMap; 
 };
 
+// for save and load 
+
+struct LastAnimData
+{
+	uint lastHealthLevel = 666U; 
+	std::string lastKarma = ""; 
+};
+
 class UiItem_Face : public UiItem
 {
 
@@ -45,8 +53,13 @@ public:
 	void FIllMaps(); 
 	void SetCurrentAnim(std::string);  // pass it the player life, it will convert it to a life level. Also, a string with "idle", "kill" etc
 
+
+	bool Load(pugi::xml_node& node);
+	bool Save(pugi::xml_node& node) const;
+
+
 private:
-	uint lastActionTime = 0U; 
+	LastAnimData lastAnim; 
 	advancedAnim currentAnimation;
 	Animation death; 
 	Animation win;         // death and win work differently 

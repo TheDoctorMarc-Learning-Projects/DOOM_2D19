@@ -224,6 +224,7 @@ void UiItem_Face::FIllMaps()
 
 UiItem_Face::~UiItem_Face()
 {
+	
 
 }
 
@@ -252,6 +253,7 @@ void UiItem_Face::SetCurrentAnim(std::string karma)
 	if (karma == "win")
 	{
 		currentAnimation.anim = win;
+		lastAnim.lastKarma = "win"; 
 		return; 
 	}
 	if (App->entityFactory->playerAlive == false || (App->entityFactory->playerAlive == true && App->entityFactory->player->godMode == true))
@@ -259,6 +261,7 @@ void UiItem_Face::SetCurrentAnim(std::string karma)
 	if (karma == "death")
 	{
 		currentAnimation.anim = death;
+		lastAnim.lastKarma = "death";
 		return; 
 	}
 	if (App->entityFactory->player->life <= 0)
@@ -278,15 +281,58 @@ void UiItem_Face::SetCurrentAnim(std::string karma)
 	currentAnimation.myTimer.timer.Start();   // set the timer 
 	
 
+	// save and load purposes
+	lastAnim.lastHealthLevel = roundedHealthLevel; 
+	lastAnim.lastKarma = karma; 
+
 	toUpdate = true; 
 }
 
 void UiItem_Face::CleanUp()
 {
-
 	for (auto& anims : animMap)
-		anims.second.karmaMap.clear(); 
+		anims.second.karmaMap.clear();
 
-	animMap.clear(); 
- 
+	animMap.clear();
+
+}
+
+
+
+bool UiItem_Face::Load(pugi::xml_node& node)
+{
+	toUpdate = node.child("to_update").attribute("value").as_bool();
+
+	std::string karmaString = node.child("karma").attribute("value").as_string(); 
+
+	if (karmaString == "death")
+	{
+		currentAnimation.anim = death; 
+		return true; 
+	}
+	else if (karmaString == "win")
+	{
+		currentAnimation.anim = win;
+		return true;
+	}
+
+	uint healthLevel = node.child("health_level").attribute("value").as_uint();
+
+	// set current animation to saved health level and karma
+	currentAnimation = animMap.at(healthLevel).karmaMap.at(karmaString); 
+
+	// set timer stated at taking into account actual time and module time 
+	uint32 timerDeltaTime = node.child("current_timer_value").attribute("value").as_uint();
+	currentAnimation.myTimer.timer.started_at = SDL_GetTicks() - timerDeltaTime; 
+
+	return true; 
+}
+bool UiItem_Face::Save(pugi::xml_node& node) const
+{
+	node.append_child("to_update").append_attribute("value") = toUpdate; 
+	node.append_child("health_level").append_attribute("value") = lastAnim.lastHealthLevel;
+	node.append_child("karma").append_attribute("value") = lastAnim.lastKarma.c_str();
+	node.append_child("current_timer_value").append_attribute("value") = currentAnimation.myTimer.timer.Read(); 
+
+	return true; 
 }

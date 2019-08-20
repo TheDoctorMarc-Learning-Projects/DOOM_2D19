@@ -620,6 +620,9 @@ bool j1EntityFactory::Load(pugi::xml_node& node)   // TODO: caution, the blood i
 			
 	}
 		
+	// also load the difficulty !!
+	currentDifficultyMultiplier = difficultyMultipliers.at(node.attribute("current_diffculty_index").as_int()); 
+
 	return true; 
 }
 
@@ -628,5 +631,17 @@ bool j1EntityFactory::Save(pugi::xml_node& node) const
 	for (const auto& entity : entities)
 		entity->Save((pugi::xml_node&) node.append_child("entity"));
 
+	// also save the difficulty !!
+
+	int i = 0; 
+	for (auto& diffMulti : difficultyMultipliers)
+	{
+		if (diffMulti.enemyDamage == currentDifficultyMultiplier.enemyDamage)  // quite nasty comparison actually
+		{
+			node.append_attribute("current_diffculty_index") = i; 
+			break; 
+		}
+		++i; 
+	}
 	return true;
 }

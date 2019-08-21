@@ -168,9 +168,14 @@ void j1Scene::SaveLoadLogic(bool save)
 	bool doIt = false; 
 
 	if (GetCurrentSceneTypeGui() == sceneTypeGUI::LEVEL)
+	{
 		if (App->fade->GetCurrentStep() == fade_step::none)
-			if(App->entityFactory->playerAlive == true)
+			if (App->entityFactory->playerAlive == true)
 				doIt = true;
+	}
+	else
+		if (state == SceneState::MAINMENU)
+			doIt = true; 
 		
 	if (doIt == true)
 	{

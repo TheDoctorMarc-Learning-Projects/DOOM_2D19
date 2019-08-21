@@ -31,7 +31,8 @@ void j1Gui::FillFunctionsMap()
 	 { "SetDifficulty", &SetDifficulty},
 	 { "SetVolume", &SetVolume},
 	 { "ChangeGamePause", &ChangeGamePause },
-	 { "ClippingScroll", &ClippingScroll }
+	 { "ClippingScroll", &ClippingScroll },
+	 { "Continue", &Continue }
 	};
 
 	// TODO: keep updating this function map
@@ -261,6 +262,11 @@ bool j1Gui::CleanUp()
 void ExitGame(UiItem* callback)
 {
 	App->buttonClosesApp = true; 
+}
+
+void Continue(UiItem* callback)
+{
+	App->scene->SaveLoadLogic(false); 
 }
 
 void SetDifficulty(UiItem* callback)

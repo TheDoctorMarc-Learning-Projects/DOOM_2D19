@@ -202,7 +202,7 @@
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
           <size s="48"/>
 		  <scaleFactor value="1.0"/>
-		  <functionName value="LoadGUI"/>
+		  <functionName value="Continue"/>
 		  <targetScene value="0"/>
         </button>
 		

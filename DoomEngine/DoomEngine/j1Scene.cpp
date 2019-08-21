@@ -296,8 +296,8 @@ void j1Scene::CreateScene()  // called by fade
 	{                           // 2) Then call load map (which has encapsulated entity data)
 
 	case SceneState::LEVEL1:
-		//LoadNewMap("maps/level 1.tmx");
-		LoadNewMap("maps/level 1 test.tmx");
+		LoadNewMap("maps/level 1.tmx");
+		//LoadNewMap("maps/level 1 test.tmx");
 		break;
 
 	case SceneState::LEVEL2:

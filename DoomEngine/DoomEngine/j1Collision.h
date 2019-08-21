@@ -98,6 +98,11 @@ public:
 	bool PreUpdate(); 
 	bool Update(float dt);
 	bool CleanUp(); 
+
+	bool Load(pugi::xml_node& node);            // Save & Load will be used with collider player shots 
+	bool Save(pugi::xml_node& node) const;
+
+
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* callback = nullptr, fPoint speed = fPoint(0,0), bool volatileOutOfScreen = false);
 	void DebugDraw();
 	void DestroyCollider(Collider* col); 

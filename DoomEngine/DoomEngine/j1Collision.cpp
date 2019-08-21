@@ -4,6 +4,7 @@
 #include "j1Collision.h"
 #include "p2Log.h"
 #include "j1Particles.h"
+#include "j1EntityFactory.h"
 #include "Brofiler/Brofiler.h"
 #include "Color.h"
 #include "j1Entity.h"
@@ -428,6 +429,68 @@ void j1Collision::DestroyCollider(Collider* col)
 	colliders.erase(std::remove(colliders.begin(), colliders.end(), col), colliders.end());*/
 }
 
+
+bool j1Collision::Load(pugi::xml_node& node) 
+{
+	for (auto colNode = node.child("collider_player_shot"); colNode; colNode = colNode.next_sibling())
+	{
+		SDL_Rect colRect = { 0,0,0,0 }; 
+		colRect.x = colNode.child("rect").attribute("x").as_int(); 
+		colRect.y = colNode.child("rect").attribute("y").as_int();
+		colRect.w = colNode.child("rect").attribute("w").as_int();
+		colRect.h = colNode.child("rect").attribute("h").as_int();
+
+		j1Entity* callback; 
+		if (colNode.child("callback_node").attribute("exists").as_bool() == true)
+		{
+			uint ID = colNode.child("callback_node").child("weapon_callback_ID").attribute("value").as_uint();
+			callback = App->entityFactory->GetEntityFromID(ID);
+		}
+		else
+			callback = nullptr; 
+
+		fPoint speed = fPoint(colNode.child("speed").attribute("x").as_float(), colNode.child("speed").attribute("y").as_float()); 
+		fPoint initialPos = fPoint(colNode.child("initial_pos").attribute("x").as_float(), colNode.child("initial_pos").attribute("y").as_float());
+
+		AddCollider(colRect, COLLIDER_SHOT, callback, speed, true); 
+	}
+
+
+	return true;
+}
+
+bool j1Collision::Save(pugi::xml_node& node) const
+{
+	for(const auto& col : colliders)
+		if (col->type == COLLIDER_SHOT)
+		{
+			auto colNode = node.append_child("collider_player_shot"); 
+			auto rectNode = colNode.append_child("rect"); 
+			rectNode.append_attribute("x") = col->rect.x;
+			rectNode.append_attribute("y") = col->rect.y;
+			rectNode.append_attribute("w") = col->rect.w;
+			rectNode.append_attribute("h") = col->rect.h;
+			colNode.append_child("to_delete").append_attribute("value") = col->to_delete; 
+			auto callbackNode = colNode.append_child("callback_node"); 
+			if (col->callback != nullptr)
+			{
+				callbackNode.append_attribute("exists") = true; 
+				callbackNode.append_child("weapon_callback_ID").append_attribute("value") = col->callback->ID; 
+			}
+			else
+				callbackNode.append_attribute("exists") = false;
+			auto speedNode = colNode.append_child("speed"); 
+			speedNode.append_attribute("x") = col->speed.x; 
+			speedNode.append_attribute("y") = col->speed.y;
+
+			auto initialPosNode = colNode.append_child("initial_pos");
+			initialPosNode.append_attribute("x") = col->initialPos.x;
+			initialPosNode.append_attribute("y") = col->initialPos.y;
+
+		}
+
+	return true; 
+}
 
 // -----------------------------------------------------
 

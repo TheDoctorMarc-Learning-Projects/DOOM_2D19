@@ -154,10 +154,10 @@ bool j1Scene::Update(float dt)
 		App->scene->LoadScene(SceneState::LEVEL2, true);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)         // TODO: change ALL debug keys to the proper ones
+	if (App->input->GetKey(SDL_SCANCODE_KP_8) == KEY_DOWN)         // TODO: change ALL debug keys to the proper ones
 		SaveLoadLogic(true); 
 
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)         // TODO: change ALL debug keys to the proper ones
+	if (App->input->GetKey(SDL_SCANCODE_KP_9) == KEY_DOWN)         // TODO: change ALL debug keys to the proper ones
 		SaveLoadLogic(false);
 
 	return true;

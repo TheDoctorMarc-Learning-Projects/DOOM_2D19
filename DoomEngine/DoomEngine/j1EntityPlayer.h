@@ -73,6 +73,8 @@ public:
 	bool Move(float dt) override;
 	void HorizonatlMovement(float dt); 
 	void VerticalMovement(float dt);
+	void VerticalMovementGodMode(float dt);
+	bool SolveMoveLimits();   // prevent bullshit when in god mode
 	void SetPreviousFrameData(); 
 	void SetCollider(); 
 	void OnCollision(Collider* c1, Collider* c2) override;

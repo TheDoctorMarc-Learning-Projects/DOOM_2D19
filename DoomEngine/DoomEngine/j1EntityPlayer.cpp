@@ -227,8 +227,7 @@ void j1EntityPlayer::HorizonatlMovement(float dt)
 			if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT || 
 				App->input->GetControllerAxisPulsation(SDL_CONTROLLER_AXIS_TRIGGERLEFT) == KEY_REPEAT)
 				targetSpeed *= 1.3f;
-
-
+		
 			currentAnimation = &run;
 
 			if (state.movement.at(1) != MovementState::NOT_ACTIVE)
@@ -243,7 +242,7 @@ void j1EntityPlayer::HorizonatlMovement(float dt)
 				lastSpeed.x = (xAxis * targetSpeed) * dt;
 
 			// check not paralized
-			if ((lastSpeed.x > 0 && paralizedDir == 1) || (lastSpeed.x < 0 && paralizedDir == -1))
+			if (((lastSpeed.x > 0 && paralizedDir == 1) || (lastSpeed.x < 0 && paralizedDir == -1)) && godMode == false)
 				lastSpeed.x = 0; 
 
 			state.movement.at(0) = (xAxis < 0) ? MovementState::INPUT_LEFT : state.movement.at(0);
@@ -271,8 +270,13 @@ void j1EntityPlayer::HorizonatlMovement(float dt)
 
 void j1EntityPlayer::VerticalMovement(float dt)
 {
+	if (godMode == true)
+	{
+		VerticalMovementGodMode(dt);
+		return; 
+	}
+		
 	// - - - - - - - - - - - - - - - - - - vertical movement
-
 
 	if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 		//if (yAxis <= 0)
@@ -322,13 +326,55 @@ void j1EntityPlayer::VerticalMovement(float dt)
 		state.movement.at(1) = MovementState::FALL;
 }
 
-void j1EntityPlayer::SetCollider()
+void j1EntityPlayer::VerticalMovementGodMode(float dt)
 {
-	if (position.x < 0)    
+	
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		position.y -= SDL_JOYSTICK_AXIS_MAX * speed * dt;
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		position.y += SDL_JOYSTICK_AXIS_MAX * speed * dt;
+}
+
+bool j1EntityPlayer::SolveMoveLimits()  // return false if player died outside limits
+{
+	if (position.x < 0)
 		position.x = 0;
 
-	else if (position.x > App->map->mapLimitXWorldPos)  // TODO: uncomment this
+	else if (position.x > App->map->mapLimitXWorldPos)   
 		position.x = App->map->mapLimitXWorldPos;
+
+	if (position.y < 0)
+		position.y = 0; 
+	else
+	{
+		uint w, h; 
+		App->win->GetWindowSize(w, h);
+
+		if (position.y > h * App->win->GetScale() - collider->rect.h)
+		{
+			if (godMode == true)
+				position.y = h * App->win->GetScale() - collider->rect.h; 
+			else
+			{
+				SetDyingState(false);
+				App->entityFactory->PlayerDeathLogic();
+				return false;
+			}
+		
+		}
+		
+
+	}
+	
+	return true; 
+}
+
+void j1EntityPlayer::SetCollider()
+{
+
+	if (SolveMoveLimits() == false)
+		return; 
+
 
 	collider->SetPos(position.x, position.y);
 	collider->AdaptCollider(currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
@@ -633,6 +679,8 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
+		if (godMode == true)
+			return; 
 
 		if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
 		{
@@ -818,6 +866,9 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 
 	case COLLIDER_TYPE::COLLIDER_WALL:
+
+		if (godMode == true)
+			return;
 
 		float offset;
 

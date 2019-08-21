@@ -37,6 +37,8 @@ enum class sceneTypeGUI : int    // coordination with GUI needed
 
 struct SDL_Color; 
 
+class UiItem; 
+
 class j1Scene : public j1Module
 {
 public:
@@ -64,7 +66,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	void SaveLoadLogic(bool save); 
+	void SaveLoadLogic(bool save, UiItem* callback = nullptr); 
 
 	bool Save(pugi::xml_node&) const;
 	bool Load(pugi::xml_node&);
@@ -81,7 +83,6 @@ public:
 
 
 private:
-	SDL_Texture* debug_tex = nullptr;
 	SceneState state = SceneState::MAINMENU;
 	SceneState nextSceneState = SceneState::NO_SCENE; 
 	SceneState previousSceneState = SceneState::NO_SCENE;

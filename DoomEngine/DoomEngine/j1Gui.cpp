@@ -70,8 +70,8 @@ bool j1Gui::Start()
 	atlas = App->tex->Load(atlas_file_name.data());
 
 	// load the main menu GUI 
+	App->scene->SetSceneState(SceneState::MAINMENU);
 	LoadGuiDefined(sceneTypeGUI::MAINMENU); 
-	App->scene->SetSceneState(SceneState::MAINMENU); 
 	App->audio->PlayMusic(App->scene->sceneMusics.at(SceneState::MAINMENU), -1);
 
 
@@ -266,7 +266,7 @@ void ExitGame(UiItem* callback)
 
 void Continue(UiItem* callback)
 {
-	App->scene->SaveLoadLogic(false); 
+	App->scene->SaveLoadLogic(false, callback); 
 }
 
 void SetDifficulty(UiItem* callback)
@@ -402,7 +402,6 @@ void ChangeGamePause(UiItem* callback)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - create a canvas from external action, eg collider win, ingame ESC...
 void j1Gui::LoadGuiDefined(sceneTypeGUI targetScene)   
 {
-
 	for (auto& canvas : App->gui->GetCanvases())
 	{
 		if (canvas.second->myScene == targetScene)     // if there exists a current canvas with the scene
@@ -461,10 +460,10 @@ void j1Gui::ChangeCurrentCanvas(UiItem* newCanvas, bool exists)
 	
 
 	// hide the cursor if in game 
-/*	if(App->scene->GetCurrentSceneType() == sceneType::LEVEL)
+	if(newCanvas->myScene == sceneTypeGUI::LEVEL)
 		SDL_ShowCursor(SDL_DISABLE);
 	else
-		SDL_ShowCursor(SDL_ENABLE);*/
+		SDL_ShowCursor(SDL_ENABLE);
 	
 }
 

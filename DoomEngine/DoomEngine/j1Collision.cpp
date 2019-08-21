@@ -325,9 +325,6 @@ bool j1Collision::Update(float dt)
 	if (App->pause == true)
 		return true;
 
-	if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
-		debug = !debug;
-
 	if (debug)
 		DebugDraw();
 

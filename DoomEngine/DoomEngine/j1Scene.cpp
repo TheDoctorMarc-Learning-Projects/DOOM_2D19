@@ -112,27 +112,6 @@ bool j1Scene::Update(float dt)
 	if (App->render->camera.x < 0)
 		x += -App->render->camera.x;
 
-		
-	/*if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-	{
-		App->entityFactory->CreateEntity(ENEMY_IMP, x, y, "EnemyIMP");
-	}
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-	{
-		App->entityFactory->CreateEntity(ENEMY_CACODEMON, x, y, "EnemyCacodemon");
-	}
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-	{
-		App->entityFactory->CreateEntity(ENEMY_BARON_OF_HELL, x, y, "EnemyBaronOfHell");
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
-	{
-		App->entityFactory->CreateEntity(ENEMY_HELL_KNIGHT, x, y, "EnemyHellKnight");
-	}
-	*/
-
-
 	if (App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN) // TODO: change ALL debug keys to the proper ones
 	{
 		App->entityFactory->playerLives = 3; 
@@ -163,19 +142,22 @@ bool j1Scene::Update(float dt)
 	return true;
 }
 
-void j1Scene::SaveLoadLogic(bool save)
+void j1Scene::SaveLoadLogic(bool save, UiItem* callback)
 {
 	bool doIt = false; 
 
-	if (GetCurrentSceneTypeGui() == sceneTypeGUI::LEVEL)
+	if (callback == nullptr)
 	{
-		if (App->fade->GetCurrentStep() == fade_step::none)
-			if (App->entityFactory->playerAlive == true)
-				doIt = true;
+		if (GetCurrentSceneTypeGui() == sceneTypeGUI::LEVEL)
+		{
+			if (App->fade->GetCurrentStep() == fade_step::none)
+				if (App->entityFactory->playerAlive == true)
+					doIt = true;
+		}
 	}
 	else
-		if (state == SceneState::MAINMENU)
-			doIt = true; 
+		doIt = true;
+		
 		
 	if (doIt == true)
 	{
@@ -211,10 +193,6 @@ bool j1Scene::PostUpdate()
 // Called before quitting
 bool j1Scene::CleanUp()
 {
-	App->tex->UnLoad(debug_tex);
-	debug_tex = nullptr;
-
-
 	LOG("Freeing scene");
 	return true;
 }
@@ -223,7 +201,6 @@ bool j1Scene::Save(pugi::xml_node &node) const
 {
 	savedState = state; 
 
-	// TODO: do I have to preserve the previous state variable?? 
 	return true;
 }
 
@@ -236,8 +213,6 @@ bool j1Scene::Load(pugi::xml_node &node)
 
 void j1Scene::LoadNewMap(const char* mapName)
 {
- 
-
 	if (App->map->Load(mapName))
 	{
 		int w, h;
@@ -246,8 +221,6 @@ void j1Scene::LoadNewMap(const char* mapName)
 			App->pathfinding->SetMap(w, h, data);
 
 		RELEASE_ARRAY(data);
- 
-
 		 
 	}
 }
@@ -258,7 +231,7 @@ void j1Scene::UnLoadScene(bool saveLoad)
 	App->map->Disable();
 	App->pathfinding->Disable();
 	if (saveLoad == false)
-		App->entityFactory->saveGameDeletedEntitiesIDs.clear();   // clear destroyed entities IDs. When saving, do not do it here cause factory needs em, it is cleared there
+		App->entityFactory->saveGameDeletedEntitiesIDs.clear();   // clear destroyed entities IDs. When saving, do not do it because factory needs them
 	App->entityFactory->Disable();
 	App->bloodManager->Disable();
 	App->particles->Disable();
@@ -293,7 +266,7 @@ void j1Scene::LoadScene(SceneState sceneState, bool loadGUI, bool saveLoad)
 }
 
 
-void j1Scene::CreateScene()  // called by fade 
+void j1Scene::CreateScene()  // called by fade or called by save-load 
 {
 	App->audio->PlayMusic(sceneMusics.at(nextSceneState), -1); 
 
@@ -302,7 +275,6 @@ void j1Scene::CreateScene()  // called by fade
 
 	case SceneState::LEVEL1:
 		LoadNewMap("maps/level 1.tmx");
-		//LoadNewMap("maps/level 1 test.tmx");
 		break;
 
 	case SceneState::LEVEL2:
@@ -313,12 +285,9 @@ void j1Scene::CreateScene()  // called by fade
 	}
 
 	// 3) then load modules
-
-	//App->audio->Start(); // why? xd 
  
 	App->render->ResetCamera();
-
-	if (nextSceneState == SceneState::LEVEL1 || nextSceneState == SceneState::LEVEL2)
+	if (convertSceneTypeToGui(nextSceneState) == sceneTypeGUI::LEVEL)
 	{
 		App->pathfinding->Enable();
 		App->entityFactory->Enable();
@@ -330,7 +299,6 @@ void j1Scene::CreateScene()  // called by fade
 	}
 
 	// 4) load the GUI when map swap comes from collider win, or ingame esc. Do NOT load it when coming from button (which already executes the load)
-
 	if (loadGUI == true)
 		App->gui->LoadGuiDefined(convertSceneTypeToGui(nextSceneState));
 

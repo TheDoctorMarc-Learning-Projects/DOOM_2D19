@@ -159,6 +159,8 @@ public:
 	bool Move(float dt) override;
 	void OnCollision(Collider* c1, Collider* c2) override;
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
+
+private: 
 	void VerticalMovement(float dt); 
 	bool FollowPath(float dt); 
 	bool CheckPathState(iPoint pos, iPoint& target, bool& success); 
@@ -171,6 +173,8 @@ public:
 	void SetPreviousFrameData();
 	void SetCollider();
 	void DieLogic(float dt); 
+
+public: 
 
 	virtual bool DoMeleeAttack();
 	virtual bool DoLongRangeAttack();
@@ -236,6 +240,29 @@ public:
 
 
 	bool isWallBetweenPlayerAndMe(bool shoot = false); 
+
+
+	void DebugPath() const
+	{
+		if (pathToFollow.size() > 0)
+		{
+			for (const auto& p : pathToFollow)
+			{
+				SDL_Rect r = { App->map->MapToWorld(p.x, 0).x,App->map->MapToWorld(0, p.y).y, 32, 32 }; 
+				if (App->render->isRectOnCamera(r) == true)
+				{
+					SDL_Color c = { 255, 0, 0, 100 }; 
+
+					if(lastSpeed.IsZero() == false)
+						c = { 0, 255, 0, 100 };
+
+					App->render->DrawQuad(r, c.r, c.g, c.b, c.a, true, true);
+				}
+					
+			}
+				
+		}
+	}
 
 public:
 

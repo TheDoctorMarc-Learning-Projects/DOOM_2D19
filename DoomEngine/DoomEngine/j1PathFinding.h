@@ -72,7 +72,6 @@ struct PathList
 {
 	// Looks for a node in this list and returns it's list node or NULL
 	const PathNode* Find(const iPoint& point) const;
-	const PathNode* FindJPS(const iPoint& point, const iPoint& direction) const;
 
 	// Returns the Pathnode with lowest score in this list or NULL if empty
 	const PathNode* GetNodeLowestScore() const;
@@ -102,11 +101,6 @@ public:
 
 	// Main function to request a path from A to B
 	int CreatePathAStar(const iPoint& origin, const iPoint& destination, bool walkableAccounts = true);
-
-	// Step by step methods
-	PathState StartAStar(const iPoint& origin, const iPoint& destination);
-	PathState CycleAStar();
-
 
 	// To request all tiles involved in the last generated path
 	const std::vector<iPoint>* GetLastPath() const;

@@ -208,7 +208,10 @@ void j1EntityFactory::Debug()
 	// - - - - - - - - - - - - - - - - debug
 
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
-		debug = !debug; 
+	{
+		App->collision->debug = !debug; 
+		debug = !debug;
+	}
 
 	if (debug == true)
 	{
@@ -216,6 +219,8 @@ void j1EntityFactory::Debug()
 			if(entity->isEnemy)
 				if(App->render->IsOnCamera(entity->position.x, entity->position.y, entity->collider->rect.w, entity->collider->rect.h))
 					if (dynamic_cast<j1Enemy*>(entity)->state.combat != eCombatState::DYING && dynamic_cast<j1Enemy*>(entity)->state.combat != eCombatState::DEAD)
+					{
+						// debug raycasts
 						App->render->DrawLine(dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.lastRaycast[0],
 							dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.lastRaycast[1],
 							dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.lastRaycast[2],
@@ -225,6 +230,11 @@ void j1EntityFactory::Debug()
 							dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.Color.b,
 							dynamic_cast<j1Enemy*>(entity)->lastRaycastInfo.Color.a,
 							true);
+
+						//debug path
+						dynamic_cast<j1Enemy*>(entity)->DebugPath(); 
+					}
+					
 				
 				
 	}

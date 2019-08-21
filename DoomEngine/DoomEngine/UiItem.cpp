@@ -81,22 +81,19 @@ void UiItem::DebugDraw()
 {
 	if (parent == nullptr)
 		return; 
+	if (name == "background")
+		return; 
+	if (guiType != IMAGE && guiType != LABEL)
+		return; 
 
 	SDL_Rect target = hitBox; 
-	fPoint dimensions = fPoint((float)target.w * scaleFactor, (float)target.h * scaleFactor); 
-
-	target.w = dimensions.x;
-	target.h = dimensions.y; 
+	target.w *= scaleFactor; 
+	target.h *= scaleFactor;
 
 	if (target.w == 0 || target.h == 0)
 	{
-		target.w = section.w;
-		target.h = section.h;
-
-		fPoint dimensions = fPoint((float)target.w * scaleFactor, (float)target.h * scaleFactor);
-
-		target.w = dimensions.x;
-		target.h = dimensions.y;
+		target.w = section.w * scaleFactor;
+		target.h = section.h * scaleFactor;
 	}
 
 	App->render->DrawQuad(target, 0, 0, 255, 50, true, true);

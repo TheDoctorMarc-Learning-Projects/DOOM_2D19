@@ -25,18 +25,12 @@ UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, std::string
 	tabbable = isTabbable;
 	this->numb = true; 
 
-	if (name == "tick")   // this is rather for checkbox purposes 
-		this->hide = true;
-
-
 	if (specialTex != nullptr)
 	{
 		this->specialTex = specialTex;
 		this->newTextureName = newTextureName; 
 	}
 		
-
-
 	if (spriteScale != 0.F)
 		this->scaleFactor = spriteScale; 
 	else
@@ -74,7 +68,6 @@ void UiItem_Image::Draw()
 		App->render->Blit(specialTex, hitBox.x, hitBox.y, &this->section, 0.0F, SDL_FLIP_NONE, scaleFactor);
 	else
 		App->render->Blit(App->gui->GetAtlas(), hitBox.x, hitBox.y, &this->section, 0.0F, SDL_FLIP_NONE, scaleFactor);
-
 }
 
 void UiItem_Image::ReAssignSpecialTexture()

@@ -242,13 +242,24 @@
 		
 		
 		<button name="exitButton">
-          <position x="200" y="500"/>
+          <position x="200" y="650"/>
           <color R="255" G="255" B="255" A="255"/>
           <text value="Exit"/>
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
           <size s="48"/>
 		  <scaleFactor value="1.0"/>
 		  <functionName value="ExitGame"/>
+		  <targetScene value="0"/>
+        </button>
+		
+		<button name="webButton">
+          <position x="200" y="590"/>
+          <color R="255" G="255" B="255" A="255"/>
+          <text value="WebPage"/>
+          <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
+          <size s="48"/>
+		  <scaleFactor value="1.0"/>
+		  <functionName value="OpenWeb"/>
 		  <targetScene value="0"/>
         </button>
 		

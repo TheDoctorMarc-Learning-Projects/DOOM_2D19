@@ -32,7 +32,8 @@ void j1Gui::FillFunctionsMap()
 	 { "SetVolume", &SetVolume},
 	 { "ChangeGamePause", &ChangeGamePause },
 	 { "ClippingScroll", &ClippingScroll },
-	 { "Continue", &Continue }
+	 { "Continue", &Continue },
+	 { "OpenWeb", &OpenWeb }
 	};
 
 	// TODO: keep updating this function map
@@ -262,6 +263,12 @@ bool j1Gui::CleanUp()
 void ExitGame(UiItem* callback)
 {
 	App->buttonClosesApp = true; 
+}
+
+
+void OpenWeb(UiItem* callback)
+{ 
+	ShellExecuteA(NULL, "open", "https://mdpdoctor7.wixsite.com/doomproject", NULL, NULL, SW_SHOWNORMAL); 
 }
 
 void Continue(UiItem* callback)

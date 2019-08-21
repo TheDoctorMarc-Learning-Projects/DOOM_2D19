@@ -21,6 +21,7 @@ void SetVolume(UiItem* callback = nullptr);
 void ChangeGamePause(UiItem* callback = nullptr);
 void ClippingScroll(UiItem* callback = nullptr);
 void Continue(UiItem* callback = nullptr);
+void OpenWeb(UiItem* callback = nullptr);
 
 class j1Gui : public j1Module
 {

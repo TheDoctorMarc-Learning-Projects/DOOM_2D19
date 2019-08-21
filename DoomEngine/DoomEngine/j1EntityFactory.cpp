@@ -149,6 +149,8 @@ bool j1EntityFactory::Update(float dt)
 			}
 			else
 			{
+				saveGameDeletedEntitiesIDs.push_back((*item)->ID);
+
 				(*item)->CleanUp();
 				delete(*item);
 				(*item) = nullptr;
@@ -157,9 +159,10 @@ bool j1EntityFactory::Update(float dt)
 
 		}
 		else
-		{
-			item = entities.erase(item);
-		}
+        	item = entities.erase(item);
+
+
+		
 
 	}
 
@@ -248,6 +251,7 @@ bool j1EntityFactory::CleanUp()
 	entities.clear();
 	player = nullptr; 
 	NumberOfSpawns = 0U;
+ 
 
 	for (auto tex : entityTextureMap)
 	{
@@ -602,19 +606,34 @@ void j1EntityFactory::PlayerDeathLogic()
 
 }
 
-bool j1EntityFactory::Load(pugi::xml_node& node)   // TODO: caution, the blood is with another name, do it in BloodManager with its proper name
+bool j1EntityFactory::Load(pugi::xml_node& node)  
 {
 	for (pugi::xml_node entityNode = node.child("entity"); entityNode; entityNode = entityNode.next_sibling("entity"))
 	{
 		uint ID = entityNode.child("ID").attribute("value").as_uint();
+		bool destroyed = entityNode.attribute("destroyed").as_bool(); 
 
-		for (auto& entity : entities)
+		for (auto entity = entities.begin(); entity != entities.end();)
 		{
-			if (entity->ID == ID)
+			if ((*entity)->ID == ID)
 			{
-				entity->Load(entityNode);
-				break;
+				if (destroyed == false)
+				{
+					(*entity)->Load(entityNode);
+					++entity; 
+				}
+					
+				else
+				{
+					(*entity)->CleanUp();
+					delete(*entity);
+					(*entity) = nullptr;
+					entity = entities.erase(entity);
+				}
+					break;
 			}
+			else
+				++entity; 
 
 		}
 			
@@ -623,13 +642,37 @@ bool j1EntityFactory::Load(pugi::xml_node& node)   // TODO: caution, the blood i
 	// also load the difficulty !!
 	currentDifficultyMultiplier = difficultyMultipliers.at(node.attribute("current_diffculty_index").as_int()); 
 
+
 	return true; 
 }
 
 bool j1EntityFactory::Save(pugi::xml_node& node) const
 {
+
+	for (const auto& ID : saveGameDeletedEntitiesIDs)
+	{
+		auto entityNode = node.append_child("entity");  
+		entityNode.append_attribute("destroyed") = true;
+		entityNode.append_child("ID").append_attribute("value") = ID; 
+	}
 	for (const auto& entity : entities)
-		entity->Save((pugi::xml_node&) node.append_child("entity"));
+	{
+		bool doIt = true; 
+
+		for (const auto& ID : saveGameDeletedEntitiesIDs)
+			if (entity->ID == ID)
+				doIt = false; 
+				
+		if (doIt == true)
+		{
+			auto entityNode = node.append_child("entity");
+			entityNode.append_attribute("destroyed") = false;
+			entity->Save((pugi::xml_node&) entityNode);
+		}
+
+	
+	}
+		
 
 	// also save the difficulty !!
 
@@ -643,5 +686,7 @@ bool j1EntityFactory::Save(pugi::xml_node& node) const
 		}
 		++i; 
 	}
+
+
 	return true;
 }

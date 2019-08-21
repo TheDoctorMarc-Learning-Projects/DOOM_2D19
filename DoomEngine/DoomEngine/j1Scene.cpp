@@ -247,11 +247,13 @@ void j1Scene::LoadNewMap(const char* mapName)
 	}
 }
 
-void j1Scene::UnLoadScene()
+void j1Scene::UnLoadScene(bool saveLoad)
 {
 
 	App->map->Disable();
 	App->pathfinding->Disable();
+	if (saveLoad == false)
+		App->entityFactory->saveGameDeletedEntitiesIDs.clear();   // clear destroyed entities IDs. When saving, do not do it here cause factory needs em, it is cleared there
 	App->entityFactory->Disable();
 	App->bloodManager->Disable();
 	App->particles->Disable();
@@ -271,7 +273,7 @@ void j1Scene::LoadScene(SceneState sceneState, bool loadGUI, bool saveLoad)
 	nextSceneState = sceneState; 
 	this->loadGUI = loadGUI; 
 
-	UnLoadScene();   // 1) First unload every needed module
+	UnLoadScene(saveLoad);   // 1) First unload every needed module
 
 
 	if (saveLoad == false)
@@ -280,7 +282,9 @@ void j1Scene::LoadScene(SceneState sceneState, bool loadGUI, bool saveLoad)
 		App->fade->FadeToBlack(sceneSwapColor);
 	}
 	else
-		CreateScene(); 
+		CreateScene();
+		
+		
 }
 
 
@@ -292,8 +296,8 @@ void j1Scene::CreateScene()  // called by fade
 	{                           // 2) Then call load map (which has encapsulated entity data)
 
 	case SceneState::LEVEL1:
-		LoadNewMap("maps/level 1.tmx");
-		//LoadNewMap("maps/level 1 test.tmx");
+		//LoadNewMap("maps/level 1.tmx");
+		LoadNewMap("maps/level 1 test.tmx");
 		break;
 
 	case SceneState::LEVEL2:

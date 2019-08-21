@@ -149,6 +149,8 @@ void j1Entity::ResetGravity()
 bool j1Entity::Load(pugi::xml_node& node)  // the node is the entitynode (captured for entities that I want with a special name (eg blood)) 
 {
 
+	ID = node.child("ID").attribute("value").as_uint(); 
+
 	// POSITION, SPEED, DIRECTION
 	position.x = node.child("position").attribute("x").as_float();
 	position.y = node.child("position").attribute("y").as_float();

@@ -100,7 +100,7 @@ public:
  
 
 	void LoadNewMap(const char* mapName);
-	void UnLoadScene();
+	void UnLoadScene(bool saveLoad = false);
 	void LoadScene(SceneState sceneState, bool loadGUI, bool saveLoad = false);  
 	void CreateScene();
 	void SetTargetScene(SceneState sceneState)

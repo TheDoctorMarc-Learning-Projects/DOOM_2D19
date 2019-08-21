@@ -126,12 +126,7 @@ private:
 
 	static bool isBlitOrderHigherThanPreviousEntity(const j1Entity* ent1, const j1Entity* ent2); 
 
- 
-
-
 public:
-
-
 
 	std::list<j1Entity*>	entities;
 	std::map<std::string, SDL_Texture*> entityTextureMap; 
@@ -144,7 +139,7 @@ public:
 	uint playerLives = 3; 
 	iPoint playerSpawnPos = iPoint(0, 0); 
 	uint NumberOfSpawns = 0U; 
-
+    mutable	std::vector<int> saveGameDeletedEntitiesIDs; // quite handy to delete any entity that was destroyed in the previous gameplay
 	bool debug = false;
 
 

@@ -207,7 +207,7 @@ void j1EntityFactory::Debug()
 
 	// - - - - - - - - - - - - - - - - debug
 
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
 		App->collision->debug = !debug; 
 		debug = !debug;

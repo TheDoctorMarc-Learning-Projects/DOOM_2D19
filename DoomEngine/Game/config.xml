@@ -1,7 +1,7 @@
 <!-- Config file for the game -->
 
 <config>
- <app cap_frames="false" framerate_cap="60">
+ <app cap_frames="true" framerate_cap="60">
     <title>DOOM 2D19</title>
     <organization>Doctor Corp</organization>
  </app>

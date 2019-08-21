@@ -112,31 +112,24 @@ bool j1Scene::Update(float dt)
 	if (App->render->camera.x < 0)
 		x += -App->render->camera.x;
 
-	if (App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN) // TODO: change ALL debug keys to the proper ones
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) // TODO: change ALL debug keys to the proper ones
 	{
 		App->entityFactory->playerLives = 3; 
 		App->gui->UpDateInGameUISlot("LiveCounter", 3);
 		App->scene->LoadScene(SceneState::LEVEL1, true);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_KP_2) == KEY_DOWN) // TODO: change ALL debug keys to the proper ones
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) // TODO: change ALL debug keys to the proper ones
 	{
 		App->entityFactory->playerLives = 3;
 		App->gui->UpDateInGameUISlot("LiveCounter", 3);
 		App->scene->LoadScene(state, true);
 	}
- 
-	if (App->input->GetKey(SDL_SCANCODE_KP_3) == KEY_DOWN) // TODO: THIS KEY IS NOT NEEDED
-	{
-		App->entityFactory->playerLives = 3;
-		App->gui->UpDateInGameUISlot("LiveCounter", 3);
-		App->scene->LoadScene(SceneState::LEVEL2, true);
-	}
 
-	if (App->input->GetKey(SDL_SCANCODE_KP_8) == KEY_DOWN)         // TODO: change ALL debug keys to the proper ones
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)         // TODO: change ALL debug keys to the proper ones
 		SaveLoadLogic(true); 
 
-	if (App->input->GetKey(SDL_SCANCODE_KP_9) == KEY_DOWN)         // TODO: change ALL debug keys to the proper ones
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)         // TODO: change ALL debug keys to the proper ones
 		SaveLoadLogic(false);
 
 	return true;

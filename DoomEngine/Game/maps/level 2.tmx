@@ -33,7 +33,7 @@
  <tileset firstgid="75" name="iconOfSin" tilewidth="32" tileheight="32" tilecount="16" columns="4">
   <image source="textures/iconOfSin.png" width="128" height="128"/>
  </tileset>
- <layer id="8" name="Walkability" width="310" height="26" visible="0">
+ <layer id="8" name="Walkability" width="310" height="26">
   <properties>
    <property name="Navigation" type="int" value="1"/>
   </properties>
@@ -8100,7 +8100,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="9" name="BackgroundBack" width="310" height="26" visible="0">
+ <layer id="9" name="BackgroundBack" width="310" height="26">
   <properties>
    <property name="parallaxSpeed" type="float" value="1.1"/>
   </properties>
@@ -16167,7 +16167,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="10" name="BackgroundMiddle" width="310" height="26" visible="0">
+ <layer id="10" name="BackgroundMiddle" width="310" height="26">
   <properties>
    <property name="parallaxSpeed" type="float" value="1.1"/>
   </properties>
@@ -24234,7 +24234,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="11" name="BackgroundFront" width="310" height="26" visible="0">
+ <layer id="11" name="BackgroundFront" width="310" height="26">
   <data>
    <tile/>
    <tile/>
@@ -32814,7 +32814,7 @@
    </properties>
   </object>
  </objectgroup>
- <layer id="12" name="Floor" width="310" height="26" visible="0">
+ <layer id="12" name="Floor" width="310" height="26">
   <data>
    <tile/>
    <tile/>

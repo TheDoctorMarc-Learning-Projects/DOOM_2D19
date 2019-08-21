@@ -137,8 +137,11 @@ bool j1App::Awake()
 		capFrames = app_config.attribute("cap_frames").as_bool();
 		framerateCap = app_config.attribute("framerate_cap").as_float();
 		capTime = app_config.attribute("framerate_cap").as_int();
-		if(capTime != 0)
+		if (capTime != 0)
+		{
 			capTime = 1000 / capTime;
+		}
+			
 	}
 
 	if(ret == true)
@@ -265,16 +268,36 @@ void j1App::FinishUpdate()
 	frames_on_last_update = prev_last_sec_frame_count;
 
     static char title[256];
-	sprintf_s(title, 256, "FPS: %i, Av.FPS: %.2f Last Frame Ms: %02u / Time since startup: %.3f Frame Count: %lu / Frame Cap: ",
-		frames_on_last_update, avg_fps, last_frame_ms, seconds_since_startup, frame_count /*framerate_cap*/); 
 
+	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+		capFrames = !capFrames; 
+
+	if(capFrames && !vsync)
+		sprintf_s(title, 256, "FPS: %i, Av.FPS: %.2f Last Frame Ms: %02u / Time since startup: %.3f Frame Count: %lu / Frame Cap: ON / VSYNC: OFF",
+			frames_on_last_update, avg_fps, last_frame_ms, seconds_since_startup, frame_count);
+	else if(!capFrames && !vsync)
+		sprintf_s(title, 256, "FPS: %i, Av.FPS: %.2f Last Frame Ms: %02u / Time since startup: %.3f Frame Count: %lu / Frame Cap: OFF / VSYNC: OFF",
+			frames_on_last_update, avg_fps, last_frame_ms, seconds_since_startup, frame_count);
+	else if (capFrames && !vsync)
+		sprintf_s(title, 256, "FPS: %i, Av.FPS: %.2f Last Frame Ms: %02u / Time since startup: %.3f Frame Count: %lu / Frame Cap: ON / VSYNC: OFF",
+			frames_on_last_update, avg_fps, last_frame_ms, seconds_since_startup, frame_count);
+	else if (!capFrames && vsync)
+		sprintf_s(title, 256, "FPS: %i, Av.FPS: %.2f Last Frame Ms: %02u / Time since startup: %.3f Frame Count: %lu / Frame Cap: OFF / VSYNC: ON",
+			frames_on_last_update, avg_fps, last_frame_ms, seconds_since_startup, frame_count);
+
+
+	
 	App->win->SetTitle(title);
 
 	//- Cap the framerate
 
-	uint32 delay = MAX(0, (int)capTime - (int)last_frame_ms);
- 
-	SDL_Delay(delay);
+	if (capFrames)
+	{
+		uint32 delay = MAX(0, (int)capTime - (int)last_frame_ms);
+
+		SDL_Delay(delay);
+	}
+	
  
 }
 

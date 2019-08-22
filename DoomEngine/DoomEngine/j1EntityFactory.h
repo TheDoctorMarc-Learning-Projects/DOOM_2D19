@@ -80,11 +80,6 @@ public:
 	 j1Entity* CreateAmmo(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type);
 	 j1Entity* CreateArmor(ENTITY_TYPE type, int positionX, int positionY, std::string name, LOOT_TYPE loot_type);
 
-	bool isDistanceToManhattan(iPoint tilePos, iPoint targetTilePos, int distance)
-	{
-		int distanceManh = tilePos.DistanceManhattan(targetTilePos); 
-		return distanceManh <= distance;
-	}
 	iPoint GetPlayerPosition() const {
 		return iPoint(App->map->WorldToMap((int)player->position.x, (int)player->position.y)) + iPoint(0, 1);
 	}

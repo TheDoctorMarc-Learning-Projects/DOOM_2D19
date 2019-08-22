@@ -129,9 +129,6 @@ public:
 
 	//core loops ------
 	//bool Awake(pugi::xml_node& node);
-	bool Start();
-	bool PreUpdate();
-	bool Update(float dt);
 	virtual bool DoDie() {        // not a cleanup, because texture is still there, its just to delete anything extra
 
 		if (onDynamicplatform == false)  // we need to keep the colldier if the enemy dies in the dynamic platform
@@ -150,9 +147,7 @@ public:
 		
 		return true;
 	};
-	
-	                     
-	bool PostUpdate();
+
 	virtual bool Load(pugi::xml_node&);
 	virtual bool Save(pugi::xml_node&) const;
 	// functionality ------
@@ -251,10 +246,10 @@ public:
 				SDL_Rect r = { App->map->MapToWorld(p.x, 0).x,App->map->MapToWorld(0, p.y).y, 32, 32 }; 
 				if (App->render->isRectOnCamera(r) == true)
 				{
-					SDL_Color c = { 255, 0, 0, 100 }; 
+					SDL_Color c = { 0, 255, 0, 100 }; 
 
-					if(lastSpeed.IsZero() == false)
-						c = { 0, 255, 0, 100 };
+					if (lastSpeed.IsZero() == true)
+						return; 
 
 					App->render->DrawQuad(r, c.r, c.g, c.b, c.a, true, true);
 				}

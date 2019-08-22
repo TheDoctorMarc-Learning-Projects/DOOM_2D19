@@ -117,9 +117,6 @@
     <ClCompile Include="j1Input.cpp">
       <Filter>Code\Core\Semi-Core</Filter>
     </ClCompile>
-    <ClCompile Include="j1Collision.cpp">
-      <Filter>Code\Core\In-Game</Filter>
-    </ClCompile>
     <ClCompile Include="j1PathFinding.cpp">
       <Filter>Code\Core\In-Game</Filter>
     </ClCompile>
@@ -206,6 +203,9 @@
     </ClCompile>
     <ClCompile Include="UiItem_Bar.cpp">
       <Filter>Code\Core\In-Screen\GUI\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Collision.cpp">
+      <Filter>Code\Core\In-Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

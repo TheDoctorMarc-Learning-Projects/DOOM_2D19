@@ -63,8 +63,6 @@ public:
 	//bool Awake(pugi::xml_node& node);
 	bool Start();
 	bool PreUpdate();
-	bool Update(float dt);
-	bool PostUpdate();
 	bool CleanUp() override;
 
 	bool Load(pugi::xml_node&);
@@ -114,7 +112,6 @@ public:
 	Animation death2;
 
 private: 
-	bool inputReady = false; 
 	bool aiming = false;
 	fPoint deathPosGround = fPoint(0, 0);
 	double paralizedDir = std::numeric_limits<double>::quiet_NaN();   // when colliding horizontally with enemy, player can't go in that dir (it can be 1, -1 or nan)

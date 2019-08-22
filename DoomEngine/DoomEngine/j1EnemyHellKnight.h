@@ -7,7 +7,7 @@ class j1Enemy;
 
 enum class BEHAVIOUR_STATE
 {
-   A_TO_B, // TODO: at the beginning, and if player falls to base floor? 
+   A_TO_B, 
    FOLLOW,
 };
 

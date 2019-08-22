@@ -16,11 +16,7 @@ class j1EntityPlatformDynamic : public j1EntityPlatform
 public:
 	j1EntityPlatformDynamic(SDL_Rect placing, int heightLevel, int LevelsUp, int LevelsDown, SceneState level, AXIS_Movement movementType);
 	~j1EntityPlatformDynamic();
-
-	//core loops ------
-	//bool Awake(pugi::xml_node& node);
-	bool Start();
-	bool PreUpdate();
+	
 	bool CleanUp() override; 
 	bool Update(float dt);
 	void SetAreaColPos(); 
@@ -28,7 +24,7 @@ public:
 	void OnCollisionExit(Collider* c1, Collider* c2) override;
 	void CheckPlatformSameLevel(); 
 	void UpdateEntitiesOnTopPositions(bool justOffset = false, float offset = 0.f);
-	// todo, movable platforms load and save (Xd) 
+
 
 public:
 	AXIS_Movement movementType; 

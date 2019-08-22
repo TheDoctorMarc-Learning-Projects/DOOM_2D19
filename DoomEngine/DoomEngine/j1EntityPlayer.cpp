@@ -110,21 +110,6 @@ bool j1EntityPlayer::PreUpdate()
 	return true;
 }
 
-bool j1EntityPlayer::Update(float dt)
-{
-
-	return true;
-}
-
-bool j1EntityPlayer::PostUpdate()
-{
-
-	return true;
-}
-
-
-
-
 bool j1EntityPlayer::Move(float dt)
 {
 	BROFILER_CATEGORY("Player Move", Profiler::Color::Aqua);
@@ -1187,7 +1172,6 @@ bool j1EntityPlayer::Load(pugi::xml_node& node)
 	lastPosCollider.h = node.child("movement_data").child("last_pos_collider").attribute("h").as_int();
 
 	//  - - - - - - - - - - - - - - - - "BOOLS" DATA
-	inputReady = node.child("bools_data").child("input_ready").attribute("value").as_bool();
 	aiming = node.child("bools_data").child("aiming").attribute("value").as_bool();
 	godMode = node.child("bools_data").child("god_mode").attribute("value").as_bool();
 	onPlatform = node.child("bools_data").child("on_platform").attribute("value").as_bool();
@@ -1298,7 +1282,6 @@ bool j1EntityPlayer::Save(pugi::xml_node& node) const
 
 	//  - - - - - - - - - - - - - - - - "BOOLS" DATA
 	auto boolsNode = node.append_child("bools_data");
-	boolsNode.append_child("input_ready ").append_attribute("value") = inputReady;
 	boolsNode.append_child("aiming").append_attribute("value") = aiming;
 	boolsNode.append_child("god_mode").append_attribute("value") = godMode;
 	boolsNode.append_child("on_platform").append_attribute("value") = onPlatform;

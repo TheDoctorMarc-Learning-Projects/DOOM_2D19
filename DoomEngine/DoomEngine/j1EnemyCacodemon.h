@@ -65,7 +65,6 @@ private:
 	bool keepMovingAfterPlatform = false; 
 	bool shieldActive = true; 
 	actualCollisionType onPlatFormType; 
-	uint stopNearPlayerRange = 10; 
 	Collider* shieldAreaCollider = nullptr; 
 	j1EntityPlatform* lastPlatform = nullptr;
 };

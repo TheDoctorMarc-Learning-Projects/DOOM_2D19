@@ -31,30 +31,6 @@ j1Enemy::~j1Enemy()
 {
 }
 
-bool j1Enemy::Start()
-{
-
-	return true;
-}
-
-bool j1Enemy::PreUpdate()
-{
-
-	return true;
-}
-
-bool j1Enemy::Update(float dt)
-{
-
-	return true;
-}
-
-bool j1Enemy::PostUpdate()
-{
-
-	return true;
-}
-
 
 
 bool j1Enemy::Move(float dt)

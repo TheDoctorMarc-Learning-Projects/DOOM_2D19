@@ -57,17 +57,6 @@ j1EntityPlatformDynamic::~j1EntityPlatformDynamic()
 {
 }
 
-bool j1EntityPlatformDynamic::Start()
-{
-
-	return true;
-}
-
-bool j1EntityPlatformDynamic::PreUpdate()
-{
-
-	return true;
-}
 
 bool j1EntityPlatformDynamic::Update(float dt)
 {

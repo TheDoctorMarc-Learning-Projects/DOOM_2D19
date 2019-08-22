@@ -10,20 +10,7 @@ class j1EntityPlatform : public j1Entity
 {
 public:
 	j1EntityPlatform(SDL_Rect placing, int heightLevel);
-	~j1EntityPlatform();
-
-
-	//bool Awake(pugi::xml_node& node);
-	bool Start();
-	bool PreUpdate();
-	bool Update(float dt);
-	bool PostUpdate();
-
-	
-
-	//void Draw() override; 
-
-	// todo, movable platforms load and save (Xd) 
+	~j1EntityPlatform() {};
 
 public:
 	int heightLevel = 0;

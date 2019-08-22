@@ -22,6 +22,7 @@ public:
 private: 
 	UiItem_Label* textLabel = nullptr; 
 	SDL_Color defaultLabelColor; 
+
 };
 
 #endif

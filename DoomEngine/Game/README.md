@@ -71,17 +71,8 @@ picking collectible figures give you 5 seconds
 
 You lose if time's over or get killed before!!
 
-
-### COMING IN NEXT VERSIONS: 
-_Menus
-_Save & Load
-_More Innovations
-
-### Link to the Website (missing)
-At this very moment, no website is being
-developed. Here is a link to the github repo:
-https://github.com/thedoctormarc/DOOM_2D19
-
+### Link to the Website 
+https://mdpdoctor7.wixsite.com/doomproject
 
 ### ART & AUDIO RESOURCES
 Player / Enemies / Weapons:

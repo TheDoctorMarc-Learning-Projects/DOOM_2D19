@@ -1108,7 +1108,7 @@ void j1EntityPlayer::PickWeapon(j1EntityLootWeapon* callback, bool saveLoad)
 			SDL_Rect section = { currentWeapon->section.x, currentWeapon->section.y, currentWeapon->section.w, currentWeapon->section.h};
 			iPoint pos = iPoint(272, 615);
 			std::string name = "weaponImage"; 
-			App->gui->AddImage(pos, &section, name, NULL, false, currentWeapon->entityTex, 1.6F, "loot");
+			App->gui->AddImage(pos, &section, name, NULL, currentWeapon->entityTex, 1.6F, "loot");
 
 		}
 		else

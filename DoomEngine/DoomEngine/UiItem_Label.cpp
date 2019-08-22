@@ -40,25 +40,6 @@ UiItem_Label::~UiItem_Label()
 	
 }
 
-//bool UiItem_Label::ChangeTextureHover(const std::string * textHover, const SDL_Color * color, const TTF_Font * font)
-//{
-//	this->guiType = GUI_TYPES::LABEL;
-//	typewriter_text = text;
-//	this->text = "";
-//	this->color = color;
-//	this->font = font;
-//	texture = App->font->Print(this->text.data(), color, font);
-//
-//	if (texture)
-//		SDL_QueryTexture(texture, NULL, NULL, &textureDimensions.x, &textureDimensions.y);
-//
-//	// the parent
-//	this->parent = parent;
-//	spawn_typewriter = true;
-//	right_text = true;
-//	
-//}
-
 
 void UiItem_Label::Draw()
 {
@@ -105,17 +86,5 @@ bool UiItem_Label::ChangeTextureIdle(std::string textIdle, const SDL_Color* colo
 	return ret;
 
 
-}
-
-void UiItem_Label::DoLogicHovered()
-{
- 
-}
-
-
-
-void UiItem_Label::DoLogicAbandoned()
-{
- 
 }
 

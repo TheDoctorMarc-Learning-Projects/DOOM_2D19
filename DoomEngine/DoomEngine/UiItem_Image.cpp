@@ -7,7 +7,7 @@
 #include "j1Input.h"
 #include "j1Map.h"
 
-UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, std::string& name, UiItem* const parent, bool isTabbable, SDL_Texture* specialTex, float spriteScale,
+UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, std::string& name, UiItem* const parent, SDL_Texture* specialTex, float spriteScale,
 	std::string newTextureName) : UiItem(position, name, parent)
 {
 	assert(parent != nullptr);
@@ -22,7 +22,6 @@ UiItem_Image::UiItem_Image(iPoint position, const SDL_Rect* section, std::string
 	this->hitBox.x = position.x;
 	this->hitBox.y = position.y;
 
-	tabbable = isTabbable;
 	this->numb = true; 
 
 	if (specialTex != nullptr)

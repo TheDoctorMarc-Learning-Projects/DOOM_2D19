@@ -20,9 +20,8 @@ public:
 
 private:
 	UiItem_Image* bar = nullptr;
-	SDL_Rect section;
-	SDL_Rect image_idle;
-	SDL_Rect image_hover;
+	SDL_Rect idleRect;
+	SDL_Rect hoverRect;
 	iPoint thumbOffset; 
 
 	uint getThumbMaxPos() const 

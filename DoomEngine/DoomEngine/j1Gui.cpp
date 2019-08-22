@@ -489,7 +489,7 @@ void j1Gui::LoadXMLGUI(pugi::xml_node& menuNode)
 			newTexture = App->map->entityTextureMap.at(textureName); 
 		float scaleFactor = uiNode.child("scaleFactor").attribute("value").as_float();
 
-	    App->gui->AddImage(position, &section, name, NULL, false, newTexture, scaleFactor, textureName);
+	    App->gui->AddImage(position, &section, name, NULL, newTexture, scaleFactor, textureName);
 	}
 
 
@@ -577,14 +577,14 @@ UiItem_Label * j1Gui::AddLabel(std::string name, std::string text, SDL_Color col
 	return (UiItem_Label*)newUIItem;
 }
 
-UiItem_Image* j1Gui::AddImage(iPoint position, const SDL_Rect* section, std::string name, UiItem* const parent, bool isTabbable, SDL_Texture* specialTex, float spriteScale, std::string newTextureName)
+UiItem_Image* j1Gui::AddImage(iPoint position, const SDL_Rect* section, std::string name, UiItem* const parent, SDL_Texture* specialTex, float spriteScale, std::string newTextureName)
 {
 	UiItem* newUIItem = nullptr;
 
 	if (parent == NULL)
-		newUIItem = DBG_NEW UiItem_Image(position, section, name, currentCanvas, isTabbable, specialTex, spriteScale, newTextureName);
+		newUIItem = DBG_NEW UiItem_Image(position, section, name, currentCanvas, specialTex, spriteScale, newTextureName);
 	else
-		newUIItem = DBG_NEW UiItem_Image(position, section, name, parent, isTabbable, specialTex, spriteScale);
+		newUIItem = DBG_NEW UiItem_Image(position, section, name, parent, specialTex, spriteScale);
 
 	listOfItems.push_back(newUIItem);
 
@@ -643,19 +643,6 @@ UiItem_Face* j1Gui::AddFace(iPoint position, std::string name, UiItem* const par
 	return (UiItem_Face*)newUIItem;
 }
 
-
-UiItem* j1Gui::AddEmptyElement(iPoint pos, UiItem * const parent)
-{
-	UiItem* newUIItem = nullptr;
-	if (parent == NULL)
-		newUIItem = DBG_NEW UiItem(pos, currentCanvas);
-	else
-		newUIItem = DBG_NEW UiItem(pos, parent);
-
-	listOfItems.push_back(newUIItem);
-
-	return newUIItem;
-}
 
 UiItem* j1Gui::GetCanvasItemByName(std::string name, UiItem* parent) const  // searches item only in the current canvas childhood 
 {

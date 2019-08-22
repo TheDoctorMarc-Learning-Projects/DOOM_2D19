@@ -21,7 +21,6 @@ enum GUI_TYPES
 	BUTTON,
 	IMAGE,
 	LABEL,
-	CHECKBOX,
 	FACE,
 	UNKNOWN
 };
@@ -128,18 +127,13 @@ public:
 	iPoint offsetWithMouse = iPoint(0, 0); 
 	iPoint originPos = iPoint(0, 0); 
 	float scaleFactor = 0.F;
-	uint mouseState = 0; 
 	targetPosData targPosData;
-	SDL_Rect clipRect = { 0,0,0,0 }; 
-
+	
 	bool slidable = false;
 	bool draggable = false; 
-	bool tabbable = false;
 	bool enable = true;
 	bool hide = false;
 	bool to_delete = false;
-	bool useCamera = true;
-	bool selected = false;
 	bool focusable = false; 
 	bool accionable = false; 
 	bool numb = false; 

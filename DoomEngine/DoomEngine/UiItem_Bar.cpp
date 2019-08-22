@@ -29,18 +29,18 @@ UiItem_Bar::UiItem_Bar(iPoint position, iPoint thumbOffset, std::string name, st
 
 	this->section = *section;
 	this->guiType = GUI_TYPES::BAR;
-	this->image_idle = *section;
-	this->image_hover = *sectioHover;
+	this->idleRect = *section;
+	this->hoverRect = *sectioHover;
 	this->hitBox.x = position.x;
 	this->hitBox.y = position.y;
 	this->name = name;
 	
 	// bar 
-	bar = App->gui->AddImage(position, section, name, this, false, nullptr, this->scaleFactor);   
+	bar = App->gui->AddImage(position, section, name, this, nullptr, this->scaleFactor);   
     // thumb
 	this->thumbOffset = thumbOffset; 
 	iPoint thumbPos(position.x + thumbOffset.x, position.y + thumbOffset.y);
-	thumb = App->gui->AddImage(thumbPos, thumb_section, name, this, false, nullptr, this->scaleFactor);
+	thumb = App->gui->AddImage(thumbPos, thumb_section, name, this, nullptr, this->scaleFactor);
 	thumb->slidable = true;
 	thumb->draggable = true;
 	thumb->accionable = true;
@@ -112,12 +112,12 @@ void UiItem_Bar::OnDrag(iPoint mousePos)
 
 void UiItem_Bar::OnHover()
 {
-	bar->section = image_hover; 
+	bar->section = hoverRect; 
 }
 
 void UiItem_Bar::OnHoverExit()
 {
-	bar->section = image_idle;
+	bar->section = idleRect;
 }
 
 void UiItem_Bar::OnClickUp()

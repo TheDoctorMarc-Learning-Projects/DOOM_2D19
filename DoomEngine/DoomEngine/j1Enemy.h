@@ -139,13 +139,14 @@ public:
 				{
 					colliderActive = false;
 					collider->to_delete = true;
+					return true; 
 				}
 			}
 			
 		}
 	
 		
-		return true;
+		return false;
 	};
 
 	virtual bool Load(pugi::xml_node&);
@@ -186,10 +187,12 @@ public:
 
 		if (currentAnimation->Finished() == true)
 		{
-			state.combat = eCombatState::DEAD;
+			if (onPlatform == true)
+			{
+				state.combat = eCombatState::DEAD;
+				DoDie();
+			}
 			
-			//to_delete = true;   // create the corpse here 
-			DoDie(); 
 		}
 	}
 

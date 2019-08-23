@@ -267,7 +267,10 @@ void UiItem_Face::SetCurrentAnim(std::string karma)
 	if (App->entityFactory->player->life <= 0)
 		return; 
 
-
+	// if the karma is set to "nokarma", take the current kamra 
+	if (karma == "nokarma")
+		karma = lastAnim.lastKarma;
+	
 	// calculations 
 	float playerHealthPercent = 100.F; 
 	if(App->entityFactory->playerAlive == true)

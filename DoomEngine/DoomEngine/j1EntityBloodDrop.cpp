@@ -77,18 +77,6 @@ bool j1EntityBloodDrop::Update(float dt)
 
 
 	}
-	else
-	{
-		if (dynGroundCallback)
-		{
-			position.y = dynGroundCallback->collider->rect.y - size.y;    // check this out, works just fine, but put it to nullptr
-
-			if (dynGroundCallback->movementType == AXIS_Movement::HORIZONTAL)
-				position.x += dynGroundCallback->lastSpeed.x;
-
-		}
-
-	}
 
 
 	return true;
@@ -108,7 +96,7 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 			float preventiveOffSet = 20.f; // the collision case when boold goes up, then down in one frame and is inside lower part of platf, not to put it on top of platf
 			if (!roofReached)
 			{
-				if (collider->rect.y + collider->rect.h > c2->rect.y && collider->rect.y + collider->rect.h < c2->rect.y + preventiveOffSet)  // FALL 
+				if (collider->rect.y + collider->rect.h >= c2->rect.y && collider->rect.y + collider->rect.h < c2->rect.y + preventiveOffSet)  // FALL 
 				{
 
 					if (lastPosCollider.x > c2->rect.x && lastPosCollider.x + lastPosCollider.w < c2->rect.x + c2->rect.w)   // if it comes from top and not sides 
@@ -130,9 +118,9 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 
 				}
 
-				if (collider->rect.y < c2->rect.y + c2->rect.h)   // ROOF
+				if (collider->rect.y <= c2->rect.y + c2->rect.h)   // ROOF
 				{
-					if (lastPosCollider.x > c2->rect.x && lastPosCollider.x + lastPosCollider.w < c2->rect.x + c2->rect.w)   // if it comes from down 
+					if (lastPosCollider.x >= c2->rect.x && lastPosCollider.x + lastPosCollider.w <= c2->rect.x + c2->rect.w)   // if it comes from down 
 					{
 						if (lastSpeed.y <= 0)
 						{
@@ -148,7 +136,7 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 
 				}
 
-				if (collider->rect.x + collider->rect.w > c2->rect.x && lastPosCollider.x + lastPosCollider.w < c2->rect.x && lastSpeed.x > 0) // sides
+				if (collider->rect.x + collider->rect.w >= c2->rect.x && lastPosCollider.x + lastPosCollider.w < c2->rect.x && lastSpeed.x > 0) // sides
 				{
 					roofReached = true;
 
@@ -157,7 +145,7 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 					position.x -= offset;
 
 				}
-				else if (collider->rect.x < c2->rect.x + c2->rect.w && lastPosCollider.x > c2->rect.x + c2->rect.w && lastSpeed.x < 0)
+				else if (collider->rect.x <= c2->rect.x + c2->rect.w && lastPosCollider.x > c2->rect.x + c2->rect.w && lastSpeed.x < 0)
 				{
 
 					roofReached = true;
@@ -181,7 +169,7 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 		{
 			float offset = 0.0f;
 
-			if (collider->rect.x + collider->rect.w > c2->rect.x /*&& lastPosCollider.x + lastPosCollider.w < c2->rect.x*/ && lastSpeed.x > 0) // sides
+			if (collider->rect.x + collider->rect.w >= c2->rect.x /*&& lastPosCollider.x + lastPosCollider.w < c2->rect.x*/ && lastSpeed.x > 0) // sides
 			{
 				roofReached = true;
 
@@ -190,7 +178,7 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 				position.x -= offset;
 
 			}
-			else if (collider->rect.x < c2->rect.x + c2->rect.w /*&& lastPosCollider.x > c2->rect.x + c2->rect.w*/ && lastSpeed.x < 0)
+			else if (collider->rect.x <= c2->rect.x + c2->rect.w /*&& lastPosCollider.x > c2->rect.x + c2->rect.w*/ && lastSpeed.x < 0)
 			{
 
 				roofReached = true;
@@ -222,8 +210,12 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 
 		if (colliderActive == true)
 		{
-			collider->to_delete = true;   // no need to have it anymore; 
-			colliderActive = false;
+			if (c2->hasCallback == true && c2->callback->type != ENTITY_DYNAMIC)   // base floor 
+			{
+				collider->to_delete = true;
+				colliderActive = false;
+			}
+	
 		}
 		
 	}

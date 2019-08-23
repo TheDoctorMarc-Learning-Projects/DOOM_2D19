@@ -135,48 +135,34 @@ void j1EntityPlatformDynamic::UpdateEntitiesOnTopPositions(bool justOfsset, floa
 		if (col == collider)  // the horizontal area collider is detected as on collision with the normal one 
 			continue; 
 
-		if (col->type == COLLIDER_PLAYER || col->type == COLLIDER_ENEMY || col->type == COLLIDER_BLOOD)  // god also?? 
+		if (col->type == COLLIDER_PLAYER || col->type == COLLIDER_ENEMY || col->type == COLLIDER_BLOOD)    
 		{
+
+			if (col->type == COLLIDER_BLOOD)
+				LOG("Blood everywhere"); 
+
 			if (movementType == AXIS_Movement::VERTICAL)
 			{
 				if (pointingDir == POINTING_DIR::UP)
-				{
-					if (!justOfsset)
-						col->callback->position.y -= speed * App->GetDt();
-					else
-						col->callback->position.y -= offset;
-
-				}
+					col->callback->position.y -= speed * App->GetDt();
 
 				else if (pointingDir == POINTING_DIR::DOWN)
-				{
-					if (!justOfsset)
-						col->callback->position.y += speed * App->GetDt();
-					else
-						col->callback->position.y += offset;
-				}
+					col->callback->position.y += speed * App->GetDt(); 
 
 			}
 			else if(movementType == AXIS_Movement::HORIZONTAL)
 				if (col->type == COLLIDER_BLOOD)
 				{
 					if (pointingDir == POINTING_DIR::RIGHT)
-					{
-					
 						col->callback->position.x += speed * App->GetDt();
 					
-					}
-
 					else if (pointingDir == POINTING_DIR::LEFT)
-					{
-					
 						col->callback->position.x -= speed * App->GetDt();
 					
-					}
 				}
 		
 
-			col->SetPos(position.x, position.y);
+			col->SetPos(col->callback->position.x, col->callback->position.y);
 		}
 
 	

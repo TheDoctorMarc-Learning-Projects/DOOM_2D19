@@ -88,6 +88,7 @@ bool j1EnemyHellKnight::Move(float dt)
 		if(isPlayerOnSamePlatform() == true)
 			DoMeleeAttack();
 
+
 	}
 
 

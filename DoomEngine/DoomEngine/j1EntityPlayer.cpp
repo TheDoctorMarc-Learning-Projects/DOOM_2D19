@@ -93,7 +93,7 @@ bool j1EntityPlayer::Start()
 
 bool j1EntityPlayer::PreUpdate()
 {
-	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)   // TODO: God mode allows to fly around 
+	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)   // TODO: Change to F10 
 	{
 		godMode = !godMode;
 
@@ -227,7 +227,7 @@ void j1EntityPlayer::HorizonatlMovement(float dt)
 				lastSpeed.x = (xAxis * targetSpeed) * dt;
 
 			// check not paralized
-			if (((lastSpeed.x > 0 && paralizedDir == 1) || (lastSpeed.x < 0 && paralizedDir == -1)) && godMode == false)
+			if ((lastSpeed.x > 0 && paralizedDir == 1) || (lastSpeed.x < 0 && paralizedDir == -1))
 				lastSpeed.x = 0; 
 
 			state.movement.at(0) = (xAxis < 0) ? MovementState::INPUT_LEFT : state.movement.at(0);
@@ -888,6 +888,9 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 		if (dynamic_cast<j1Enemy*>(c2->callback)->state.combat == eCombatState::DYING || dynamic_cast<j1Enemy*>(c2->callback)->state.combat == eCombatState::DEAD)
 			return;
 
+		if (godMode == true)
+			return; 
+
 		if (pointingDir == RIGHT && lastSpeed.x > 0)
 		{
 			if (collider->rect.x + collider->rect.w >= c2->rect.x && collider->rect.x < c2->rect.x)  // second condition is due to aiming and changing pointing dir and collider
@@ -944,12 +947,13 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 		break;
 
 	case COLLIDER_TYPE::COLLIDER_WIN:
-		App->entityFactory->playerLives = 3; 
+		App->entityFactory->playerLives = 3;
 		App->gui->UpDateInGameUISlot("LiveCounter", 3);
+
 		if (App->scene->GetCurrentSceneState() == SceneState::LEVEL1)
-			App->scene->LoadScene(SceneState::LEVEL2, true); 
+			App->scene->SetTargetScene(SceneState::LEVEL1);
 		if (App->scene->GetCurrentSceneState() == SceneState::LEVEL2)                  
-			App->scene->LoadScene(SceneState::MAINMENU, true);
+			App->scene->SetTargetScene(SceneState::LEVEL2);
 		break;
 
 	}
@@ -1024,6 +1028,9 @@ void j1EntityPlayer::OnCollisionExit(Collider* c1, Collider* c2)
 
 
 	case COLLIDER_TYPE::COLLIDER_ENEMY:
+
+		if (godMode == true)
+			return;
 
 		if(isnan(paralizedDir) == false)
 			paralizedDir = std::numeric_limits<double>::quiet_NaN();

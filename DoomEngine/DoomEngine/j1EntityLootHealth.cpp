@@ -1,5 +1,6 @@
 #include "j1EntityLootHealth.h"
 #include "j1EntityFactory.h"
+#include "j1Gui.h"
 
 j1EntityLootHealth::j1EntityLootHealth(float posX, float posY, LOOT_TYPE loot_type, std::string name) :j1EntityLoot(posX, posY, loot_type, name)
 {
@@ -24,7 +25,9 @@ void j1EntityLootHealth::OnPickUp()
 	 App->audio->PlayFx("itemPickUp", 0, false, 1.f);
 
 	 App->entityFactory->AddLifeToPlayer(0.25f * App->entityFactory->currentDifficultyMultiplier.lootAmmout);
-	 
+	 // warn the GUI
+	 dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("nokarma");  // do not change the face karma (but change the blood)
+
 	 to_delete = true;
 
 

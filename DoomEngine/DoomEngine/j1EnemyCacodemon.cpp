@@ -150,11 +150,13 @@ bool j1EnemyCacodemon::CleanUp()    // called when exiting, or when switching le
 bool j1EnemyCacodemon::DoDie()
 {
 	 
-	j1Enemy::DoDie(); 
-	// the other colldier is deleted in enemy checkdeath
-	// clean the area collider: 
-	shieldAreaCollider->to_delete = true;
-	shieldActive = false;
+	if (j1Enemy::DoDie() == true)
+	{
+
+		shieldAreaCollider->to_delete = true;
+		shieldActive = false;
+	}
+
 
 	return true; 
 }

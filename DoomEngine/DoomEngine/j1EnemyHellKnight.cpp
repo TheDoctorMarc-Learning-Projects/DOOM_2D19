@@ -75,8 +75,8 @@ bool j1EnemyHellKnight::Move(float dt)
 
 	if (state.combat != eCombatState::DYING && state.combat != eCombatState::DEAD)
 	{
-		if (isPlayerOnMeleeRange() == true && state.combat != eCombatState::SHOOT && lastSpeed.IsZero() == true)
-			currentAnimation = &idle;
+		/*if (isPlayerOnMeleeRange() == true && state.combat != eCombatState::SHOOT && lastSpeed.IsZero() == true)
+			currentAnimation = &idle;*/
 
 		ChangeState(); 
 
@@ -87,6 +87,11 @@ bool j1EnemyHellKnight::Move(float dt)
 		
 		if(isPlayerOnSamePlatform() == true)
 			DoMeleeAttack();
+		else
+		{
+			if (currentAnimation == &attack)
+				currentAnimation = &run; 
+		}
 
 
 	}

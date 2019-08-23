@@ -93,9 +93,9 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 		{
 
 			float offset = 0.0f;
-			float preventiveOffSet = 20.f; // the collision case when boold goes up, then down in one frame and is inside lower part of platf, not to put it on top of platf
-			if (!roofReached)
-			{
+			float preventiveOffSet = 20.f; // the collision case when blood goes up, then down in one frame and is inside lower part of platf, not to put it on top of platf
+		/*	if (!roofReached)
+			{*/
 				if (collider->rect.y + collider->rect.h >= c2->rect.y && collider->rect.y + collider->rect.h < c2->rect.y + preventiveOffSet)  // FALL 
 				{
 
@@ -159,7 +159,7 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 
 
 				collider->SetPos(position.x, position.y);
-			}
+			//}
 
 		}
 

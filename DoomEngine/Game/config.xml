@@ -319,7 +319,7 @@
       <buttons>
         <button name="difficulty1Button">
           <position x="550" y="200"/>
-          <color R="255" G="255" B="255" A="255"/>
+          <color R="0" G="255" B="0" A="255"/>
           <text value="I AM A CASUAL GAMER"/>
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
           <size s="48"/>
@@ -330,7 +330,7 @@
 		
 		<button name="difficulty2Button">
           <position x="550" y="260"/>
-          <color R="255" G="255" B="255" A="255"/>
+          <color R="61" G="189" B="0" A="255"/>
           <text value="I PLAYED DARK SOULS ONCE"/>
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
           <size s="48"/>
@@ -342,7 +342,7 @@
 		
 		<button name="difficulty3Button">
           <position x="550" y="320"/>
-          <color R="255" G="255" B="255" A="255"/>
+          <color R="122" G="123" B="0" A="255"/>
           <text value="I FANTASIZE ABOUT DYING"/>
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
           <size s="48"/>
@@ -353,7 +353,7 @@
 		
 		<button name="difficulty4Button">
           <position x="550" y="380"/>
-          <color R="255" G="255" B="255" A="255"/>
+          <color R="189" G="61" B="0" A="255"/>
           <text value="THEY CALL ME DARK LORD"/>
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
           <size s="48"/>
@@ -364,7 +364,7 @@
 		
 		<button name="difficulty5Button">
           <position x="550" y="440"/>
-          <color R="255" G="255" B="255" A="255"/>
+          <color R="255" G="0" B="0" A="255"/>
           <text value="I LISTEN TO DEATH METAL"/>
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
           <size s="48"/>

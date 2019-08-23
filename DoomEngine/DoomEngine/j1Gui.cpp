@@ -456,7 +456,6 @@ void j1Gui::ChangeCurrentCanvas(UiItem* newCanvas, bool exists)
 		else
 			ResetInGameUI();
 
-
 		currentCanvas = newCanvas; 
 		currentCanvas->EnableChildren(true);
 

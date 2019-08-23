@@ -54,7 +54,6 @@ UiItem::UiItem(std::string name, sceneTypeGUI myscene)
 
 UiItem::~UiItem()
 {
-	//LOG("destroyed UI item somewhere");
 
 }
  

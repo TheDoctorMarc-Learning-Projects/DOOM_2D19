@@ -35,8 +35,6 @@ j1Enemy::~j1Enemy()
 
 bool j1Enemy::Move(float dt)
 {
-	if (collider && collider->type != COLLIDER_ENEMY)
-		LOG("Enemy has got a collider that it should not. Fatal Error");
 
 	if (colliderActive == false)
 		return false; 
@@ -223,8 +221,10 @@ void j1Enemy::SetCollider()
 {
 	if (!to_delete)
 	{
-		if (position.x < 0)   // TODO: Add right map limit blocking
+		if (position.x < 0)   
 			position.x = 0;
+		else if (position.x > App->map->mapLimitXWorldPos)
+			position.x = App->map->mapLimitXWorldPos;
 
 		collider->SetPos(position.x, position.y);
 		if(adaptativeColliderMovement)
@@ -252,7 +252,7 @@ void j1Enemy::VerticalMovement(float dt)
 
 	if (doJump)
 	{
-		App->audio->PlayFx("dash");                   // TODO: CHANGE SOUND
+		App->audio->PlayFx("dash");                   
 		state.movement.at(1) = eMovementState::JUMP;
 
 		onPlatform = false;
@@ -807,7 +807,7 @@ bool j1Enemy::DoMeleeAttack()
 }
 
 
-bool j1Enemy::DoLongRangeAttack()   // TODO: Check if enemy has a special long range attack anim or audio ???? 
+bool j1Enemy::DoLongRangeAttack()    
 {
 	if (App->entityFactory->IsPlayerAlive() == false)
 		return false;
@@ -1065,7 +1065,7 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 										{
 
 											float offset = collider->rect.y + collider->rect.h - c2->rect.y;  // to put back player if it goes off a bit
-											position.y -= offset;   // TODO:  this is causing a bug when already in vertical platform 
+											position.y -= offset;    
 
 											onPlatform = true;
 											if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
@@ -1219,7 +1219,7 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 		}
 
 
-		if (!lastOnplatform && onPlatform && state.combat != eCombatState::DYING)   // TODO: same with player code 
+		if (!lastOnplatform && onPlatform && state.combat != eCombatState::DYING)   
 		{
 
 				lastPlatform = dynamic_cast<j1EntityPlatform*>(c2->callback);
@@ -1480,7 +1480,7 @@ void j1Enemy::SetDyingState(bool brutal)
 	if (!brutal || dataAnimFx.hasSecondDeathAnim == false)   // check this out (for the ones that only have one death anim) 
 	{
 		currentAnimation = &death1;
-		App->audio->PlayFx(this->name + "Death");  // TODO: if two deaths sounds, play one or another
+		App->audio->PlayFx(this->name + "Death");   
 	}
 
 	else
@@ -1488,14 +1488,12 @@ void j1Enemy::SetDyingState(bool brutal)
 		currentAnimation = &death2;
 
 		if (dataAnimFx.hasSecondDeathFx)
-			App->audio->PlayFx(this->name + "Death2");  // TODO: if two deaths sounds, play one or another
+			App->audio->PlayFx(this->name + "Death2");   
 		else
-			App->audio->PlayFx(this->name + "Death");  // TODO: if two deaths sounds, play one or another
+			App->audio->PlayFx(this->name + "Death");  
 	}
 
 }
-
-// =================================================>>>>>>   TODO: save load: onplatform, life, etc (same as player) 
 
 
 bool j1Enemy::Load(pugi::xml_node &node)

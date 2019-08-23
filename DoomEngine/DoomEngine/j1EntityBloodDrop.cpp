@@ -29,14 +29,7 @@ j1EntityBloodDrop::~j1EntityBloodDrop()
 }
 void j1EntityBloodDrop::Draw()
 {
-
-	if (collider && collider->type != COLLIDER_BLOOD)
-		LOG("Blood has got a collider that it should not. Fatal Error");
-
-
 	App->render->DrawQuad({ (int)position.x, (int)position.y, size.x, size.y }, c.r, c.g, c.b, c.a, true);
-
-
 }
 
 bool j1EntityBloodDrop::Update(float dt)
@@ -198,19 +191,22 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 	}
 	else
 	{
-
+	    // reached floor and collided with blood
 		if (c2->type == COLLIDER_BLOOD)     // if a blood drop is in the same pos as another, it will be rendered on top, so no need to have the other alive
 		{
 			if ((int)position.x == (int)c2->callback->position.x && (int)position.y == (int)c2->callback->position.y)
 			{
 				c2->callback->to_delete = true;
+
+				goto checkFloor; 
 			}
 
 		}
-
+		// reached floor 
+		checkFloor:
 		if (colliderActive == true)
 		{
-			if (c2->hasCallback == true && c2->callback->type != ENTITY_DYNAMIC)   // base floor 
+			if (dynGroundCallback == nullptr)   // base floor 
 			{
 				collider->to_delete = true;
 				colliderActive = false;

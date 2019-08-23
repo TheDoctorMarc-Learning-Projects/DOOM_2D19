@@ -114,7 +114,7 @@ bool j1Audio::Start()
 		++i; 
 	}
 
-	Mix_AllocateChannels(i);     // TODO: place the fxs than need special channels at the end and only allocate channels for them
+	Mix_AllocateChannels(i);    
  
 
 	return true;

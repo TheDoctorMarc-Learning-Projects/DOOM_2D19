@@ -59,7 +59,7 @@ public:
 
 public: 
 
-	void CreateTargetedBloodSteam(SDL_Rect enemyRect, float damage, uint numberOfBloodDrops, fPoint shotSpeed); // TODO: direction(base, and then a cone speed between them, with a 2D sratings area)
+	void CreateTargetedBloodSteam(SDL_Rect enemyRect, float damage, uint numberOfBloodDrops, fPoint shotSpeed); 
 	void CreateRandomBloodStream(SDL_Rect enemyRect, float centerAreaScaleFactor, uint numberOfBloodDrops = 10); 
 	SDL_Rect GetRectCentralArea(SDL_Rect enemyRect, float centerAreaScaleFactor);
 	Color GenerateColorForBloodDrop(); 

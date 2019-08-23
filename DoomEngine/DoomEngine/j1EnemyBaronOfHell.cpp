@@ -16,7 +16,7 @@ j1EnemyBaronOfHell::j1EnemyBaronOfHell(int posX, int posY, std::string name) : j
 	speed = 80.33f;
 	defaultSpeed = speed; 
 	mass = 1.3f;
-	gravityFactor = DEFAULT_GRAV / mass;  // TODO: just prevent Y movement by gravity
+	gravityFactor = DEFAULT_GRAV / mass;   
 	tileDetectionRange = 15;
 	cadenceValues.melee = 2500;
 	cadenceValues.longRange = 2500;

@@ -207,7 +207,7 @@ void j1EntityFactory::Debug()
 
 	// - - - - - - - - - - - - - - - - debug
 
-	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)  // TODO: change key
+	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)  
 	{
 		App->collision->debug = !debug; 
 		debug = !debug;
@@ -245,20 +245,19 @@ bool j1EntityFactory::CleanUp()
 {
 	bool ret = true;
 
-	std::list<j1Entity*>::reverse_iterator entitiesItem = entities.rbegin();
-
-	while (entitiesItem != entities.rend())
+	for (auto& ent : entities)
 	{
-		if ((*entitiesItem) != nullptr)
+		if (ent != nullptr)
 		{
-			(*entitiesItem)->CleanUp();
-			RELEASE(*entitiesItem);
-			*entitiesItem = nullptr;
+			ent->CleanUp();
+			RELEASE(ent);
+			ent = nullptr;
 		}
-		++entitiesItem;
 
+		++ent; 
 	}
 	entities.clear();
+
 	player = nullptr; 
 	NumberOfSpawns = 0U;
  

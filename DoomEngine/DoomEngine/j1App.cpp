@@ -72,10 +72,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fade); 
 	AddModule(font);
 
-	/*modules.push_back(map);
-	map->startInitialized = false; */
-	modules.push_back(particles); 
-	particles->startInitialized = false;
+	
 	modules.push_back(pathfinding);  
 	pathfinding->startInitialized = false;
 	modules.push_back(collision);
@@ -84,6 +81,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	entityFactory->startInitialized = false;
 	modules.push_back(bloodManager);
 	bloodManager->startInitialized = false;
+	modules.push_back(particles);
+	particles->startInitialized = false;
 
 	AddModule(gui);
 

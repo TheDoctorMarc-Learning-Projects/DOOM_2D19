@@ -33,7 +33,7 @@ inline float GravityCalc(float& gm, float& m)  // g  and mass inline calc contai
 	return gm;
 }
 
-enum ENTITY_TYPE  // todo, pass to class
+enum ENTITY_TYPE   
 {
 		NO_TYPE,
 		ENTITY_STATIC,

@@ -93,7 +93,7 @@ bool j1EntityPlayer::Start()
 
 bool j1EntityPlayer::PreUpdate()
 {
-	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)   // TODO: Change to F10 
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) // TODO: change to f10   
 	{
 		godMode = !godMode;
 
@@ -729,7 +729,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 								
 
 								float offset = collider->rect.y + collider->rect.h - c2->rect.y;  // to put back player if it goes off a bit
-								position.y -= offset;   // TODO:  this is causing a bug when already in vertical platform 
+								position.y -= offset;   
 
 								onPlatform = true;
 								if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)

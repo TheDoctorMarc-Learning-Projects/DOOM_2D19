@@ -35,6 +35,7 @@ public:
 private: 
 	bool endReached = false;
 	bool stopMovement = false; 
+	float verticalSpeedMulti = 0.6f; 
 	int levelsUp; 
 	int levelsDown; 
 	Collider* AreaCollider = nullptr;

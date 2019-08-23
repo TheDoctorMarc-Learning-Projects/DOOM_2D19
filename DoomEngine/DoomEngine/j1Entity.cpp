@@ -35,8 +35,6 @@ j1Entity::j1Entity(float positionX, float positionY) : position(positionX, posit
 	ID = App->entityFactory->NumberOfSpawns;
 }
 
-// TODO, not here, but in each individual entity, do a size.create with the collider dimensions, it will be used in the entity factory PostUpdate Draw() calls
-
 
 j1Entity::~j1Entity()
 {

@@ -33,7 +33,6 @@ j1Scene::j1Scene() : j1Module()
 	     {sceneTypeGUI::CREDITS, "CreditsUI"},
 	};
 
-	// TODO: keep updating this scene-gui index map
 
 	sceneMusics =
 	{
@@ -109,21 +108,21 @@ bool j1Scene::Update(float dt)
 	if (App->render->camera.x < 0)
 		x += -App->render->camera.x;
 
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) // TODO: change ALL debug keys to the proper ones
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)  
 	{
 		App->entityFactory->playerLives = 3; 
 		App->gui->UpDateInGameUISlot("LiveCounter", 3);
 		App->scene->LoadScene(SceneState::LEVEL1, true);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) // TODO: change ALL debug keys to the proper ones
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) 
 	{
 		App->entityFactory->playerLives = 3;
 		App->gui->UpDateInGameUISlot("LiveCounter", 3);
 		App->scene->LoadScene(state, true);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) // TODO: not needed key
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)   // TODO: delete this debug key
 	{
 		App->entityFactory->playerLives = 3;
 		App->gui->UpDateInGameUISlot("LiveCounter", 3);
@@ -131,10 +130,10 @@ bool j1Scene::Update(float dt)
 	}
 
 
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)         // TODO: change ALL debug keys to the proper ones
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)        
 		SaveLoadLogic(true); 
 
-	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)         // TODO: change ALL debug keys to the proper ones
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)         
 		SaveLoadLogic(false);
 
 	return true;

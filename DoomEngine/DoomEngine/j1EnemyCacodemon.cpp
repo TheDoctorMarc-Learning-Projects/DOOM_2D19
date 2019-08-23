@@ -223,7 +223,6 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 					ResetPlatformState();
 					onPlatFormType.top = true; 
 					SetDeviation(true, c2); 
-					//LOG("TOP collision !!"); 
 				}
 	
 
@@ -237,7 +236,6 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 					ResetPlatformState();
 					onPlatFormType.bottom = true;
 					SetDeviation(true, c2);
-					//LOG("BOTTOM collision !!");
 				}
 
 			}
@@ -254,7 +252,6 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 						ResetPlatformState();
 						onPlatFormType.left = true;
 						SetDeviation(false, c2);
-						//LOG("LEFT collision !!");
 					}
 				}
 
@@ -270,7 +267,6 @@ void j1EnemyCacodemon::OnCollision(Collider* c1, Collider* c2)
 						ResetPlatformState();
 						onPlatFormType.right = true;
 						SetDeviation(false, c2);
-						//LOG("RIGHT collision !!");
 					}
 				}
 
@@ -289,7 +285,7 @@ void j1EnemyCacodemon::SetDeviation(bool horizontal, Collider* c2)
 		if (horizontal)
 		{
 
-			if (c2->callback->collider->rect.w > 8000)  // TODO: quickly just ignore base floor 
+			if (c2->callback->collider->rect.w > 8000)  
 				return;
 			
 

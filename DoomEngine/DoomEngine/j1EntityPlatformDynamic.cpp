@@ -96,14 +96,14 @@ bool j1EntityPlatformDynamic::Update(float dt)
 		
 		if (pointingDir == POINTING_DIR::UP)
 		{
-			position.y -= speed * dt;
-			lastSpeed.y = -speed * dt;
+			position.y -= speed * verticalSpeedMulti * dt;
+			lastSpeed.y = -speed * verticalSpeedMulti * dt;
 		}
 
 		else if (pointingDir == POINTING_DIR::DOWN)
 		{
-			position.y += speed * dt;
-			lastSpeed.y = speed * dt;
+			position.y += speed * verticalSpeedMulti * dt;
+			lastSpeed.y = speed * verticalSpeedMulti * dt;
 		}
 			
 
@@ -144,10 +144,10 @@ void j1EntityPlatformDynamic::UpdateEntitiesOnTopPositions(bool justOfsset, floa
 			if (movementType == AXIS_Movement::VERTICAL)
 			{
 				if (pointingDir == POINTING_DIR::UP)
-					col->callback->position.y -= speed * App->GetDt();
+					col->callback->position.y -= speed * verticalSpeedMulti * App->GetDt();
 
 				else if (pointingDir == POINTING_DIR::DOWN)
-					col->callback->position.y += speed * App->GetDt(); 
+					col->callback->position.y += speed * verticalSpeedMulti * App->GetDt();
 
 			}
 			else if(movementType == AXIS_Movement::HORIZONTAL)

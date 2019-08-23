@@ -16,7 +16,7 @@ j1EnemyHellKnight::j1EnemyHellKnight(int posX, int posY, std::string name) : j1E
 	speed = 90.33f;
 	defaultSpeed = speed;
 	mass = 1.2f;
-	gravityFactor = DEFAULT_GRAV / mass;  // TODO: just prevent Y movement by gravity
+	gravityFactor = DEFAULT_GRAV / mass;   
 	tileDetectionRange = 15;
 	cadenceValues.melee = 1000;
 	damageValues.melee = 100;

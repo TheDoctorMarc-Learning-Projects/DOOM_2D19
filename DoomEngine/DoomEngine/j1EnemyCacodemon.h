@@ -28,7 +28,7 @@ public:
 
 	bool Move(float dt) override;  // call parent function, then if enemy does enaything extra, do it after call 
 
-	void OnCollision(Collider* c1, Collider* c2) override;        // TODO: cacodemon ignores jump, fall, onplatform etc
+	void OnCollision(Collider* c1, Collider* c2) override;       
     void OnCollisionExit(Collider* c1, Collider* c2) override;    
 
 	bool CleanUp() override;

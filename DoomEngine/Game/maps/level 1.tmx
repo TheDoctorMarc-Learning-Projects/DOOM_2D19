@@ -34816,7 +34816,7 @@
     <property name="type" value="EnemyIMP"/>
    </properties>
   </object>
-  <object id="209" name="wall" x="8896" y="128" width="32" height="448">
+  <object id="209" name="wall" x="8896" y="0" width="32" height="832">
    <properties>
     <property name="mapLimitX" type="bool" value="true"/>
    </properties>

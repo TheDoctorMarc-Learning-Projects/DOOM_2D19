@@ -657,11 +657,6 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 	bool lastOnplatform = onPlatform;
 	switch (c2->type)
 	{
-		
-		
-
-		break;
-
 
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
 		if (godMode == true)
@@ -951,9 +946,9 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 		App->gui->UpDateInGameUISlot("LiveCounter", 3);
 
 		if (App->scene->GetCurrentSceneState() == SceneState::LEVEL1)
-			App->scene->SetTargetScene(SceneState::LEVEL1);
-		if (App->scene->GetCurrentSceneState() == SceneState::LEVEL2)                  
 			App->scene->SetTargetScene(SceneState::LEVEL2);
+		if (App->scene->GetCurrentSceneState() == SceneState::LEVEL2)                  
+			App->scene->SetTargetScene(SceneState::MAINMENU);
 		break;
 
 	}

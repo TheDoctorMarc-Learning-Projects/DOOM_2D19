@@ -75,9 +75,6 @@ bool j1EnemyHellKnight::Move(float dt)
 
 	if (state.combat != eCombatState::DYING && state.combat != eCombatState::DEAD)
 	{
-		/*if (isPlayerOnMeleeRange() == true && state.combat != eCombatState::SHOOT && lastSpeed.IsZero() == true)
-			currentAnimation = &idle;*/
-
 		ChangeState(); 
 
 		if (myState == BEHAVIOUR_STATE::A_TO_B)

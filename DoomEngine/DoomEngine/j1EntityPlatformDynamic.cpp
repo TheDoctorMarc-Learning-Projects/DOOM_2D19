@@ -137,10 +137,6 @@ void j1EntityPlatformDynamic::UpdateEntitiesOnTopPositions(bool justOfsset, floa
 
 		if (col->type == COLLIDER_PLAYER || col->type == COLLIDER_ENEMY || col->type == COLLIDER_BLOOD)    
 		{
-
-			if (col->type == COLLIDER_BLOOD)
-				LOG("Blood everywhere"); 
-
 			if (movementType == AXIS_Movement::VERTICAL)
 			{
 				if (pointingDir == POINTING_DIR::UP)

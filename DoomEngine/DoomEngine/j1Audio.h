@@ -85,7 +85,8 @@ public:
 	// Set both
 	void ResetMusicAndFxVolumes(); 
 
-	void UnLoadAudio();
+	// Stop all FXs
+	void StopAllFxs();
 
 	// Stop specific FX
 	void StopSpecificFx(std::string name); 

@@ -230,8 +230,9 @@ void j1Scene::UnLoadScene(bool saveLoad)
 	App->particles->Disable();
 	App->collision->Disable();
  
-	//App->audio->UnLoadAudio(); // why? xd 
- 
+	if(convertSceneTypeToGui(previousSceneState) == sceneTypeGUI::LEVEL)
+		App->audio->StopAllFxs();
+	
 }
 
 void j1Scene::LoadScene(SceneState sceneState, bool loadGUI, bool saveLoad)

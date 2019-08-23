@@ -339,25 +339,16 @@ void j1Audio::SetFxVolume(float volume)
 	}*/
 }
 
-void j1Audio::UnLoadAudio()
+void j1Audio::StopAllFxs()
 {
-	Mix_AllocateChannels(0); 
-
-	if (music != NULL)
-	{
-		Mix_FreeMusic(music);
-		music = NULL;
-	}
-
-	for (auto& fx : fxMap)
-	{
-		Mix_FreeChunk(fx.second.chunk);
-		fx.second.chunk = nullptr; 
-	}
-	fxMap.clear(); 
-
-	prioritaryChunk = "empty";
-	toUpdate = false;
+	if (toUpdate == true)
+		if (prioritaryChunk != "empty")
+			if (isPlayingFx(prioritaryChunk) == false)
+				ResetMusicAndFxVolumes();
+	
+	 for(auto& item : fxMap)
+		 if (isPlayingFx(item.first) == true)
+			 Mix_HaltChannel(item.second.actualChannel);
 }
 
 void j1Audio::StopSpecificFx(std::string name)

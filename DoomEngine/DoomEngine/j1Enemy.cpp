@@ -438,6 +438,7 @@ bool j1Enemy::CheckPathState(iPoint tilePos, iPoint& targetTilePos, bool& succes
 	if (state.path == ePathState::AWAIT)
 	{
 		state.movement.at(0) = eMovementState::IDLE; 
+		lastSpeed = fPoint(0, 0);
 
 		if (isPlayerOnMeleeRange() == false && isPlayerOnMyZone() == true)           // when exiting melee range, set to follow player
 			state.path = ePathState::FOLLOW_PLAYER;

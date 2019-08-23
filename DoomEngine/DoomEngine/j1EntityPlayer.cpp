@@ -956,11 +956,7 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 
 	if (!lastOnplatform && onPlatform)
-	{
 		lastPlatform = dynamic_cast<j1EntityPlatform*>(c2->callback);
-
-		App->audio->PlayFx("fall");
-	}
 		
 }
 

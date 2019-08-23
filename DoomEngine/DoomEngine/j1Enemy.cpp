@@ -993,12 +993,6 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 
 	case COLLIDER_TYPE::COLLIDER_FLOOR:
 
-
-		/*for (const auto& col : collider->onCollisionWithMe)   // if im on the floor already, and my head is touching a platform above 
-			if (col->type == COLLIDER_FLOOR)
-				if (col != c2)
-					return; */
-
 		if (c2->hasCallback && c2->callback->type == ENTITY_TYPE::ENTITY_DYNAMIC)
 		{
 			if (dynamic_cast<j1EntityPlatformDynamic*>(c2->callback)->movementType == AXIS_Movement::HORIZONTAL)
@@ -1220,15 +1214,8 @@ void j1Enemy::OnCollision(Collider* c1, Collider* c2)
 
 
 		if (!lastOnplatform && onPlatform && state.combat != eCombatState::DYING)   
-		{
-
 				lastPlatform = dynamic_cast<j1EntityPlatform*>(c2->callback);
-				App->audio->PlayFx("fall");
-			
 
-		}
-
-//	}
 		
 }
 

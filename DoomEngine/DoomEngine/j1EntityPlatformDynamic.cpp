@@ -60,9 +60,10 @@ j1EntityPlatformDynamic::~j1EntityPlatformDynamic()
 
 bool j1EntityPlatformDynamic::Update(float dt)
 {
-
-
 	BROFILER_CATEGORY("Entity Platform Update", Profiler::Color::AntiqueWhite);
+
+	if (stopMovement)
+		return false; 
 
 	lastPointingDir = pointingDir;
 	previousPosition = position;  
@@ -131,6 +132,9 @@ void j1EntityPlatformDynamic::UpdateEntitiesOnTopPositions(bool justOfsset, floa
 	
 	for (auto& col : collider->onCollisionWithMe)
 	{
+		if (col->type == COLLIDER_PLAYER && App->entityFactory->playerAlive)
+			if (App->entityFactory->player->godMode == true)
+				continue; 
 
 		if (col == collider)  // the horizontal area collider is detected as on collision with the normal one 
 			continue; 
@@ -173,13 +177,34 @@ void j1EntityPlatformDynamic::UpdateEntitiesOnTopPositions(bool justOfsset, floa
 
 void j1EntityPlatformDynamic::CheckPlatformSameLevel()
 {
+	if (stopMovement == true)
+		return; 
+
 	if (pointingDir == UP && lastPointingDir != DOWN)
+	{
 		if (collider->rect.y <= App->entityFactory->platFormLevelHeights[heightLevel + levelsUp])  // if has reached Y pos 
+		{
 			pointingDir = POINTING_DIR::DOWN;
 
-	 if (pointingDir == DOWN && lastPointingDir != UP)
-		 if (collider->rect.y >= App->entityFactory->platFormLevelHeights[heightLevel - levelsDown])  // if has reached Y pos 
-			 pointingDir = POINTING_DIR::UP;
+			if (levelsDown == 0)
+				stopMovement = true;
+		}
+			
+	}
+		
+
+	if (pointingDir == DOWN && lastPointingDir != UP)
+	{
+		if (collider->rect.y >= App->entityFactory->platFormLevelHeights[heightLevel - levelsDown])  // if has reached Y pos 
+		{
+			pointingDir = POINTING_DIR::UP;
+
+			if (levelsUp == 0)
+				stopMovement = true; 
+		}
+			
+    }
+		
 
 	lastPointingDir = pointingDir;	
 			

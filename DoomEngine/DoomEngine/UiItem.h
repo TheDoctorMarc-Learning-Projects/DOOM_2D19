@@ -117,7 +117,6 @@ public:
 public: 
 	std::string name;
 	UiItem* parent = nullptr;
-	// TODO: have a list of childrens. The global ui draw calls the canvas draw, then canvas calls children, etc etc etc 
 	std::list<UiItem*> children;
 	UI_STATES state = IDLE;
 	GUI_TYPES guiType = UNKNOWN;

@@ -36,8 +36,6 @@ void j1Gui::FillFunctionsMap()
 	 { "OpenWeb", &OpenWeb }
 	};
 
-	// TODO: keep updating this function map
-
 	defaultInGameStats = {
 		{ "healthLabel", 500},
 		{ "armorLabel", 0},
@@ -81,6 +79,7 @@ bool j1Gui::Start()
 
 bool j1Gui::PreUpdate()
 {
+	BROFILER_CATEGORY("GUI PreUpdate", Profiler::Color::Gainsboro);
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		if(currentCanvas->myScene == sceneTypeGUI::LEVEL)
@@ -105,7 +104,7 @@ bool j1Gui::PreUpdate()
 
 bool j1Gui::Update(float dt)
 {
-	BROFILER_CATEGORY("Update_Gui.cpp", Profiler::Color::Coral)
+	BROFILER_CATEGORY("GUI Update", Profiler::Color::Gainsboro);
 
 	if (App->scene->GetCurrentSceneTypeGui() == sceneTypeGUI::LEVEL)
 		return true; 
@@ -219,10 +218,9 @@ bool j1Gui::Update(float dt)
 bool j1Gui::PostUpdate()
 {
 
-	BROFILER_CATEGORY("UI PostUpdate", Profiler::Color::Yellow);
+	BROFILER_CATEGORY("GUI PostUpdate", Profiler::Color::Gainsboro);
  
- 
-	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)    // TODO: change with proper UI debug key
+	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)    
 		debug = !debug;
 
 	if(currentCanvas != nullptr)
@@ -242,7 +240,7 @@ bool j1Gui::CleanUp()
 		atlas = nullptr;
 	}
 
-	for (auto& item : listOfItems)   // clean the UI
+	for (auto& item : listOfItems)    
 	{
 		if (item != nullptr)
 		{
@@ -758,11 +756,6 @@ void j1Gui::ResetInGameUI()
 		if (item->guiType == GUI_TYPES::IMAGE)
 			if(dynamic_cast<UiItem_Image*>(item)->specialTex != nullptr)
 				dynamic_cast<UiItem_Image*>(item)->ReAssignSpecialTexture();
-			
-	
-	
-
-
 
 	// finally reset the face 
 	// !!! (do not call get from canvas, because you can be in ingame settings and the face belongs to ingame) 

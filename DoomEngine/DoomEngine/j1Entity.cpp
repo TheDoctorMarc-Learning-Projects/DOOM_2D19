@@ -52,11 +52,6 @@ bool j1Entity::PreUpdate()
 
 bool j1Entity::Update(float dt)
 {
-	
-
-	/*if (!to_delete)
-		collider->SetPos(position.x, position.y); */
-
 
 	return true;
 }

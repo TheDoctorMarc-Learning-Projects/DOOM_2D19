@@ -291,25 +291,25 @@
         </image>
 		
 			<image name="face2">
-		  <position x="500" y="260" />
+		  <position x="500" y="265" />
           <section x="26" y="485" w="24" h="30"/>
 		  <scaleFactor value = "1.7"/>
         </image>
 		
 			<image name="face3">
-		  <position x="500" y="320" />
+		  <position x="500" y="330" />
           <section x="52" y="485" w="24" h="30"/>
 		  <scaleFactor value = "1.7"/>
         </image>
 		
 			<image name="face4">
-		  <position x="500" y="380" />
+		  <position x="500" y="395" />
           <section x="78" y="485" w="24" h="30"/>
 		  <scaleFactor value = "1.7"/>
         </image>
 		
 			<image name="face5">
-		  <position x="500" y="440" />
+		  <position x="500" y="460" />
           <section x="104" y="485" w="24" h="30"/>
 		  <scaleFactor value = "1.7"/>
         </image>
@@ -329,7 +329,7 @@
         </button>
 		
 		<button name="difficulty2Button">
-          <position x="550" y="260"/>
+          <position x="550" y="265"/>
           <color R="61" G="189" B="0" A="255"/>
           <text value="I PLAYED DARK SOULS ONCE"/>
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
@@ -341,7 +341,7 @@
 		
 		
 		<button name="difficulty3Button">
-          <position x="550" y="320"/>
+          <position x="550" y="330"/>
           <color R="122" G="123" B="0" A="255"/>
           <text value="I FANTASIZE ABOUT DYING"/>
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
@@ -352,7 +352,7 @@
         </button>
 		
 		<button name="difficulty4Button">
-          <position x="550" y="380"/>
+          <position x="550" y="395"/>
           <color R="189" G="61" B="0" A="255"/>
           <text value="THEY CALL ME DARK LORD"/>
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>
@@ -363,7 +363,7 @@
         </button>
 		
 		<button name="difficulty5Button">
-          <position x="550" y="440"/>
+          <position x="550" y="460"/>
           <color R="255" G="0" B="0" A="255"/>
           <text value="I LISTEN TO DEATH METAL"/>
           <path p="gui/fonts/amazdoom/AmazDooMLeft.ttf"/>

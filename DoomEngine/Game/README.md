@@ -2,87 +2,101 @@
 
 ### ABOUT THE GAME
 DOOM 2D19 is a 2D platformer based on the 
-original DOOM. Everything in the game has 
-the feeling of the original game: powerful
-weapons, fast pace,  a blood system, 
-varied enemies with various death animations...
+original DOOM which has been developed for
+the VideoGame Development subject in 
+CITM(UPC,Terrassa). 
 
-### VERSION INFO 
-_This version contains the two levels with all 
-current enemies and objects.
-_Only the ingame UI is available.
-_The lvl 2 has a blank space at the end, 
-for a possible future boss / big enemy 
-_KNOWN BUGS --> check this link:
-https://github.com/thedoctormarc/DOOM_2D19/issues
-and feel free to write if you find one
+
+### AUTHOR
+My name is Marc Doctor Pedrosa, find me here:
+https://github.com/thedoctormarc
+
 
 ### INNOVATIONS
-_Complementary types of enemies
-_Enemy raycasts
-_Enemy brutal deaths and corpses
-_Particle System
-_Blood System
-_Loot System
-_Weapon System
-_Responsive HUD eg. face behaviour 
-
-(code)
-_Audio is played by name
-_Audio stop, pause, resume,
+>Complementary types of enemies:
+  _IMP jumps
+  _Cacodemon flies and keeps a distance
+  with platforms
+  _Baron Of Hell shoots particles and 
+  goes from A to B
+  _Hell Knight goes from A to B and falls 
+  to lower platforms
+>Enemy raycasts
+>Enemy brutal deaths and corpses
+>Dynamic platforms (2 types of movement)
+>GUI canvases created dynamically, 
+the xml load happens at the moment 
+of swapping scene
+>Difficulty System with UI menu
+>Particle System
+>Blood System
+>Loot System
+>Weapon System
+>Timer System
+>Responsive HUD eg. face behaviour  
+>Audio is played by name
+>Audio stop, pause, resume,
 prioritary chunk played over the rest
-_Textures with maps
- 
-############### CONTROLS ############### 
-It is preferred to use a controller (due to 
-a more responsive movement).
-
-Controller: 
-Move = left joystick
-Sprint = L2
-Jump = X button 
-Shoot = R2
-Previous Weapon = L1
-Next Weapon = R1
-
-Keyboard:
-Move = A (left), D (right)
-Sprint = space 
-Jump = W
-Shoot = K
-Previous Weapon = J
-Next Weapon = L
-
-- - - - - - - - - - - - 
-G = god mode
-- - - - - - - - - - - - (temporal debug)
-KP_1 = go to level 1
-KP_2 = go to level 2
-R = View Enemy Raycasts
-P = View Pathfinding
-C = View Colliders
+(see chainsaw and sliders) 
+>Textures with maps
+>OnCollisionExit
+>Entities are sorted by blitorder
 
 ### HOW TO WIN / LOSE
 There's a timer in the top-right of the screen.
 When you kill, it gives you time.
-
 The more powerful the enemy, the more time; 
 picking collectible figures give you 5 seconds
-
 You lose if time's over or get killed before!!
+(Youg have got 3 lives for each level) 
+
+############### CONTROLS ############### 
+It is preferred to use a controller (due to 
+a more responsive movement).
+- - - - - - - - - - - - 
+       Controller: 
+left joystick) move
+L2) sprint
+X) jump
+R2) shoot 
+L1) previous weapon
+R1) next weapon
+- - - - - - - - - - - - 
+       Keyboard:
+A, D) move
+space) sprint 
+W) jump 
+K) shoot
+J) previous weapon
+L) next weapon
+- - - - - - - - - - - -  
+       Debug: 
+F1) load level 1
+F2) re-load the current level 
+F5) save game
+F6) load game
+F8) debug UI
+F9) view colliders, pathfinding and
+enemy raycasts
+F10) god mode
+--> use WASD to move!!
+F11) enable/disable FPS cap 
+
 
 ### Link to the Website 
 https://mdpdoctor7.wixsite.com/doomproject
 
+
 ### ART & AUDIO RESOURCES
-Player / Enemies / Weapons:
+Player / Enemies / Weapons, HUD...:
 https://www.spriters-resource.com/pc_computer/doomdoomii/
 Background Tiles:
 https://bghq.com/textures.php?game=doom
-Map Props: (found in google images) 
+Backgrounds:
+https://wallpaperplay.com/board/hell-wallpapers
+Map Props: https://www.spriters-resource.com/pc_computer/doomdoomii/sheet/27912/?source=genre 
 Fxs: http://www.wolfensteingoodies.com/archives/olddoom/music.htm
 http://www.wolfensteingoodies.com/archives/olddoom/music.htm
-HUD: (found in google images) 
 HUD Font: https://www.dafont.com/es/amazdoom.font
 
 

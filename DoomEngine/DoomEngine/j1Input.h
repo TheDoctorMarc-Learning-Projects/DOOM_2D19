@@ -104,10 +104,6 @@ public:
 	void GetMousePosition(int &x, int &y);
 	void GetMouseMotion(int& x, int& y);
 
-
-	void DoGamePadRumble(float strength, uint32 duration) const;
-
-	
 	bool		windowEvents[WE_COUNT];
 	j1KeyState*	keyboard = nullptr;
 	j1KeyState*	mouse_buttons = nullptr;

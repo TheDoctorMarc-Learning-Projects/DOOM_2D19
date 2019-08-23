@@ -198,7 +198,7 @@ void j1EntityBloodDrop::OnCollision(Collider* c1, Collider* c2)
 			{
 				c2->callback->to_delete = true;
 
-				goto checkFloor; 
+				goto checkFloor;    // omg goto...
 			}
 
 		}

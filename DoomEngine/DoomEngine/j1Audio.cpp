@@ -122,6 +122,9 @@ bool j1Audio::Start()
 
 bool j1Audio::Update(float dt)
 {
+
+	BROFILER_CATEGORY("Audio Update", Profiler::Color::DeepPink);
+
 	if (toUpdate == true)
 		if (prioritaryChunk != "empty")
 			if (isPlayingFx(prioritaryChunk) == false)

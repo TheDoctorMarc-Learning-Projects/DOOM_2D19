@@ -28,7 +28,7 @@ j1EnemyHellKnight::j1EnemyHellKnight(int posX, int posY, std::string name) : j1E
 	myMeleeRange = 2U;
 	hasMaxDistanceFromOrigin = false;   
 
-	state.movement.at(1) = eMovementState::FALL;    // check this out: when TODO: load enemies in map, it should no longer be fall  
+	state.movement.at(1) = eMovementState::FALL;    
 	state.path = ePathState::AWAIT; 
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - anims
@@ -66,7 +66,7 @@ j1EnemyHellKnight::~j1EnemyHellKnight()
 
 bool j1EnemyHellKnight::Move(float dt)
 {
-	if (App->entityFactory->IsPlayerAlive() == false) // first line prevention _> TODO: maybe it is safer to just stop the entity factory, but the player weapon wouldn't fall to the floor then 
+	if (App->entityFactory->IsPlayerAlive() == false)  
 	{
 		return false;
 	}

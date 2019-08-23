@@ -60,7 +60,7 @@ bool j1Map::Start()
 
 void j1Map::Draw()
 {
-	BROFILER_CATEGORY("MAP_DRAW", Profiler::Color::DeepPink);
+	BROFILER_CATEGORY("Map Draw", Profiler::Color::DeepPink);
 
 	if (map_loaded == false)
 		return;
@@ -73,8 +73,8 @@ void j1Map::Draw()
 		{
 			for (int j = 0; j < data.height; ++j)
 			{
-			/*	if (App->render->IsOnCamera(MapToWorld(i - 1, j).x, MapToWorld(i, j).y, data.tile_width * i, data.tile_height * j))
-				{*/
+				if (App->render->IsOnCamera(MapToWorld(i - 1, j).x, MapToWorld(i, j).y, data.tile_width * i, data.tile_height * j))
+				{
 					int tile_id = layer->Get(i, j);
 					if (tile_id > 0)
 					{
@@ -90,7 +90,7 @@ void j1Map::Draw()
 
 					}
 			
-				//}
+				}
 			
 			}
 
@@ -161,16 +161,6 @@ iPoint j1Map::MapToWorld(int x, int y) const
 		ret.x = x * data.tile_width;
 		ret.y = y * data.tile_height;
 	}
-	/*else if(data.type == MAPTYPE_ISOMETRIC)
-	{
-		ret.x = (x - y) * (data.tile_width * 0.5f);
-		ret.y = (x + y) * (data.tile_height * 0.5f);
-	}
-	else
-	{
-		//LOG("Unknown map type");
-		ret.x = x; ret.y = y;
-	}*/
 
 	return ret;
 }

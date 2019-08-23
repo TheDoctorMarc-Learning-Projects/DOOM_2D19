@@ -122,13 +122,6 @@ bool j1Scene::Update(float dt)
 		App->scene->LoadScene(state, true);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)   // TODO: delete this debug key
-	{
-		App->entityFactory->playerLives = 3;
-		App->gui->UpDateInGameUISlot("LiveCounter", 3);
-		App->scene->LoadScene(SceneState::LEVEL2, true);
-	}
-
 
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)        
 		SaveLoadLogic(true); 
@@ -210,6 +203,8 @@ bool j1Scene::Load(pugi::xml_node &node)
 
 void j1Scene::LoadNewMap(const char* mapName)
 {
+	BROFILER_CATEGORY("Map Load Scene", Profiler::Color::MintCream);
+
 	if (App->map->Load(mapName))
 	{
 		int w, h;

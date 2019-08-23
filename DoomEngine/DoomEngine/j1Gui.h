@@ -80,7 +80,7 @@ public:
  
 	std::map<sceneTypeGUI, UiItem*> GetCanvases() const { return canvases; }; 
 	SDL_Texture* GetAtlas() const { return atlas; };
-	float GetSpriteGlobalScale() const { return spriteScale; };   // TODO: alter this when needed, pass the items a specific scale if needed
+	float GetSpriteGlobalScale() const { return spriteScale; };   
 	UiItem* GetCanvasItemByName(std::string name, UiItem* parent = nullptr) const;
 	UiItem* GetItemByName(std::string name) const {
 		for (const auto& item : listOfItems)

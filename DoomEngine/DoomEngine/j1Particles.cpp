@@ -64,9 +64,9 @@ bool j1Particles::Start()
 
 	particleMap.insert(std::make_pair(machineGunShotFire.name, machineGunShotFire));
 
-	// - - - - - - - - - - - - - - - - - - - - - - - ENEMIES
+	// - - - - - - - - - - - - - - - - - - - - - - - ENEMIES             // (the other data is defined in the enemy shoot function) 
 	// Cacodemon
-	Particle EnemyCacodemonShot;                                   // the other data is defined in enemy shoot function 
+	Particle EnemyCacodemonShot;                                  
 	EnemyCacodemonShot.name = "EnemyCacodemonShot";
 	EnemyCacodemonShot.anim.PushBack({ 1, 129, 23, 23 });  
 	EnemyCacodemonShot.anim.PushBack({ 25, 129, 23, 23 });
@@ -75,7 +75,7 @@ bool j1Particles::Start()
 
 	particleMap.insert(std::make_pair(EnemyCacodemonShot.name, EnemyCacodemonShot));
 
-	Particle EnemyCacodemonShotExplosion;                                   // the other data is defined in enemy shoot function 
+	Particle EnemyCacodemonShotExplosion;                                  
 	EnemyCacodemonShotExplosion.name = "EnemyCacodemonShotExplosion";
 	EnemyCacodemonShotExplosion.anim.PushBack({ 49, 112, 41, 40 });
 	EnemyCacodemonShotExplosion.anim.PushBack({ 91, 109, 50, 43 });
@@ -86,11 +86,8 @@ bool j1Particles::Start()
 
 	particleMap.insert(std::make_pair(EnemyCacodemonShotExplosion.name, EnemyCacodemonShotExplosion));
 
-
-
-	
 	// Baron Of Hell
-	Particle EnemyBaronOfHellShot;                                   // the other data is defined in enemy shoot function 
+	Particle EnemyBaronOfHellShot;                                    
 	EnemyBaronOfHellShot.name = "EnemyBaronOfHellShot";
 	EnemyBaronOfHellShot.anim.PushBack({ 5, 225, 35, 10 });
 	EnemyBaronOfHellShot.anim.PushBack({ 3, 242, 33, 10 });
@@ -104,7 +101,7 @@ bool j1Particles::Start()
 
 	particleMap.insert(std::make_pair(EnemyBaronOfHellShot.name, EnemyBaronOfHellShot));
 
-	Particle EnemyBaronOfHellShotExplosion;                                   // the other data is defined in enemy shoot function 
+	Particle EnemyBaronOfHellShotExplosion;                                   
 	EnemyBaronOfHellShotExplosion.name = "EnemyBaronOfHellShotExplosion";
 	EnemyBaronOfHellShotExplosion.anim.PushBack({ 1, 260, 33, 33 });
 	EnemyBaronOfHellShotExplosion.anim.PushBack({ 35, 257, 41, 36 });
@@ -137,7 +134,7 @@ bool j1Particles::CleanUp()
 
 	RemoveActive(); 
 
-	particleMap.clear(); // check if content is stil there
+	particleMap.clear();  
 
 	return true;
 }
@@ -168,7 +165,7 @@ bool j1Particles::PostUpdate()//float dt)
 			(*p) = nullptr;
 			p = active.erase(p);
 		}
-		else if (SDL_GetTicks() >= (*p)->born)            // TODO: update collider pos if hasCollider 
+		else if (SDL_GetTicks() >= (*p)->born)          
 		{
 			App->render->Blit(texture, (*p)->position.x, (*p)->position.y, &(*p)->anim.GetCurrentFrame(), (*p)->parallaxSpeed, (*p)->renderFlip, (*p)->scale, (*p)->angle, (*p)->pivot.x * App->win->GetScale(), (*p)->pivot.y * App->win->GetScale(), (*p)->useCameraScale);
 
@@ -302,23 +299,6 @@ void j1Particles::RemoveActive()
 	}
 
 }
-/*
-bool j1Particles::Load(pugi::xml_node& node)
-{
- 
-
-
-}
-
-bool j1Particles::Save(pugi::xml_node& node) const
-{
-	 
-	for (auto& particle : active)
-		particle->Save(node);
-
-	return true;
-}
-*/
 
 Particle::Particle()
 {

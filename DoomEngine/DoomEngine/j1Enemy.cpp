@@ -36,6 +36,8 @@ j1Enemy::~j1Enemy()
 bool j1Enemy::Move(float dt)
 {
 
+	BROFILER_CATEGORY("Enemy Move", Profiler::Color::AliceBlue);
+
 	if (colliderActive == false)
 		return false; 
 
@@ -46,9 +48,6 @@ bool j1Enemy::Move(float dt)
 		
 	if (state.combat == eCombatState::DEAD)
 		return false;
-	
-
-	BROFILER_CATEGORY("Enemy Move", Profiler::Color::AliceBlue); 
 
 	bool ret = false; 
 
@@ -101,6 +100,9 @@ void j1Enemy::SetPreviousFrameData()
 
 void j1Enemy::SetPath(float dt, bool& success)
 {
+
+	BROFILER_CATEGORY("Enemy SetPath", Profiler::Color::Gainsboro);
+
 	bool doIt = false;
 
 	if (state.path == ePathState::AWAIT || state.path == ePathState::TEMPORAL_DEVIATION)
@@ -300,8 +302,6 @@ bool j1Enemy::FollowPath(float dt)
 {
 	
 	bool ret = false;
-
-
 
 	BROFILER_CATEGORY("Enemy Follow Path", Profiler::Color::Azure);
 

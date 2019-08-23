@@ -204,6 +204,7 @@ bool j1EntityFactory::isBlitOrderHigherThanPreviousEntity(const j1Entity* ent1, 
 
 void j1EntityFactory::Debug()
 {
+	BROFILER_CATEGORY("Entity Factory Debug", Profiler::Color::Chocolate);
 
 	// - - - - - - - - - - - - - - - - debug
 

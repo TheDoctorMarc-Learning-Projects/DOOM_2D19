@@ -34,8 +34,7 @@ j1EnemyBaronOfHell::j1EnemyBaronOfHell(int posX, int posY, std::string name) : j
 	myMeleeRange = 2U;
 	hasMaxDistanceFromOrigin = false;
 
-	state.movement.at(1) = eMovementState::FALL;    // check this out: when TODO: load enemies in map, it should no longer be fall  
-
+	state.movement.at(1) = eMovementState::FALL;     
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - anims
 	currentAnimation = &idle;
 	idle.PushBack({ 20, 114, size.x, size.y });
@@ -74,7 +73,7 @@ j1EnemyBaronOfHell::~j1EnemyBaronOfHell()
 
 bool j1EnemyBaronOfHell::Move(float dt)
 {
-	if (App->entityFactory->IsPlayerAlive() == false) // first line prevention _> TODO: maybe it is safer to just stop the entity factory, but the player weapon wouldn't fall to the floor then 
+	if (App->entityFactory->IsPlayerAlive() == false)  
 	{
 		return false;
 

@@ -84,7 +84,7 @@ j1EnemyIMP::~j1EnemyIMP()
 
 bool j1EnemyIMP::Move(float dt)
 {
-	if (App->entityFactory->IsPlayerAlive() == false) // first line prevention _> TODO: maybe it is safer to just stop the entity factory, but the player weapon wouldn't fall to the floor then 
+	if (App->entityFactory->IsPlayerAlive() == false)   
 	{
 		return false;
 	}

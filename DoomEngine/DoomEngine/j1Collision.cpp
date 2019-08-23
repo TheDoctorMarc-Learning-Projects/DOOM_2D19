@@ -391,7 +391,6 @@ void j1Collision::DebugDraw()
 // Called before quitting
 bool j1Collision::CleanUp()
 {
-	BROFILER_CATEGORY("Collision CleanUp", Profiler::Color::DarkTurquoise);
 	bool ret = true;
 	LOG("Freeing all colliders");
 
@@ -420,10 +419,6 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* 
 void j1Collision::DestroyCollider(Collider* col)
 {
 	col->to_delete = true; 
-
-	/*col->FreeOnCollision();
-	RELEASE(col);
-	colliders.erase(std::remove(colliders.begin(), colliders.end(), col), colliders.end());*/
 }
 
 
@@ -544,7 +539,7 @@ void Collider::UpdateStatus()
 	if (volatileOutOfScreen)  // delete whe out of camera limits
 	{
 
-		if (App->render->isRectOnCamera(this->rect) == false)              // TODO: do this rather with is on camera ?
+		if (App->render->isRectOnCamera(this->rect) == false)              
 		{
 			if (owner != nullptr)
 				owner->to_delete = true;   // if it has an owner, delete the owner too

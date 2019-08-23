@@ -181,10 +181,7 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 	float ShotsInAMilisec = (float)weaponData.cadence / 60000.f;   // per minute / (60 (sec) * 1000 (milisec))
 	float MiliSecShotTIme = 1.f / ShotsInAMilisec; 
 
-	// TODO: auto weapons key repeat 
-
-
-	if (SDL_GetTicks() > lastTimeShoot + (uint)(int)MiliSecShotTIme && currentBullets > 0)    // TODO later on: MAXBULLETS, bullet functionality discount and prevent firing when 0 bullets etc
+	if (SDL_GetTicks() > lastTimeShoot + (uint)(int)MiliSecShotTIme && currentBullets > 0)     
 	{
 		firing = true;
 
@@ -193,7 +190,7 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 		
 		lastTimeShoot = SDL_GetTicks();
 
-		SDL_RendererFlip shotFlip = SDL_FLIP_NONE;   // TODO: all particles sprites to the right by default, to match the weapon sprites and simplify this 
+		SDL_RendererFlip shotFlip = SDL_FLIP_NONE;   
 		iPoint weaponTipPos = iPoint(0, 0);
 
 		if (pointingDir == POINTING_DIR::LEFT)
@@ -290,7 +287,7 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 
 
 void j1EntityLootWeapon::CalculateStrike()
-{                                                     // TODO: ajust the pos, very fake when pointing left etc
+{                                                     
 	fPoint speed = fPoint(0, 0); 
 
 	if (pointingDir == RIGHT)

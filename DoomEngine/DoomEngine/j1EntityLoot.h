@@ -15,7 +15,7 @@ enum class LOOT_TYPE
 	NO_LOOT
 };
 
-enum class CONSUMABLE_STATE    // TODO:  define this in consumable header 
+enum class CONSUMABLE_STATE    
 {
 	AWAIT,
 	PICKED

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="310" height="26" tilewidth="32" tileheight="32" infinite="0" nextlayerid="13" nextobjectid="203">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="310" height="26" tilewidth="32" tileheight="32" infinite="0" nextlayerid="13" nextobjectid="204">
  <tileset firstgid="1" name="crack" tilewidth="32" tileheight="32" tilecount="4" columns="2">
   <image source="textures/crack.png" width="64" height="64"/>
  </tileset>
@@ -40957,7 +40957,12 @@
     <property name="classicType" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="202" name="enemy" x="7040" y="192" width="32" height="32">
+  <object id="202" name="enemy" x="7040" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="EnemyCacodemon"/>
+   </properties>
+  </object>
+  <object id="203" name="enemy" x="7296" y="224" width="32" height="32">
    <properties>
     <property name="type" value="EnemyCacodemon"/>
    </properties>

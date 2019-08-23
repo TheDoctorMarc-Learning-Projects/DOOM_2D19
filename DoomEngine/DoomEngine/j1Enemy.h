@@ -128,7 +128,6 @@ public:
 	~j1Enemy();
 
 	//core loops ------
-	//bool Awake(pugi::xml_node& node);
 	virtual bool DoDie() {        // not a cleanup, because texture is still there, its just to delete anything extra
 
 		if (onDynamicplatform == false)  // we need to keep the colldier if the enemy dies in the dynamic platform

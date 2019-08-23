@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="330" height="26" tilewidth="32" tileheight="32" infinite="0" nextlayerid="37" nextobjectid="258">
- <tileset firstgid="1" name="qzNJ1V6_3x (1)" tilewidth="32" tileheight="32" tilecount="0" columns="140">
-  <image source="textures/background_level1.png" width="4488" height="600"/>
- </tileset>
  <tileset firstgid="1" name="tile1" tilewidth="32" tileheight="32" tilecount="4" columns="2">
   <image source="textures/tile1.png" width="64" height="64"/>
  </tileset>

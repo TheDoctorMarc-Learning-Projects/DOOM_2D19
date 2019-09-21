@@ -6,12 +6,11 @@
 #include "j1EntityPlatformDynamic.h"
 #include "Color.h"
 
-
 class j1Entity;
 
 struct Viscosity
 {
-	float speed = 4.f; 
+	float speed = 100.f; 
 	uint frameRate = 40U; 
 	uint frameCounter = 0U; 
 };
@@ -41,6 +40,7 @@ private:
 	SDL_Rect lastPosCollider = { 0,0,0,0 }; 
 	Viscosity viscosityData; 
 	j1EntityPlatformDynamic* dynGroundCallback = nullptr; 
+	float totalAirTime = 0.0f; 
 
 	friend class j1BloodManager;
 

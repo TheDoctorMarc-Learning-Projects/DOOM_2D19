@@ -265,7 +265,7 @@ void j1App::FinishUpdate()
 
     static char title[256];
 
-	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
 		capFrames = !capFrames; 
 
 	if(capFrames && !vsync)

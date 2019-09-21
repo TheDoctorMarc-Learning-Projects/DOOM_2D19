@@ -41,19 +41,24 @@ bool j1EntityBloodDrop::Update(float dt)
 
 	if (!floorReached)
 	{
+
+			
+
 		if (!roofReached)
 		{
-			float v1 = initialSpeed.y *= speedDecrement.y;
-			float v2 = GravityCalc(gravityFactor, mass) * dt;  // when it has reached roof and has to fall, ONLY this should be considered
+			lastSpeed.y = (initialSpeed.y + DEFAULT_GRAV * pow(totalAirTime, 2)) * dt * dtMovementMulti;
+			if (lastSpeed.y > max_Yspeed) lastSpeed.y = max_Yspeed;
+			totalAirTime += dt;
 
-			lastSpeed.y = v1 + v2;
-
-			lastSpeed.x *= speedDecrement.x;
+			position.y += lastSpeed.y;
+			//lastSpeed.x *= speedDecrement.x;
+			position.x += lastSpeed.x * dt * dtMovementMulti; 
 		}
 		else
 		{
 			initialSpeed.y = 0;  // so that when it falls from roof again, it just goes down with gravity 
 			lastSpeed.x = 0;
+			totalAirTime = 0.f; 
 
 			if (viscosityData.frameCounter != 0 && viscosityData.frameCounter % viscosityData.frameRate == 0)
 				lastSpeed.y = viscosityData.speed;
@@ -61,10 +66,10 @@ bool j1EntityBloodDrop::Update(float dt)
 				lastSpeed.y = 0;
 
 			viscosityData.frameCounter++;
+
+			position.y += lastSpeed.y * dt; 
 		}
 
-		position.x += lastSpeed.x;
-		position.y += lastSpeed.y;
 
 		collider->SetPos(position.x, position.y);
 

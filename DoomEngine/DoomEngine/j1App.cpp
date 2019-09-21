@@ -46,7 +46,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	collision = DBG_NEW j1Collision();
 	entityFactory = DBG_NEW j1EntityFactory();
 	bloodManager = DBG_NEW j1BloodManager(); 
-	gui = DBG_NEW j1Gui(); 
+	//gui = DBG_NEW j1Gui(); 
 	fade = DBG_NEW j1FadeToBlack(); 
 
 	// Ordered for awake / Start / Update
@@ -74,7 +74,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	modules.push_back(particles);
 	particles->startInitialized = false;
 
-	AddModule(gui);
+	//AddModule(gui);
 
 	// render last to swap buffer
 	AddModule(render);
@@ -251,11 +251,11 @@ void j1App::FinishUpdate()
 		prev_last_sec_frame_count = last_sec_frame_count;
 		last_sec_frame_count = 0;
 
-		// update the death timer once each second (do not do it yet if fading) 
+	/*	// update the death timer once each second (do not do it yet if fading) 
 		if (App->gui->IsEnabled() == true)
 			if(App->gui->GetCurrentCanvas() && App->gui->GetCurrentCanvas()->myScene == sceneTypeGUI::LEVEL)
 				if(App->fade->GetCurrentStep() == fade_step::none)
-					App->gui->UpdateDeathTimer();
+					App->gui->UpdateDeathTimer();*/
 	}
 
 	seconds_since_startup = startup_time.ReadSec();
@@ -265,7 +265,7 @@ void j1App::FinishUpdate()
 
     static char title[256];
 
-	if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 		capFrames = !capFrames; 
 
 	if(capFrames && !vsync)

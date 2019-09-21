@@ -117,7 +117,7 @@ public:
 	j1Collision*  		collision = nullptr; 
 	j1EntityFactory*    entityFactory = nullptr; 
 	j1BloodManager*     bloodManager = nullptr; 
-	j1Gui*              gui = nullptr; 
+	//j1Gui*              gui = nullptr; 
 	j1FadeToBlack*      fade = nullptr; 
 
 	bool				vsync = false;

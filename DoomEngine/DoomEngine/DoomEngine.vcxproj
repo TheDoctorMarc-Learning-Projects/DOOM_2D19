@@ -168,7 +168,6 @@
     <ClCompile Include="j1EntityPlatformDynamic.cpp" />
     <ClCompile Include="j1FadeToBlack.cpp" />
     <ClCompile Include="j1Fonts.cpp" />
-    <ClCompile Include="j1Gui.cpp" />
     <ClCompile Include="j1Input.cpp" />
     <ClCompile Include="j1Main.cpp" />
     <ClCompile Include="j1Map.cpp" />
@@ -182,12 +181,6 @@
     <ClCompile Include="j1Window.cpp" />
     <ClCompile Include="p2Log.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
-    <ClCompile Include="UiItem.cpp" />
-    <ClCompile Include="UiItem_Bar.cpp" />
-    <ClCompile Include="UiItem_Button.cpp" />
-    <ClCompile Include="UiItem_Face.cpp" />
-    <ClCompile Include="UiItem_Image.cpp" />
-    <ClCompile Include="UiItem_Label.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Color.h" />
@@ -214,7 +207,6 @@
     <ClInclude Include="j1EntityPlatformDynamic.h" />
     <ClInclude Include="j1FadeToBlack.h" />
     <ClInclude Include="j1Fonts.h" />
-    <ClInclude Include="j1Gui.h" />
     <ClInclude Include="j1Input.h" />
     <ClInclude Include="j1Map.h" />
     <ClInclude Include="j1Module.h" />
@@ -236,12 +228,6 @@
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="UiItem.h" />
-    <ClInclude Include="UiItem_Bar.h" />
-    <ClInclude Include="UiItem_Button.h" />
-    <ClInclude Include="UiItem_Face.h" />
-    <ClInclude Include="UiItem_Image.h" />
-    <ClInclude Include="UiItem_Label.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DoomEngine.rc" />

@@ -26,7 +26,7 @@ void j1EntityLootHealth::OnPickUp()
 
 	 App->entityFactory->AddLifeToPlayer(0.25f * App->entityFactory->currentDifficultyMultiplier.lootAmmout);
 	 // warn the GUI
-	 dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("nokarma");  // do not change the face karma (but change the blood)
+	// dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("nokarma");  // do not change the face karma (but change the blood)
 
 	 to_delete = true;
 

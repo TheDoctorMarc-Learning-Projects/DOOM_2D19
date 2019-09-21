@@ -97,10 +97,10 @@ bool j1EntityPlayer::PreUpdate()
 	{
 		godMode = !godMode;
 
-		if(godMode)
+		/*if(godMode)
 			dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("win");
 		else
-			dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("idle");
+			dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("idle");*/
 		
 	}
 		
@@ -534,8 +534,8 @@ void j1EntityPlayer::ChangeWeapon(SDL_GameControllerButton button)
 
 
 					// warn the GUI
-					App->gui->UpDateInGameUISlot("ammoLabel", currentWeapon->currentBullets);   
-					App->gui->UpDateInGameUISlot("weaponImage", 0.0f, currentWeapon->section); 
+					/*App->gui->UpDateInGameUISlot("ammoLabel", currentWeapon->currentBullets);   
+					App->gui->UpDateInGameUISlot("weaponImage", 0.0f, currentWeapon->section); */
 				}
 			
 
@@ -950,12 +950,12 @@ void j1EntityPlayer::OnCollision(Collider* c1, Collider* c2)
 
 	case COLLIDER_TYPE::COLLIDER_WIN:
 		App->entityFactory->playerLives = 3;
-		App->gui->UpDateInGameUISlot("LiveCounter", 3);
+		//App->gui->UpDateInGameUISlot("LiveCounter", 3);
 
 		if (App->scene->GetCurrentSceneState() == SceneState::LEVEL1)
 			App->scene->SetTargetScene(SceneState::LEVEL2);
 		if (App->scene->GetCurrentSceneState() == SceneState::LEVEL2)                  
-			App->scene->SetTargetScene(SceneState::MAINMENU);
+			App->scene->SetTargetScene(SceneState::LEVEL1);
 		break;
 
 	}
@@ -1092,7 +1092,7 @@ void j1EntityPlayer::PickWeapon(j1EntityLootWeapon* callback, bool saveLoad)
 			App->audio->PlayFx("weaponPickUp");
 		
 
-		App->gui->UpDateInGameUISlot("ammoLabel", currentWeapon->currentBullets);
+		/*App->gui->UpDateInGameUISlot("ammoLabel", currentWeapon->currentBullets);
 		if (App->gui->GetCanvasItemByName("weaponImage") == nullptr)                    // create the weapon image
 		{
 			SDL_Rect section = { currentWeapon->section.x, currentWeapon->section.y, currentWeapon->section.w, currentWeapon->section.h};
@@ -1104,7 +1104,7 @@ void j1EntityPlayer::PickWeapon(j1EntityLootWeapon* callback, bool saveLoad)
 		else
 			App->gui->UpDateInGameUISlot("weaponImage", 0.0f, currentWeapon->section);   // change the weapon image section to the new weapon's sections 
 		
-		dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("weapon");   // change the ui face 
+		dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("weapon");   // change the ui face */
 
 	}
 }

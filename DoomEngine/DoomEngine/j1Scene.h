@@ -83,7 +83,7 @@ public:
 
 
 private:
-	SceneState state = SceneState::MAINMENU;
+	SceneState state = SceneState::LEVEL1; // SceneState::MAINMENU;
 	SceneState nextSceneState = SceneState::NO_SCENE; 
 	SceneState previousSceneState = SceneState::NO_SCENE;
 

@@ -276,7 +276,7 @@ void j1EntityLootWeapon::Shoot(j1KeyState state)
 
 
 		// warn the GUI
-		App->gui->UpDateInGameUISlot("ammoLabel", this->currentBullets);
+		//App->gui->UpDateInGameUISlot("ammoLabel", this->currentBullets);
 
 	}
 	else

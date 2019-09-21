@@ -61,18 +61,6 @@
     <Filter Include="Code\Core\In-Game\Entities\inanimated\loot\Weapons">
       <UniqueIdentifier>{f1033b18-420c-46c9-8f21-77127d2c30a3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Code\Core\In-Screen\GUI">
-      <UniqueIdentifier>{3b117c2d-476b-4483-98c2-7d7a91f0a655}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Code\Core\In-Screen\GUI\Core">
-      <UniqueIdentifier>{ae760f97-301c-4e20-a7b4-b54db76edca6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Code\Core\In-Screen\GUI\Items">
-      <UniqueIdentifier>{3d7e8067-d16e-4594-b892-b14addfae4cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Code\Core\In-Screen\GUI\Items\special">
-      <UniqueIdentifier>{a10e1346-01a4-44b7-89b8-851df77ce7cd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Code\Core\In-Screen\help">
       <UniqueIdentifier>{24667537-3381-46c1-9aee-ee8d678937d6}</UniqueIdentifier>
     </Filter>
@@ -177,32 +165,11 @@
     <ClCompile Include="j1EntityLootArmor.cpp">
       <Filter>Code\Core\In-Game\Entities\inanimated\loot\Basic Pickup Items</Filter>
     </ClCompile>
-    <ClCompile Include="j1Gui.cpp">
-      <Filter>Code\Core\In-Screen\GUI\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="UiItem_Button.cpp">
-      <Filter>Code\Core\In-Screen\GUI\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="UiItem_Image.cpp">
-      <Filter>Code\Core\In-Screen\GUI\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="UiItem_Label.cpp">
-      <Filter>Code\Core\In-Screen\GUI\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="UiItem.cpp">
-      <Filter>Code\Core\In-Screen\GUI\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="UiItem_Face.cpp">
-      <Filter>Code\Core\In-Screen\GUI\Items\special</Filter>
-    </ClCompile>
     <ClCompile Include="j1FadeToBlack.cpp">
       <Filter>Code\Core\In-Screen</Filter>
     </ClCompile>
     <ClCompile Include="j1EntityPlayer.cpp">
       <Filter>Code\Core\In-Game\Entities\animated</Filter>
-    </ClCompile>
-    <ClCompile Include="UiItem_Bar.cpp">
-      <Filter>Code\Core\In-Screen\GUI\Items</Filter>
     </ClCompile>
     <ClCompile Include="j1Collision.cpp">
       <Filter>Code\Core\In-Game</Filter>
@@ -331,27 +298,6 @@
     </ClInclude>
     <ClInclude Include="j1EntityLootArmor.h">
       <Filter>Code\Core\In-Game\Entities\inanimated\loot\Basic Pickup Items</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Gui.h">
-      <Filter>Code\Core\In-Screen\GUI\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="UiItem_Bar.h">
-      <Filter>Code\Core\In-Screen\GUI\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="UiItem_Button.h">
-      <Filter>Code\Core\In-Screen\GUI\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="UiItem_Image.h">
-      <Filter>Code\Core\In-Screen\GUI\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="UiItem_Label.h">
-      <Filter>Code\Core\In-Screen\GUI\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="UiItem.h">
-      <Filter>Code\Core\In-Screen\GUI\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="UiItem_Face.h">
-      <Filter>Code\Core\In-Screen\GUI\Items\special</Filter>
     </ClInclude>
     <ClInclude Include="j1FadeToBlack.h">
       <Filter>Code\Core\In-Screen</Filter>

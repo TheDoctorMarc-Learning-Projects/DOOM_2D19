@@ -488,13 +488,13 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 
 		// warn the GUI
 
-		if(previousArmor != player->armor)
+		/*if(previousArmor != player->armor)
 			App->gui->UpDateInGameUISlot("armorLabel", player->armor);
 		if (previousLife != player->life)
 			App->gui->UpDateInGameUISlot("healthLabel", player->life);
-
+			*/
 		// warn the GUI
-		dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("damaged");
+	//	dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("damaged");
 			
 	}
 		
@@ -513,10 +513,10 @@ void j1EntityFactory::DoDamagetoEntity(j1Entity* ent, float damage, float cadenc
 		if (ent != player)  
 		{
 			// add time to the death countdown
-			App->gui->UpdateDeathTimer((int)((float)(int)dynamic_cast<j1Enemy*>(ent)->powerLevel * enemyKillTimeBonusFactor * currentDifficultyMultiplier.deathTimerUpdate)); 
+			//App->gui->UpdateDeathTimer((int)((float)(int)dynamic_cast<j1Enemy*>(ent)->powerLevel * enemyKillTimeBonusFactor * currentDifficultyMultiplier.deathTimerUpdate)); 
 
 			// warn the GUI
-			dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("kill");
+			//dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("kill");
 		}
 		else
 			PlayerDeathLogic(); 
@@ -546,7 +546,7 @@ void j1EntityFactory::AddLifeToPlayer(float maxLifePercentatge)
 
 	player->life = captureLife;
 
-	App->gui->UpDateInGameUISlot("healthLabel", player->life);
+	//App->gui->UpDateInGameUISlot("healthLabel", player->life);
 
 }
 
@@ -570,7 +570,7 @@ void j1EntityFactory::AddAmmoToPlayer(float maxBulletPercentage)
 		}
 	
 
-	App->gui->UpDateInGameUISlot("ammoLabel", player->currentWeapon->currentBullets);
+	//App->gui->UpDateInGameUISlot("ammoLabel", player->currentWeapon->currentBullets);
 }
 
 void j1EntityFactory::AddArmorToPlayer(float maxArmorPercentatge)
@@ -585,7 +585,7 @@ void j1EntityFactory::AddArmorToPlayer(float maxArmorPercentatge)
 	player->armor = captureArmor;
 
 
-	App->gui->UpDateInGameUISlot("armorLabel", player->armor);
+	//App->gui->UpDateInGameUISlot("armorLabel", player->armor);
 }
 
 
@@ -600,19 +600,19 @@ void j1EntityFactory::PlayerDeathLogic()
 	playerLives--;
 
 	// warn the GUI
-	App->gui->UpDateInGameUISlot("LiveCounter", playerLives);
-	dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("death");
+	/*App->gui->UpDateInGameUISlot("LiveCounter", playerLives);
+	dynamic_cast<UiItem_Face*>(App->gui->GetCanvasItemByName("face"))->SetCurrentAnim("death");*/
 
 	// finally check the remaining lives and switch scene according
-	if (playerLives > 0)
+	//if (playerLives > 0)
 		App->scene->SetTargetScene(App->scene->GetCurrentSceneState());
 
-	else
+	/*else
 	{
 		playerLives = 3;
-		App->gui->UpDateInGameUISlot("LiveCounter", 3);
+		//App->gui->UpDateInGameUISlot("LiveCounter", 3);
 		App->scene->SetTargetScene(SceneState::MAINMENU);
-	}
+	}*/
 
 }
 

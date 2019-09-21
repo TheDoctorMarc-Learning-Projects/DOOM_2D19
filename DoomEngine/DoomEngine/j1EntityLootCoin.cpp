@@ -36,20 +36,20 @@ void j1EntityLootCoin::OnPickUp()
 	if (App->entityFactory->player->godMode == true)    // cheaters don't deserve my coins >:( 
 		return; 
 
-	    UiItem_Label* myLabel = (UiItem_Label*)App->gui->GetCanvasItemByName(name + "Label"); 
+	   // UiItem_Label* myLabel = (UiItem_Label*)App->gui->GetCanvasItemByName(name + "Label"); 
 
-		if (myLabel != nullptr)
-		{
-			int coins = std::stoi(myLabel->text);
-			coins += 1;
+		/*if (myLabel != nullptr)
+		{*/
+			/*int coins = std::stoi(myLabel->text);
+			coins += 1;*/
 
 			App->audio->PlayFx("figurePickUp", 0, true, 1.f, 0.15f, 0.15f);
-			App->gui->UpDateInGameUISlot(name + "Label", coins, section);
-			App->gui->UpdateDeathTimer((int)((float)timeBonus * App->entityFactory->currentDifficultyMultiplier.deathTimerUpdate));
+			//App->gui->UpDateInGameUISlot(name + "Label", coins, section);
+			//App->gui->UpdateDeathTimer((int)((float)timeBonus * App->entityFactory->currentDifficultyMultiplier.deathTimerUpdate));
 
 			to_delete = true;
-		}
+		/*}
 		else
-			assert(false); 
+			assert(false); */
 
 }

@@ -67,6 +67,7 @@ bool j1Scene::Awake(pugi::xml_node& node)
 // Called before the first frame
 bool j1Scene::Start()
 {
+	App->scene->LoadScene(SceneState::LEVEL1, true);
 
 	return true;
 
@@ -111,14 +112,14 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)  
 	{
 		App->entityFactory->playerLives = 3; 
-		App->gui->UpDateInGameUISlot("LiveCounter", 3);
+		//App->gui->UpDateInGameUISlot("LiveCounter", 3);
 		App->scene->LoadScene(SceneState::LEVEL1, true);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) 
 	{
 		App->entityFactory->playerLives = 3;
-		App->gui->UpDateInGameUISlot("LiveCounter", 3);
+		//App->gui->UpDateInGameUISlot("LiveCounter", 3);
 		App->scene->LoadScene(state, true);
 	}
 
@@ -293,7 +294,7 @@ void j1Scene::CreateScene()  // called by fade or called by save-load
 
 	// 4) load the GUI when map swap comes from collider win, or ingame esc. Do NOT load it when coming from button (which already executes the load)
 	if (loadGUI == true)
-		App->gui->LoadGuiDefined(convertSceneTypeToGui(nextSceneState));
+		//App->gui->LoadGuiDefined(convertSceneTypeToGui(nextSceneState));
 
 	state = nextSceneState;
 

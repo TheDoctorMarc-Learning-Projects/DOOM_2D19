@@ -278,32 +278,39 @@ void j1EntityPlayer::VerticalMovement(float dt)
 
 			}
 
+	static float totalTime = 0.0f; 
+	static float intitialSpeed = 0.0f; 
+
 	if (!onPlatform)
 	{
-		if (state.movement.at(1) == MovementState::FALL)
+
+		if (state.movement.at(1) == MovementState::JUMP)
 		{
-			lastSpeed.y = GravityCalc(gravityFactor, mass) * dt;
-			position.y += lastSpeed.y;
+			intitialSpeed = -jumpInfo.jumpPower;
+
+			if (lastSpeed.x != 0)
+				intitialSpeed *= jumpInfo.initialSpeedXIncrementJump;
 		}
 
-		else if (state.movement.at(1) == MovementState::JUMP)
-		{
-			if (lastSpeed.x == 0)
-				lastSpeed.y = (-(jumpInfo.currenJumpPower *= jumpInfo.jumpIncrementFactor * jumpInfo.verticalIncrementFactor)) + GravityCalc(gravityFactor, mass) * dt;
+		else if (state.movement.at(1) == MovementState::FALL)
+			intitialSpeed = 0.0f;
 
-			else
-				lastSpeed.y = (-(jumpInfo.currenJumpPower *= jumpInfo.jumpIncrementFactor)) + GravityCalc(gravityFactor, mass) * dt;
-
-			position.y += lastSpeed.y;
+		lastSpeed.y = (intitialSpeed + DEFAULT_GRAV * pow(totalTime, 2)) * dt * dtMovementMulti;
+		if (lastSpeed.y > max_Yspeed) lastSpeed.y = max_Yspeed;
+		totalTime += dt; 
 
 			if (lastSpeed.y > 0)
 				state.movement.at(1) = MovementState::FALL;
 
-		}
-
+			position.y += lastSpeed.y; 
 	}
 	else
+	{
 		lastSpeed.y = 0;
+		totalTime = 0.0f;
+		intitialSpeed = 0.0f;
+	}
+		
 
 
 

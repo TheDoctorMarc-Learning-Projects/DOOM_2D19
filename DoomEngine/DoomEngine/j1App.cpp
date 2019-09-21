@@ -218,12 +218,19 @@ void j1App::PrepareUpdate()
 {
 	frame_count++;
 	last_sec_frame_count++;
-	if (pause) 
-		dt = 0.0f;
-	else 
-		dt = 1.0f / framerateCap;
 
-
+	if (pause)
+	{
+		dt = 0.F;
+	}
+	else
+	{
+		dt = frame_time.ReadSec();
+		if (dt > 1.F)
+		{
+			dt = 1.F / framerateCap;
+		}
+	}
 	frame_time.Start();
 }
 

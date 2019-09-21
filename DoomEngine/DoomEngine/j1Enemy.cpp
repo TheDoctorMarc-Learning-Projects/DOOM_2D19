@@ -266,30 +266,34 @@ void j1Enemy::VerticalMovement(float dt)
 
 	if (!onPlatform)
 	{
-		if (state.movement.at(1) == eMovementState::FALL)                // cacodemon already ignores this except when dying
+
+		if (state.movement.at(1) == eMovementState::JUMP)
 		{
-			lastSpeed.y = GravityCalc(gravityFactor, mass) * dt;
-			position.y += lastSpeed.y;
+			jumpInfo.intitialSpeed = -jumpInfo.jumpPower;
+
+			if (lastSpeed.x != 0)
+				jumpInfo.intitialSpeed *= jumpInfo.initialSpeedXIncrementJump;
 		}
 
-		else if (state.movement.at(1) == eMovementState::JUMP)
-		{
-			if (lastSpeed.x == 0)
-				lastSpeed.y = (-(jumpInfo.currenJumpPower *= jumpInfo.jumpIncrementFactor * jumpInfo.verticalIncrementFactor)) + GravityCalc(gravityFactor, mass) * dt;
+		else if (state.movement.at(1) == eMovementState::FALL)
+			jumpInfo.intitialSpeed = 0.0f;
 
-			else
-				lastSpeed.y = (-(jumpInfo.currenJumpPower *= jumpInfo.jumpIncrementFactor)) + GravityCalc(gravityFactor, mass) * dt;
+		lastSpeed.y = (jumpInfo.intitialSpeed + DEFAULT_GRAV * pow(jumpInfo.totalJumpTime, 2)) * dt * dtMovementMulti;
+		if (lastSpeed.y > max_Yspeed) lastSpeed.y = max_Yspeed;
+		jumpInfo.totalJumpTime += dt;
 
-			position.y += lastSpeed.y;
+		if (lastSpeed.y > 0)
+			state.movement.at(1) = eMovementState::FALL;
 
-			if (lastSpeed.y > 0)
-				state.movement.at(1) = eMovementState::FALL;
-
-		}
-
+		position.y += lastSpeed.y;
 	}
 	else
+	{
 		lastSpeed.y = 0;
+		jumpInfo.totalJumpTime = 0.0f;
+		jumpInfo.intitialSpeed = 0.0f;
+	}
+
 
 
 	/*if (position.y > previousPosition.y && state.movement.at(1) == eMovementState::JUMP)

@@ -73,8 +73,12 @@ struct ejumpData
 	float currenJumpPower = jumpPower;
 	float jumpIncrementFactor = .9f;
 	float speedXIncrementJump = 2.5f;
+	float initialSpeedXIncrementJump = 1.03f;
 	float speedXIncrementFall = 1.2f;
 	float verticalIncrementFactor = 1.02f;     // jumpincrement reduces jump power in time, but vertical increment counteracts it a bit 
+
+	float totalJumpTime = 0.0f; 
+	float intitialSpeed = 0.0f; 
 };
 
 
